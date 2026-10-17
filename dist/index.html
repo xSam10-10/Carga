@@ -258,7 +258,14 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 
 /* perfil */
 .prof{display:flex;align-items:center;gap:16px}
-.prof .ava{width:76px;height:76px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:700 32px var(--display);flex:none}
+.ava{width:76px;height:76px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:700 32px var(--display);flex:none}
+.ava.sm{width:46px;height:46px;font-size:19px}
+.ava.xs{width:34px;height:34px;font-size:15px}
+.pcard{display:flex;align-items:center;gap:4px;border-bottom:1px solid var(--line);padding-right:6px}
+.pcard:last-child{border-bottom:0}
+.pcard.cur{background:var(--accent-soft)}
+.pmain{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:14px 12px;text-align:left}
+.pmain b{font-size:18px}
 .prof h2{margin:0 0 6px;font:700 24px/1.1 var(--display)}
 .headline{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .headline b{font:700 26px var(--display)}
@@ -504,8 +511,8 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const KEY='carga.v1';
-function blank(){return{v:1,profile:{name:'Samuel',rest:90,sound:true,vibrate:true,wake:true,notify:false,lastBackup:0,lastBackupN:0,backupSnooze:0,collapsed:{}},exercises:[],folders:[],routines:[],workouts:[],measures:[],active:null}}
+const KEY='carga.v1',REG='carga.perfis';
+function blank(){return{v:1,profile:{name:'Atleta',rest:90,sound:true,vibrate:true,wake:true,notify:false,lastBackup:0,lastBackupN:0,backupSnooze:0,collapsed:{}},exercises:[],folders:[],routines:[],workouts:[],measures:[],active:null}}
 function mkSets(n){return Array.from({length:n},()=>({type:'n',kg:'',reps:'',min:''}))}
 function mkRoutine(name,names,folderId=null){return{id:uid(),name,notes:'',folderId,exercises:names.map(n=>({exId:bid(n),notes:'',rest:90,sets:mkSets(3)}))}}
 function seed(s){
@@ -514,13 +521,24 @@ function seed(s){
   mkRoutine('Terça Peito e Ombro',['Supino Sentado (Máquina)','Supino Inclinado (Halter)','Crucifixo (Máquina)','Elevação Lateral (Halter)','Desenvolvimento (Máquina)','Tríceps Testa na Polia (Cabo)']),
   mkRoutine('Quarta Perna e Panturrilha C1',['Agachamento (Smith)','Leg Press 45° (Máquina)','Cadeira Extensora (Máquina)','Flexora Unilateral (Máquina)','Panturrilha em Pé (Máquina)']));
 }
-let S=load();
-function load(){
- try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);const b=blank();return Object.assign(b,o,{profile:Object.assign(b.profile,o.profile||{})})}}catch(e){}
- const s=blank();seed(s);return s;
+function loadReg(){try{const r=JSON.parse(localStorage.getItem(REG)||'null');if(r&&Array.isArray(r.list)&&r.list.length)return r}catch(e){}
+ const reg={list:[{id:'samuel',name:'Samuel'},{id:'carol',name:'Carol'}],current:null};
+ try{const old=localStorage.getItem(KEY);if(old){localStorage.setItem(KEY+'.samuel',old);localStorage.removeItem(KEY);reg.current='samuel';localStorage.setItem(REG,JSON.stringify(reg))}}catch(e){}
+ return reg}
+let REGS=loadReg();
+function saveReg(){try{localStorage.setItem(REG,JSON.stringify(REGS))}catch(e){}}
+const pkey=id=>KEY+'.'+id;
+const pname=id=>(REGS.list.find(p=>p.id===id)||{}).name||'Atleta';
+function load(id){
+ if(!id)return blank();
+ try{const r=localStorage.getItem(pkey(id));if(r){const o=JSON.parse(r);const b=blank();return Object.assign(b,o,{profile:Object.assign(b.profile,o.profile||{},{name:pname(id)})})}}catch(e){}
+ const s=blank();s.profile.name=pname(id);if(id==='samuel')seed(s);return s;
 }
+let S=load(REGS.current);
+function readProfile(id){if(id===REGS.current)return S;try{return JSON.parse(localStorage.getItem(pkey(id))||'null')}catch(e){return null}}
+const ini=n=>esc((n||'?').trim().split(/\s+/).map(x=>x[0]).slice(0,2).join('').toUpperCase());
 let saveT;
-function persist(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function persist(){if(!REGS.current)return;try{localStorage.setItem(pkey(REGS.current),JSON.stringify(S))}catch(e){}}
 function save(){clearTimeout(saveT);saveT=setTimeout(persist,200)}
 addEventListener('pagehide',persist);
 document.addEventListener('visibilitychange',()=>{if(document.hidden){persist();const a=S.active;if(a&&a.restEnd&&a.restEnd>Date.now())notif('Descansando',`Próxima série às ${new Date(a.restEnd).toLocaleTimeString('pt-BR')}. Você será avisado.`,{silent:true})}else{wake();closeNotifs()}});
@@ -549,7 +567,7 @@ function recentIds(n=8){const out=[];for(const w of [...S.workouts].sort((a,b)=>
 function streakWeeks(){const weeks=new Set(S.workouts.map(w=>weekStart(w.start)));let wk=weekStart(Date.now());if(!weeks.has(wk))wk=addDays(wk,-7);let n=0;while(weeks.has(wk)){n++;wk=addDays(wk,-7)}return n}
 
 /* ---------- navegação ---------- */
-let stack=[{v:S.workouts.length?'inicio':'treino',p:{}}];
+let stack=[{v:!REGS.current?'perfis':S.workouts.length?'inicio':'treino',p:{}}];
 let useHist=true;
 const UI={pm:'dur',feedN:12,statDay:null,statRange:30};
 function go(v,p={}){stack[stack.length-1].y=scrollY;stack.push({v,p});try{history.pushState({n:stack.length},'')}catch(e){useHist=false}render();scrollTo(0,0)}
@@ -561,11 +579,11 @@ const top_=()=>stack[stack.length-1];
 function cur(){const t=top_();return t.p.live||t.v==='finish'?S.active:t.p.s}
 
 const VIEWS={};
-const NAV_VIEWS=new Set(['inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe']);
+const NAV_VIEWS=new Set(['inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis']);
 function render(keep){const t=top_();const y=scrollY;const V=VIEWS[t.v]||VIEWS.treino;$('#app').innerHTML=V(t.p);chrome();if(keep)scrollTo(0,y);if(V.after)V.after(t.p)}
 const rerender=()=>render(true);
 function chrome(){
- const t=top_();const nav=$('#nav');const showNav=NAV_VIEWS.has(t.v);nav.hidden=!showNav;
+ const t=top_();const nav=$('#nav');const showNav=NAV_VIEWS.has(t.v)&&!!REGS.current;nav.hidden=!showNav;
  const tabOf=stack[0].v;
  nav.innerHTML=`<div class="nav-in">${[['inicio','Início',I.home],['treino','Treino',I.dumbbell],['perfil','Perfil',I.user]].map(([k,l,i])=>`<button class="${tabOf===k?'on':''}" data-a="tab" data-t="${k}" aria-label="${l}"><span class="ic">${i}</span>${l}</button>`).join('')}</div>`;
  const showMini=S.active&&showNav;
@@ -637,7 +655,7 @@ VIEWS.inicio=()=>{
  const ws=[...S.workouts].sort((a,b)=>b.start-a.start);const wk=weekStart(Date.now());const thisW=ws.filter(w=>w.start>=wk);
  const dur=thisW.reduce((a,w)=>a+(w.end-w.start),0),vol=thisW.reduce((a,w)=>a+wStats(w).vol,0);
  const days=[...Array(7)].map((_,i)=>addDays(wk,i));const today=sod(Date.now());
- let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button></header><main class="page">
+ let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button><button class="ib" data-a="go" data-v="perfis" aria-label="Trocar perfil (${esc(S.profile.name)})"><span class="ava xs">${ini(S.profile.name)}</span></button></header><main class="page">
  <section class="card" style="display:flex;flex-direction:column;gap:14px"><div class="row"><span class="lab spacer">Esta semana</span><span class="tag amb">${I.flame.replace('class="i"','class="i" style="width:14px;height:14px;vertical-align:-2px"')} ${streakWeeks()} sem. seguidas</span></div>
  <div class="stat3"><div><span class="lab">Treinos</span><b>${thisW.length}</b></div><div><span class="lab">Tempo</span><b>${fmtDur(dur)}</b></div><div><span class="lab">Volume</span><b>${fmtInt(vol)}<small style="font-size:14px"> kg</small></b></div></div>
  <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<div class="dchip${has?' has':''}${d===today?' today':''}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></div>`}).join('')}</div></section>`;
@@ -744,8 +762,8 @@ VIEWS.perfil=()=>{
  const fy=m==='dur'?v=>fmt(v)+'h':v=>v>=1000?fmt(v/1000)+' mil':fmtInt(v);
  const cw=vals[11];const head=m==='dur'?`<b>${fmtDur(cw*36e5)}</b> esta semana`:m==='vol'?`<b>${fmtInt(cw)} kg</b> esta semana`:`<b>${fmtInt(cw)} reps</b> esta semana`;
  const totalH=S.workouts.reduce((a,w)=>a+(w.end-w.start),0);
- let h=`<header class="top"><h1 class="big">Perfil</h1><button class="ib" data-a="backupSheet" aria-label="Exportar dados">${I.upload}</button><button class="ib" data-a="go" data-v="config" aria-label="Configurações">${I.gear}</button></header><main class="page">
- <div class="prof"><div class="ava">${esc((S.profile.name||'?').trim().split(/\s+/).map(x=>x[0]).slice(0,2).join('').toUpperCase())}</div><div style="flex:1;min-width:0"><h2>${esc(S.profile.name)}</h2><div class="stat3"><div><span class="lab">Treinos</span><b>${ws.length}</b></div><div><span class="lab">Horas</span><b>${fmtInt(totalH/36e5)}</b></div><div><span class="lab">Sequência</span><b>${streakWeeks()} sem</b></div></div></div></div>
+ let h=`<header class="top"><h1 class="big">Perfil</h1><button class="btn sm sec" data-a="go" data-v="perfis">Trocar perfil</button><button class="ib" data-a="backupSheet" aria-label="Exportar dados">${I.upload}</button><button class="ib" data-a="go" data-v="config" aria-label="Configurações">${I.gear}</button></header><main class="page">
+ <div class="prof"><div class="ava">${ini(S.profile.name)}</div><div style="flex:1;min-width:0"><h2>${esc(S.profile.name)}</h2><div class="stat3"><div><span class="lab">Treinos</span><b>${ws.length}</b></div><div><span class="lab">Horas</span><b>${fmtInt(totalH/36e5)}</b></div><div><span class="lab">Sequência</span><b>${streakWeeks()} sem</b></div></div></div></div>
  <div class="headline">${head}<span class="muted small">· últimas 12 semanas</span></div>
  ${barChart(vals,weeks.map(dShort),fy)}
  <div class="chips">${[['dur','Duração'],['vol','Volume'],['reps','Repetições']].map(([k,l])=>`<button class="chip${m===k?' on':''}" data-a="pm" data-k="${k}">${l}</button>`).join('')}</div>
@@ -823,20 +841,28 @@ VIEWS.medidaForm=p=>{const m=p.m;return bar(p.isNew?'Nova medida':'Editar medida
 /* ---------- CONFIGURAÇÕES ---------- */
 VIEWS.config=()=>{const pr=S.profile;const sw=(k,l,d)=>`<label class="switch"><span><b>${l}</b>${d?`<br><span class="muted small">${d}</span>`:''}</span><input type="checkbox" data-f="pf" data-k="${k}" ${pr[k]?'checked':''}></label>`;
  return bar('Configurações')+`<main class="page">
- <section class="card form"><label class="fld"><span>Seu nome</span><input class="inp" id="p-name" data-f="pname" value="${esc(pr.name)}"></label>
+ <section class="card" style="display:flex;align-items:center;gap:12px"><span class="ava sm">${ini(pr.name)}</span><span style="flex:1;min-width:0"><span class="lab">Perfil em uso</span><b style="font-size:18px">${esc(pr.name)}</b><br><span class="muted small">As configurações e dados abaixo valem só para este perfil.</span></span><button class="btn sm sec" data-a="go" data-v="perfis">Trocar</button></section>
+ <section class="card form"><label class="fld"><span>Nome do perfil</span><input class="inp" id="p-name" data-f="pname" value="${esc(pr.name)}"></label>
  <div class="fld"><span>Descanso padrão para exercícios novos</span><div class="chips">${[0,60,90,120,180].map(v=>`<button class="chip${pr.rest===v?' on':''}" data-a="pRest" data-k="${v}">${fmtRest(v)}</button>`).join('')}</div></div></section>
  <section class="card">${sw('sound','Som ao fim do descanso','')}${sw('vibrate','Vibrar ao fim do descanso','')}${sw('wake','Manter tela ligada no treino','Evita que o celular apague durante a sessão.')}${sw('notify','Avisar fim do descanso com a tela bloqueada','Mostra uma notificação quando o descanso acaba. Funciona no app instalado. Se o Android economizar bateria demais, o aviso pode atrasar alguns segundos.')}</section>
  <h3 class="sh">Importar do Hevy</h3>
  <section class="card form"><p class="muted" style="margin:0">No Hevy: Perfil → engrenagem → <b>Exportar e importar dados</b> → <b>Exportar treinos</b>. Ele gera um arquivo .csv. Escolha esse arquivo aqui. Treinos já importados são ignorados, então pode repetir sem duplicar.</p><span class="btn pri filebtn">${I.downl} Escolher arquivo CSV<input type="file" accept=".csv,text/csv,text/plain" data-file="hevy" aria-label="Arquivo CSV do Hevy"></span></section>
  <h3 class="sh">Seus dados</h3>
- <section class="card form"><p class="muted" style="margin:0">Tudo fica guardado só neste aparelho, neste navegador. Faça backup de vez em quando: se limpar os dados do navegador, o histórico some.</p>
+ <section class="card form"><p class="muted" style="margin:0">Os dados de cada perfil ficam guardados só neste aparelho, neste navegador. O backup salva apenas o perfil em uso. Faça backup de vez em quando: se limpar os dados do navegador, o histórico some.</p>
  <button class="btn sec" data-a="backupSheet">${I.upload} Fazer backup</button>
  <span class="btn sec filebtn">${I.downl} Restaurar backup (.json)<input type="file" accept=".json,.txt,application/json,text/plain" data-file="restore" aria-label="Arquivo de backup"></span>
  <button class="btn ghost" data-a="pasteRestore">Restaurar colando o texto do backup</button>
  <div class="fld"><span>Cópias automáticas neste aparelho</span><p class="muted small" style="margin:0">O app guarda sozinho as últimas 7 cópias: uma por dia e antes de cada importação, restauração ou exclusão. Elas protegem contra erros, mas somem se você limpar os dados do navegador. Por isso o backup externo continua importante.</p><div id="snaps" class="card" style="padding:4px 14px"><p class="muted small">Carregando…</p></div></div>
- <button class="btn ghost danger" data-a="wipe">Apagar todos os dados</button></section>
+ <button class="btn ghost danger" data-a="wipe">Apagar os dados deste perfil</button></section>
  <h3 class="sh">Instalar no celular</h3><section class="card"><p style="margin:0">No Chrome do Android, abra o menu ⋮ e toque em <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>. O Carga abre em tela cheia e funciona sem internet.</p></section>
  <p class="muted small" style="text-align:center">Carga · ${S.workouts.length} treinos · ${S.exercises.length} exercícios personalizados</p></main>`};
+
+/* ---------- PERFIS ---------- */
+VIEWS.perfis=()=>{const first=!REGS.current;
+ const rows=REGS.list.map(pr=>{const d=readProfile(pr.id);const ws=d&&d.workouts||[];const last=ws.length?Math.max(...ws.map(w=>w.start)):0;const cur=pr.id===REGS.current;
+  return`<div class="pcard${cur?' cur':''}"><button class="pmain" data-a="useProfile" data-id="${pr.id}"><span class="ava sm">${ini(pr.name)}</span><span class="exrow-t"><b>${esc(pr.name)}</b><span class="sub">${ws.length} treino(s)${last?' · último em '+dShort(last):''}${cur?' <i class="tag">Em uso</i>':''}</span></span>${cur?'':`<span class="chev">${I.chev}</span>`}</button>${first?'':`<button class="ib" data-a="profMenu" data-id="${pr.id}" aria-label="Opções do perfil ${esc(pr.name)}">${I.dots}</button>`}</div>`}).join('');
+ return(first?`<header class="top"><h1 class="big">Carga</h1></header>`:bar('Perfis'))+`<main class="page">${first?`<h2 class="h" style="font-size:28px">Quem vai treinar neste celular?</h2><p class="muted" style="margin:0">Cada perfil tem seus próprios treinos, rotinas, cargas, recordes, medidas e gráficos. Dá para trocar depois em Perfil → Trocar perfil.</p>`:`<p class="muted" style="margin:0">Cada perfil guarda os próprios dados. Trocar de perfil não mistura nada: o app passa a mostrar só o histórico de quem foi escolhido.</p>`}<div class="list">${rows}</div><button class="btn sec" data-a="addProfile">${I.plus} Adicionar perfil</button></main>`};
+function switchProfile(id){if(id===REGS.current){back();return}persist();clearTimeout(restTO);closeNotifs();unwake();REGS.current=id;saveReg();S=load(id);persist();UI.statDay=null;UI.feedN=12;stack=[{v:S.workouts.length?'inicio':'treino',p:{}}];try{history.replaceState({n:1},'')}catch(e){}render();scrollTo(0,0);toast('Perfil em uso: '+S.profile.name);autoSnapshot();if(S.active){wake();schedRest()}}
 
 /* ---------- importação / exportação ---------- */
 function parseCSV(t){const rows=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}else if(c==='"')q=true;else if(c===','){row.push(f);f=''}else if(c==='\n'){row.push(f);rows.push(row);row=[];f=''}else if(c!=='\r')f+=c}if(f||row.length){row.push(f);rows.push(row)}return rows}
@@ -870,21 +896,21 @@ function importHevy(text){
 function importResult(r){const unk=r.created.filter(x=>x.muscle==='Outro');sheet(`<h3>Importação concluída</h3><p><b>${r.added}</b> treino(s) importado(s)${r.skipped?`, ${r.skipped} já existiam`:''}${r.bad?`, ${r.bad} sem data válida`:''}. ${r.created.length?`${r.created.length} exercício(s) entraram como personalizados.`:''}</p>${unk.length?`<p>Escolha o músculo principal destes exercícios para as estatísticas ficarem certas:</p>${unk.map(x=>`<label class="fld"><span>${esc(x.name)}</span><span class="fsel"><select id="im-${x.id}" data-f="impMu" data-id="${x.id}">${MUSCLES.map(m=>`<option ${x.muscle===m?'selected':''}>${m}</option>`).join('')}</select></span></label>`).join('')}`:''}<button class="btn pri" data-a="closeSheet">Pronto</button>`)}
 const backupDue=()=>S.workouts.length>0&&S.workouts.length!==(S.profile.lastBackupN||0)&&Date.now()-(S.profile.lastBackup||0)>7*DAY&&Date.now()>(S.profile.backupSnooze||0);
 function markBackup(){S.profile.lastBackup=Date.now();S.profile.lastBackupN=S.workouts.length;save()}
-const bkName=ext=>`carga-backup-${toDateInput(Date.now())}.${ext}`;
+const bkName=ext=>`carga-${slug(S.profile.name)||'perfil'}-backup-${toDateInput(Date.now())}.${ext}`;
 function canShareFile(){try{return!!(navigator.canShare&&navigator.canShare({files:[new File(['x'],'x.txt',{type:'text/plain'})]}))}catch(e){return false}}
 function idb(){return new Promise((res,rej)=>{try{const r=indexedDB.open('carga',1);r.onupgradeneeded=()=>r.result.createObjectStore('snaps',{keyPath:'ts'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})}
-async function listSnaps(){try{const db=await idb();return await new Promise((res,rej)=>{const q=db.transaction('snaps').objectStore('snaps').getAll();q.onsuccess=()=>res(q.result.sort((a,b)=>b.ts-a.ts));q.onerror=()=>rej(q.error)})}catch(e){return[]}}
-async function snapshot(reason){try{if(!S.workouts.length&&!S.routines.length)return;const db=await idb();await new Promise((res,rej)=>{const tx=db.transaction('snaps','readwrite');tx.objectStore('snaps').put({ts:Date.now(),reason,n:S.workouts.length,data:backupText()});tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});const old=(await listSnaps()).slice(7);if(old.length){const tx=db.transaction('snaps','readwrite');old.forEach(z=>tx.objectStore('snaps').delete(z.ts))}}catch(e){}}
+async function listSnaps(){try{const db=await idb();return await new Promise((res,rej)=>{const q=db.transaction('snaps').objectStore('snaps').getAll();q.onsuccess=()=>res(q.result.filter(z=>(z.pid||'samuel')===REGS.current).sort((a,b)=>b.ts-a.ts));q.onerror=()=>rej(q.error)})}catch(e){return[]}}
+async function snapshot(reason){try{if(!REGS.current||(!S.workouts.length&&!S.routines.length))return;const db=await idb();await new Promise((res,rej)=>{const tx=db.transaction('snaps','readwrite');tx.objectStore('snaps').put({ts:Date.now(),pid:REGS.current,reason,n:S.workouts.length,data:backupText()});tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});const old=(await listSnaps()).slice(7);if(old.length){const tx=db.transaction('snaps','readwrite');old.forEach(z=>tx.objectStore('snaps').delete(z.ts))}}catch(e){}}
 async function autoSnapshot(){const l=await listSnaps();if(S.workouts.length&&(!l.length||Date.now()-l[0].ts>DAY))snapshot('Cópia diária')}
 VIEWS.config.after=async()=>{const el=$('#snaps');if(!el)return;const l=await listSnaps();el.innerHTML=l.length?l.map(z=>`<div class="mrow"><span><b class="small">${new Date(z.ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</b><br><span class="muted small">${esc(z.reason)} · ${z.n} treinos</span></span><button class="btn sm sec" data-a="snapRestore" data-ts="${z.ts}">Restaurar</button></div>`).join(''):'<p class="muted small">Nenhuma cópia ainda. A primeira é feita quando houver treinos salvos.</p>'};
-const backupText=()=>JSON.stringify(Object.assign({},S,{active:null,app:'carga',exportedAt:new Date().toISOString()}));
+const backupText=()=>JSON.stringify(Object.assign({},S,{active:null,app:'carga',perfil:S.profile.name,exportedAt:new Date().toISOString()}));
 function download(name,text,type){try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);return true}catch(e){return false}}
 const csvq=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
 const MEN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const hevyDate=ts=>{const d=new Date(ts);return`${d.getDate()} ${MEN[d.getMonth()]} ${d.getFullYear()}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};
 function exportCSV(){const L=['title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe'];for(const w of [...S.workouts].sort((a,b)=>b.start-a.start)){const M=ssMap(w);for(const e of w.exercises)e.sets.forEach((s,i)=>L.push([w.name,hevyDate(w.start),hevyDate(w.end),w.notes,ex(e.exId).name,e.ss?SSL.indexOf(M[e.ss]):'',e.notes,i,{n:'normal',w:'warmup',d:'dropset',f:'failure'}[s.type]||'normal',s.kg??'',s.reps??'','',s.t??'',''].map(csvq).join(',')))}return L.join('\n')}
 function restoreFrom(text){let o;try{o=JSON.parse(text)}catch(e){toast('Esse texto não é um backup válido.');return}if(!o||!Array.isArray(o.workouts)){toast('Backup não reconhecido: faltam os treinos.');return}
- ask('Restaurar backup?',`O backup tem ${o.workouts.length} treino(s) e ${(o.routines||[]).length} rotina(s). Os dados atuais deste aparelho serão substituídos. Uma cópia deles fica guardada em Cópias automáticas.`,'Restaurar',true).then(async ok=>{if(!ok)return;closeSheet();await snapshot('Antes de restaurar');const b=blank();S=Object.assign(b,o,{profile:Object.assign(b.profile,o.profile||{}),active:null});delete S.app;delete S.exportedAt;recomputePRs();persist();toast('Backup restaurado');tab('inicio')})}
+ ask('Restaurar backup?',`O backup${o.perfil?` de ${esc(o.perfil)}`:''} tem ${o.workouts.length} treino(s) e ${(o.routines||[]).length} rotina(s). Os dados atuais do perfil ${esc(S.profile.name)} serão substituídos. Uma cópia deles fica guardada em Cópias automáticas.`,'Restaurar',true).then(async ok=>{if(!ok)return;closeSheet();await snapshot('Antes de restaurar');const b=blank();S=Object.assign(b,o,{profile:Object.assign(b.profile,o.profile||{},{name:pname(REGS.current)}),active:null});delete S.app;delete S.exportedAt;delete S.perfil;recomputePRs();persist();toast('Backup restaurado');tab('inicio')})}
 
 /* ---------- ações ---------- */
 const A={
@@ -892,6 +918,12 @@ const A={
  askOk:()=>{const r=ASKRES;ASKRES=null;const v=$('#ask-in');r&&r(v?v.value:true)},
  menu:d=>{const it=MENU[+d.k];closeSheet();it&&it.f()},
  more:()=>{UI.feedN+=12;rerender()},
+ useProfile:d=>switchProfile(d.id),
+ addProfile:()=>askText('Novo perfil','','Nome da pessoa').then(v=>{closeSheet();const n=(v||'').trim();if(!n)return;if(REGS.list.some(p=>norm(p.name)===norm(n))){toast('Já existe um perfil com esse nome.');return}REGS.list.push({id:(slug(n)||'perfil')+'-'+uid().slice(0,4),name:n});saveReg();rerender();toast('Perfil criado. Toque nele para usar.')}),
+ profMenu:d=>{const pr=REGS.list.find(p=>p.id===d.id);if(!pr)return;const cur=pr.id===REGS.current;menu(pr.name,[
+  ...(cur?[]:[{label:'Usar este perfil',icon:I.user,f:()=>switchProfile(pr.id)}]),
+  {label:'Renomear',icon:I.edit,f:()=>askText('Renomear perfil',pr.name).then(v=>{closeSheet();const n=(v||'').trim();if(!n)return;pr.name=n;saveReg();if(cur){S.profile.name=n;save()}else{try{const o=JSON.parse(localStorage.getItem(pkey(pr.id))||'null');if(o){o.profile=Object.assign(o.profile||{},{name:n});localStorage.setItem(pkey(pr.id),JSON.stringify(o))}}catch(e){}}rerender()})},
+  {label:'Excluir perfil',icon:I.trash,danger:true,f:()=>{if(cur){toast('Troque para outro perfil antes de excluir este.');return}const o=readProfile(pr.id);ask('Excluir o perfil '+pr.name+'?',`${(o&&o.workouts||[]).length} treino(s), rotinas, medidas e recordes desse perfil serão apagados deste aparelho. Não dá para desfazer.`,'Excluir perfil',true).then(ok=>{closeSheet();if(!ok)return;try{localStorage.removeItem(pkey(pr.id))}catch(e){}REGS.list=REGS.list.filter(p=>p!==pr);saveReg();rerender()})}}])},
  openW:d=>go('treinoDetalhe',{id:d.id}),
  openEx:d=>go('exercicio',{id:d.id}),
  resume:()=>go('sessao',{live:true}),
@@ -976,7 +1008,7 @@ const A={
  dlCSV:()=>{const ok=download(`carga-treinos-${toDateInput(Date.now())}.csv`,exportCSV(),'text/csv');toast(ok?'Exportação iniciada.':'Download indisponível aqui.')},
  pasteRestore:()=>{sheet(`<h3>Restaurar backup</h3><p>Cole abaixo o texto do backup.</p><textarea id="ask-in" style="min-height:160px" placeholder='{"v":1,...}'></textarea><div class="ask-b"><button class="btn sec" data-a="closeSheet">Cancelar</button><button class="btn pri" data-a="doPaste">Restaurar</button></div>`)},
  doPaste:()=>{const t=$('#ask-in').value;closeSheet();restoreFrom(t)},
- wipe:()=>ask('Apagar todos os dados?','Treinos, rotinas, exercícios personalizados e medidas deste aparelho serão apagados. Faça um backup antes se quiser guardar.','Apagar tudo',true).then(async ok=>{closeSheet();if(ok){await snapshot('Antes de apagar tudo');S=blank();persist();toast('Dados apagados');tab('treino')}}),
+ wipe:()=>ask('Apagar todos os dados deste perfil?','Treinos, rotinas, exercícios personalizados e medidas de '+esc(S.profile.name)+' serão apagados. Os outros perfis não são afetados. Faça um backup antes se quiser guardar.','Apagar tudo',true).then(async ok=>{closeSheet();if(ok){await snapshot('Antes de apagar tudo');S=blank();S.profile.name=pname(REGS.current);persist();toast('Dados apagados');tab('treino')}}),
 };
 
 document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el||el.disabled)return;const f=A[el.dataset.a];if(f){e.preventDefault();f(el.dataset,el)}});
@@ -986,7 +1018,7 @@ document.addEventListener('input',e=>{const t=e.target,f=t.dataset.f;if(!f)retur
  if(f==='nxName'){p.f.name=v;return} if(f==='nxMu'){p.f.muscle=v;return} if(f==='nxEq'){p.f.equipment=v;return}
  if(f==='mDate'){const d=v.split('-');if(d.length===3)p.m.date=new Date(+d[0],d[1]-1,+d[2]).getTime();return}
  if(f==='mVal'){p.m[t.dataset.k]=v;return}
- if(f==='pname'){S.profile.name=v;save();return}
+ if(f==='pname'){S.profile.name=v;const r=REGS.list.find(x=>x.id===REGS.current);if(r&&v.trim()){r.name=v.trim();saveReg()}save();return}
  if(f==='pf'){S.profile[t.dataset.k]=t.checked;save();if(t.dataset.k==='wake'&&!t.checked)unwake();if(t.dataset.k==='notify'&&t.checked)askNotify(t);return}
  if(f==='impMu'){const x=S.exercises.find(z=>z.id===t.dataset.id);if(x){x.muscle=v;save()}return}
  const s=cur();if(!s)return;
