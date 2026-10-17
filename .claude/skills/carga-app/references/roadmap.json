@@ -4,7 +4,7 @@
     {
       "ordem": 1,
       "modulo": "Treino",
-      "progresso": 0.9,
+      "progresso": 0.92,
       "resumo": "Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios e mapa corporal hiper-realista."
     },
     {
@@ -40,8 +40,8 @@
     {
       "ordem": 7,
       "modulo": "Identidade e plataforma",
-      "progresso": 0.9,
-      "resumo": "Logo, abertura, 6 temas, 15 cores, perfis separados, backup."
+      "progresso": 0.92,
+      "resumo": "Logo, abertura, senha de entrada, 6 temas, 15 cores, perfis separados, backup."
     },
     {
       "ordem": 8,
@@ -80,6 +80,11 @@
       "Treino",
       "pronto",
       "Importar histórico do Hevy"
+    ],
+    [
+      "Treino",
+      "pronto",
+      "Calorias estimadas pela frequência cardíaca média (pop-up no fim do treino)"
     ],
     [
       "Treino",
@@ -288,8 +293,8 @@
     ],
     [
       "Identidade e plataforma",
-      "sugestão",
-      "Bloqueio por PIN ou biometria"
+      "pronto",
+      "Senha de entrada nos dois celulares"
     ],
     [
       "Publicação",
@@ -372,6 +377,10 @@
     [
       "2026-10-17",
       "Site publicado no GitHub Pages"
+    ],
+    [
+      "2026-10-17",
+      "Senha de entrada e calorias do treino pela frequência cardíaca"
     ]
   ]
 }

@@ -88,7 +88,8 @@ tools/                   geradores (ver imagens-e-avatares.md)
 - **`content-visibility`** escondia linhas nas capturas. Ficou só em `#exlist .exrow`.
 - **Testes no Playwright:**
   - funções do app ficam dentro de uma IIFE, então `page.evaluate` não as enxerga; teste pela interface ou semeando o `localStorage` com `addInitScript`;
-  - a abertura (splash) cobre a tela por 2,6 s; clique em `#splash` para pular.
+  - a abertura (splash) cobre a tela por 2,6 s; clique em `#splash` para pular;
+  - a tela de senha (`#lock`) fica por baixo da abertura; libere com o `sessionStorage` `carga.ok` (ver a receita de teste).
 
 ## Como testar (receita)
 
@@ -100,7 +101,7 @@ NODE_PATH=$(npm root -g) node teste.js
 No script de teste:
 1. Crie um contexto de 390×844 com `deviceScaleFactor` 2.
 2. Use `addInitScript` para gravar `carga.perfis` e `carga.v1.x` com o perfil, os treinos e os exercícios de teste.
-3. Clique em `#splash` para pular a abertura.
+3. Clique em `#splash` para pular a abertura. A **senha de entrada** vem logo depois: para pular nos testes, no `addInitScript` grave `sessionStorage.setItem('carga.ok', <LOCK.hash>)` (o hash está em `LOCK.hash` no `app.html`). Não use a senha em si.
 4. Navegue pelos `[data-a=tab][data-t=...]` e pelos `[data-a=go][data-v=...]`.
 5. Colete `pageerror` e os erros de console, e tire prints.
 6. Teste temas e sexos diferentes: claro, escuro, areia, lavanda, meianoite e mocha, com perfis 'm' e 'f'.

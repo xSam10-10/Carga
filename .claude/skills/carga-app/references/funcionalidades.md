@@ -1,6 +1,7 @@
 # O que o app já faz (estado em 17/10/2026, versão do cache carga-v22)
 
 ## Abertura e perfis
+- **Senha de entrada** logo após a abertura: teclado numérico de 8 dígitos sobre o mesmo fundo preto, pedida a cada abertura do app (não pede de novo ao recarregar na mesma sessão). Senha errada faz os pontos tremerem e mostra um aviso. Código: `LOCK` e `lockHash` em `app.html`.
 - **Abertura no estilo do Hevy:** tela preta e o símbolo parado no centro por 2,6 s, depois um esmaecimento curto até o app.
 - **Escolha de perfil** ("Quem vai treinar neste celular?"):
   - cada perfil tem dados totalmente separados;
@@ -27,7 +28,7 @@
   - sugestão de progressão de carga (`overloadHint`), gerador de aquecimento (40%, 60% e 80%) e calculadora de anilhas;
   - recorde ao vivo;
   - tipos de registro por exercício: peso e repetições, peso corporal, assistido, duração, distância e duração.
-- **Finalizar:** resumo, recordes batidos e opção de salvar como rotina.
+- **Finalizar:** resumo, recordes batidos e opção de salvar como rotina. Ao abrir, um pop-up pede a **frequência cardíaca média**, que dá para pular. Com ela, o app estima as **calorias** (`kcalOf`, fórmula de Keytel), usando sexo, idade e peso do perfil. Elas aparecem no resumo, no detalhe do treino (dá para informar ou alterar depois pelo menu ⋯) e nos cartões.
 - **Detalhe do treino:** editar ou excluir.
 
 ## Exercícios

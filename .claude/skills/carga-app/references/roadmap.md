@@ -11,13 +11,13 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 
 | Módulo | Status | Progresso | Resumo |
 |---|---|---|---|
-| 1. Treino | ✅ | 90% | Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios e mapa corporal hiper-realista. |
+| 1. Treino | ✅ | 92% | Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios e mapa corporal hiper-realista. |
 | 2. Hidratação | ✅ | 85% | Meta por peso e sexo, copos rápidos, avatar animado, sequência e gráficos. |
 | 3. Corpo e medidas | 🟡 | 55% | Peso, medidas, IMC, TMB e indicadores; faltam fotos de evolução e medidas por região. |
 | 4. Nutrição | ⬜ | 0% | Dieta, macronutrientes, micronutrientes e diário de refeições. Próximo grande módulo. |
 | 5. Metas e hábitos | 🟡 | 15% | Já há meta de água e sequências; falta a central de metas com previsão. |
 | 6. Gráficos e relatórios | 🟡 | 65% | Períodos de 7 dias a desde o início em todos os gráficos; faltam os de nutrição e o painel da semana. |
-| 7. Identidade e plataforma | ✅ | 90% | Logo, abertura, 6 temas, 15 cores, perfis separados, backup. |
+| 7. Identidade e plataforma | ✅ | 92% | Logo, abertura, senha de entrada, 6 temas, 15 cores, perfis separados, backup. |
 | 8. Publicação | ✅ | 85% | Site no ar em xsam10-10.github.io/Carga, atualizado a cada envio; falta instalar nos dois celulares. |
 
 ## 1. Treino
@@ -27,6 +27,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Catálogo de 465 exercícios com fotos, passo a passo, filtros e criar exercício
 - ✅ Mapa corporal hiper-realista com 17 grupos
 - ✅ Importar histórico do Hevy
+- ✅ Calorias estimadas pela frequência cardíaca média (pop-up no fim do treino)
 - 💡 Periodização em blocos (força, hipertrofia, deload)
 - 💡 Volume semanal por grupo com faixa recomendada e alerta de grupo esquecido
 - 💡 Mapa de recuperação muscular
@@ -80,7 +81,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ 6 temas, 15 cores de destaque, foto de perfil
 - ✅ Perfis separados, backup, cópias automáticas
 - 💡 Sincronizar os dois celulares
-- 💡 Bloqueio por PIN ou biometria
+- ✅ Senha de entrada nos dois celulares
 
 ## 8. Publicação
 - ✅ Site no ar pelo GitHub Pages, publicado a cada envio
@@ -114,3 +115,4 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 17/10/2026 | Painel visual do roadmap |
 | 17/10/2026 | Projeto enviado ao GitHub (xSam10-10/Carga) |
 | 17/10/2026 | Site publicado no GitHub Pages |
+| 17/10/2026 | Senha de entrada e calorias do treino pela frequência cardíaca |

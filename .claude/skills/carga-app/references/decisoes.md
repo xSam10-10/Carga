@@ -10,7 +10,7 @@ Registre aqui toda decisão nova, com data, para não voltar a discutir o que j�
 | out/2026 | Hevy como referência principal de comportamento | O usuário vinha do Hevy; importação de CSV do Hevy incluída |
 | out/2026 | 15 cores de destaque e 6 temas; sem "Preto" nem "Automático" | Pedido do usuário; cada tema sugere uma cor, mas a cor fica livre |
 | out/2026 | Tema Escuro abre com destaque verde | Pedido do usuário |
-| out/2026 | Sem batimento cardíaco nem calorias de relógio | O usuário avaliou que "não faz sentido" agora |
+| out/2026 | ~~Sem batimento cardíaco nem calorias~~ (revisto em 17/10) | Substituído pela decisão de calorias pela FC média, abaixo |
 | out/2026 | Indicadores de saúde com fonte citada (OMS, Mifflin-St Jeor, EFSA, NICE, ISSN, ACE) | Confiabilidade; sempre com aviso de que não substituem um profissional |
 | out/2026 | Gráficos com 7 dias, mês, ano e desde o início; padrão Mês; por dia ou por semana | Pedido do usuário |
 | out/2026 | Avatar de água com as silhuetas de contorno aprovadas | Fidelidade total à arte enviada; cor segue o destaque |
@@ -24,3 +24,5 @@ Registre aqui toda decisão nova, com data, para não voltar a discutir o que j�
 | out/2026 | Skill `carga-app` guardada no repositório (`.claude/skills/`) | Para migrar de chat ou ambiente perdendo o mínimo |
 | out/2026 | Todas as sugestões 💡 do roadmap foram aprovadas para implementar aos poucos | O usuário gostou das sugestões; a ordem fica em "Próximos passos" |
 | out/2026 | Painel visual do roadmap (artifact Dashboard) alimentado por `roadmap.json` | Acompanhar a evolução do projeto em barras de progresso |
+| 17/10/2026 | Senha de entrada fixa (8 dígitos), igual nos dois celulares, pedida a cada abertura do app | Pedido do usuário. O código guarda só o hash PBKDF2-SHA256 (sal `carga-v1-lock`, 150 mil iterações), porque o repositório é público. **Nunca escreva a senha em texto puro no código, na skill ou em commits**; quem precisar dela pergunta ao usuário |
+| 17/10/2026 | Calorias do treino estimadas pela frequência cardíaca média (fórmula de Keytel et al., 2005), informada num pop-up no fim do treino | O usuário pega a FC média no Samsung Health ou no app Fitness. Sem integração automática com o relógio, por enquanto |
