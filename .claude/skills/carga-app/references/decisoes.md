@@ -38,3 +38,5 @@ Registre aqui toda decisão nova, com data, para não voltar a discutir o que j�
 | 17/10/2026 | Macros: proteína em g/kg por objetivo, gordura 25% (mín. 0,6 g/kg), carboidrato no restante | ISSN 2017 (proteína 1,4–2,0 g/kg; mais em déficit); Iraki 2019 (1,6–2,2 g/kg; gordura 0,5–1,5 g/kg); IOM AMDR (gordura 20–35%, carboidrato 45–65%, proteína 10–35%) |
 | 17/10/2026 | Início abre com o cartão "Meta de hoje": falta em kcal e barras de quanto falta de cada macro | Pedido do usuário: acompanhar a meta do dia alimentada pela aba Nutrição |
 | 17/10/2026 | Exercício do relógio entra cheio na meta: meta = (rotina ± ajuste do objetivo) + exercício; Falta = meta base + exercício − consumido | Pedido do usuário: o valor do relógio tem que aparecer igual na conta; o déficit/superávit fica fixo no dia |
+| 17/10/2026 | Modo "Pelo relógio" é o padrão do gasto do dia | Pedido do usuário (opção A): a conta é meta + exercício do relógio − consumido |
+| 17/10/2026 | Dias de treino por semana escolhidos no perfil (0 a 7+) definem o fator de atividade, em vez de nível fixo | Pedido do usuário: não deixar fixo; mudar quando a rotina mudar |

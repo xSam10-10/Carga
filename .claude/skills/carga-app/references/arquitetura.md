@@ -80,7 +80,7 @@ tools/                   geradores (ver imagens-e-avatares.md)
 ## Motor de energia e metas (`energyPlan`) — LEIA antes de mexer em calorias
 - **Fonte única** para Início, Saúde, Dados pessoais e Nutrição (`nutriPlan(d)` usa ele, salvo a meta personalizada). Não recalcule calorias em outro lugar.
 - **TMB:** Mifflin-St Jeor (`mifflin`).
-- **Gasto do dia** (`energyMode`: `profile.energyMode` = 'auto' | 'relogio' | 'nivel'; o auto usa o relógio se há treinos com kcal nas últimas 4 semanas):
+- **Gasto do dia** (`energyMode`: `profile.energyMode` = 'relogio' (PADRÃO, escolhido pelo usuário) | 'nivel' | 'auto'; o auto usa o relógio se há treinos com kcal nas últimas 4 semanas):
   - relógio: TMB × 1,2 + `exKcalOn(d)`, a soma de `w.kcal` dos treinos do dia e de `S.extra` (exercícios avulsos, próxima entrega: `{t, kcal, ...}`);
   - nível: TMB × fator de `ACT`.
   - Nunca some as calorias do relógio no modo nível: seria contar o exercício duas vezes.
@@ -94,7 +94,8 @@ tools/                   geradores (ver imagens-e-avatares.md)
   - proteína `PROT_GKG` (g/kg; perder 2,2, manter 1,6, ganhar 1,6, massa 2,0; sedentário 1,6/1,2/1,2/1,6), sobre o peso de referência (IMC 25) se o IMC passar de 30;
   - gordura: max(25% das kcal, 0,6 g/kg);
   - carboidrato: o restante.
-- **Níveis (`ACT`)** e corte do automático por treinos/semana (média de 4 semanas):
+- **Dias de treino por semana** (`profile.days`, 0–7 e 8 = "7+"; escolhidos pelo usuário em Dados pessoais; `trainDays()` migra o antigo `profile.activity`) → `actByDays`: 0 sedentário, 1–2 levemente ativo, 3–5 normal, 6–7 ativo, 7+ muito ativo. No modo relógio os dias NÃO mudam as calorias (o exercício entra pelo valor real), só a proteína (0 dias = sedentário).
+- **Níveis (`ACT`)** (o corte antigo por treinos/semana ficou só em `autoAct`, sem uso na meta):
   - Sedentário 1,2 (<1);
   - Levemente ativo 1,375 (1–3);
   - Normal 1,55 (3–5);
