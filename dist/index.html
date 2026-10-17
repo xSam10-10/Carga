@@ -297,6 +297,14 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .mrow{display:flex;justify-content:space-between;gap:10px;padding:12px 4px;border-bottom:1px solid var(--line);text-align:left;width:100%}
 .mrow:last-child{border-bottom:0}
 .small{font-size:14px}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:12px 6px}
+.swc{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);padding:2px 0}
+.swc i{width:44px;height:44px;border-radius:50%;background:var(--c);color:var(--k);display:grid;place-items:center;box-shadow:0 0 0 3px var(--bg),0 0 0 5px transparent;transition:box-shadow .15s}
+.swc.on i{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--fg)}
+.swc.on span{color:var(--fg)}
+.swc i svg.i{width:20px;height:20px;stroke-width:3}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .swc i{background:var(--cd);color:var(--kd)}}
+:root[data-theme="dark"] .swc i{background:var(--cd);color:var(--kd)}
 .exc.ss{border-left:4px solid var(--violet)}
 .sslab{font:700 12px/1 var(--text);letter-spacing:.09em;text-transform:uppercase;color:var(--violet);padding:0 4px}
 .ssnote{font-size:14px;color:var(--violet);font-weight:600;padding:4px}
@@ -768,6 +776,7 @@ VIEWS.perfil=()=>{
  ${barChart(vals,weeks.map(dShort),fy)}
  <div class="chips">${[['dur','Duração'],['vol','Volume'],['reps','Repetições']].map(([k,l])=>`<button class="chip${m===k?' on':''}" data-a="pm" data-k="${k}">${l}</button>`).join('')}</div>
  <h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Exercícios</button><button class="tile" data-a="go" data-v="medidas">${I.body}Medidas</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button></div>
+ <h3 class="sh">Cor do app</h3>${accentPicker()}
  <h3 class="sh">Treinos</h3>`;
  h+=ws.length?ws.slice(0,UI.feedN).map(workoutCard).join('')+(ws.length>UI.feedN?`<button class="btn sec wide" data-a="more">Mostrar mais treinos</button>`:''):`<p class="empty">Seus treinos salvos aparecem aqui.</p>`;
  return h+'</main>'};
@@ -844,6 +853,7 @@ VIEWS.config=()=>{const pr=S.profile;const sw=(k,l,d)=>`<label class="switch"><s
  <section class="card" style="display:flex;align-items:center;gap:12px"><span class="ava sm">${ini(pr.name)}</span><span style="flex:1;min-width:0"><span class="lab">Perfil em uso</span><b style="font-size:18px">${esc(pr.name)}</b><br><span class="muted small">As configurações e dados abaixo valem só para este perfil.</span></span><button class="btn sm sec" data-a="go" data-v="perfis">Trocar</button></section>
  <section class="card form"><label class="fld"><span>Nome do perfil</span><input class="inp" id="p-name" data-f="pname" value="${esc(pr.name)}"></label>
  <div class="fld"><span>Descanso padrão para exercícios novos</span><div class="chips">${[0,60,90,120,180].map(v=>`<button class="chip${pr.rest===v?' on':''}" data-a="pRest" data-k="${v}">${fmtRest(v)}</button>`).join('')}</div></div></section>
+ <section class="card form"><span class="lab">Cor do app</span>${accentPicker()}<p class="muted small" style="margin:0">A cor vale só para este perfil.</p></section>
  <section class="card">${sw('sound','Som ao fim do descanso','')}${sw('vibrate','Vibrar ao fim do descanso','')}${sw('wake','Manter tela ligada no treino','Evita que o celular apague durante a sessão.')}${sw('notify','Avisar fim do descanso com a tela bloqueada','Mostra uma notificação quando o descanso acaba. Funciona no app instalado. Se o Android economizar bateria demais, o aviso pode atrasar alguns segundos.')}</section>
  <h3 class="sh">Importar do Hevy</h3>
  <section class="card form"><p class="muted" style="margin:0">No Hevy: Perfil → engrenagem → <b>Exportar e importar dados</b> → <b>Exportar treinos</b>. Ele gera um arquivo .csv. Escolha esse arquivo aqui. Treinos já importados são ignorados, então pode repetir sem duplicar.</p><span class="btn pri filebtn">${I.downl} Escolher arquivo CSV<input type="file" accept=".csv,text/csv,text/plain" data-file="hevy" aria-label="Arquivo CSV do Hevy"></span></section>
@@ -857,12 +867,34 @@ VIEWS.config=()=>{const pr=S.profile;const sw=(k,l,d)=>`<label class="switch"><s
  <h3 class="sh">Instalar no celular</h3><section class="card"><p style="margin:0">No Chrome do Android, abra o menu ⋮ e toque em <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>. O Carga abre em tela cheia e funciona sem internet.</p></section>
  <p class="muted small" style="text-align:center">Carga · ${S.workouts.length} treinos · ${S.exercises.length} exercícios personalizados</p></main>`};
 
+/* ---------- CORES ---------- */
+// [nome, claro: cor, fundo suave, texto sobre a cor | escuro: cor, fundo suave, texto sobre a cor]
+const ACCENTS=[
+ ['verde','Verde',['#0D7556','#D3EBE0','#FFFFFF'],['#33C391','#12392B','#03140D']],
+ ['azul','Azul',['#1F5FD1','#DCE6FA','#FFFFFF'],['#6EA0FF','#15274D','#06132E']],
+ ['indigo','Índigo',['#3D47B8','#DFE1F6','#FFFFFF'],['#8B95FF','#1E2350','#0A0D2E']],
+ ['petroleo','Petróleo',['#0B6E80','#D2EAEE','#FFFFFF'],['#3BC0D4','#0F3940','#031418']],
+ ['roxo','Roxo',['#6A3FC6','#E6DEF7','#FFFFFF'],['#A98BFF','#2A1F4D','#130A2A']],
+ ['rosa','Rosa',['#C2367A','#F7DCE9','#FFFFFF'],['#FF7DB7','#4A1830','#2A0516']],
+ ['vinho','Vinho',['#8E2445','#F1D9E1','#FFFFFF'],['#E2729A','#401526','#25040F']],
+ ['vermelho','Vermelho',['#C0362C','#F7DAD6','#FFFFFF'],['#FF7A6B','#4A1A15','#2A0703']],
+ ['laranja','Laranja',['#B4520C','#F8E2D0','#FFFFFF'],['#FF9A4D','#4A2710','#2A1203']],
+ ['dourado','Dourado',['#946700','#F4E7C2','#FFFFFF'],['#F2B83A','#43330D','#241A00']],
+ ['oliva','Oliva',['#5B7A12','#E4EDCF','#FFFFFF'],['#A8D84A','#2D3A12','#141C02']],
+ ['grafite','Grafite',['#3D4A55','#E1E5E9','#FFFFFF'],['#A7B6C4','#27303A','#0D1218']]];
+const accentOf=k=>ACCENTS.find(a=>a[0]===k)||ACCENTS[0];
+function applyAccent(){const[,,l,d]=accentOf(S.profile.accent);let st=$('#accent-style');if(!st){st=document.createElement('style');st.id='accent-style';document.body.appendChild(st)}
+ const L=`--accent:${l[0]};--accent-soft:${l[1]};--accent-ink:${l[2]}`,D=`--accent:${d[0]};--accent-soft:${d[1]};--accent-ink:${d[2]}`;
+ st.textContent=`:root{${L}}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){${D}}}:root[data-theme="dark"]{${D}}`;
+ const m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',l[0])}
+function accentPicker(){const cur=accentOf(S.profile.accent)[0];return`<div class="swatches" role="radiogroup" aria-label="Cor do app">${ACCENTS.map(([k,n,l,d])=>`<button class="swc${k===cur?' on':''}" role="radio" aria-checked="${k===cur}" data-a="setAccent" data-k="${k}"><i style="--c:${l[0]};--k:${l[2]};--cd:${d[0]};--kd:${d[2]}">${k===cur?I.check:''}</i><span>${n}</span></button>`).join('')}</div>`}
+
 /* ---------- PERFIS ---------- */
 VIEWS.perfis=()=>{const first=!REGS.current;
  const rows=REGS.list.map(pr=>{const d=readProfile(pr.id);const ws=d&&d.workouts||[];const last=ws.length?Math.max(...ws.map(w=>w.start)):0;const cur=pr.id===REGS.current;
-  return`<div class="pcard${cur?' cur':''}"><button class="pmain" data-a="useProfile" data-id="${pr.id}"><span class="ava sm">${ini(pr.name)}</span><span class="exrow-t"><b>${esc(pr.name)}</b><span class="sub">${ws.length} treino(s)${last?' · último em '+dShort(last):''}${cur?' <i class="tag">Em uso</i>':''}</span></span>${cur?'':`<span class="chev">${I.chev}</span>`}</button>${first?'':`<button class="ib" data-a="profMenu" data-id="${pr.id}" aria-label="Opções do perfil ${esc(pr.name)}">${I.dots}</button>`}</div>`}).join('');
+  const ac=accentOf(d&&d.profile&&d.profile.accent)[2];return`<div class="pcard${cur?' cur':''}"><button class="pmain" data-a="useProfile" data-id="${pr.id}"><span class="ava sm" style="background:${ac[0]};color:${ac[2]}">${ini(pr.name)}</span><span class="exrow-t"><b>${esc(pr.name)}</b><span class="sub">${ws.length} treino(s)${last?' · último em '+dShort(last):''}${cur?' <i class="tag">Em uso</i>':''}</span></span>${cur?'':`<span class="chev">${I.chev}</span>`}</button>${first?'':`<button class="ib" data-a="profMenu" data-id="${pr.id}" aria-label="Opções do perfil ${esc(pr.name)}">${I.dots}</button>`}</div>`}).join('');
  return(first?`<header class="top"><h1 class="big">Carga</h1></header>`:bar('Perfis'))+`<main class="page">${first?`<h2 class="h" style="font-size:28px">Quem vai treinar neste celular?</h2><p class="muted" style="margin:0">Cada perfil tem seus próprios treinos, rotinas, cargas, recordes, medidas e gráficos. Dá para trocar depois em Perfil → Trocar perfil.</p>`:`<p class="muted" style="margin:0">Cada perfil guarda os próprios dados. Trocar de perfil não mistura nada: o app passa a mostrar só o histórico de quem foi escolhido.</p>`}<div class="list">${rows}</div><button class="btn sec" data-a="addProfile">${I.plus} Adicionar perfil</button></main>`};
-function switchProfile(id){if(id===REGS.current){back();return}persist();clearTimeout(restTO);closeNotifs();unwake();REGS.current=id;saveReg();S=load(id);persist();UI.statDay=null;UI.feedN=12;stack=[{v:S.workouts.length?'inicio':'treino',p:{}}];try{history.replaceState({n:1},'')}catch(e){}render();scrollTo(0,0);toast('Perfil em uso: '+S.profile.name);autoSnapshot();if(S.active){wake();schedRest()}}
+function switchProfile(id){if(id===REGS.current){back();return}persist();clearTimeout(restTO);closeNotifs();unwake();REGS.current=id;saveReg();S=load(id);persist();UI.statDay=null;UI.feedN=12;stack=[{v:S.workouts.length?'inicio':'treino',p:{}}];try{history.replaceState({n:1},'')}catch(e){}applyAccent();render();scrollTo(0,0);toast('Perfil em uso: '+S.profile.name);autoSnapshot();if(S.active){wake();schedRest()}}
 
 /* ---------- importação / exportação ---------- */
 function parseCSV(t){const rows=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}else if(c==='"')q=true;else if(c===','){row.push(f);f=''}else if(c==='\n'){row.push(f);rows.push(row);row=[];f=''}else if(c!=='\r')f+=c}if(f||row.length){row.push(f);rows.push(row)}return rows}
@@ -910,7 +942,7 @@ const MEN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','De
 const hevyDate=ts=>{const d=new Date(ts);return`${d.getDate()} ${MEN[d.getMonth()]} ${d.getFullYear()}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};
 function exportCSV(){const L=['title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe'];for(const w of [...S.workouts].sort((a,b)=>b.start-a.start)){const M=ssMap(w);for(const e of w.exercises)e.sets.forEach((s,i)=>L.push([w.name,hevyDate(w.start),hevyDate(w.end),w.notes,ex(e.exId).name,e.ss?SSL.indexOf(M[e.ss]):'',e.notes,i,{n:'normal',w:'warmup',d:'dropset',f:'failure'}[s.type]||'normal',s.kg??'',s.reps??'','',s.t??'',''].map(csvq).join(',')))}return L.join('\n')}
 function restoreFrom(text){let o;try{o=JSON.parse(text)}catch(e){toast('Esse texto não é um backup válido.');return}if(!o||!Array.isArray(o.workouts)){toast('Backup não reconhecido: faltam os treinos.');return}
- ask('Restaurar backup?',`O backup${o.perfil?` de ${esc(o.perfil)}`:''} tem ${o.workouts.length} treino(s) e ${(o.routines||[]).length} rotina(s). Os dados atuais do perfil ${esc(S.profile.name)} serão substituídos. Uma cópia deles fica guardada em Cópias automáticas.`,'Restaurar',true).then(async ok=>{if(!ok)return;closeSheet();await snapshot('Antes de restaurar');const b=blank();S=Object.assign(b,o,{profile:Object.assign(b.profile,o.profile||{},{name:pname(REGS.current)}),active:null});delete S.app;delete S.exportedAt;delete S.perfil;recomputePRs();persist();toast('Backup restaurado');tab('inicio')})}
+ ask('Restaurar backup?',`O backup${o.perfil?` de ${esc(o.perfil)}`:''} tem ${o.workouts.length} treino(s) e ${(o.routines||[]).length} rotina(s). Os dados atuais do perfil ${esc(S.profile.name)} serão substituídos. Uma cópia deles fica guardada em Cópias automáticas.`,'Restaurar',true).then(async ok=>{if(!ok)return;closeSheet();await snapshot('Antes de restaurar');const b=blank();S=Object.assign(b,o,{profile:Object.assign(b.profile,o.profile||{},{name:pname(REGS.current)}),active:null});delete S.app;delete S.exportedAt;delete S.perfil;recomputePRs();persist();applyAccent();toast('Backup restaurado');tab('inicio')})}
 
 /* ---------- ações ---------- */
 const A={
@@ -919,6 +951,7 @@ const A={
  menu:d=>{const it=MENU[+d.k];closeSheet();it&&it.f()},
  more:()=>{UI.feedN+=12;rerender()},
  useProfile:d=>switchProfile(d.id),
+ setAccent:d=>{S.profile.accent=d.k;save();applyAccent();rerender()},
  addProfile:()=>askText('Novo perfil','','Nome da pessoa').then(v=>{closeSheet();const n=(v||'').trim();if(!n)return;if(REGS.list.some(p=>norm(p.name)===norm(n))){toast('Já existe um perfil com esse nome.');return}REGS.list.push({id:(slug(n)||'perfil')+'-'+uid().slice(0,4),name:n});saveReg();rerender();toast('Perfil criado. Toque nele para usar.')}),
  profMenu:d=>{const pr=REGS.list.find(p=>p.id===d.id);if(!pr)return;const cur=pr.id===REGS.current;menu(pr.name,[
   ...(cur?[]:[{label:'Usar este perfil',icon:I.user,f:()=>switchProfile(pr.id)}]),
@@ -1008,7 +1041,7 @@ const A={
  dlCSV:()=>{const ok=download(`carga-treinos-${toDateInput(Date.now())}.csv`,exportCSV(),'text/csv');toast(ok?'Exportação iniciada.':'Download indisponível aqui.')},
  pasteRestore:()=>{sheet(`<h3>Restaurar backup</h3><p>Cole abaixo o texto do backup.</p><textarea id="ask-in" style="min-height:160px" placeholder='{"v":1,...}'></textarea><div class="ask-b"><button class="btn sec" data-a="closeSheet">Cancelar</button><button class="btn pri" data-a="doPaste">Restaurar</button></div>`)},
  doPaste:()=>{const t=$('#ask-in').value;closeSheet();restoreFrom(t)},
- wipe:()=>ask('Apagar todos os dados deste perfil?','Treinos, rotinas, exercícios personalizados e medidas de '+esc(S.profile.name)+' serão apagados. Os outros perfis não são afetados. Faça um backup antes se quiser guardar.','Apagar tudo',true).then(async ok=>{closeSheet();if(ok){await snapshot('Antes de apagar tudo');S=blank();S.profile.name=pname(REGS.current);persist();toast('Dados apagados');tab('treino')}}),
+ wipe:()=>ask('Apagar todos os dados deste perfil?','Treinos, rotinas, exercícios personalizados e medidas de '+esc(S.profile.name)+' serão apagados. Os outros perfis não são afetados. Faça um backup antes se quiser guardar.','Apagar tudo',true).then(async ok=>{closeSheet();if(ok){await snapshot('Antes de apagar tudo');S=blank();S.profile.name=pname(REGS.current);persist();applyAccent();toast('Dados apagados');tab('treino')}}),
 };
 
 document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el||el.disabled)return;const f=A[el.dataset.a];if(f){e.preventDefault();f(el.dataset,el)}});
@@ -1034,6 +1067,7 @@ document.addEventListener('change',async e=>{const t=e.target,k=t.dataset.file;i
 document.addEventListener('focusin',e=>{if(e.target.classList&&e.target.classList.contains('cell'))setTimeout(()=>{try{e.target.select()}catch(_){}},0)});
 
 try{history.replaceState({n:1},'')}catch(e){useHist=false}
+applyAccent();
 render();
 if(S.active){wake();schedRest()}
 autoSnapshot();
