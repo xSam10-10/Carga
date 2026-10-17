@@ -444,6 +444,9 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .nk{display:flex;flex-direction:column;gap:12px}
 .nbig{font:600 46px/1 var(--display);font-variant-numeric:tabular-nums}.nbig small{font-size:18px;color:var(--muted)}
 .ngoal{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-weight:600;font-size:14px}.ngoal .i{width:15px;height:15px;vertical-align:-2px;color:var(--accent)}
+.mydata{display:flex;align-items:center;gap:12px;width:100%;text-align:left;color:var(--fg);font:inherit}.mydata .nfx{display:flex;flex-direction:column;gap:4px;min-width:0}.mydata b{font-size:16px}.mydata .nbar{height:6px;margin-top:2px}
+.md-ic{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--accent-soft);color:var(--accent);flex:none}.md-ic svg{width:22px;height:22px}
+.byline{margin:-4px 0 8px;text-align:center;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.55}
 .nbar{position:relative;height:12px;border-radius:6px;background:var(--surface-2)}
 .nbar i{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--accent);z-index:1}.nbar i.over{background:var(--danger)}
 .nbar s{position:absolute;top:-3px;bottom:-3px;border-radius:4px;background:var(--accent-soft);opacity:.9}
@@ -1103,6 +1106,10 @@ const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
 const KEY='carga.v1',REG='carga.perfis';
+// Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
+const RESET_ID='2026-10-17';
+(()=>{try{if(localStorage.getItem('carga.reset')===RESET_ID)return;const ks=Object.keys(localStorage).filter(k=>k===REG||k===KEY||k.startsWith(KEY+'.'));
+ for(const k of ks){localStorage.setItem('carga.old.'+k,localStorage.getItem(k));localStorage.removeItem(k)}localStorage.setItem('carga.reset',RESET_ID)}catch(e){}})();
 function blank(){return{v:1,water:{},profile:{name:'Atleta',rest:90,sound:true,vibrate:true,wake:true,notify:false,lastBackup:0,lastBackupN:0,backupSnooze:0,collapsed:{}},exercises:[],folders:[],routines:[],workouts:[],measures:[],active:null}}
 function mkSets(n){return Array.from({length:n},()=>({type:'n',kg:'',reps:'',min:''}))}
 function mkRoutine(name,names,folderId=null){return{id:uid(),name,notes:'',folderId,exercises:names.map(n=>({exId:bid(n),notes:'',rest:90,sets:mkSets(3)}))}}
@@ -1422,12 +1429,13 @@ VIEWS.perfil=()=>{
  const totalH=S.workouts.reduce((a,w)=>a+(w.end-w.start),0);
  let h=`<header class="top"><h1 class="big">Perfil</h1><button class="btn sm sec" data-a="go" data-v="perfis">Trocar perfil</button><button class="ib" data-a="backupSheet" aria-label="Exportar dados">${I.upload}</button><button class="ib" data-a="go" data-v="config" aria-label="Configurações">${I.gear}</button></header><main class="page">
  <div class="prof"><button class="ava ava-edit" data-a="photoSheet" aria-label="Alterar foto do perfil">${avaIn(S.profile)}<span class="ava-cam">${I.camera}</span></button><div style="flex:1;min-width:0"><h2>${esc(S.profile.name)}</h2><div class="stat3"><div><span class="lab">Treinos</span><b>${ws.length}</b></div><div><span class="lab">Horas</span><b>${fmtInt(totalH/36e5)}</b></div><div><span class="lab">Sequência</span><b>${streakWeeks()} sem</b></div></div></div></div>
+ ${myDataCard()}
  <div class="headline">${head}</div>
  ${perCtl('perfil')}
  ${barChart(vals,sparseLabels(bk),fy)}
  <p class="muted small" style="margin:-6px 0 0">Total nos ${PER_TXT[PO.p]}: <b style="color:var(--fg)">${m==='dur'?fmtDur(tot*36e5):m==='vol'?fmtInt(tot)+' kg':fmtInt(tot)+' reps'}</b> · ${GL[PO.g].toLowerCase()}</p>
  <div class="chips">${[['dur','Duração'],['vol','Volume'],['reps','Repetições']].map(([k,l])=>`<button class="chip${m===k?' on':''}" data-a="pm" data-k="${k}">${l}</button>`).join('')}</div>
- <h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Exercícios</button><button class="tile" data-a="go" data-v="medidas">${I.body}Medidas</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button><button class="tile" data-a="go" data-v="dados">${I.idcard}Dados pessoais</button></div>
+ <h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Exercícios</button><button class="tile" data-a="go" data-v="medidas">${I.body}Medidas</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button><button class="tile" data-a="go" data-v="dados">${I.idcard}Meus dados</button></div>
  <h3 class="sh">Tema</h3>${themePicker()}
  <h3 class="sh">Cor de destaque</h3>${accentPicker()}
  <h3 class="sh">Treinos</h3>`;
@@ -1573,9 +1581,11 @@ VIEWS.config=()=>{const pr=S.profile;const sw=(k,l,d)=>`<label class="switch"><s
  <span class="btn sec filebtn">${I.downl} Restaurar backup (.json)<input type="file" accept=".json,.txt,application/json,text/plain" data-file="restore" aria-label="Arquivo de backup"></span>
  <button class="btn ghost" data-a="pasteRestore">Restaurar colando o texto do backup</button>
  <div class="fld"><span>Cópias automáticas neste aparelho</span><p class="muted small" style="margin:0">O app guarda sozinho as últimas 7 cópias: uma por dia e antes de cada importação, restauração ou exclusão. Elas protegem contra erros, mas somem se você limpar os dados do navegador. Por isso o backup externo continua importante.</p><div id="snaps" class="card" style="padding:4px 14px"><p class="muted small">Carregando…</p></div></div>
+ ${preResetData()?`<div class="fld"><span>Dados de antes do reset</span><p class="muted small" style="margin:0">Em 17/10/2026 todos os perfis foram zerados para começar do zero. Os dados antigos deste perfil (${preResetData().workouts?.length||0} treinos) continuam guardados neste aparelho e podem voltar.</p><button class="btn sec" data-a="preResetRestore">Restaurar dados de antes do reset</button></div>`:''}
  <button class="btn ghost danger" data-a="wipe">Apagar os dados deste perfil</button></section>
  <h3 class="sh">Instalar no celular</h3><section class="card"><p style="margin:0">No Chrome do Android, abra o menu ⋮ e toque em <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>. O Carga abre em tela cheia e funciona sem internet.</p></section>
- <p class="muted small" style="text-align:center">Carga · ${S.workouts.length} treinos · ${S.exercises.length} exercícios personalizados</p></main>`};
+ <p class="muted small" style="text-align:center">Carga · ${S.workouts.length} treinos · ${S.exercises.length} exercícios personalizados</p><p class="byline">by Samuel Costa</p></main>`};
+function preResetData(){try{return JSON.parse(localStorage.getItem('carga.old.'+pkey(REGS.current))||'null')}catch(e){return null}}
 
 /* ---------- CORES ---------- */
 // [nome, claro: cor, fundo suave, texto sobre a cor | escuro: cor, fundo suave, texto sobre a cor]
@@ -1633,7 +1643,7 @@ function trainDays(){const p=S.profile;if(p.days==null)return p.activity&&p.acti
 const actByDays=n=>n<1?ACT[0]:n<3?ACT[1]:n<6?ACT[2]:n<8?ACT[3]:ACT[4];
 function actOf(){return actByDays(trainDays())}
 const GOALS=[['perder','Perder peso'],['manter','Manter peso'],['ganhar','Ganhar peso'],['massa','Ganhar massa muscular']];
-/* ---------- MOTOR DE ENERGIA E METAS (fonte única para Início, Saúde, Dados pessoais e Nutrição) ----------
+/* ---------- MOTOR DE ENERGIA E METAS (fonte única para Início, Saúde, Meus dados e Nutrição) ----------
    1) TMB: Mifflin-St Jeor (Frankenfield et al., J Am Diet Assoc 2005: a mais precisa das equações comuns).
    2) Gasto do dia, em dois modos para não contar o exercício duas vezes:
       · relógio: TMB × 1,2 (rotina sem treino, inclui digestão) + calorias ATIVAS de exercício registradas no dia;
@@ -1669,7 +1679,7 @@ const mifflin=(w,h,a,sex)=>10*w+6.25*h-5*a+(sex==='m'?5:-161);
 const r50=v=>Math.round(v/50)*50;
 function waterGoal(ts=Date.now()){const p=S.profile;const k=dkey(ts);const trainH=S.workouts.filter(w=>dkey(w.start)===k).reduce((a,w)=>a+(w.end-w.start),0)/36e5;const extra=r50(trainH*500);
  if(num(p.waterManual))return{ml:num(p.waterManual),how:'Meta personalizada (definida por você)'};
- const b=bodyData();if(!b.w)return{ml:2000+extra,def:true,how:'Meta padrão de 2.000 ml. Informe peso e sexo em Dados pessoais para calcular a sua.'+(extra?` +${fmtInt(extra)} ml pelo treino de hoje.`:'')};
+ const b=bodyData();if(!b.w)return{ml:2000+extra,def:true,how:'Meta padrão de 2.000 ml. Informe peso e sexo em Meus dados (Perfil) para calcular a sua.'+(extra?` +${fmtInt(extra)} ml pelo treino de hoje.`:'')};
  const f=b.sex==='f'?31:b.sex==='m'?35:33;const base=r50(b.w*f);return{ml:base+extra,base,extra,how:`${fmt(b.w)} kg × ${f} ml = ${fmtInt(base)} ml${extra?` + ${fmtInt(extra)} ml pelo treino de hoje`:''}`}}
 const waterOn=k=>(S.water&&S.water[k]||[]).reduce((a,x)=>a+x.ml,0);
 const cupsOf=()=>{const c=(S.profile.cups||[]).map(Number).filter(v=>v>0);return c.length?c:[200,300,500,750]};
@@ -1692,13 +1702,19 @@ function homeHealth(){const b=bodyData(),p=S.profile,wg=waterGoal(),wt=waterOn(d
  </div>${water}<button class="btn sm sec" data-a="go" data-v="saude">${I.heart} Ver todas as métricas de saúde</button></section>`}
 
 VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=autoAct();const age=ageOf(p.birth);
- return bar('Dados pessoais')+`<main class="page"><p class="muted" style="margin:0">Estes dados são de ${esc(p.name)} e servem para calcular IMC, taxa metabólica, gasto diário, meta de calorias e macronutrientes, água e proteína. Ficam só neste aparelho.</p>
+ return bar('Meus dados')+`<main class="page"><p class="muted" style="margin:0">Tudo o que o app precisa saber sobre ${esc(p.name)} fica aqui: corpo, medidas, treino, objetivo, nutrição e água. Esses dados calculam IMC, taxa basal, gasto do dia, metas de calorias, macronutrientes e água. Ficam só neste aparelho.</p>
+ ${(()=>{const c=myDataChecks(),n=c.filter(x=>x[1]).length;return n<c.length?`<section class="card form"><div class="row"><span class="lab nfx">Para começar</span><b>${n} de ${c.length}</b></div><div class="nbar"><i style="width:${(n/c.length*100).toFixed(0)}%"></i></div><p class="muted small" style="margin:0">Falta preencher: ${c.filter(x=>!x[1]).map(x=>x[0]).join(', ')}.</p></section>`:''})()}
+ <h3 class="sh">Corpo</h3>
  <section class="card form">
  <div class="fld"><span>Sexo</span><div class="chips">${[['m','Masculino'],['f','Feminino']].map(([k,l])=>`<button class="chip${p.sex===k?' on':''}" data-a="pdSex" data-k="${k}">${l}</button>`).join('')}</div></div>
  <div class="row2"><label class="fld"><span>Data de nascimento${age?` · ${age} anos`:''}</span><input class="inp" type="date" id="pd-birth" data-f="pd" data-k="birth" value="${esc(p.birth||'')}"></label>
  <label class="fld"><span>Altura (cm)</span><input class="inp" id="pd-height" inputmode="numeric" data-f="pd" data-k="height" value="${esc(p.height||'')}" placeholder="Ex.: 178"></label></div>
  <label class="fld"><span>Peso atual (kg)</span><input class="inp" id="pd-weight" inputmode="decimal" data-f="pdWeight" value="${w?String(w.v).replace('.',','):''}" placeholder="Ex.: 80,5"></label>
  <p class="muted small" style="margin:-4px 0 0">${w?`Último registro: ${fmt(w.v)} kg em ${new Date(w.date).toLocaleDateString('pt-BR')}. `:''}Ao alterar, o peso de hoje é gravado em Medidas.</p></section>
+ <h3 class="sh">Medidas</h3>
+ <section class="card form">${(()=>{const L={};for(const m of [...S.measures].sort((a,b)=>a.date-b.date))for(const[k]of MF)if(k!=='weight'&&num(m[k])!=null)L[k]=num(m[k]);const ks=MF.filter(([k])=>L[k]!=null);return ks.length?`<div class="kv">${ks.map(([k,l,u])=>`<div><span class="lab">${l}</span><b>${fmt(L[k])}</b> <span class="muted small">${u}</span></div>`).join('')}</div>`:'<p class="muted small" style="margin:0">Gordura corporal e circunferências (cintura, peito, braço, coxa, quadril, panturrilha). Opcional, mas a cintura entra no indicador cintura/altura.</p>'})()}
+ <div class="chips"><button class="btn sm pri" data-a="newMeasure">${I.plus||''} Registrar medidas</button>${S.measures.length?'<button class="btn sm sec" data-a="go" data-v="medidas">Ver histórico</button>':''}</div></section>
+ <h3 class="sh">Treino e objetivo</h3>
  <section class="card form"><div class="fld"><span>Dias de treino por semana</span><div class="chips daysel">${[0,1,2,3,4,5,6,7,8].map(n=>`<button class="chip${trainDays()===n?' on':''}" data-a="pdDays" data-k="${n}">${n===8?'7+':n}</button>`).join('')}</div></div>
  <p class="muted small" style="margin:0">${trainDays()===8?'Mais de 7: dois treinos por dia ou trabalho físico pesado':`${trainDays()} ${trainDays()===1?'dia':'dias'} por semana`} → <b>${actOf()[1]}</b> (fator ${String(actOf()[2]).replace('.',',')} sobre a taxa basal). Nas últimas 4 semanas você treinou ${fmt(perWeek4())} vezes por semana. Mude sempre que a sua rotina mudar.</p>
  </section>
@@ -1706,7 +1722,17 @@ VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=auto
  <div class="fld"><span>Como calcular o gasto de calorias</span><div class="chips">${[['auto','Automático'],['relogio','Pelo relógio'],['nivel','Pelo nível de atividade']].map(([k,l])=>`<button class="chip${(p.energyMode||'relogio')===k?' on':''}" data-a="pdEMode" data-k="${k}">${l}</button>`).join('')}</div></div>
  <p class="muted small" style="margin:0">${energyMode()==='relogio'?'<b>Pelo relógio</b>: gasto do dia = taxa basal × 1,2 (rotina sem treino) + as calorias ativas dos treinos registradas no dia. É o cálculo mais próximo do real; registre sempre as calorias do relógio no fim do treino. Aqui os dias de treino por semana não mudam as calorias (o exercício já entra pelo valor real do relógio); eles definem a meta de proteína.':'<b>Pelo nível de atividade</b>: gasto do dia = taxa basal × fator dos dias de treino por semana, uma média que já inclui os treinos. A meta é a mesma todos os dias.'}${(p.energyMode||'relogio')==='auto'?' No automático, o app usa o relógio quando há treinos com calorias registradas nas últimas 4 semanas.':''}</p>
  ${(()=>{const E=energyPlan();return E.ok?`<div class="mplan"><div><span>Taxa basal</span><b>${fmtInt(E.tmb)}</b></div><div><span>Gasto hoje</span><b>${fmtInt(E.gasto)}</b></div><div><span>${E.adj>=0?'Ajuste':'Déficit'}</span><b>${E.adj>0?'+':E.adj<0?'−':''}${fmtInt(Math.abs(E.adj))}</b></div><div class="on"><span>Meta</span><b>${fmtInt(E.meta)}</b></div></div><p class="muted small" style="margin:0">kcal por dia. Proteína ${fmtInt(E.prot)} g · Carboidrato ${fmtInt(E.carb)} g · Gordura ${fmtInt(E.fat)} g.</p>`:''})()}</section>
+ <h3 class="sh">Nutrição</h3>
+ <section class="card form">${(()=>{const P=nutriPlan(),man=(p.nutri||{}).mode==='manual';return`<div class="row"><span class="nfx"><b>Meta de nutrição: ${man?'personalizada':'automática'}</b><br><span class="muted small">${fmtInt(P.kcal)} kcal por dia${man?', definida por você':', pelo objetivo e pelos dados acima'}</span></span><button class="btn sm sec" data-a="go" data-v="metasNutri">Ajustar</button></div>`})()}</section>
+ <h3 class="sh">Água</h3>
+ <section class="card form">${(()=>{const g=waterGoal();return`<div class="row"><span class="nfx"><b>Meta de água: ${fmt(g.ml/1000)} litros</b><br><span class="muted small">${esc(g.how)}</span></span><button class="btn sm sec" data-a="waterCfg">Ajustar</button></div>`})()}</section>
+ <h3 class="sh">Perfil e aparência</h3>
+ <section class="card form"><div class="row"><button class="ava sm" data-a="photoSheet" aria-label="Alterar foto do perfil">${avaIn(p)}</button><span class="nfx"><b>${esc(p.name)}</b><br><span class="muted small">Nome, foto, tema e cor de destaque</span></span><button class="btn sm sec" data-a="go" data-v="config">Ajustar</button></div></section>
  <button class="btn pri" data-a="go" data-v="saude">${I.heart} Ver métricas de saúde</button></main>`};
+function myDataChecks(){const p=S.profile;return[['sexo',!!p.sex],['data de nascimento',!!p.birth],['altura',!!num(p.height)],['peso',!!latestMeasure('weight')],['dias de treino por semana',p.days!=null],['objetivo',!!p.goal]]}
+function myDataCard(){const p=S.profile,c=myDataChecks(),n=c.filter(x=>x[1]).length,w=latestMeasure('weight'),age=ageOf(p.birth),gl=(GOALS.find(g=>g[0]===p.goal)||[])[1];
+ const sum=[w&&fmt(w.v)+' kg',num(p.height)&&fmt(p.height)+' cm',age&&age+' anos',gl,p.days!=null&&(p.days===8?'7+':p.days)+' dias de treino/sem'].filter(Boolean).join(' · ');
+ return`<button class="card mydata" data-a="go" data-v="dados"><span class="md-ic">${I.idcard}</span><span class="nfx"><b>Meus dados</b><span class="muted small">${n<c.length?`${n} de ${c.length} preenchidos · toque para completar`:esc(sum)}</span>${n<c.length?`<span class="nbar"><i style="width:${(n/c.length*100).toFixed(0)}%"></i></span>`:''}</span>${I.chev}</button>`}
 
 function waterSeries(){const o=perOf('agua'),bk=buckets(o.p,o.g),today=sod(Date.now());const wk=Object.keys(S.water||{}).filter(k=>(S.water[k]||[]).length).sort()[0];const f0=wk?(()=>{const[y,m,d]=wk.split('-').map(Number);return new Date(y,m-1,d).getTime()})():today;
  return bk.map(([a,z,l])=>{let tot=0,gs=0,n=0,hit=0;for(let d=Math.max(a,f0);d<z&&d<=today;d=addDays(d,1)){const v=waterOn(dkey(d)),gm=waterGoal(d).ml;tot+=v;gs+=gm;n++;if(v>0&&v>=gm)hit++}return{a,z,l,avg:n?tot/n:0,goal:n?gs/n:0,n,hit,tot}})}
@@ -1726,7 +1752,7 @@ VIEWS.agua=()=>{const now=Date.now(),k=dkey(now),log=(S.water&&S.water[k])||[],t
  const WO=perOf('agua'),wrows=waterSeries(),wn=wrows.reduce((a,r)=>a+r.n,0),wtot=wrows.reduce((a,r)=>a+r.tot,0),hit=wrows.reduce((a,r)=>a+r.hit,0);
  return`<header class="top"><h1 class="big">Água</h1><button class="ib" data-a="waterCfg" aria-label="Ajustes da água">${I.gear}</button></header><main class="page">
  <section class="card form"><div class="wbox">${waterAvatar(S.profile.sex,pct,UI.wPrev)}<div class="wside"><div class="wtot">${fmtInt(tot)} ml<small>${Math.round(pct*100)}% de ${fmtInt(g.ml)} ml</small></div>${cupsOf().map((ml,i)=>`<button class="wcup${i?'':' alt'}" data-a="addWater" data-ml="${ml}">${I.drop}${fmtInt(ml)} ml</button>`).join('')}<button class="wcup alt" data-a="customWater">${I.plus}Outro</button></div></div>
-  <p class="muted small" style="margin:0;text-align:center">${pct>=1?'Meta de hoje cumprida. Pode continuar se tiver sede.':`Faltam <b style="color:var(--fg)">${fmtInt(Math.max(0,g.ml-tot))} ml</b> para encher${S.profile.sex?'':'. Informe o sexo em Dados pessoais para escolher o avatar'}.`}</p></section>
+  <p class="muted small" style="margin:0;text-align:center">${pct>=1?'Meta de hoje cumprida. Pode continuar se tiver sede.':`Faltam <b style="color:var(--fg)">${fmtInt(Math.max(0,g.ml-tot))} ml</b> para encher${S.profile.sex?'':'. Informe o sexo em Meus dados (Perfil) para escolher o avatar'}.`}</p></section>
  <section class="card"><span class="lab">Meta de hoje · ${fmtInt(g.ml)} ml</span><p class="muted small" style="margin:6px 0 0">${esc(g.how)}</p>${g.def?`<button class="btn sm pri" style="margin-top:10px" data-a="go" data-v="dados">Preencher dados pessoais</button>`:''}</section>
  <h3 class="sh">Hoje</h3>${log.length?`<div class="card" style="padding:4px 14px">${log.map((x,i)=>({x,i})).reverse().map(({x,i})=>`<div class="mrow"><span><b class="num" style="font-size:18px">${fmtInt(x.ml)} ml</b> <span class="muted small">${hhmm(x.t)}</span></span><button class="ib" data-a="delWater" data-i="${i}" aria-label="Remover ${x.ml} ml">${I.x}</button></div>`).join('')}</div>`:'<p class="empty">Nenhum copo registrado hoje. Toque num dos botões acima a cada copo.</p>'}
  <h3 class="sh">Histórico</h3>${perCtl('agua')}${waterChart(wrows,WO.g)}<p class="muted small" style="margin:0">${WO.g==='dia'?'Cada barra é um dia.':WO.g==='semana'?'Cada barra é a média diária da semana.':'Cada barra é a média diária do mês.'} A linha tracejada é a meta; barra cheia, meta batida.</p>
@@ -1743,7 +1769,7 @@ VIEWS.saude=()=>{const b=bodyData(),p=S.profile;let h=bar('Saúde',{right:`<butt
  if(b.ok){const E=energyPlan(),tmb=E.tmb,goal=E.goal;
   h+=hc('Taxa metabólica basal (TMB)',`<span class="v">${fmtInt(tmb)} <small>kcal/dia</small></span>`,'',`<p>Energia que o corpo gasta em repouso total. Calculada pela equação de Mifflin-St Jeor (${b.sex==='m'?'masculino':'feminino'}, ${b.age} anos, ${fmt(b.h)} cm, ${fmt(b.w)} kg).${target?` No peso de referência (${fmt(target)} kg), seria <b>${fmtInt(mifflin(target,b.h,b.age,b.sex))} kcal/dia</b>.`:''}</p><p class="small">É uma estimativa: costuma acertar dentro de 10% na maioria das pessoas. Só exames como a calorimetria medem o valor exato.</p>`);
   const at=(g)=>{let x=E.rotina+goalAdj(g,E.rotina);if(g==='perder')x=Math.max(x,E.floor);return Math.round(x/10)*10+Math.round(E.exAdd)};
-  h+=hc('Gasto e meta de hoje',`<span class="v">${fmtInt(E.gasto)} <small>kcal gastas</small></span>`,pill(E.mode==='relogio'?'Pelo relógio':'Nível '+E.act[1].toLowerCase()),`<p>${E.mode==='relogio'?`Rotina sem treino: TMB × 1,2 = <b>${fmtInt(E.rotina)} kcal</b>, mais <b>${fmtInt(E.ex)} kcal</b> de exercício registradas hoje (calorias ativas do relógio).`:`TMB × ${String(E.act[2]).replace('.',',')} (nível ${E.act[1].toLowerCase()}: ${E.act[3].toLowerCase()}) = <b>${fmtInt(E.gasto)} kcal</b>, estimativa média que já inclui os treinos.`}</p><div class="goalt">${GOALS.map(([k,l])=>`<div class="${goal===k?'on':''}"><span>${l}</span><b>${fmtInt(at(k))} kcal</b><em>${GOAL_TXT[k]}</em></div>`).join('')}</div>${E.capped?`<p class="small">A meta de perda foi limitada a ${fmtInt(E.floor)} kcal, para não ficar abaixo da sua taxa basal nem do mínimo seguro.</p>`:''}<p class="small">Meta para o objetivo marcado em Dados pessoais. Nesse ritmo, a variação esperada é de ${E.kgWeek>0?'+':E.kgWeek<0?'−':''}${fmt(Math.abs(Math.round(E.kgWeek*100)/100))} kg por semana. Reavalie a cada 2 a 3 semanas pela balança.</p><div><button class="btn sm sec" data-a="go" data-v="dados">Ajustar objetivo e atividade</button></div>`)}
+  h+=hc('Gasto e meta de hoje',`<span class="v">${fmtInt(E.gasto)} <small>kcal gastas</small></span>`,pill(E.mode==='relogio'?'Pelo relógio':'Nível '+E.act[1].toLowerCase()),`<p>${E.mode==='relogio'?`Rotina sem treino: TMB × 1,2 = <b>${fmtInt(E.rotina)} kcal</b>, mais <b>${fmtInt(E.ex)} kcal</b> de exercício registradas hoje (calorias ativas do relógio).`:`TMB × ${String(E.act[2]).replace('.',',')} (nível ${E.act[1].toLowerCase()}: ${E.act[3].toLowerCase()}) = <b>${fmtInt(E.gasto)} kcal</b>, estimativa média que já inclui os treinos.`}</p><div class="goalt">${GOALS.map(([k,l])=>`<div class="${goal===k?'on':''}"><span>${l}</span><b>${fmtInt(at(k))} kcal</b><em>${GOAL_TXT[k]}</em></div>`).join('')}</div>${E.capped?`<p class="small">A meta de perda foi limitada a ${fmtInt(E.floor)} kcal, para não ficar abaixo da sua taxa basal nem do mínimo seguro.</p>`:''}<p class="small">Meta para o objetivo marcado em Meus dados. Nesse ritmo, a variação esperada é de ${E.kgWeek>0?'+':E.kgWeek<0?'−':''}${fmt(Math.abs(Math.round(E.kgWeek*100)/100))} kg por semana. Reavalie a cada 2 a 3 semanas pela balança.</p><div><button class="btn sm sec" data-a="go" data-v="dados">Ajustar objetivo e atividade</button></div>`)}
  const wg=waterGoal(),wt=waterOn(dkey(Date.now()));
  h+=hc('Água por dia',`<span class="v">${fmt(wg.ml/1000)} <small>litros</small></span>`,pill(`${fmtInt(wt)} ml hoje`,wt>=wg.ml?'ok':''),`<p>${esc(wg.how)}. Base de 35 ml por kg para homens e 31 ml por kg para mulheres, mais 500 ml por hora de treino no dia.</p><div><button class="btn sm sec" data-a="tab" data-t="agua">${I.drop} Abrir Água</button></div>`);
  if(b.ok){const E=energyPlan();
@@ -1998,6 +2024,7 @@ const A={
  dlCSV:()=>{const ok=download(`carga-treinos-${toDateInput(Date.now())}.csv`,exportCSV(),'text/csv');toast(ok?'Exportação iniciada.':'Download indisponível aqui.')},
  pasteRestore:()=>{sheet(`<h3>Restaurar backup</h3><p>Cole abaixo o texto do backup.</p><textarea id="ask-in" style="min-height:160px" placeholder='{"v":1,...}'></textarea><div class="ask-b"><button class="btn sec" data-a="closeSheet">Cancelar</button><button class="btn pri" data-a="doPaste">Restaurar</button></div>`)},
  doPaste:()=>{const t=$('#ask-in').value;closeSheet();restoreFrom(t)},
+ preResetRestore:()=>ask('Restaurar os dados de antes do reset?','Os dados atuais de '+esc(S.profile.name)+' serão substituídos pelos de antes do reset (uma cópia automática dos atuais é guardada antes).','Restaurar').then(async ok=>{closeSheet();if(!ok)return;await snapshot('Antes de restaurar o reset');const k='carga.old.'+pkey(REGS.current);try{localStorage.setItem(pkey(REGS.current),localStorage.getItem(k));localStorage.removeItem(k)}catch(e){toast('Não foi possível restaurar.');return}clearTimeout(saveT);REGS.current=null;location.reload()}),
  wipe:()=>ask('Apagar todos os dados deste perfil?','Treinos, rotinas, exercícios personalizados e medidas de '+esc(S.profile.name)+' serão apagados. Os outros perfis não são afetados. Faça um backup antes se quiser guardar.','Apagar tudo',true).then(async ok=>{closeSheet();if(ok){await snapshot('Antes de apagar tudo');S=blank();S.profile.name=pname(REGS.current);persist();applyAccent();toast('Dados apagados');tab('treino')}}),
 };
 
@@ -2688,7 +2715,7 @@ VIEWS.dieta=()=>{nS();const d=nDay(),k=dkey(d),P=nutriPlan(d),n=dayNut(k),ms=mea
  h+=`<button class="card ninfo" data-a="go" data-v="nutrientes"><div class="row"><b class="spacer">Macronutrientes</b><span class="muted small">Ver nutrientes</span>${I.chev}</div>${macroBoxes(n,P)}${macroBar(n,P)}</button>`;
  h+=`<h3 class="sh">Registrar refeição</h3><section class="card mlist">${MEALS.map(([mk,ml])=>{const m=ms.find(x=>x.m===mk);const kc=m?Math.round(sumNut(m.it)[0]):0;return`<div class="mline"><button class="mtap" data-a="mealOpen" data-m="${mk}"><span class="mk">${fmtInt(kc)}<small>kcal</small></span><span class="nfx"><b>${ml}${m?` <em class="muted small">${m.t}</em>`:''}</b>${m&&m.it.length?`<span class="muted small clamp2">${esc(m.it.map(itemName).join(', '))}</span>`:''}</span></button><button class="ib" data-a="mealOpen" data-m="${mk}" data-add="1" aria-label="Adicionar em ${ml}">${I.plus}</button></div>`}).join('')}</section>`;
  h+=nMini(d,P);
- if(!bodyData().ok&&!P.manual)h+=`<p class="muted small" style="margin:0">A meta de ${fmtInt(P.kcal)} kcal é provisória. Preencha sexo, nascimento, altura e peso em <button class="linkb" data-a="go" data-v="dados">Dados pessoais</button> para calcular a sua.</p>`;
+ if(!bodyData().ok&&!P.manual)h+=`<p class="muted small" style="margin:0">A meta de ${fmtInt(P.kcal)} kcal é provisória. Preencha sexo, nascimento, altura e peso em <button class="linkb" data-a="go" data-v="dados">Meus dados</button> para calcular a sua.</p>`;
  return h+'</main>'};
 
 /* ---- editor da refeição ---- */
@@ -2773,7 +2800,7 @@ VIEWS.metasNutri=()=>{const P=nutriPlan(),c=S.profile.nutri||{};const man=c.mode
  return bar('Metas de nutrição')+`<main class="page"><div class="seg"><button class="${man?'':'on'}" data-a="nMode" data-k="auto">Automática</button><button class="${man?'on':''}" data-a="nMode" data-k="manual">Personalizada</button></div>
  ${man?`<section class="card form"><label class="fld"><span class="lab">Calorias por dia (kcal)</span><input class="inp" id="nm-kcal" inputmode="numeric" value="${esc(String(c.kcal??P.kcal))}" data-f="n:nm" data-k="kcal"></label>
  <div class="g3">${[['pC','Carb. (%)'],['pG','Gord. (%)'],['pP','Prot. (%)']].map(([k,l])=>`<label class="fld"><span class="lab">${l}</span><input class="inp" id="nm-${k}" inputmode="numeric" value="${esc(String(c[k]??P[k]))}" data-f="n:nm" data-k="${k}"></label>`).join('')}</div><p class="muted small" id="nm-sum" style="margin:0">${nmSum()}</p></section>`
- :`<section class="card form"><p style="margin:0">É a mesma meta do Início, calculada pelos seus dados: taxa basal (Mifflin-St Jeor), gasto do dia (pelo relógio ou pelo nível de atividade) e o objetivo escolhido em Dados pessoais. Proteína em g/kg conforme o objetivo, gordura em 25% das calorias e carboidrato no restante.</p><div><button class="btn sm sec" data-a="go" data-v="dados">Ver objetivo e cálculo</button></div>${P.auto?'':`<p class="muted small" style="margin:0">Faltam dados pessoais; usando 2.000 kcal até você preencher. <button class="linkb" data-a="go" data-v="dados">Preencher</button></p>`}</section>`}
+ :`<section class="card form"><p style="margin:0">É a mesma meta do Início, calculada pelos seus dados: taxa basal (Mifflin-St Jeor), gasto do dia (pelo relógio ou pelo nível de atividade) e o objetivo escolhido em Meus dados. Proteína em g/kg conforme o objetivo, gordura em 25% das calorias e carboidrato no restante.</p><div><button class="btn sm sec" data-a="go" data-v="dados">Ver objetivo e cálculo</button></div>${P.auto?'':`<p class="muted small" style="margin:0">Faltam dados pessoais; usando 2.000 kcal até você preencher. <button class="linkb" data-a="go" data-v="dados">Preencher</button></p>`}</section>`}
  <section class="card form"><span class="lab">Meta atual</span><b class="nbig">${fmtInt(P.kcal)}<small> kcal</small></b><span class="muted small">Faixa ${fmtInt(P.lo)} – ${fmtInt(P.hi)} kcal</span>${macroBoxes(NK.map(()=>0),P).replace(/<b>0<small>g<\/small><\/b>/g,'')}</section></main>`};
 function nmSum(){const c=S.profile.nutri||{},s=(num(c.pC)||0)+(num(c.pG)||0)+(num(c.pP)||0);return s===100?'A soma dá 100%.':`A soma está em ${fmt(s)}%; ajuste para 100%.`}
 

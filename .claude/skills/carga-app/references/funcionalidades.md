@@ -107,3 +107,10 @@
 ## PWA
 - Instalável, funciona offline (service worker com cache versionado) e tem ícones para Android e iPhone.
 - O ícone do app é verde com o símbolo branco.
+
+## Meus dados (central de dados do perfil) — 17/10/2026
+- **Regra do usuário:** todo dado que a pessoa preenche fica concentrado em **Perfil → Meus dados** (view `dados`): corpo (sexo, nascimento, altura, peso), medidas, dias de treino por semana, objetivo e modo de cálculo, meta de nutrição, meta de água, nome/foto/aparência. Outros lugares só levam para lá.
+- Cartão `myDataCard()` no topo do Perfil, com o progresso de `myDataChecks()` (6 itens) ou o resumo quando completo.
+- **Reset geral (17/10/2026):** `RESET_ID` zera todos os perfis uma vez por aparelho; os dados antigos vão para `carga.old.*` e voltam em Configurações → "Restaurar dados de antes do reset". Testes Playwright precisam gravar `localStorage['carga.reset']=RESET_ID` antes de semear dados.
+- **Assinatura:** "by Samuel Costa" discreto (`.byline`) no rodapé de Configurações.
+
