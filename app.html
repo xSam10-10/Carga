@@ -283,6 +283,22 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .mrow{display:flex;justify-content:space-between;gap:10px;padding:12px 4px;border-bottom:1px solid var(--line);text-align:left;width:100%}
 .mrow:last-child{border-bottom:0}
 .small{font-size:14px}
+.wbox{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:12px;align-items:center}
+.wav{width:100%;max-width:200px;height:auto;display:block;margin:0 auto}
+.wav .sil-o{fill:var(--muted);opacity:.55}
+.wav .sil-b{fill:var(--surface-2)}
+.wav .det{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-linecap:round;opacity:.55}
+.wav .hair{fill:var(--muted);opacity:.35}
+.wav #wfill{transition:transform .9s cubic-bezier(.3,.7,.2,1)}
+.wav .wave{animation:wv 2.6s linear infinite}
+@keyframes wv{to{transform:translateX(70px)}}
+.wside{display:flex;flex-direction:column;gap:8px;min-width:0}
+.wtot{font:700 28px/1 var(--display);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.wtot small{display:block;font:600 13px var(--text);color:var(--muted);margin-top:4px}
+.wcup{display:flex;align-items:center;gap:8px;justify-content:center;min-height:52px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font:700 18px var(--display);font-variant-numeric:tabular-nums}
+.wcup.alt{background:var(--accent-soft);color:var(--accent)}
+.wcup svg.i{width:18px;height:18px}
+.wcup:active{transform:scale(.97)}
 .kv2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .kv2 button{background:var(--surface-2);border-radius:12px;padding:10px 12px;text-align:left;display:flex;flex-direction:column;gap:4px;min-width:0}
 .kv2 b{font:700 22px/1.1 var(--display);font-variant-numeric:tabular-nums}
@@ -1005,14 +1021,21 @@ function waterChart(days){const W=340,H=150,pl=34,pb=20,pt=8;const vals=days.map
  days.forEach((d,i)=>{const x=pl+i*bw+bw*.2,w=bw*.6,v=vals[i],ok=v>=goals[i]&&v>0;g+=`<rect class="bx${ok?' now':''}" x="${x.toFixed(1)}" y="${Y(v).toFixed(1)}" width="${w.toFixed(1)}" height="${(H-pb-Y(v)).toFixed(1)}" rx="4"><title>${dShort(d)}: ${fmtInt(v)} de ${fmtInt(goals[i])} ml</title></rect><line x1="${(x-3).toFixed(1)}" x2="${(x+w+3).toFixed(1)}" y1="${Y(goals[i]).toFixed(1)}" y2="${Y(goals[i]).toFixed(1)}" stroke="var(--fg)" stroke-width="1.5" stroke-dasharray="3 2" opacity=".55"/><text class="ax" x="${(x+w/2).toFixed(1)}" y="${H-5}" text-anchor="middle">${DL[new Date(d).getDay()]}</text>`});
  return`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Água nos últimos 7 dias">${g}</svg>`}
 
+function waterAvatar(sex,pct,prevPct){const arms=(a,b,c)=>{const one=(sx)=>{const R=(x,y,w,h,r,ang,px,py)=>{const X=sx<0?140-x-w:x,PX=sx<0?140-px:px;return`<rect x="${X}" y="${y}" width="${w}" height="${h}" rx="${r}" transform="rotate(${sx*ang} ${PX} ${py})"/>`};return R(...a)+R(...b)+`<circle cx="${sx<0?140-c[0]:c[0]}" cy="${c[1]}" r="${c[2]}"/>`};return one(1)+one(-1)};const T=12,B=306,lvl=p=>B-(B-T)*Math.max(0,Math.min(1,p));const f=sex==='f';
+ const male=`<ellipse cx="70" cy="34" rx="17" ry="20"/><rect x="62" y="48" width="16" height="16" rx="4"/><path d="M42 66Q70 57 98 66Q105 68 105 77L100 152L40 152L35 77Q35 68 42 66Z"/>${arms([25,70,15,64,7.5,9,32,70],[21,126,13,54,6.5,4,27,126],[25,184,7])}<path d="M40 148L100 148L102 198L74 198L70 182L66 198L38 198Z"/><rect x="40" y="190" width="25" height="104" rx="12"/><rect x="75" y="190" width="25" height="104" rx="12"/><ellipse cx="51" cy="298" rx="14" ry="7"/><ellipse cx="89" cy="298" rx="14" ry="7"/>`;
+ const female=`<path d="M49 38Q47 10 70 10Q93 10 91 38L93 78Q81 82 70 73Q59 82 47 78Z"/><ellipse cx="70" cy="34" rx="15" ry="19"/><rect x="63" y="48" width="14" height="16" rx="4"/><path d="M48 66Q70 59 92 66Q98 68 97 77L91 113Q87 126 92 150L48 150Q53 126 49 113L43 77Q42 68 48 66Z"/>${arms([31,70,12,62,6,10,37,70],[27,125,11,54,5.5,5,32,125],[31,183,6])}<path d="M47 146L93 146Q103 170 101 198L73 198L70 182L67 198L39 198Q37 170 47 146Z"/><rect x="42" y="190" width="22" height="104" rx="11"/><rect x="76" y="190" width="22" height="104" rx="11"/><ellipse cx="52" cy="298" rx="12" ry="6.5"/><ellipse cx="88" cy="298" rx="12" ry="6.5"/>`;
+ const shape=f?female:male;
+ const det=f?`<path d="M58 62Q70 70 82 62"/><path d="M45 104L52 98M95 104L88 98"/><path d="M49 150L91 150"/><path d="M70 182L70 198"/><path d="M52 24Q62 16 80 22"/>`:`<path d="M58 62Q70 71 82 62"/><path d="M38 106L45 98M102 106L95 98"/><path d="M40 150L100 150"/><path d="M70 182L70 198"/>`;
+ const hair=f?'':`<path class="hair" d="M53 30Q52 12 70 12Q88 12 87 30Q82 21 70 21Q58 21 53 30Z"/>`;
+ const wave=`<path d="M-140 0q17.5 -7 35 0t35 0t35 0t35 0t35 0t35 0t35 0t35 0t35 0t35 0t35 0t35 0V330H-140Z"/>`;
+ return`<svg class="wav" viewBox="0 0 140 316" role="img" aria-label="Avatar ${f?'feminino':'masculino'} ${Math.round(pct*100)}% cheio"><defs><clipPath id="wclip">${shape}</clipPath><linearGradient id="wgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.75"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:1"/></linearGradient></defs>
+ <g class="sil-o" transform="translate(70 158) scale(1.03 1.015) translate(-70 -158)">${shape}</g><g class="sil-b">${shape}</g>
+ <g clip-path="url(#wclip)">${pct>0?`<g id="wfill" style="transform:translateY(${lvl(prevPct??pct)}px)" data-to="${lvl(pct)}"><g class="wave" fill="url(#wgrad)">${wave}</g></g>`:''}</g>${hair}<g class="det">${det}</g></svg>`}
 VIEWS.agua=()=>{const now=Date.now(),k=dkey(now),log=(S.water&&S.water[k])||[],tot=waterOn(k),g=waterGoal(now),pct=g.ml?tot/g.ml:0,C=2*Math.PI*84;
  const days=[...Array(7)].map((_,i)=>addDays(sod(now),i-6));const v7=days.map(d=>waterOn(dkey(d)));const hit=days.filter(d=>{const v=waterOn(dkey(d));return v>0&&v>=waterGoal(d).ml}).length;
  return`<header class="top"><h1 class="big">Água</h1><button class="ib" data-a="waterCfg" aria-label="Ajustes da água">${I.gear}</button></header><main class="page">
- <section class="card" style="display:flex;flex-direction:column;align-items:center;gap:12px">
-  <div class="ring"><svg viewBox="0 0 200 200" role="img" aria-label="${fmtInt(tot)} de ${fmtInt(g.ml)} ml"><circle cx="100" cy="100" r="84" class="ring-bg"/><circle cx="100" cy="100" r="84" class="ring-fg" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C*(1-Math.min(1,pct))).toFixed(1)}" transform="rotate(-90 100 100)"/></svg>
-  <div class="ring-c"><span class="ring-ic">${I.drop}</span><b>${fmtInt(tot)}<small> ml</small></b><span>de ${fmtInt(g.ml)} ml</span><span class="pct">${pct>=1?'Meta batida':Math.round(pct*100)+'%'}</span></div></div>
-  <p class="muted small" style="margin:0;text-align:center">${pct>=1?'Meta de hoje cumprida. Pode continuar se tiver sede.':`Faltam <b style="color:var(--fg)">${fmtInt(Math.max(0,g.ml-tot))} ml</b> para a meta de hoje.`}</p></section>
- <div class="cups">${cupsOf().map(ml=>`<button class="cup" data-a="addWater" data-ml="${ml}">${I.drop}<b>+${fmtInt(ml)}</b><span>ml</span></button>`).join('')}<button class="cup" data-a="customWater">${I.plus}<b>Outro</b><span>valor</span></button></div>
+ <section class="card form"><div class="wbox">${waterAvatar(S.profile.sex,pct,UI.wPrev)}<div class="wside"><div class="wtot">${fmtInt(tot)} ml<small>${Math.round(pct*100)}% de ${fmtInt(g.ml)} ml</small></div>${cupsOf().map((ml,i)=>`<button class="wcup${i?'':' alt'}" data-a="addWater" data-ml="${ml}">${I.drop}${fmtInt(ml)} ml</button>`).join('')}<button class="wcup alt" data-a="customWater">${I.plus}Outro</button></div></div>
+  <p class="muted small" style="margin:0;text-align:center">${pct>=1?'Meta de hoje cumprida. Pode continuar se tiver sede.':`Faltam <b style="color:var(--fg)">${fmtInt(Math.max(0,g.ml-tot))} ml</b> para encher${S.profile.sex?'':'. Informe o sexo em Dados pessoais para escolher o avatar'}.`}</p></section>
  <section class="card"><span class="lab">Meta de hoje · ${fmtInt(g.ml)} ml</span><p class="muted small" style="margin:6px 0 0">${esc(g.how)}</p>${g.def?`<button class="btn sm pri" style="margin-top:10px" data-a="go" data-v="dados">Preencher dados pessoais</button>`:''}</section>
  <h3 class="sh">Hoje</h3>${log.length?`<div class="card" style="padding:4px 14px">${log.map((x,i)=>({x,i})).reverse().map(({x,i})=>`<div class="mrow"><span><b class="num" style="font-size:18px">${fmtInt(x.ml)} ml</b> <span class="muted small">${hhmm(x.t)}</span></span><button class="ib" data-a="delWater" data-i="${i}" aria-label="Remover ${x.ml} ml">${I.x}</button></div>`).join('')}</div>`:'<p class="empty">Nenhum copo registrado hoje. Toque num dos botões acima a cada copo.</p>'}
  <h3 class="sh">Últimos 7 dias</h3>${waterChart(days)}<p class="muted small" style="margin:0">A linha tracejada é a meta de cada dia. Barras cheias: meta batida.</p>
@@ -1020,6 +1043,7 @@ VIEWS.agua=()=>{const now=Date.now(),k=dkey(now),log=(S.water&&S.water[k])||[],t
 
 const BMI_C=[[18.5,'Abaixo do peso','warn'],[25,'Peso saudável','ok'],[30,'Sobrepeso','warn'],[35,'Obesidade grau I','bad'],[40,'Obesidade grau II','bad'],[Infinity,'Obesidade grau III','bad']];
 function hc(label,value,badge,body){return`<section class="hcard"><span class="lab">${label}</span><div class="row" style="flex-wrap:wrap">${value}${badge||''}</div>${body}</section>`}
+VIEWS.agua.after=()=>{const g=$('#wfill');UI.wPrev=null;if(g)requestAnimationFrame(()=>requestAnimationFrame(()=>{g.style.transform=`translateY(${g.dataset.to}px)`}))};
 VIEWS.saude=()=>{const b=bodyData(),p=S.profile;let h=bar('Saúde',{right:`<button class="tb" data-a="go" data-v="dados">Dados</button>`})+'<main class="page">';
  if(!b.ok)h+=`<section class="alert"><b>Complete seus dados</b><span>Falta${b.missing.length>1?'m':''}: ${b.missing.join(', ')}. Com eles o app calcula todas as métricas abaixo.</span><div><button class="btn pri sm" data-a="go" data-v="dados">Preencher dados pessoais</button></div></section>`;
  let target=null;
@@ -1114,9 +1138,9 @@ const A={
  pdSex:d=>{S.profile.sex=d.k;save();rerender()},
  pdAct:d=>{S.profile.activity=d.k;save();rerender()},
  pdGoal:d=>{S.profile.goal=d.k;save();rerender()},
- addWater:d=>{const ml=+d.ml;if(!ml)return;S.water=S.water||{};const k=dkey(Date.now()),g=waterGoal().ml,before=waterOn(k);(S.water[k]=S.water[k]||[]).push({t:Date.now(),ml});save();rerender();toast(before<g&&before+ml>=g?'Meta de água batida!':`+${fmtInt(ml)} ml`)},
+ addWater:d=>{const ml=+d.ml;if(!ml)return;S.water=S.water||{};const k=dkey(Date.now()),g=waterGoal().ml,before=waterOn(k);UI.wPrev=before/g;(S.water[k]=S.water[k]||[]).push({t:Date.now(),ml});save();rerender();toast(before<g&&before+ml>=g?'Meta de água batida!':`+${fmtInt(ml)} ml`)},
  customWater:()=>askText('Quanto você bebeu? (ml)','','Ex.: 350').then(v=>{closeSheet();const ml=Math.round(num(v)||0);if(ml<1||ml>3000){if(v)toast('Informe um valor entre 1 e 3.000 ml.');return}A.addWater({ml})}),
- delWater:d=>{const k=dkey(Date.now());if(S.water&&S.water[k]){S.water[k].splice(+d.i,1);save();rerender()}},
+ delWater:d=>{const k=dkey(Date.now());if(S.water&&S.water[k]){UI.wPrev=waterOn(k)/waterGoal().ml;S.water[k].splice(+d.i,1);save();rerender()}},
  waterCfg:()=>{const p=S.profile,c=cupsOf(),g=waterGoal();sheet(`<h3>Ajustes da água</h3><label class="fld"><span>Meta diária personalizada (ml)</span><input class="inp" id="wc-goal" inputmode="numeric" placeholder="Automática: ${fmtInt(g.ml)} ml" value="${esc(p.waterManual||'')}"></label><p class="small">Deixe em branco para usar a meta calculada pelo peso, sexo e treino do dia.</p><div class="fld"><span>Botões de copo (ml)</span><div class="row2">${[0,1,2,3].map(i=>`<input class="inp" id="wc-c${i}" inputmode="numeric" value="${c[i]||''}" aria-label="Copo ${i+1}">`).join('')}</div></div><div class="ask-b"><button class="btn sec" data-a="closeSheet">Cancelar</button><button class="btn pri" data-a="saveWaterCfg">Salvar</button></div>`)},
  saveWaterCfg:()=>{const g=Math.round(num($('#wc-goal').value)||0);S.profile.waterManual=g>=500&&g<=8000?g:null;S.profile.cups=[0,1,2,3].map(i=>Math.round(num($('#wc-c'+i).value)||0)).filter(v=>v>0&&v<=3000);save();closeSheet();rerender();toast('Ajustes salvos')},
  setTheme:d=>{const t=themeOf(d.k);S.profile.theme=t[0];S.profile.accent=t[11];save();applyAccent();rerender()},
