@@ -28,8 +28,9 @@
   - sugestão de progressão de carga (`overloadHint`), gerador de aquecimento (40%, 60% e 80%) e calculadora de anilhas;
   - recorde ao vivo, como no Hevy (`livePR`, `prPop`, `confetti`):
     - a série que bate recorde ganha uma medalha dourada no lugar do número;
-    - uma bolinha com a medalha salta no topo e se abre num balão com a foto e o nome do exercício, alternando os recordes batidos (Maior peso, 1RM estimado, Melhor volume de série; Mais repetições em peso corporal);
-    - confetes nas cores da medalha e do destaque (desligados com "reduzir movimento"), bipe e vibração;
+    - uma bolinha com a medalha salta no topo e se abre num balão com a foto e o nome do exercício, alternando os recordes batidos na ordem do Hevy (Maior peso, Melhor volume de série, Melhor 1RM; Mais repetições em peso corporal), cerca de 1,6 s cada;
+    - **som do recorde** (`prChime`), tocado 0,38 s após o toque, como no Hevy: arpejo em Fá maior (Fá4 349 Hz, Lá4 440, Dó5 523, Fá6 1.397) com timbre de sino (parciais 1×, 2× e 4×, decaimento τ≈0,3 s). Foi medido do vídeo do Hevy e é **sintetizado** com Web Audio, sem usar o arquivo de áudio deles. Respeita a opção de som;
+    - confetes nas cores da medalha e do destaque (o Hevy não tem; foram um pedido do usuário; desligados com "reduzir movimento") e vibração;
     - só conta quando já existe histórico do exercício;
   - tipos de registro por exercício: peso e repetições, peso corporal, assistido, duração, distância e duração.
 - **Finalizar:** resumo, recordes batidos e opção de salvar como rotina. Ao abrir, um pop-up pede as **calorias gastas** que o relógio mostrou (dá para pular). O valor fica em `w.kcal` e aparece no resumo, no detalhe do treino (dá para informar ou alterar depois pelo menu ⋯) e nos cartões. Código: `kcalSheet`, `kcalBox`, ações `kcalLive` e `kcalSaved`.
