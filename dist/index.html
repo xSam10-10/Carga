@@ -507,6 +507,20 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .nfx{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
 .nw{white-space:nowrap;font-weight:600}
 .linkb{color:var(--accent);font-weight:600;text-decoration:underline;font-size:inherit}
+/* Recorde ao vivo: medalha na série, balão no topo e confetes */
+.sn .medal{width:24px;height:24px;display:block;margin:0 auto;animation:mdIn .5s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes mdIn{from{transform:scale(0) rotate(-40deg)}to{transform:none}}
+#prpop{position:fixed;z-index:70;left:50%;top:calc(env(safe-area-inset-top,0px) + 58px);transform:translateX(-50%) scale(.2);opacity:0;height:52px;width:52px;border-radius:26px;background:var(--surface-2);border:1px solid var(--line);color:var(--fg);box-shadow:0 8px 28px rgba(0,0,0,.35);display:flex;align-items:center;overflow:hidden;transition:width .42s cubic-bezier(.3,1.2,.5,1),transform .42s cubic-bezier(.3,1.5,.5,1),opacity .25s;pointer-events:none}
+#prpop.in{transform:translateX(-50%) scale(1);opacity:1}
+#prpop.open{width:min(330px,calc(100vw - 32px))}
+#prpop.out{transform:translateX(-50%) scale(.6);opacity:0}
+#prpop .pm{flex:none;width:52px;height:52px;display:grid;place-items:center}#prpop .pm .medal{width:32px;height:32px}
+#prpop.open .pm{width:0;opacity:0;transition:width .3s,opacity .2s}
+#prpop .pt{display:flex;align-items:center;gap:10px;padding:0 16px 0 10px;white-space:nowrap;opacity:0;transition:opacity .25s .15s;min-width:0}
+#prpop.open .pt{opacity:1}
+#prpop .pt-t{display:flex;flex-direction:column;min-width:0}#prpop .pt-t b{font-size:14px;overflow:hidden;text-overflow:ellipsis}#prpop em{font-style:normal;font-size:13px;font-weight:600;color:#E9A21B;transition:opacity .18s,transform .18s}#prpop em.sw{opacity:0;transform:translateY(6px)}
+#prpop .av{width:34px;height:34px;flex:none}
+.confetti{position:fixed;inset:0;width:100vw;height:100vh;z-index:69;pointer-events:none}
 /* Abertura no estilo do Hevy: tela preta desde o primeiro quadro, só o símbolo parado no centro,
    e um esmaecimento curto revela o app. A expansão a partir do ícone fica por conta do sistema. */
 html.sp-on{background:#000}
@@ -1338,7 +1352,7 @@ function exCard(s,e,i,L={}){
  const prev=prevSets(e.exId,k==='edit'?s.id:null,k==='edit'?s.start:Infinity,s.routineId);
  let n=0;const hd=HEAD[t]||HEAD.wr;
  const head=`<div class="shead"><span>Série</span><span>Anterior</span>${t==='t'&&k==='live'?'<span></span>':''}${hd.map(h=>`<span>${h}</span>`).join('')}${k!=='routine'?`<span>${I.check.replace('class="i"','class="i" style="width:14px;height:14px"')}</span>`:''}</div>`;
- const rows=e.sets.map((st,j)=>{const label=st.type==='n'?++n:SET_L[st.type];const pv=prevFor(prev,e.sets,j);
+ const rows=e.sets.map((st,j)=>{const label=st.type==='n'?(++n,st.pr&&st.done?MEDAL:n):SET_L[st.type];const pv=prevFor(prev,e.sets,j);
   const inp=(f,ph,mode)=>`<input class="cell" id="c-${i}-${j}-${f}" inputmode="${mode}" autocomplete="off" data-f="${f}" data-e="${i}" data-s="${j}" value="${esc(st[f]??'')}" placeholder="${esc(ph??'')}" aria-label="${f} série ${j+1}">`;
   const minPh=pv&&pv.t?+(pv.t/60).toFixed(2):'';
   const running=UI.tmr&&UI.tmr.e===i&&UI.tmr.s===j;
@@ -1770,12 +1784,25 @@ function restoreFrom(text){let o;try{o=JSON.parse(text)}catch(e){toast('Esse tex
  ask('Restaurar backup?',`O backup${o.perfil?` de ${esc(o.perfil)}`:''} tem ${o.workouts.length} treino(s) e ${(o.routines||[]).length} rotina(s). Os dados atuais do perfil ${esc(S.profile.name)} serão substituídos. Uma cópia deles fica guardada em Cópias automáticas.`,'Restaurar',true).then(async ok=>{if(!ok)return;closeSheet();await snapshot('Antes de restaurar');const b=blank();S=Object.assign(b,o,{profile:Object.assign(b.profile,o.profile||{},{name:pname(REGS.current)}),active:null});delete S.app;delete S.exportedAt;delete S.perfil;recomputePRs();persist();applyAccent();toast('Backup restaurado');tab('inicio')})}
 
 /* ---------- recorde ao vivo, anilhas ---------- */
-function livePR(s,e,st,x,t){if(S.profile.livePR===false)return;if(!UI.bb||UI.bb.id!==s.id)UI.bb={id:s.id,b:bestsBefore(s.start)};const b=UI.bb.b[e.exId];if(!b)return;
+function livePR(s,e,st,x,t){st.pr=false;if(S.profile.livePR===false)return;if(!UI.bb||UI.bb.id!==s.id)UI.bb={id:s.id,b:bestsBefore(s.start)};const b=UI.bb.b[e.exId];if(!b)return;
  const kg=num(st.kg)||0,r=num(st.reps)||0,done=s.exercises.filter(z=>z.exId===e.exId).flatMap(z=>z.sets).filter(z=>z.done&&z!==st&&z.type!=='w');
- const prevMax=f=>Math.max(0,...done.map(f));let msg='';
- if(t==='wr'&&st.type!=='w'){if(kg>b.maxKg&&kg>prevMax(z=>num(z.kg)||0))msg=`Maior peso: ${fmt(kg)} kg`;else if(orm(kg,r)>b.best1+1e-9&&orm(kg,r)>prevMax(z=>orm(num(z.kg)||0,num(z.reps)||0)))msg=`1RM estimado: ${fmt(orm(kg,r))} kg`;else if(kg*r>b.setVol&&kg*r>prevMax(z=>(num(z.kg)||0)*(num(z.reps)||0)))msg=`Melhor série: ${fmtInt(kg*r)} kg`}
- else if((t==='bw'||t==='as')&&r>b.maxReps&&r>prevMax(z=>num(z.reps)||0))msg=`Mais repetições: ${r}`;
- if(msg){setTimeout(()=>toast('Novo recorde! '+msg),350);if(S.profile.sound)beep()}}
+ const prevMax=f=>Math.max(0,...done.map(f));const msgs=[];
+ if(t==='wr'&&st.type!=='w'){if(kg>b.maxKg&&kg>prevMax(z=>num(z.kg)||0))msgs.push(`Maior peso · ${fmt(kg)} kg`);if(orm(kg,r)>b.best1+1e-9&&orm(kg,r)>prevMax(z=>orm(num(z.kg)||0,num(z.reps)||0)))msgs.push(`1RM estimado · ${fmt(orm(kg,r))} kg`);if(kg*r>b.setVol&&kg*r>prevMax(z=>(num(z.kg)||0)*(num(z.reps)||0)))msgs.push(`Melhor volume de série · ${fmtInt(kg*r)} kg`)}
+ else if((t==='bw'||t==='as')&&r>b.maxReps&&r>prevMax(z=>num(z.reps)||0))msgs.push(`Mais repetições · ${r}`);
+ if(msgs.length){st.pr=true;setTimeout(()=>prPop(x,msgs),120);if(S.profile.sound)beep();try{navigator.vibrate&&navigator.vibrate([40,60,40])}catch(err){}}}
+/* Recorde no treino (como no Hevy): a série ganha uma medalha, uma bolinha com a medalha salta no topo, abre um balão
+   com o exercício e os recordes batidos (alternando) e solta confetes. */
+const MEDAL='<svg class="medal" viewBox="0 0 24 24" role="img" aria-label="Recorde"><path d="M7.2 1.5h3.6l2 5.2-3.3 1.8zM16.8 1.5h-3.6l-2 5.2 3.3 1.8z" fill="#E4573F"/><circle cx="12" cy="14.6" r="7.2" fill="#E9A21B"/><circle cx="12" cy="14.6" r="5.4" fill="#F7C744"/><path d="m12 10.9 1.2 2.4 2.6.4-1.9 1.8.5 2.6-2.4-1.2-2.4 1.2.5-2.6-1.9-1.8 2.6-.4z" fill="#FFF3C4"/></svg>';
+let prT=[];
+function prPop(x,msgs){prT.forEach(clearTimeout);prT=[];let el=$('#prpop');if(!el){el=document.createElement('div');el.id='prpop';el.setAttribute('role','status');document.body.appendChild(el)}
+ el.className='';el.innerHTML=`<span class="pm">${MEDAL}</span><span class="pt">${avatar(x,34)}<span class="pt-t"><b>${esc(x.name)}</b><em>${esc(msgs[0])}</em></span></span>`;
+ void el.offsetWidth;el.className='in';prT.push(setTimeout(()=>{el.className='in open';confetti(el)},520));
+ msgs.slice(1).forEach((m,k)=>prT.push(setTimeout(()=>{const em=el.querySelector('em');if(em){em.classList.add('sw');setTimeout(()=>{em.textContent=m;em.classList.remove('sw')},180)}},520+1700*(k+1))));
+ const end=520+1700*msgs.length+900;prT.push(setTimeout(()=>{el.className='in'},end),setTimeout(()=>{el.className='out'},end+380),setTimeout(()=>{el.remove()},end+800))}
+function confetti(from){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const c=document.createElement('canvas');c.className='confetti';const dpr=Math.min(2,devicePixelRatio||1);c.width=innerWidth*dpr;c.height=innerHeight*dpr;document.body.appendChild(c);const g=c.getContext('2d');g.scale(dpr,dpr);
+ const r=from.getBoundingClientRect(),ox=r.left+r.width/2,oy=r.top+r.height/2;const cs=getComputedStyle(document.documentElement);const cols=['#F7C744','#E9A21B','#E4573F',cs.getPropertyValue('--accent').trim()||'#33C391',cs.getPropertyValue('--violet').trim()||'#A38CF0','#FFFFFF'];
+ const P=[...Array(70)].map(()=>{const a=Math.PI*(.15+Math.random()*.7),v=4+Math.random()*7;return{x:ox+(Math.random()-.5)*r.width*.6,y:oy,vx:Math.cos(a)*v*(Math.random()<.5?-1:1),vy:Math.sin(a)*v*.6-2,w:5+Math.random()*5,h:3+Math.random()*4,rot:Math.random()*6,vr:(Math.random()-.5)*.4,c:cols[Math.random()*cols.length|0]}});
+ const t0=performance.now();const step=now=>{const k=(now-t0)/1400;g.clearRect(0,0,innerWidth,innerHeight);for(const p of P){p.vy+=.22;p.vx*=.985;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;g.save();g.globalAlpha=Math.max(0,1-k*k);g.translate(p.x,p.y);g.rotate(p.rot);g.fillStyle=p.c;g.fillRect(-p.w/2,-p.h/2,p.w,p.h);g.restore()}if(k<1)requestAnimationFrame(step);else c.remove()};requestAnimationFrame(step)}
 const PLATES=[25,20,15,10,5,2.5,1.25];
 function plateSheet(){const P=UI.plate;const side=Math.max(0,(P.kg-P.bar)/2);let rem=side;const used=[];for(const pl of PLATES){while(rem>=pl-1e-9){used.push(pl);rem-=pl}}
  sheet(`<h3>Calculadora de anilhas</h3><div class="row2"><label class="fld"><span>Peso total (kg)</span><input class="inp" id="pl-kg" inputmode="decimal" data-f="plKg" value="${esc(P.kg)}"></label><label class="fld"><span>Barra (kg)</span><input class="inp" id="pl-bar" inputmode="decimal" data-f="plBar" value="${esc(P.bar)}"></label></div>
@@ -1878,7 +1905,7 @@ const A={
    if(!ok){toast(t==='t'?'Informe o tempo da série.':t==='dt'?'Informe a distância ou o tempo.':'Informe as repetições da série.');return}
    st.done=true;
    if(s.kind==='live'){livePR(s,e,st,x,t);
-    if(ssLast(s,ei)){if(e.rest)startRest(e.rest)}else{const nx=ssNext(s,ei);if(nx){toast('Supersérie: agora '+ex(nx.exId).name);if(S.profile.ssScroll!==false){const ni=s.exercises.indexOf(nx);setTimeout(()=>{const el=$('#exc-'+ni);el&&el.scrollIntoView({behavior:'smooth',block:'start'})},60)}}}}}else st.done=false;
+    if(ssLast(s,ei)){if(e.rest)startRest(e.rest)}else{const nx=ssNext(s,ei);if(nx){toast('Supersérie: agora '+ex(nx.exId).name);if(S.profile.ssScroll!==false){const ni=s.exercises.indexOf(nx);setTimeout(()=>{const el=$('#exc-'+ni);el&&el.scrollIntoView({behavior:'smooth',block:'start'})},60)}}}}}else{st.done=false;st.pr=false}
   save();rerender();updateLiveStats()},
  setTimer:d=>{const s=cur(),i=+d.e,j=+d.s;if(UI.tmr&&UI.tmr.e===i&&UI.tmr.s===j){const st=s.exercises[i].sets[j];st.min=String(+((Date.now()-UI.tmr.start)/6e4).toFixed(2));UI.tmr=null;save()}else UI.tmr={e:i,s:j,start:Date.now()};rerender()},
  applyHint:d=>{const s=cur(),e=s.exercises[+d.e];e.sets.forEach(st=>{if(st.type!=='w'&&!st.done)st.kg=String(d.kg)});save();rerender();toast('Carga sugerida aplicada')},

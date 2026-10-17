@@ -26,7 +26,11 @@
   - superséries com rolagem automática;
   - notas fixas por exercício;
   - sugestão de progressão de carga (`overloadHint`), gerador de aquecimento (40%, 60% e 80%) e calculadora de anilhas;
-  - recorde ao vivo;
+  - recorde ao vivo, como no Hevy (`livePR`, `prPop`, `confetti`):
+    - a série que bate recorde ganha uma medalha dourada no lugar do número;
+    - uma bolinha com a medalha salta no topo e se abre num balão com a foto e o nome do exercício, alternando os recordes batidos (Maior peso, 1RM estimado, Melhor volume de série; Mais repetições em peso corporal);
+    - confetes nas cores da medalha e do destaque (desligados com "reduzir movimento"), bipe e vibração;
+    - só conta quando já existe histórico do exercício;
   - tipos de registro por exercício: peso e repetições, peso corporal, assistido, duração, distância e duração.
 - **Finalizar:** resumo, recordes batidos e opção de salvar como rotina. Ao abrir, um pop-up pede as **calorias gastas** que o relógio mostrou (dá para pular). O valor fica em `w.kcal` e aparece no resumo, no detalhe do treino (dá para informar ou alterar depois pelo menu ⋯) e nos cartões. Código: `kcalSheet`, `kcalBox`, ações `kcalLive` e `kcalSaved`.
 - **Detalhe do treino:** editar ou excluir.

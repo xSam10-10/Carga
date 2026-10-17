@@ -28,6 +28,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Mapa corporal hiper-realista com 17 grupos
 - ✅ Importar histórico do Hevy
 - ✅ Calorias do treino registradas do relógio (pop-up no fim do treino)
+- ✅ Animação de recorde ao vivo: medalha, balão e confetes (estilo Hevy)
 - 💡 Periodização em blocos (força, hipertrofia, deload)
 - 💡 Volume semanal por grupo com faixa recomendada e alerta de grupo esquecido
 - 💡 Mapa de recuperação muscular
@@ -122,3 +123,4 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 17/10/2026 | Calorias do treino passam a vir do relógio; frequência cardíaca removida |
 | 17/10/2026 | Aba Nutrição: diário de refeições, TACO, macros, micronutrientes, metas e tendências |
 | 17/10/2026 | Abertura do app instalado já começa só com o símbolo (sem o quadrado verde) |
+| 17/10/2026 | Animação de recorde no treino: medalha, balão e confetes |
