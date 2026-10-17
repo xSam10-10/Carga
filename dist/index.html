@@ -350,6 +350,13 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .tmrv{display:grid;place-items:center;color:var(--danger)}
 .kv.rep em{display:block;font-style:normal;font-size:12px;font-weight:700;margin-top:2px}.kv.rep em.up{color:var(--accent)}.kv.rep em.down{color:var(--danger)}
 .cal.mcal{gap:4px}.cal .cd{aspect-ratio:1;display:grid;place-items:center;border-radius:50%;font:600 14px var(--display)}.cal .cd.has{background:var(--accent);color:var(--accent-ink)}
+.perctl{display:flex;flex-direction:column;gap:6px}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--surface-2);border-radius:11px;padding:3px;gap:2px}
+.seg button{min-height:34px;border-radius:9px;font-weight:600;font-size:14px;color:var(--muted)}
+.seg button.on{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg.sm{background:transparent;padding:0;gap:6px}
+.seg.sm button{min-height:30px;font-size:13px;border:1px solid var(--line)}
+.seg.sm button.on{background:var(--accent-soft);color:var(--accent);border-color:transparent;box-shadow:none}
 .plates{display:flex;gap:6px;align-items:center;flex-wrap:wrap;min-height:60px}
 .plate{display:grid;place-items:center;width:calc(64px*var(--s));height:calc(64px*var(--s));border-radius:50%;background:var(--fg);color:var(--bg);font:700 14px var(--display);font-variant-numeric:tabular-nums}
 .wbox{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:12px;align-items:center}
@@ -1116,8 +1123,24 @@ setInterval(()=>{
 function niceMax(m){if(m<=0)return 1;const p=Math.pow(10,Math.floor(Math.log10(m)));for(const k of[1,1.2,1.5,2,2.5,3,4,5,6,8,10])if(k*p>=m)return k*p;return 10*p}
 function barChart(vals,labels,fy){const W=340,H=170,pl=40,pb=22,pt=8;const max=3*niceMax(Math.max(...vals,0)/3);const bw=(W-pl)/vals.length;let g='';for(let i=0;i<=3;i++){const y=pt+(H-pt-pb)*(1-i/3);g+=`<line class="grid" x1="${pl}" x2="${W}" y1="${y}" y2="${y}"/><text class="ax" x="${pl-6}" y="${y+3}" text-anchor="end">${fy(max*i/3)}</text>`}vals.forEach((v,i)=>{const h=Math.max(v>0?2:0,(H-pt-pb)*(v/max));const x=pl+i*bw+bw*.18;g+=`<rect class="bx${i===vals.length-1?' now':''}" x="${x.toFixed(1)}" y="${(H-pb-h).toFixed(1)}" width="${(bw*.64).toFixed(1)}" height="${h.toFixed(1)}" rx="3"><title>${labels[i]||''} ${fy(v)}</title></rect>`;if(labels[i])g+=`<text class="ax" x="${(x+bw*.32).toFixed(1)}" y="${H-6}" text-anchor="middle">${labels[i]}</text>`});return`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img">${g}</svg>`}
 function lineChart(pts,fy){if(pts.length<2)return`<p class="empty small">Registre pelo menos duas sessões para ver a evolução.</p>`;const W=340,H=180,pl=44,pr=10,pt=10,pb=24;let mn=Math.min(...pts.map(p=>p.y)),mx=Math.max(...pts.map(p=>p.y));if(mn===mx){mn-=1;mx+=1}const pad=(mx-mn)*.12;mn=Math.max(0,mn-pad);mx+=pad;const X=i=>pl+(W-pl-pr)*i/(pts.length-1),Y=v=>pt+(H-pt-pb)*(1-(v-mn)/(mx-mn));let g='';for(let i=0;i<=3;i++){const v=mn+(mx-mn)*i/3,y=Y(v);g+=`<line class="grid" x1="${pl}" x2="${W-pr}" y1="${y}" y2="${y}"/><text class="ax" x="${pl-6}" y="${y+3}" text-anchor="end">${fy(v)}</text>`}const d=pts.map((p,i)=>`${i?'L':'M'}${X(i).toFixed(1)} ${Y(p.y).toFixed(1)}`).join(' ');g+=`<path class="ar" d="${d} L${X(pts.length-1)} ${H-pb} L${pl} ${H-pb}Z"/><path class="ln" d="${d}"/>`;pts.forEach((p,i)=>{if(pts.length<=24||i===pts.length-1)g+=`<circle class="pt${i===pts.length-1?' last':''}" cx="${X(i).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="${i===pts.length-1?4.5:3}"><title>${dShort(p.x)}: ${fy(p.y)}</title></circle>`});[0,Math.floor((pts.length-1)/2),pts.length-1].forEach((i,k)=>g+=`<text class="ax" x="${X(i)}" y="${H-6}" text-anchor="${k===0?'start':k===2?'end':'middle'}">${dShort(pts[i].x)}</text>`);return`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img">${g}</svg>`}
+/* períodos de gráfico */
+const PER=[['7d','7 dias'],['mes','Mês'],['ano','Ano'],['tudo','Tudo']];
+const GRANS={'7d':['dia'],mes:['dia','semana'],ano:['semana','mes'],tudo:['semana','mes']};
+const GL={dia:'Dia a dia',semana:'Semana a semana',mes:'Mês a mês'};
+const PER_TXT={'7d':'últimos 7 dias',mes:'últimos 30 dias',ano:'últimos 12 meses',tudo:'desde o início'};
+function perOf(key){UI.per=UI.per||{};const o=UI.per[key]||(UI.per[key]={p:'mes',g:'dia'});if(!GRANS[o.p].includes(o.g))o.g=GRANS[o.p][0];return o}
+function firstTs(){const c=[...S.workouts.map(w=>w.start),...S.measures.map(m=>m.date),...Object.keys(S.water||{}).filter(k=>(S.water[k]||[]).length).map(k=>{const[y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d).getTime()})];return c.length?sod(Math.min(...c)):null}
+function perRange(p){const today=sod(Date.now()),end=addDays(today,1);const a=p==='7d'?addDays(today,-6):p==='mes'?addDays(today,-29):p==='ano'?addDays(today,-364):Math.min(firstTs()??addDays(today,-29),addDays(today,-6));return[a,end]}
+function prevRange(p){if(p==='tudo')return null;const[a,z]=perRange(p);const len=Math.round((z-a)/DAY);return[addDays(a,-len),a]}
+function buckets(p,g){const[a,z]=perRange(p);const out=[];
+ if(g==='dia'){for(let d=a;d<z;d=addDays(d,1))out.push([d,addDays(d,1),p==='7d'?DL[new Date(d).getDay()]:String(new Date(d).getDate())])}
+ else if(g==='semana'){for(let d=weekStart(a);d<z;d=addDays(d,7))out.push([Math.max(d,a),Math.min(addDays(d,7),z),dShort(Math.max(d,a))])}
+ else{const s0=new Date(a);let d=new Date(s0.getFullYear(),s0.getMonth(),1).getTime();const multiY=new Date(a).getFullYear()!==new Date(z-1).getFullYear();while(d<z){const dd=new Date(d),n=new Date(dd.getFullYear(),dd.getMonth()+1,1).getTime();out.push([Math.max(d,a),Math.min(n,z),MES[dd.getMonth()]+(multiY&&(dd.getMonth()===0||d<=a)?' '+String(dd.getFullYear()).slice(2):'')]);d=n}}
+ return out}
+function sparseLabels(bk,n=7){const step=Math.max(1,Math.ceil(bk.length/n));return bk.map((b,i)=>(bk.length-1-i)%step===0?b[2]:'')}
+function perCtl(key,{gran=true}={}){const o=perOf(key);return`<div class="perctl"><div class="seg" role="tablist" aria-label="Período">${PER.map(([k,l])=>`<button role="tab" aria-selected="${o.p===k}" class="${o.p===k?'on':''}" data-a="perP" data-key="${key}" data-k="${k}">${l}</button>`).join('')}</div>${gran&&GRANS[o.p].length>1?`<div class="seg sm">${GRANS[o.p].map(g=>`<button class="${o.g===g?'on':''}" data-a="perG" data-key="${key}" data-k="${g}">${GL[g]}</button>`).join('')}</div>`:''}</div>`}
 const SERIES_C=['var(--accent)','var(--amber)','var(--violet)'];
-function multiLine(series,labels){const W=340,H=170,pl=30,pr=8,pt=10,pb=22;const n=labels.length;const max=niceMax(Math.max(1,...series.flat()));const X=i=>pl+(W-pl-pr)*i/(n-1),Y=v=>pt+(H-pt-pb)*(1-v/max);let g='';
+function multiLine(series,labels){const W=340,H=170,pl=30,pr=8,pt=10,pb=22;const n=Math.max(2,labels.length);const max=niceMax(Math.max(1,...series.flat()));const X=i=>pl+(W-pl-pr)*i/(n-1),Y=v=>pt+(H-pt-pb)*(1-v/max);let g='';
  for(let i=0;i<=3;i++){const v=max*i/3,y=Y(v);g+=`<line class="grid" x1="${pl}" x2="${W-pr}" y1="${y}" y2="${y}"/><text class="ax" x="${pl-5}" y="${y+3}" text-anchor="end">${fmt(v)}</text>`}
  series.forEach((sr,k)=>{g+=`<path fill="none" stroke="${SERIES_C[k]}" stroke-width="2.2" stroke-linejoin="round" d="${sr.map((v,i)=>`${i?'L':'M'}${X(i).toFixed(1)} ${Y(v).toFixed(1)}`).join(' ')}"/>`;sr.forEach((v,i)=>{if(i===n-1)g+=`<circle cx="${X(i)}" cy="${Y(v)}" r="3.5" fill="${SERIES_C[k]}"/>`})});
  labels.forEach((l,i)=>{if(l)g+=`<text class="ax" x="${X(i)}" y="${H-6}" text-anchor="middle">${l}</text>`});return`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Séries por músculo">${g}</svg>`}
@@ -1267,20 +1290,19 @@ function routineFromWorkout(w,name){return{id:uid(),name:name||w.name,notes:'',f
 /* ---------- PERFIL ---------- */
 VIEWS.perfil=()=>{
  const ws=[...S.workouts].sort((a,b)=>b.start-a.start);const wk=weekStart(Date.now());const m=UI.pm;
- const R=UI.pr||'12s';let bk;
- if(R==='1a'||R==='tudo'){const n0=new Date();let nM=12;if(R==='tudo'&&S.workouts.length){const f=new Date(Math.min(...S.workouts.map(w=>w.start)));nM=Math.min(48,Math.max(2,(n0.getFullYear()-f.getFullYear())*12+n0.getMonth()-f.getMonth()+1))}bk=[...Array(nM)].map((_,i)=>{const a=new Date(n0.getFullYear(),n0.getMonth()-(nM-1-i),1).getTime();return[a,new Date(n0.getFullYear(),n0.getMonth()-(nM-1-i)+1,1).getTime(),MES[new Date(a).getMonth()]]})}
- else{const n=R==='6m'?26:12;bk=[...Array(n)].map((_,i)=>{const a=addDays(wk,-7*(n-1-i));return[a,addDays(a,7),dShort(a)]})}
- const step=Math.ceil(bk.length/6);const weeks=bk.map(b=>b[0]);
+ const PO=perOf('perfil');const bk=buckets(PO.p,PO.g);
  const val=w=>m==='dur'?(w.end-w.start)/36e5:m==='vol'?wStats(w).vol:wStats(w).reps;
- const vals=bk.map(([a,z])=>S.workouts.filter(w=>w.start>=a&&w.start<z).reduce((x,w)=>x+val(w),0));
+ const vals=bk.map(([a,z])=>S.workouts.filter(w=>w.start>=a&&w.start<z).reduce((x,w)=>x+val(w),0));const tot=vals.reduce((a,b)=>a+b,0);
  const curV=S.workouts.filter(w=>w.start>=wk).reduce((x,w)=>x+val(w),0);
  const fy=m==='dur'?v=>fmt(v)+'h':v=>v>=1000?fmt(v/1000)+' mil':fmtInt(v);
  const cw=curV;const head=m==='dur'?`<b>${fmtDur(cw*36e5)}</b> esta semana`:m==='vol'?`<b>${fmtInt(cw)} kg</b> esta semana`:`<b>${fmtInt(cw)} reps</b> esta semana`;
  const totalH=S.workouts.reduce((a,w)=>a+(w.end-w.start),0);
  let h=`<header class="top"><h1 class="big">Perfil</h1><button class="btn sm sec" data-a="go" data-v="perfis">Trocar perfil</button><button class="ib" data-a="backupSheet" aria-label="Exportar dados">${I.upload}</button><button class="ib" data-a="go" data-v="config" aria-label="Configurações">${I.gear}</button></header><main class="page">
  <div class="prof"><button class="ava ava-edit" data-a="photoSheet" aria-label="Alterar foto do perfil">${avaIn(S.profile)}<span class="ava-cam">${I.camera}</span></button><div style="flex:1;min-width:0"><h2>${esc(S.profile.name)}</h2><div class="stat3"><div><span class="lab">Treinos</span><b>${ws.length}</b></div><div><span class="lab">Horas</span><b>${fmtInt(totalH/36e5)}</b></div><div><span class="lab">Sequência</span><b>${streakWeeks()} sem</b></div></div></div></div>
- <div class="row" style="flex-wrap:wrap"><div class="headline spacer">${head}</div><span class="fsel" style="width:auto"><select id="pr-rng" data-f="prRng" aria-label="Período do gráfico">${[['12s','Últimas 12 semanas'],['6m','Últimos 6 meses'],['1a','Último ano (por mês)'],['tudo','Desde o início (por mês)']].map(([k,l])=>`<option value="${k}" ${R===k?'selected':''}>${l}</option>`).join('')}</select></span></div>
- ${barChart(vals,bk.map((b,i)=>(bk.length-1-i)%step===0?b[2]:''),fy)}
+ <div class="headline">${head}</div>
+ ${perCtl('perfil')}
+ ${barChart(vals,sparseLabels(bk),fy)}
+ <p class="muted small" style="margin:-6px 0 0">Total nos ${PER_TXT[PO.p]}: <b style="color:var(--fg)">${m==='dur'?fmtDur(tot*36e5):m==='vol'?fmtInt(tot)+' kg':fmtInt(tot)+' reps'}</b> · ${GL[PO.g].toLowerCase()}</p>
  <div class="chips">${[['dur','Duração'],['vol','Volume'],['reps','Repetições']].map(([k,l])=>`<button class="chip${m===k?' on':''}" data-a="pm" data-k="${k}">${l}</button>`).join('')}</div>
  <h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Exercícios</button><button class="tile" data-a="go" data-v="medidas">${I.body}Medidas</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button><button class="tile" data-a="go" data-v="dados">${I.idcard}Dados pessoais</button></div>
  <h3 class="sh">Tema</h3>${themePicker()}
@@ -1312,9 +1334,9 @@ VIEWS.exercicio=p=>{const x=ex(p.id),t=tOf(x),tab=p.tab||'resumo',hist=exHistory
  if(x.img>=0)h+=`<details class="card mapbox"><summary>Músculos trabalhados</summary>${bodyMap(c)}</details>`;
  const metrics=t==='wr'?[['maxKg','Maior peso',v=>fmt(v)+' kg'],['best1','Máximo para 1 repetição',v=>fmt(v)+' kg'],['setVol','Melhor série',v=>fmtInt(v)+' kg'],['vol','Volume da sessão',v=>fmtInt(v)+' kg']]:t==='bw'||t==='as'?[['maxReps','Mais repetições',v=>fmtInt(v)],['reps','Repetições na sessão',v=>fmtInt(v)]]:t==='dt'?[['maxKm','Maior distância',v=>fmt(v)+' km'],['maxT','Maior tempo',v=>clock(v*1000)]]:[['maxT','Maior tempo',v=>clock(v*1000)]];
  if(!hist.length)return h+`<div class="emptybox">${I.chart}<b>Sem registros ainda</b><span>Quando você fizer este exercício, a evolução e os recordes aparecem aqui.</span></div>`+pinnedBlock(x)+'</main>';
- const mk=metrics.find(z=>z[0]===p.m)||metrics[0],rng=p.rng||'1a',from=rng==='3m'?addDays(Date.now(),-91):rng==='1a'?addDays(Date.now(),-365):0;
+ const mk=metrics.find(z=>z[0]===p.m)||metrics[0],EP=perOf('ex'),from=perRange(EP.p)[0];
  const pts=hist.filter(hh=>hh.w.start>=from&&hh[mk[0]]>0).slice(-60).map(hh=>({x:hh.w.start,y:hh[mk[0]]}));const lastP=pts[pts.length-1];
- h+=`<div class="row"><div class="spacer"><b class="num" style="font-size:24px">${lastP?mk[2](lastP.y):'—'}</b> <span class="muted small">${lastP?dShort(lastP.x):''}</span></div><span class="fsel" style="width:auto"><select id="ex-rng" data-f="exRng" aria-label="Período">${[['3m','Últimos 3 meses'],['1a','Último ano'],['all','Todo o período']].map(([k,l])=>`<option value="${k}" ${rng===k?'selected':''}>${l}</option>`).join('')}</select></span></div>${lineChart(pts,mk[2])}<div class="chips">${metrics.map(m=>`<button class="chip${m===mk?' on':''}" data-a="exMetric" data-k="${m[0]}">${m[1]}</button>`).join('')}</div>`;
+ h+=`<div class="row"><div class="spacer"><b class="num" style="font-size:24px">${lastP?mk[2](lastP.y):'—'}</b> <span class="muted small">${lastP?dShort(lastP.x):''}</span></div></div>${perCtl('ex',{gran:false})}${lineChart(pts,mk[2])}<div class="chips">${metrics.map(m=>`<button class="chip${m===mk?' on':''}" data-a="exMetric" data-k="${m[0]}">${m[1]}</button>`).join('')}</div>`;
  const best={};for(const m of metrics)best[m[0]]=Math.max(...hist.map(z=>z[m[0]]));
  h+=`<div class="row"><h3 class="sh spacer" style="margin:0">${I.trophy.replace('class="i"','class="i" style="width:15px;height:15px;vertical-align:-2px;color:var(--amber)"')} Recordes pessoais</h3><button class="ib" data-a="prInfo" aria-label="O que significa cada recorde">?</button></div><div class="kv">${metrics.map(m=>`<div><span class="lab">${m[1]}</span><b>${m[2](best[m[0]])}</b></div>`).join('')}<div><span class="lab">Sessões</span><b>${hist.length}</b></div></div>`;
  if(t==='wr'){const byR={};for(const hh of hist)for(const s2 of hh.sets){if(s2.type==='w')continue;const r=num(s2.reps),kg=num(s2.kg);if(!r||r>20||kg==null)continue;if(!byR[r]||kg>byR[r].kg)byR[r]={kg,ts:hh.w.start}}const rs=Object.keys(byR).map(Number).sort((a,b)=>a-b);if(rs.length)h+=`<h3 class="sh">Melhor carga por repetições</h3><div class="card" style="padding:6px 14px">${rs.map(r=>`<div class="mrow"><span><b class="num" style="font-size:18px">${r} reps</b></span><span><b class="num" style="font-size:18px">${fmt(byR[r].kg)} kg</b> <span class="muted small">${dShort(byR[r].ts)}</span></span></div>`).join('')}</div>`}
@@ -1330,15 +1352,15 @@ VIEWS.estatisticas=()=>{
  const today=sod(Date.now());const days=[...Array(7)].map((_,i)=>addDays(today,i-6));const sel=UI.statDay;
  const from=sel??days[0],to=sel!=null?addDays(sel,1):addDays(today,1);
  const c7=muscleSets(S.workouts.filter(w=>w.start>=from&&w.start<to));
- const R=UI.statRange;const rFrom=addDays(today,-R+1);const cR=muscleSets(S.workouts.filter(w=>w.start>=rFrom));
+ const SG=perOf('sg'),[sgA]=perRange(SG.p);const cR=muscleSets(S.workouts.filter(w=>w.start>=sgA));
  const hb=Object.entries(cR).filter(([m])=>m!=='Cardio').sort((a,b)=>b[1]-a[1]);
- const g30=muscleSets(S.workouts.filter(w=>w.start>=addDays(today,-29))),g60=muscleSets(S.workouts.filter(w=>w.start>=addDays(today,-59)&&w.start<addDays(today,-29)));
+ const RD=perOf('rad'),[rdA]=perRange(RD.p),rdP=prevRange(RD.p);const g30=muscleSets(S.workouts.filter(w=>w.start>=rdA)),g60=rdP?muscleSets(S.workouts.filter(w=>w.start>=rdP[0]&&w.start<rdP[1])):{};
  const ax=Object.keys(GROUPS);const sumG=(c,g)=>GROUPS[g].reduce((a,m)=>a+(c[m]||0),0);
  const all=S.workouts;const tot={n:all.length,dur:all.reduce((a,w)=>a+(w.end-w.start),0),vol:all.reduce((a,w)=>a+wStats(w).vol,0),sets:all.reduce((a,w)=>a+wStats(w).sets,0)};
  const top=Object.entries(c7).sort((a,b)=>b[1]-a[1]).slice(0,4);
- const MUS=UI.mtl||['Peito','Dorsais','Quadríceps'];const wk0=weekStart(Date.now());const wks=[...Array(12)].map((_,i)=>addDays(wk0,-7*(11-i)));
- const series=MUS.map(m=>wks.map(a=>{const c=muscleSets(S.workouts.filter(w=>w.start>=a&&w.start<addDays(a,7)));return c[m]||0}));
- const TR=UI.topR||'90';const tFrom=TR==='tudo'?0:addDays(today,-(+TR)+1);const cnt={};for(const w of S.workouts){if(w.start<tFrom)continue;for(const id of new Set(w.exercises.map(e=>e.exId)))cnt[id]=(cnt[id]||0)+1}
+ const MUS=UI.mtl||['Peito','Dorsais','Quadríceps'];const ML=perOf('ml'),mbk=buckets(ML.p,ML.g);const mcs=mbk.map(([a,z])=>muscleSets(S.workouts.filter(w=>w.start>=a&&w.start<z)));
+ const series=MUS.map(m=>mcs.map(c=>c[m]||0));
+ const TP=perOf('top'),[tFrom]=perRange(TP.p);const cnt={};for(const w of S.workouts){if(w.start<tFrom)continue;for(const id of new Set(w.exercises.map(e=>e.exId)))cnt[id]=(cnt[id]||0)+1}
  const topEx=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,UI.topN||8);
  return bar('Estatísticas')+`<main class="page">
  <button class="tile" data-a="go" data-v="relatorio">${I.cal}<span class="spacer">Relatório mensal</span>${I.chev}</button>
@@ -1347,16 +1369,18 @@ VIEWS.estatisticas=()=>{
  ${bodyMap(c7)}
  <p class="muted small" style="text-align:center;margin:0">${top.length?'Mais trabalhados: '+top.map(([m,v])=>`${m} (${fmt(v)})`).join(', '):'Nenhuma série registrada neste período.'} Toque num dia para filtrar.</p>
  <h3 class="sh">${I.bars.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Séries por grupo muscular</h3>
- <div class="chips">${[7,30,90].map(r=>`<button class="chip${R===r?' on':''}" data-a="statRange" data-k="${r}">${r} dias</button>`).join('')}</div>
+ ${perCtl('sg',{gran:false})}
  ${hb.length?`<div class="hb">${hb.map(([m,v])=>`<span>${m}</span><i style="width:${(v/hb[0][1]*100).toFixed(0)}%"></i><b>${fmt(v)}</b>`).join('')}</div><p class="muted small" style="margin:0">Músculo principal conta 1 série; secundário conta meia. Aquecimento não entra.</p>`:'<p class="empty">Sem séries no período.</p>'}
  <h3 class="sh">${I.radar.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Distribuição muscular</h3>
+ ${perCtl('rad',{gran:false})}
  ${radar(ax,ax.map(g=>sumG(g30,g)),ax.map(g=>sumG(g60,g)))}
- <div class="legend"><span><i></i>Últimos 30 dias</span><span><i class="o"></i>30 dias anteriores</span></div>
- <h3 class="sh">${I.chart.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Séries por músculo · últimas 12 semanas</h3>
- ${multiLine(series,wks.map((a,i)=>i%3===2||i===0?dShort(a):''))}
+ <div class="legend"><span><i></i>${PER_TXT[RD.p][0].toUpperCase()+PER_TXT[RD.p].slice(1)}</span>${rdP?'<span><i class="o"></i>Período anterior</span>':''}</div>
+ <h3 class="sh">${I.chart.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Séries por músculo ao longo do tempo</h3>
+ ${perCtl('ml')}
+ ${multiLine(series,sparseLabels(mbk,6))}
  <div class="legend" style="flex-wrap:wrap">${MUS.map((m,i)=>`<span><i style="background:${SERIES_C[i]}"></i>${m}</span>`).join('')}</div>
  <details class="card"><summary class="small" style="cursor:pointer;font-weight:600">Escolher músculos (até 3)</summary><div class="chips" style="margin-top:10px">${MUSCLES.filter(m=>!['Cardio','Corpo inteiro','Outro'].includes(m)).map(m=>`<button class="chip${MUS.includes(m)?' on':''}" data-a="mtl" data-k="${m}">${m}</button>`).join('')}</div></details>
- <div class="row"><h3 class="sh spacer" style="margin:0">${I.trophy.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Exercícios mais feitos</h3><span class="fsel" style="width:auto"><select id="top-rng" data-f="topRng" aria-label="Período">${[['30','30 dias'],['90','3 meses'],['365','1 ano'],['tudo','Desde o início']].map(([k,l])=>`<option value="${k}" ${TR===k?'selected':''}>${l}</option>`).join('')}</select></span></div>
+ <div class="row"><h3 class="sh spacer" style="margin:0">${I.trophy.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Exercícios mais feitos</h3></div>${perCtl('top',{gran:false})}
  ${topEx.length?`<div class="list">${topEx.map(([id,n])=>{const x=ex(id);return`<button class="exrow" data-a="openEx" data-id="${id}">${avatar(x,44)}<span class="exrow-t"><b>${esc(x.name)}</b><span class="sub">${n} ${n===1?'vez':'vezes'}</span></span><span class="chev">${I.chev}</span></button>`}).join('')}</div>${Object.keys(cnt).length>(UI.topN||8)?`<button class="btn sec" data-a="topMore">Ver mais</button>`:''}`:'<p class="empty">Nenhum treino no período.</p>'}
  <h3 class="sh">Desde o começo</h3><div class="kv"><div><span class="lab">Treinos</span><b>${tot.n}</b></div><div><span class="lab">Tempo</span><b>${fmtInt(tot.dur/36e5)} h</b></div><div><span class="lab">Volume</span><b>${fmt(tot.vol/1000)} t</b></div><div><span class="lab">Séries</span><b>${fmtInt(tot.sets)}</b></div></div>
  </main>`};
@@ -1396,12 +1420,12 @@ VIEWS.calendario=p=>{const now=new Date();const m=new Date(now.getFullYear(),now
 
 /* ---------- MEDIDAS ---------- */
 const MF=[['weight','Peso','kg'],['fat','Gordura corporal','%'],['waist','Cintura','cm'],['chest','Peito','cm'],['arm','Braço','cm'],['thigh','Coxa','cm'],['hip','Quadril','cm'],['calf','Panturrilha','cm']];
-VIEWS.medidas=p=>{const f=p.f||'weight';const fd=MF.find(z=>z[0]===f);const ms=[...S.measures].sort((a,b)=>a.date-b.date);const pts=ms.filter(m=>num(m[f])!=null).map(m=>({x:m.date,y:num(m[f])}));
+VIEWS.medidas=p=>{const f=p.f||'weight';const fd=MF.find(z=>z[0]===f);const ms=[...S.measures].sort((a,b)=>a.date-b.date);const MP=perOf('med'),[mA]=perRange(MP.p);const pts=ms.filter(m=>num(m[f])!=null&&m.date>=mA).map(m=>({x:m.date,y:num(m[f])}));
  const latest={};for(const m of ms)for(const[k]of MF)if(num(m[k])!=null)latest[k]=num(m[k]);
  let h=bar('Medidas',{right:`<button class="tb" data-a="newMeasure">Registrar</button>`})+'<main class="page">';
  if(!ms.length)return h+`<div class="emptybox">${I.body}<b>Nenhuma medida registrada</b><span>Acompanhe peso, gordura e circunferências ao longo do tempo.</span><button class="btn pri sm" data-a="newMeasure">Registrar medidas</button></div></main>`;
  h+=`<div class="kv">${MF.filter(([k])=>latest[k]!=null).map(([k,l,u])=>`<div><span class="lab">${l}</span><b>${fmt(latest[k])}</b> <span class="muted small">${u}</span></div>`).join('')}</div>
- <div class="chips">${MF.map(([k,l])=>`<button class="chip${f===k?' on':''}" data-a="mField" data-k="${k}">${l}</button>`).join('')}</div>${lineChart(pts,v=>fmt(v)+' '+fd[2])}
+ <div class="chips">${MF.map(([k,l])=>`<button class="chip${f===k?' on':''}" data-a="mField" data-k="${k}">${l}</button>`).join('')}</div>${perCtl('med',{gran:false})}${lineChart(pts,v=>fmt(v)+' '+fd[2])}
  <h3 class="sh">Registros</h3><div class="card" style="padding:4px 14px">${[...ms].reverse().map(m=>`<button class="mrow" data-a="editMeasure" data-id="${m.id}"><span class="date">${new Date(m.date).toLocaleDateString('pt-BR')}</span><span class="small">${MF.filter(([k])=>num(m[k])!=null).map(([k,l,u])=>`${l} <b>${fmt(m[k])}</b>${u==='%'?'%':''}`).join(' · ')}</span></button>`).join('')}</div>`;
  return h+'</main>'};
 VIEWS.medidaForm=p=>{const m=p.m;return bar(p.isNew?'Nova medida':'Editar medida',{left:`<button class="tb" data-a="back">Cancelar</button>`,right:`<button class="btn sm pri" data-a="saveMeasure">Salvar</button>`})+`<main class="page"><div class="form"><label class="fld"><span>Data</span><input class="inp" type="date" id="m-date" data-f="mDate" value="${toDateInput(m.date)}"></label><div class="row2">${MF.map(([k,l,u])=>`<label class="fld"><span>${l} (${u})</span><input class="inp" id="m-${k}" inputmode="decimal" data-f="mVal" data-k="${k}" value="${esc(m[k]??'')}"></label>`).join('')}</div></div>${p.isNew?'':`<button class="btn ghost danger wide" data-a="delMeasure">Excluir registro</button>`}</main>`};
@@ -1520,10 +1544,12 @@ VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=auto
  <div class="fld"><span>Objetivo</span><div class="chips">${GOALS.map(([k,l])=>`<button class="chip${(p.goal||'manter')===k?' on':''}" data-a="pdGoal" data-k="${k}">${l}</button>`).join('')}</div></div></section>
  <button class="btn pri" data-a="go" data-v="saude">${I.heart} Ver métricas de saúde</button></main>`};
 
-function waterChart(days){const W=340,H=150,pl=34,pb=20,pt=8;const vals=days.map(d=>waterOn(dkey(d))),goals=days.map(d=>waterGoal(d).ml);const max=niceMax(Math.max(...vals,...goals));const bw=(W-pl)/days.length;const Y=v=>pt+(H-pt-pb)*(1-v/max);let g='';
- for(let i=0;i<=2;i++){const v=max*i/2,y=Y(v);g+=`<line class="grid" x1="${pl}" x2="${W}" y1="${y}" y2="${y}"/><text class="ax" x="${pl-5}" y="${y+3}" text-anchor="end">${v>=1000?fmt(v/1000)+'L':fmtInt(v)}</text>`}
- days.forEach((d,i)=>{const x=pl+i*bw+bw*.2,w=bw*.6,v=vals[i],ok=v>=goals[i]&&v>0;g+=`<rect class="bx${ok?' now':''}" x="${x.toFixed(1)}" y="${Y(v).toFixed(1)}" width="${w.toFixed(1)}" height="${(H-pb-Y(v)).toFixed(1)}" rx="4"><title>${dShort(d)}: ${fmtInt(v)} de ${fmtInt(goals[i])} ml</title></rect><line x1="${(x-3).toFixed(1)}" x2="${(x+w+3).toFixed(1)}" y1="${Y(goals[i]).toFixed(1)}" y2="${Y(goals[i]).toFixed(1)}" stroke="var(--fg)" stroke-width="1.5" stroke-dasharray="3 2" opacity=".55"/><text class="ax" x="${(x+w/2).toFixed(1)}" y="${H-5}" text-anchor="middle">${DL[new Date(d).getDay()]}</text>`});
- return`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Água nos últimos 7 dias">${g}</svg>`}
+function waterSeries(){const o=perOf('agua'),bk=buckets(o.p,o.g),today=sod(Date.now());const wk=Object.keys(S.water||{}).filter(k=>(S.water[k]||[]).length).sort()[0];const f0=wk?(()=>{const[y,m,d]=wk.split('-').map(Number);return new Date(y,m-1,d).getTime()})():today;
+ return bk.map(([a,z,l])=>{let tot=0,gs=0,n=0,hit=0;for(let d=Math.max(a,f0);d<z&&d<=today;d=addDays(d,1)){const v=waterOn(dkey(d)),gm=waterGoal(d).ml;tot+=v;gs+=gm;n++;if(v>0&&v>=gm)hit++}return{a,z,l,avg:n?tot/n:0,goal:n?gs/n:0,n,hit,tot}})}
+function waterChart(rows,g){const W=340,H=160,pl=34,pb=20,pt=8;const max=niceMax(Math.max(1,...rows.map(r=>r.avg),...rows.map(r=>r.goal)));const bw=(W-pl)/rows.length;const Y=v=>pt+(H-pt-pb)*(1-v/max);let gg='';const labs=sparseLabels(rows.map(r=>[0,0,r.l]));
+ for(let i=0;i<=2;i++){const v=max*i/2,y=Y(v);gg+=`<line class="grid" x1="${pl}" x2="${W}" y1="${y}" y2="${y}"/><text class="ax" x="${pl-5}" y="${y+3}" text-anchor="end">${v>=1000?fmt(v/1000)+'L':fmtInt(v)}</text>`}
+ rows.forEach((r,i)=>{const x=pl+i*bw+bw*.18,w=Math.max(1.5,bw*.64),ok=r.avg>0&&r.avg>=r.goal;gg+=`<rect class="bx${ok?' now':''}" x="${x.toFixed(1)}" y="${Y(r.avg).toFixed(1)}" width="${w.toFixed(1)}" height="${(H-pb-Y(r.avg)).toFixed(1)}" rx="${Math.min(4,w/2).toFixed(1)}"><title>${r.l}: ${fmtInt(r.avg)} ml${g==='dia'?'':' por dia'} · meta ${fmtInt(r.goal)} ml</title></rect>`;if(rows.length<=40)gg+=`<line x1="${(x-2).toFixed(1)}" x2="${(x+w+2).toFixed(1)}" y1="${Y(r.goal).toFixed(1)}" y2="${Y(r.goal).toFixed(1)}" stroke="var(--fg)" stroke-width="1.3" stroke-dasharray="3 2" opacity=".5"/>`;if(labs[i])gg+=`<text class="ax" x="${(x+w/2).toFixed(1)}" y="${H-5}" text-anchor="middle">${labs[i]}</text>`});
+ return`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Consumo de água">${gg}</svg>`}
 
 function waterAvatar(sex,pct,prevPct){const arms=(a,b,c)=>{const one=(sx)=>{const R=(x,y,w,h,r,ang,px,py)=>{const X=sx<0?140-x-w:x,PX=sx<0?140-px:px;return`<rect x="${X}" y="${y}" width="${w}" height="${h}" rx="${r}" transform="rotate(${sx*ang} ${PX} ${py})"/>`};return R(...a)+R(...b)+`<circle cx="${sx<0?140-c[0]:c[0]}" cy="${c[1]}" r="${c[2]}"/>`};return one(1)+one(-1)};const T=12,B=306,lvl=p=>B-(B-T)*Math.max(0,Math.min(1,p));const f=sex==='f';
  const male=`<ellipse cx="70" cy="34" rx="17" ry="20"/><rect x="62" y="48" width="16" height="16" rx="4"/><path d="M42 66Q70 57 98 66Q105 68 105 77L100 152L40 152L35 77Q35 68 42 66Z"/>${arms([25,70,15,64,7.5,9,32,70],[21,126,13,54,6.5,4,27,126],[25,184,7])}<path d="M40 148L100 148L102 198L74 198L70 182L66 198L38 198Z"/><rect x="40" y="190" width="25" height="104" rx="12"/><rect x="75" y="190" width="25" height="104" rx="12"/><ellipse cx="51" cy="298" rx="14" ry="7"/><ellipse cx="89" cy="298" rx="14" ry="7"/>`;
@@ -1536,14 +1562,14 @@ function waterAvatar(sex,pct,prevPct){const arms=(a,b,c)=>{const one=(sx)=>{cons
  <g class="sil-o" transform="translate(70 158) scale(1.03 1.015) translate(-70 -158)">${shape}</g><g class="sil-b">${shape}</g>
  <g clip-path="url(#wclip)">${pct>0?`<g id="wfill" style="transform:translateY(${lvl(prevPct??pct)}px)" data-to="${lvl(pct)}"><g class="wave" fill="url(#wgrad)">${wave}</g></g>`:''}</g>${hair}<g class="det">${det}</g></svg>`}
 VIEWS.agua=()=>{const now=Date.now(),k=dkey(now),log=(S.water&&S.water[k])||[],tot=waterOn(k),g=waterGoal(now),pct=g.ml?tot/g.ml:0,C=2*Math.PI*84;
- const days=[...Array(7)].map((_,i)=>addDays(sod(now),i-6));const v7=days.map(d=>waterOn(dkey(d)));const hit=days.filter(d=>{const v=waterOn(dkey(d));return v>0&&v>=waterGoal(d).ml}).length;
+ const WO=perOf('agua'),wrows=waterSeries(),wn=wrows.reduce((a,r)=>a+r.n,0),wtot=wrows.reduce((a,r)=>a+r.tot,0),hit=wrows.reduce((a,r)=>a+r.hit,0);
  return`<header class="top"><h1 class="big">Água</h1><button class="ib" data-a="waterCfg" aria-label="Ajustes da água">${I.gear}</button></header><main class="page">
  <section class="card form"><div class="wbox">${waterAvatar(S.profile.sex,pct,UI.wPrev)}<div class="wside"><div class="wtot">${fmtInt(tot)} ml<small>${Math.round(pct*100)}% de ${fmtInt(g.ml)} ml</small></div>${cupsOf().map((ml,i)=>`<button class="wcup${i?'':' alt'}" data-a="addWater" data-ml="${ml}">${I.drop}${fmtInt(ml)} ml</button>`).join('')}<button class="wcup alt" data-a="customWater">${I.plus}Outro</button></div></div>
   <p class="muted small" style="margin:0;text-align:center">${pct>=1?'Meta de hoje cumprida. Pode continuar se tiver sede.':`Faltam <b style="color:var(--fg)">${fmtInt(Math.max(0,g.ml-tot))} ml</b> para encher${S.profile.sex?'':'. Informe o sexo em Dados pessoais para escolher o avatar'}.`}</p></section>
  <section class="card"><span class="lab">Meta de hoje · ${fmtInt(g.ml)} ml</span><p class="muted small" style="margin:6px 0 0">${esc(g.how)}</p>${g.def?`<button class="btn sm pri" style="margin-top:10px" data-a="go" data-v="dados">Preencher dados pessoais</button>`:''}</section>
  <h3 class="sh">Hoje</h3>${log.length?`<div class="card" style="padding:4px 14px">${log.map((x,i)=>({x,i})).reverse().map(({x,i})=>`<div class="mrow"><span><b class="num" style="font-size:18px">${fmtInt(x.ml)} ml</b> <span class="muted small">${hhmm(x.t)}</span></span><button class="ib" data-a="delWater" data-i="${i}" aria-label="Remover ${x.ml} ml">${I.x}</button></div>`).join('')}</div>`:'<p class="empty">Nenhum copo registrado hoje. Toque num dos botões acima a cada copo.</p>'}
- <h3 class="sh">Últimos 7 dias</h3>${waterChart(days)}<p class="muted small" style="margin:0">A linha tracejada é a meta de cada dia. Barras cheias: meta batida.</p>
- <div class="stat3 card"><div><span class="lab">Média</span><b>${fmt(v7.reduce((a,b)=>a+b,0)/7/1000)} L</b></div><div><span class="lab">Metas batidas</span><b>${hit}/7</b></div><div><span class="lab">Sequência</span><b>${waterStreak()} dia${waterStreak()===1?'':'s'}</b></div></div></main>`};
+ <h3 class="sh">Histórico</h3>${perCtl('agua')}${waterChart(wrows,WO.g)}<p class="muted small" style="margin:0">${WO.g==='dia'?'Cada barra é um dia.':WO.g==='semana'?'Cada barra é a média diária da semana.':'Cada barra é a média diária do mês.'} A linha tracejada é a meta; barra cheia, meta batida.</p>
+ <div class="stat3 card"><div><span class="lab">Média por dia</span><b>${fmt(wn?wtot/wn/1000:0)} L</b></div><div><span class="lab">Metas batidas</span><b>${hit}/${wn}</b></div><div><span class="lab">Sequência</span><b>${waterStreak()} dia${waterStreak()===1?'':'s'}</b></div></div></main>`};
 
 const BMI_C=[[18.5,'Abaixo do peso','warn'],[25,'Peso saudável','ok'],[30,'Sobrepeso','warn'],[35,'Obesidade grau I','bad'],[40,'Obesidade grau II','bad'],[Infinity,'Obesidade grau III','bad']];
 function hc(label,value,badge,body){return`<section class="hcard"><span class="lab">${label}</span><div class="row" style="flex-wrap:wrap">${value}${badge||''}</div>${body}</section>`}
@@ -1772,7 +1798,8 @@ const A={
  delWorkout:d=>ask('Excluir treino?','Ele sai do histórico e das estatísticas. Não dá para desfazer.','Excluir',true).then(ok=>{closeSheet();if(ok){S.workouts=S.workouts.filter(x=>x.id!==d.id);recomputePRs();persist();toast('Treino excluído');tab(stack[0].v)}}),
  pm:d=>{UI.pm=d.k;rerender()},
  statDay:d=>{const v=+d.d;UI.statDay=UI.statDay===v?null:v;rerender()},
- statRange:d=>{UI.statRange=+d.k;rerender()},
+ perP:d=>{const o=perOf(d.key);o.p=d.k;o.g=GRANS[d.k][0];rerender()},
+ perG:d=>{perOf(d.key).g=d.k;rerender()},
  calNav:d=>{const p=top_().p;p.off=Math.min(0,(p.off||0)+(+d.d));p.day=null;rerender()},
  calDay:d=>{const p=top_().p;p.day=p.day===+d.d?null:+d.d;rerender()},
  mField:d=>{top_().p.f=d.k;rerender()},
@@ -1797,9 +1824,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheetOpen())closeSheet();if(e.key==='Enter'&&e.target.id==='ask-in'&&e.target.tagName==='INPUT')A.askOk()});
 document.addEventListener('input',e=>{const t=e.target,f=t.dataset.f;if(!f)return;const p=top_().p;const v=t.value;
  if(f==='q'){p.q=v;$('#exlist').innerHTML=exListHTML(p,top_().v==='picker');return}
- if(f==='exRng'){p.rng=v;rerender();return}
- if(f==='prRng'){UI.pr=v;rerender();return}
- if(f==='topRng'){UI.topR=v;rerender();return}
+
  if(f==='nxName'){p.f.name=v;return} if(f==='nxMu'){p.f.muscle=v;return} if(f==='nxEq'){p.f.equipment=v;return}
  if(f==='mDate'){const d=v.split('-');if(d.length===3)p.m.date=new Date(+d[0],d[1]-1,+d[2]).getTime();return}
  if(f==='mVal'){p.m[t.dataset.k]=v;return}
