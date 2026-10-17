@@ -13,8 +13,9 @@
   - fundo do ícone do app: `#22D481` → `#0A7A4E`, com o símbolo branco.
 - **A marca não muda com o tema nem com a cor de destaque.** Isso foi decidido de propósito, para ser reconhecível.
 - **Arquivos:**
-  - `icon.svg` (cantos arredondados, escala 0,9);
-  - `icon-maskable.svg` (sangrado, escala 0,74, cabe na zona segura do Android);
+  - `icon.svg` (favicon: cantos arredondados, escala 0,9);
+  - `tools/icon-any.svg` → `icon-192.png` e `icon-512.png`, os ícones "any" do manifesto: **só o símbolo, fundo transparente**, escala 0,314 e deslocado 24 unidades para baixo. O Android usa esse ícone na própria tela de abertura do app instalado, sobre o fundo preto. Com essas medidas (tiradas do vídeo do celular do usuário), ela fica idêntica à nossa abertura e não aparece mais o quadrado verde. Não volte a usar o quadrado verde aqui;
+  - `icon-maskable.svg` → `icon-maskable-512.png` (sangrado, escala 0,74, cabe na zona segura do Android): é o ícone da **tela inicial** do celular;
   - `tools/icon-apple.svg` (sangrado, escala 0,86);
   - `tools/logo-carga.svg` (símbolo + palavra, fundo preto).
 

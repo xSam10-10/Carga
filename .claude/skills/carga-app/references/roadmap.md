@@ -121,3 +121,4 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 17/10/2026 | Senha de entrada e calorias do treino pela frequência cardíaca |
 | 17/10/2026 | Calorias do treino passam a vir do relógio; frequência cardíaca removida |
 | 17/10/2026 | Aba Nutrição: diário de refeições, TACO, macros, micronutrientes, metas e tendências |
+| 17/10/2026 | Abertura do app instalado já começa só com o símbolo (sem o quadrado verde) |

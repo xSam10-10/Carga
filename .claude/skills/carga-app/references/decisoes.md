@@ -30,3 +30,4 @@ Registre aqui toda decisão nova, com data, para não voltar a discutir o que j�
 | 17/10/2026 | Nutrição no modelo do Samsung Health (vídeo do usuário), com a identidade do Carga | Referência escolhida pelo usuário; 5ª aba "Nutrição" |
 | 17/10/2026 | Base de alimentos: TACO 4ª ed. (NEPA/UNICAMP), valores por 100 g; dados do projeto taco-api (MIT) | Gratuita, brasileira, funciona offline; o Samsung usa FatSecret, que não tem dados abertos |
 | 17/10/2026 | Tendências da nutrição usam o seletor de período do app em vez de Dias/Semanas/Meses | Mantém o padrão dos outros gráficos (pedido anterior do usuário) |
+| 17/10/2026 | Ícone "any" do manifesto só com o símbolo, no tamanho da nossa abertura | O Android mostrava primeiro o quadrado verde e depois o símbolo; o usuário quer que já comece no símbolo sobre fundo preto |

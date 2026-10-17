@@ -84,9 +84,19 @@ def lockup():
         ww * k + 80, grad, (ww * k + 80) / 2 - 256, mark('url(#g)', '#000'), 600 + 1180 * k, k, wd)
 
 
+def icon_any(k=.314, dy=24):
+    """Ícone "any" do manifesto: só o símbolo, fundo transparente. O Android usa este ícone na tela de abertura
+    do app instalado (sobre o fundo preto do manifesto); na escala .28 ele aparece do mesmo tamanho do símbolo da
+    nossa abertura (medido no vídeo do celular), então a passagem para a página não tem salto. dy compensa o centro da
+    página, que fica um pouco abaixo do centro da janela. O ícone da tela inicial vem do maskable."""
+    grad = '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/></linearGradient></defs>' % (G0, G1)
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">%s<g transform="translate(256 %g) scale(%g) translate(-256 -256)">%s</g></svg>' % (grad, 256 + dy, k, mark('url(#g)'))
+
+
 def main():
     open(os.path.join(ROOT, 'icon.svg'), 'w').write(icon())
     open(os.path.join(ROOT, 'icon-maskable.svg'), 'w').write(icon(True))
+    open(os.path.join(ROOT, 'tools', 'icon-any.svg'), 'w').write(icon_any())
     open(os.path.join(ROOT, 'tools', 'logo-carga.svg'), 'w').write(lockup())
     open(os.path.join(ROOT, 'tools', 'icon-apple.svg'), 'w').write(icon(True, .86))  # iOS arredonda sozinho
     p = os.path.join(ROOT, 'app.html'); s = open(p, encoding='utf-8').read()
