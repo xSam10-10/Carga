@@ -27,7 +27,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Catálogo de 465 exercícios com fotos, passo a passo, filtros e criar exercício
 - ✅ Mapa corporal hiper-realista com 17 grupos
 - ✅ Importar histórico do Hevy
-- ✅ Calorias estimadas pela frequência cardíaca média (pop-up no fim do treino)
+- ✅ Calorias do treino registradas do relógio (pop-up no fim do treino)
 - 💡 Periodização em blocos (força, hipertrofia, deload)
 - 💡 Volume semanal por grupo com faixa recomendada e alerta de grupo esquecido
 - 💡 Mapa de recuperação muscular
@@ -116,3 +116,4 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 17/10/2026 | Projeto enviado ao GitHub (xSam10-10/Carga) |
 | 17/10/2026 | Site publicado no GitHub Pages |
 | 17/10/2026 | Senha de entrada e calorias do treino pela frequência cardíaca |
+| 17/10/2026 | Calorias do treino passam a vir do relógio; frequência cardíaca removida |

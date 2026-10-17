@@ -25,7 +25,7 @@ O que já existe e o que falta está em `references/roadmap.md`. Lá também est
 3. **Perfis separados.** Samuel e Carol têm dados 100% separados e alternam pelo Perfil.
 4. **Tudo em português do Brasil**, com tom direto e amigável, sem jargão técnico na interface.
 5. **Referência principal: Hevy.** Quando o usuário mandar prints ou vídeos do Hevy, analise quadro a quadro e reproduza o comportamento com fidelidade. Exemplo: a abertura atual foi copiada do vídeo dele.
-6. **Calorias pela frequência cardíaca média.** No fim do treino, um pop-up pede a FC média (do relógio ou do celular) e estima as calorias com a fórmula de Keytel. Não há integração automática com o relógio.
+6. **Calorias vêm do relógio.** No fim do treino, um pop-up pede as calorias gastas que o relógio mostrou (Samsung Health ou app Fitness), e o valor é salvo direto no treino. **Não usamos frequência cardíaca nem fórmulas de estimativa**; o usuário decidiu que o número do relógio é mais fiel.
 7. **Cor de destaque e tema mandam em tudo.** Realces, gráficos, mapa corporal e avatar de água seguem a cor de destaque. A exceção é a marca: logo, ícone e abertura ficam sempre no verde da marca.
 8. **O sexo do perfil define as figuras.** O perfil feminino usa as figuras femininas (mapa corporal e avatar de água) e o masculino usa as masculinas.
 9. **Senha de entrada.** É fixa e igual nos dois celulares. O código guarda só o hash; nunca registre a senha em texto puro em lugar nenhum, porque o repositório é público.

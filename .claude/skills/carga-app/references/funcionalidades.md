@@ -28,7 +28,7 @@
   - sugestão de progressão de carga (`overloadHint`), gerador de aquecimento (40%, 60% e 80%) e calculadora de anilhas;
   - recorde ao vivo;
   - tipos de registro por exercício: peso e repetições, peso corporal, assistido, duração, distância e duração.
-- **Finalizar:** resumo, recordes batidos e opção de salvar como rotina. Ao abrir, um pop-up pede a **frequência cardíaca média**, que dá para pular. Com ela, o app estima as **calorias** (`kcalOf`, fórmula de Keytel), usando sexo, idade e peso do perfil. Elas aparecem no resumo, no detalhe do treino (dá para informar ou alterar depois pelo menu ⋯) e nos cartões.
+- **Finalizar:** resumo, recordes batidos e opção de salvar como rotina. Ao abrir, um pop-up pede as **calorias gastas** que o relógio mostrou (dá para pular). O valor fica em `w.kcal` e aparece no resumo, no detalhe do treino (dá para informar ou alterar depois pelo menu ⋯) e nos cartões. Código: `kcalSheet`, `kcalBox`, ações `kcalLive` e `kcalSaved`.
 - **Detalhe do treino:** editar ou excluir.
 
 ## Exercícios

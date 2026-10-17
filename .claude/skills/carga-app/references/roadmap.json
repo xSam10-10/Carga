@@ -84,7 +84,7 @@
     [
       "Treino",
       "pronto",
-      "Calorias estimadas pela frequência cardíaca média (pop-up no fim do treino)"
+      "Calorias do treino registradas do relógio (pop-up no fim do treino)"
     ],
     [
       "Treino",
@@ -381,6 +381,10 @@
     [
       "2026-10-17",
       "Senha de entrada e calorias do treino pela frequência cardíaca"
+    ],
+    [
+      "2026-10-17",
+      "Calorias do treino passam a vir do relógio; frequência cardíaca removida"
     ]
   ]
 }
