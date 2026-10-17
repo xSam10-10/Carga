@@ -174,7 +174,7 @@ textarea:focus,.inp:focus{border-color:var(--accent)}
 
 /* abas */
 .nav{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--surface);border-top:1px solid var(--line);padding:0 max(8px,env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(8px,env(safe-area-inset-left,0px))}
-.nav-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);height:64px}
+.nav-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);height:64px}
 .nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:13px;font-weight:600;color:var(--muted)}
 .nav button span.ic{width:58px;height:30px;border-radius:999px;display:grid;place-items:center;transition:background .15s}
 .nav button.on{color:var(--accent)}
@@ -283,6 +283,41 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .mrow{display:flex;justify-content:space-between;gap:10px;padding:12px 4px;border-bottom:1px solid var(--line);text-align:left;width:100%}
 .mrow:last-child{border-bottom:0}
 .small{font-size:14px}
+.ring{position:relative;width:min(240px,70vw);aspect-ratio:1;max-width:100%}
+.ring svg{width:100%;height:100%;display:block}
+.ring-bg{fill:none;stroke:var(--surface-2);stroke-width:16}
+.ring-fg{fill:none;stroke:var(--accent);stroke-width:16;stroke-linecap:round;transition:stroke-dashoffset .5s ease}
+.ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center}
+.ring-c b{font:700 40px/1 var(--display);font-variant-numeric:tabular-nums}
+.ring-c b small{font-size:18px;color:var(--muted)}
+.ring-c span{color:var(--muted);font-size:14px}
+.ring-c .pct{color:var(--accent);font-weight:700;font-size:15px}
+.ring-ic svg.i{color:var(--accent);width:24px;height:24px}
+.cups{display:grid;grid-template-columns:repeat(auto-fit,minmax(62px,1fr));gap:8px}
+.cup{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 4px;border-radius:var(--r);background:var(--accent-soft);color:var(--accent)}
+.cup b{font:700 20px/1 var(--display);font-variant-numeric:tabular-nums}
+.cup span{font-size:12px;font-weight:600;opacity:.8}
+.cup:active{transform:scale(.97)}
+.pill{font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--surface-2);color:var(--fg);white-space:nowrap}
+.pill.ok{background:var(--accent-soft);color:var(--accent)}
+.pill.warn{background:var(--amber-soft);color:var(--amber)}
+.pill.bad{background:var(--danger-soft);color:var(--danger)}
+.hcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px}
+.hcard .v{font:700 32px/1 var(--display);font-variant-numeric:tabular-nums;flex:1;min-width:0}
+.hcard .v small{font-size:16px;color:var(--muted);font-weight:600;margin-left:3px}
+.hcard p{margin:0;color:var(--muted);font-size:14px}
+.hcard p b{color:var(--fg)}
+.scale{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--amber) 0 14%,var(--accent) 14% 40%,var(--amber) 40% 60%,var(--danger) 60% 100%);margin-top:4px}
+.scale i{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:var(--surface);border:3px solid var(--fg);transform:translate(-50%,-50%)}
+.scale-l{position:relative;height:14px;font-size:11px;color:var(--muted)}
+.scale-l span{position:absolute;transform:translateX(-50%)}
+.scale-l span:nth-child(1){left:0;transform:none}.scale-l span:nth-child(2){left:14%}.scale-l span:nth-child(3){left:40%}.scale-l span:nth-child(4){left:60%}.scale-l span:nth-child(5){right:0;transform:none}
+.goalt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.goalt div{background:var(--surface-2);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:2px}
+.goalt div.on{background:var(--accent-soft);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.goalt span{font-size:12px;color:var(--muted);font-weight:600}
+.goalt b{font:700 18px var(--display);font-variant-numeric:tabular-nums}
+.goalt em{font-style:normal;font-size:11px;color:var(--muted)}
 .themes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 10px}
 .thm{display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:600;color:var(--muted);text-align:center;min-width:0}
 .thm-p{aspect-ratio:4/3;max-width:100%;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px var(--line);padding:9px;display:flex;flex-direction:column;gap:6px;transition:box-shadow .15s}
@@ -381,6 +416,9 @@ const I={
  caret:ic('<path d="m6 9 6 6 6-6"/>'),
  link:ic('<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'),
  share:ic('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>'),
+ drop:ic('<path d="M12 3s6.5 6.6 6.5 11.2A6.5 6.5 0 0 1 5.5 14.2C5.5 9.6 12 3 12 3Z"/>'),
+ heart:ic('<path d="M12 20s-7.5-4.6-7.5-10.3A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20Z"/>'),
+ idcard:ic('<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.4"/><path d="M5.6 16.4c.7-1.5 2-2.3 3.4-2.3s2.7.8 3.4 2.3M14.5 10h4M14.5 13.5h3"/>'),
  db:ic('<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>'),
 };
 
@@ -515,7 +553,7 @@ const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
 const KEY='carga.v1',REG='carga.perfis';
-function blank(){return{v:1,profile:{name:'Atleta',rest:90,sound:true,vibrate:true,wake:true,notify:false,lastBackup:0,lastBackupN:0,backupSnooze:0,collapsed:{}},exercises:[],folders:[],routines:[],workouts:[],measures:[],active:null}}
+function blank(){return{v:1,water:{},profile:{name:'Atleta',rest:90,sound:true,vibrate:true,wake:true,notify:false,lastBackup:0,lastBackupN:0,backupSnooze:0,collapsed:{}},exercises:[],folders:[],routines:[],workouts:[],measures:[],active:null}}
 function mkSets(n){return Array.from({length:n},()=>({type:'n',kg:'',reps:'',min:''}))}
 function mkRoutine(name,names,folderId=null){return{id:uid(),name,notes:'',folderId,exercises:names.map(n=>({exId:bid(n),notes:'',rest:90,sets:mkSets(3)}))}}
 function seed(s){
@@ -582,13 +620,13 @@ const top_=()=>stack[stack.length-1];
 function cur(){const t=top_();return t.p.live||t.v==='finish'?S.active:t.p.s}
 
 const VIEWS={};
-const NAV_VIEWS=new Set(['inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis']);
+const NAV_VIEWS=new Set(['inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados']);
 function render(keep){const t=top_();const y=scrollY;const V=VIEWS[t.v]||VIEWS.treino;$('#app').innerHTML=V(t.p);chrome();if(keep)scrollTo(0,y);if(V.after)V.after(t.p)}
 const rerender=()=>render(true);
 function chrome(){
  const t=top_();const nav=$('#nav');const showNav=NAV_VIEWS.has(t.v)&&!!REGS.current;nav.hidden=!showNav;
  const tabOf=stack[0].v;
- nav.innerHTML=`<div class="nav-in">${[['inicio','Início',I.home],['treino','Treino',I.dumbbell],['perfil','Perfil',I.user]].map(([k,l,i])=>`<button class="${tabOf===k?'on':''}" data-a="tab" data-t="${k}" aria-label="${l}"><span class="ic">${i}</span>${l}</button>`).join('')}</div>`;
+ nav.innerHTML=`<div class="nav-in">${[['inicio','Início',I.home],['treino','Treino',I.dumbbell],['agua','Água',I.drop],['perfil','Perfil',I.user]].map(([k,l,i])=>`<button class="${tabOf===k?'on':''}" data-a="tab" data-t="${k}" aria-label="${l}"><span class="ic">${i}</span>${l}</button>`).join('')}</div>`;
  const showMini=S.active&&showNav;
  $('#mini').innerHTML=showMini?`<div class="mini"><button data-a="resume"><span class="t"><b>Treino em andamento</b><span><span data-clock>${clock(Date.now()-S.active.start)}</span> · ${esc(S.active.name)}</span></span><span class="btn sm pri">Retomar</span></button></div>`:'';
  document.querySelector('.page')?.style.setProperty('padding-bottom',showMini?'200px':'');
@@ -663,6 +701,7 @@ VIEWS.inicio=()=>{
  <div class="stat3"><div><span class="lab">Treinos</span><b>${thisW.length}</b></div><div><span class="lab">Tempo</span><b>${fmtDur(dur)}</b></div><div><span class="lab">Volume</span><b>${fmtInt(vol)}<small style="font-size:14px"> kg</small></b></div></div>
  <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<div class="dchip${has?' has':''}${d===today?' today':''}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></div>`}).join('')}</div></section>`;
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button>`;
+ {const wg=waterGoal(),wt=waterOn(dkey(Date.now()));h+=`<button class="tile" data-a="tab" data-t="agua">${I.drop}<span class="spacer">Água hoje</span><span class="num" style="font-size:18px">${fmtInt(wt)} / ${fmtInt(wg.ml)} ml</span></button>`}
  if(backupDue()){const n=S.workouts.length-(S.profile.lastBackupN||0);h+=`<section class="alert"><b>Backup pendente</b><span>${n>0?`${n} treino(s) novo(s) desde o último backup.`:'Você ainda não fez backup.'} Se os dados do navegador forem apagados, o histórico se perde.</span><div class="row"><button class="btn pri sm" data-a="backupSheet">Fazer backup</button><button class="btn ghost sm" data-a="snoozeBackup">Lembrar depois</button></div></section>`}
  h+=`<h2 class="h">Seus treinos</h2>`;
  if(!ws.length)h+=`<div class="emptybox">${I.dumbbell}<b>Nenhum treino registrado ainda</b><span>Comece uma rotina na aba Treino. Se você já usava outro app, importe o histórico em Configurações.</span><div class="row" style="flex-wrap:wrap;justify-content:center"><button class="btn pri sm" data-a="tab" data-t="treino">Ir para Treino</button><button class="btn sec sm" data-a="go" data-v="config">Importar histórico</button></div></div>`;
@@ -770,7 +809,7 @@ VIEWS.perfil=()=>{
  <div class="headline">${head}<span class="muted small">· últimas 12 semanas</span></div>
  ${barChart(vals,weeks.map(dShort),fy)}
  <div class="chips">${[['dur','Duração'],['vol','Volume'],['reps','Repetições']].map(([k,l])=>`<button class="chip${m===k?' on':''}" data-a="pm" data-k="${k}">${l}</button>`).join('')}</div>
- <h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Exercícios</button><button class="tile" data-a="go" data-v="medidas">${I.body}Medidas</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button></div>
+ <h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Exercícios</button><button class="tile" data-a="go" data-v="medidas">${I.body}Medidas</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button><button class="tile" data-a="go" data-v="dados">${I.idcard}Dados pessoais</button></div>
  <h3 class="sh">Tema</h3>${themePicker()}
  <h3 class="sh">Cor de destaque</h3>${accentPicker()}
  <h3 class="sh">Treinos</h3>`;
@@ -903,6 +942,90 @@ function themePicker(){const cur=themeOf(S.profile.theme)[0];
  return`<div class="themes" role="radiogroup" aria-label="Tema">${THEMES.map(t=>`<button class="thm${t[0]===cur?' on':''}" role="radio" aria-checked="${t[0]===cur}" data-a="setTheme" data-k="${t[0]}">${tile(t)}<span>${t[1]}</span></button>`).join('')}</div>`}
 function accentPicker(){const cur=accentOf(S.profile.accent)[0];const th=themeOf(S.profile.theme);const sug=accentOf(th[11]);return`<p class="muted small" style="margin:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span>Sugerida para o tema ${th[1]}: <b style="color:var(--fg)">${sug[1]}</b></span>${cur!==sug[0]?`<button class="btn sm sec" data-a="setAccent" data-k="${sug[0]}">Usar sugerida</button>`:''}</p><div class="swatches" role="radiogroup" aria-label="Cor do app">${ACCENTS.map(([k,n,l,d])=>`<button class="swc${k===cur?' on':''}" role="radio" aria-checked="${k===cur}" data-a="setAccent" data-k="${k}"><i style="--c:${l[0]};--k:${l[2]};--cd:${d[0]};--kd:${d[2]}">${k===cur?I.check:''}</i><span>${n}</span></button>`).join('')}</div>`}
 
+/* ---------- DADOS PESSOAIS, ÁGUA E SAÚDE ---------- */
+const dkey=ts=>{const d=new Date(ts);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const fmtM=cm=>(cm/100).toFixed(2).replace('.',',');
+function latestMeasure(k,before=Infinity){const ms=S.measures.filter(m=>num(m[k])!=null&&m.date<before).sort((a,b)=>b.date-a.date);return ms[0]?{v:num(ms[0][k]),date:ms[0].date}:null}
+function ageOf(b){if(!b)return null;const[y,m,d]=String(b).split('-').map(Number);if(!y)return null;const n=new Date();let a=n.getFullYear()-y;if(n.getMonth()+1<m||(n.getMonth()+1===m&&n.getDate()<d))a--;return a>=10&&a<120?a:null}
+const ACT=[['sed','Sedentário',1.2,'Pouco ou nenhum exercício'],['leve','Leve',1.375,'1 a 2 treinos por semana'],['mod','Moderado',1.55,'3 a 4 treinos por semana'],['alto','Alto',1.725,'5 a 6 treinos por semana'],['muito','Muito alto',1.9,'Treino diário intenso ou trabalho físico pesado']];
+const perWeek4=()=>S.workouts.filter(w=>w.start>=addDays(sod(Date.now()),-27)).length/4;
+function autoAct(){const n=perWeek4();return n<0.5?ACT[0]:n<2.5?ACT[1]:n<4.5?ACT[2]:n<6.5?ACT[3]:ACT[4]}
+function actOf(){const k=S.profile.activity||'auto';return k==='auto'?autoAct():(ACT.find(a=>a[0]===k)||autoAct())}
+const GOALS=[['perder','Perder gordura'],['manter','Manter peso'],['ganhar','Ganhar massa']];
+function bodyData(){const p=S.profile;const w=latestMeasure('weight');const h=num(p.height);const age=ageOf(p.birth);const missing=[];if(!p.sex)missing.push('sexo');if(!age)missing.push('data de nascimento');if(!h)missing.push('altura');if(!w)missing.push('peso');return{w:w&&w.v,wDate:w&&w.date,h,age,sex:p.sex,missing,ok:!missing.length}}
+const mifflin=(w,h,a,sex)=>10*w+6.25*h-5*a+(sex==='m'?5:-161);
+const r50=v=>Math.round(v/50)*50;
+function waterGoal(ts=Date.now()){const p=S.profile;const k=dkey(ts);const trainH=S.workouts.filter(w=>dkey(w.start)===k).reduce((a,w)=>a+(w.end-w.start),0)/36e5;const extra=r50(trainH*500);
+ if(num(p.waterManual))return{ml:num(p.waterManual),how:'Meta personalizada (definida por você)'};
+ const b=bodyData();if(!b.w)return{ml:2000+extra,def:true,how:'Meta padrão de 2.000 ml. Informe peso e sexo em Dados pessoais para calcular a sua.'+(extra?` +${fmtInt(extra)} ml pelo treino de hoje.`:'')};
+ const f=b.sex==='f'?31:b.sex==='m'?35:33;const base=r50(b.w*f);return{ml:base+extra,base,extra,how:`${fmt(b.w)} kg × ${f} ml = ${fmtInt(base)} ml${extra?` + ${fmtInt(extra)} ml pelo treino de hoje`:''}`}}
+const waterOn=k=>(S.water&&S.water[k]||[]).reduce((a,x)=>a+x.ml,0);
+const cupsOf=()=>{const c=(S.profile.cups||[]).map(Number).filter(v=>v>0);return c.length?c:[200,300,500,750]};
+function waterStreak(){let d=sod(Date.now());if(waterOn(dkey(d))<waterGoal(d).ml)d=addDays(d,-1);let n=0;while(n<3650&&waterOn(dkey(d))>=waterGoal(d).ml&&waterOn(dkey(d))>0){n++;d=addDays(d,-1)}return n}
+const pill=(t,k='')=>`<span class="pill ${k}">${t}</span>`;
+
+VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=autoAct();const age=ageOf(p.birth);
+ return bar('Dados pessoais')+`<main class="page"><p class="muted" style="margin:0">Estes dados são de ${esc(p.name)} e servem para calcular IMC, taxa metabólica, gasto diário, meta de água e proteína. Ficam só neste aparelho.</p>
+ <section class="card form">
+ <div class="fld"><span>Sexo</span><div class="chips">${[['m','Masculino'],['f','Feminino']].map(([k,l])=>`<button class="chip${p.sex===k?' on':''}" data-a="pdSex" data-k="${k}">${l}</button>`).join('')}</div></div>
+ <div class="row2"><label class="fld"><span>Data de nascimento${age?` · ${age} anos`:''}</span><input class="inp" type="date" id="pd-birth" data-f="pd" data-k="birth" value="${esc(p.birth||'')}"></label>
+ <label class="fld"><span>Altura (cm)</span><input class="inp" id="pd-height" inputmode="numeric" data-f="pd" data-k="height" value="${esc(p.height||'')}" placeholder="Ex.: 178"></label></div>
+ <label class="fld"><span>Peso atual (kg)</span><input class="inp" id="pd-weight" inputmode="decimal" data-f="pdWeight" value="${w?String(w.v).replace('.',','):''}" placeholder="Ex.: 80,5"></label>
+ <p class="muted small" style="margin:-4px 0 0">${w?`Último registro: ${fmt(w.v)} kg em ${new Date(w.date).toLocaleDateString('pt-BR')}. `:''}Ao alterar, o peso de hoje é gravado em Medidas.</p></section>
+ <section class="card form"><div class="fld"><span>Nível de atividade</span><div class="chips"><button class="chip${(p.activity||'auto')==='auto'?' on':''}" data-a="pdAct" data-k="auto">Automático</button>${ACT.map(a=>`<button class="chip${p.activity===a[0]?' on':''}" data-a="pdAct" data-k="${a[0]}">${a[1]}</button>`).join('')}</div></div>
+ <p class="muted small" style="margin:0">${(p.activity||'auto')==='auto'?`Automático: ${fmt(perWeek4())} treinos por semana nas últimas 4 semanas → <b>${aa[1]}</b> (${aa[3].toLowerCase()}).`:esc(actOf()[3])+'.'} Considere também o dia a dia: quem anda muito ou trabalha em pé pode subir um nível.</p>
+ <div class="fld"><span>Objetivo</span><div class="chips">${GOALS.map(([k,l])=>`<button class="chip${(p.goal||'manter')===k?' on':''}" data-a="pdGoal" data-k="${k}">${l}</button>`).join('')}</div></div></section>
+ <button class="btn pri" data-a="go" data-v="saude">${I.heart} Ver métricas de saúde</button></main>`};
+
+function waterChart(days){const W=340,H=150,pl=34,pb=20,pt=8;const vals=days.map(d=>waterOn(dkey(d))),goals=days.map(d=>waterGoal(d).ml);const max=niceMax(Math.max(...vals,...goals));const bw=(W-pl)/days.length;const Y=v=>pt+(H-pt-pb)*(1-v/max);let g='';
+ for(let i=0;i<=2;i++){const v=max*i/2,y=Y(v);g+=`<line class="grid" x1="${pl}" x2="${W}" y1="${y}" y2="${y}"/><text class="ax" x="${pl-5}" y="${y+3}" text-anchor="end">${v>=1000?fmt(v/1000)+'L':fmtInt(v)}</text>`}
+ days.forEach((d,i)=>{const x=pl+i*bw+bw*.2,w=bw*.6,v=vals[i],ok=v>=goals[i]&&v>0;g+=`<rect class="bx${ok?' now':''}" x="${x.toFixed(1)}" y="${Y(v).toFixed(1)}" width="${w.toFixed(1)}" height="${(H-pb-Y(v)).toFixed(1)}" rx="4"><title>${dShort(d)}: ${fmtInt(v)} de ${fmtInt(goals[i])} ml</title></rect><line x1="${(x-3).toFixed(1)}" x2="${(x+w+3).toFixed(1)}" y1="${Y(goals[i]).toFixed(1)}" y2="${Y(goals[i]).toFixed(1)}" stroke="var(--fg)" stroke-width="1.5" stroke-dasharray="3 2" opacity=".55"/><text class="ax" x="${(x+w/2).toFixed(1)}" y="${H-5}" text-anchor="middle">${DL[new Date(d).getDay()]}</text>`});
+ return`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Água nos últimos 7 dias">${g}</svg>`}
+
+VIEWS.agua=()=>{const now=Date.now(),k=dkey(now),log=(S.water&&S.water[k])||[],tot=waterOn(k),g=waterGoal(now),pct=g.ml?tot/g.ml:0,C=2*Math.PI*84;
+ const days=[...Array(7)].map((_,i)=>addDays(sod(now),i-6));const v7=days.map(d=>waterOn(dkey(d)));const hit=days.filter(d=>{const v=waterOn(dkey(d));return v>0&&v>=waterGoal(d).ml}).length;
+ return`<header class="top"><h1 class="big">Água</h1><button class="ib" data-a="waterCfg" aria-label="Ajustes da água">${I.gear}</button></header><main class="page">
+ <section class="card" style="display:flex;flex-direction:column;align-items:center;gap:12px">
+  <div class="ring"><svg viewBox="0 0 200 200" role="img" aria-label="${fmtInt(tot)} de ${fmtInt(g.ml)} ml"><circle cx="100" cy="100" r="84" class="ring-bg"/><circle cx="100" cy="100" r="84" class="ring-fg" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C*(1-Math.min(1,pct))).toFixed(1)}" transform="rotate(-90 100 100)"/></svg>
+  <div class="ring-c"><span class="ring-ic">${I.drop}</span><b>${fmtInt(tot)}<small> ml</small></b><span>de ${fmtInt(g.ml)} ml</span><span class="pct">${pct>=1?'Meta batida':Math.round(pct*100)+'%'}</span></div></div>
+  <p class="muted small" style="margin:0;text-align:center">${pct>=1?'Meta de hoje cumprida. Pode continuar se tiver sede.':`Faltam <b style="color:var(--fg)">${fmtInt(Math.max(0,g.ml-tot))} ml</b> para a meta de hoje.`}</p></section>
+ <div class="cups">${cupsOf().map(ml=>`<button class="cup" data-a="addWater" data-ml="${ml}">${I.drop}<b>+${fmtInt(ml)}</b><span>ml</span></button>`).join('')}<button class="cup" data-a="customWater">${I.plus}<b>Outro</b><span>valor</span></button></div>
+ <section class="card"><span class="lab">Meta de hoje · ${fmtInt(g.ml)} ml</span><p class="muted small" style="margin:6px 0 0">${esc(g.how)}</p>${g.def?`<button class="btn sm pri" style="margin-top:10px" data-a="go" data-v="dados">Preencher dados pessoais</button>`:''}</section>
+ <h3 class="sh">Hoje</h3>${log.length?`<div class="card" style="padding:4px 14px">${log.map((x,i)=>({x,i})).reverse().map(({x,i})=>`<div class="mrow"><span><b class="num" style="font-size:18px">${fmtInt(x.ml)} ml</b> <span class="muted small">${hhmm(x.t)}</span></span><button class="ib" data-a="delWater" data-i="${i}" aria-label="Remover ${x.ml} ml">${I.x}</button></div>`).join('')}</div>`:'<p class="empty">Nenhum copo registrado hoje. Toque num dos botões acima a cada copo.</p>'}
+ <h3 class="sh">Últimos 7 dias</h3>${waterChart(days)}<p class="muted small" style="margin:0">A linha tracejada é a meta de cada dia. Barras cheias: meta batida.</p>
+ <div class="stat3 card"><div><span class="lab">Média</span><b>${fmt(v7.reduce((a,b)=>a+b,0)/7/1000)} L</b></div><div><span class="lab">Metas batidas</span><b>${hit}/7</b></div><div><span class="lab">Sequência</span><b>${waterStreak()} dia${waterStreak()===1?'':'s'}</b></div></div></main>`};
+
+const BMI_C=[[18.5,'Abaixo do peso','warn'],[25,'Peso saudável','ok'],[30,'Sobrepeso','warn'],[35,'Obesidade grau I','bad'],[40,'Obesidade grau II','bad'],[Infinity,'Obesidade grau III','bad']];
+function hc(label,value,badge,body){return`<section class="hcard"><span class="lab">${label}</span><div class="row" style="flex-wrap:wrap">${value}${badge||''}</div>${body}</section>`}
+VIEWS.saude=()=>{const b=bodyData(),p=S.profile;let h=bar('Saúde',{right:`<button class="tb" data-a="go" data-v="dados">Dados</button>`})+'<main class="page">';
+ if(!b.ok)h+=`<section class="alert"><b>Complete seus dados</b><span>Falta${b.missing.length>1?'m':''}: ${b.missing.join(', ')}. Com eles o app calcula todas as métricas abaixo.</span><div><button class="btn pri sm" data-a="go" data-v="dados">Preencher dados pessoais</button></div></section>`;
+ let target=null;
+ if(b.w&&b.h){const hm=b.h/100,bmi=b.w/(hm*hm),lo=18.5*hm*hm,hi=24.9*hm*hm,c=BMI_C.find(x=>bmi<x[0]);target=bmi>24.9?hi:bmi<18.5?lo:null;const pos=Math.max(0,Math.min(100,(bmi-15)/25*100));
+  h+=hc('IMC · Índice de massa corporal',`<span class="v">${fmt(bmi)}</span>`,pill(c[1],c[2]),`<div class="scale"><i style="left:${pos.toFixed(1)}%"></i></div><div class="scale-l"><span>15</span><span>18,5</span><span>25</span><span>30</span><span>40</span></div><p>Faixa saudável (OMS): IMC de 18,5 a 24,9. Para ${fmtM(b.h)} m, isso é de <b>${fmt(lo)} a ${fmt(hi)} kg</b>. ${target?`Peso de referência: <b>${fmt(target)} kg</b> (${target>b.w?'+':'−'}${fmt(Math.abs(target-b.w))} kg).`:'Seu peso está dentro da faixa.'}</p><p class="small">Para quem faz musculação, o IMC pode exagerar, porque músculo pesa mais que gordura. Use junto com a cintura e o percentual de gordura.</p>`)}
+ if(b.ok){const tmb=mifflin(b.w,b.h,b.age,b.sex),act=actOf(),tdee=tmb*act[2],goal=p.goal||'manter';
+  h+=hc('Taxa metabólica basal (TMB)',`<span class="v">${fmtInt(tmb)} <small>kcal/dia</small></span>`,'',`<p>Energia que o corpo gasta em repouso total. Calculada pela equação de Mifflin-St Jeor (${b.sex==='m'?'masculino':'feminino'}, ${b.age} anos, ${fmt(b.h)} cm, ${fmt(b.w)} kg).${target?` No peso de referência (${fmt(target)} kg), seria <b>${fmtInt(mifflin(target,b.h,b.age,b.sex))} kcal/dia</b>.`:''}</p><p class="small">É uma estimativa: costuma acertar dentro de 10% na maioria das pessoas. Só exames como a calorimetria medem o valor exato.</p>`);
+  const kcal={perder:tdee*.8,manter:tdee,ganhar:tdee*1.1};
+  h+=hc('Gasto diário estimado',`<span class="v">${fmtInt(tdee)} <small>kcal/dia</small></span>`,pill(act[1]),`<p>TMB × ${String(act[2]).replace('.',',')} (nível ${act[1].toLowerCase()}${(p.activity||'auto')==='auto'?', calculado pelos seus treinos':''}).</p><div class="goalt">${GOALS.map(([k,l])=>`<div class="${goal===k?'on':''}"><span>${l}</span><b>${fmtInt(r50(kcal[k]))} kcal</b><em>${k==='perder'?'−20%':k==='ganhar'?'+10%':'manutenção'}</em></div>`).join('')}</div><p class="small">Sugestão de consumo diário para o objetivo marcado em Dados pessoais. Ajuste conforme a evolução do peso a cada 2 a 3 semanas.</p>`)}
+ const wg=waterGoal(),wt=waterOn(dkey(Date.now()));
+ h+=hc('Água por dia',`<span class="v">${fmt(wg.ml/1000)} <small>litros</small></span>`,pill(`${fmtInt(wt)} ml hoje`,wt>=wg.ml?'ok':''),`<p>${esc(wg.how)}. Base de 35 ml por kg para homens e 31 ml por kg para mulheres, mais 500 ml por hora de treino no dia.</p><div><button class="btn sm sec" data-a="tab" data-t="agua">${I.drop} Abrir Água</button></div>`);
+ if(b.w){const goal=p.goal||'manter',[a1,a2]=goal==='perder'?[2.3,3.1]:[1.6,2.0];
+  h+=hc('Proteína por dia',`<span class="v">${fmtInt(b.w*a1)}–${fmtInt(b.w*a2)} <small>g</small></span>`,'',`<p>${String(a1).replace('.',',')} a ${String(a2).replace('.',',')} g por kg de peso${goal==='perder'?', faixa indicada para preservar massa muscular em déficit calórico':', faixa indicada para quem faz musculação'} (Sociedade Internacional de Nutrição Esportiva). Divida em 3 a 5 refeições de 20 a 40 g.</p>`)}
+ const waist=latestMeasure('waist');
+ if(waist&&b.h){const r=waist.v/b.h,c=r<0.4?['Abaixo do esperado','warn']:r<0.5?['Saudável','ok']:r<0.6?['Aumentada','warn']:['Alta','bad'];
+  h+=hc('Relação cintura/altura',`<span class="v">${r.toFixed(2).replace('.',',')}</span>`,pill(c[0],c[1]),`<p>Cintura de ${fmt(waist.v)} cm ÷ altura de ${fmt(b.h)} cm. A recomendação é manter a cintura abaixo da metade da altura (menos de 0,5), ou seja, abaixo de <b>${fmt(b.h/2)} cm</b>. É um bom indicador da gordura abdominal, que o IMC não mostra.</p>`)}
+ else h+=hc('Relação cintura/altura','<span class="muted">Sem medida de cintura</span>','',`<p>Registre a cintura em Medidas para ver este indicador de gordura abdominal.</p><div><button class="btn sm sec" data-a="go" data-v="medidas">Abrir Medidas</button></div>`);
+ const fat=latestMeasure('fat');
+ if(fat&&b.w){const fm=b.w*fat.v/100,lm=b.w-fm,hm=b.h?b.h/100:null,ffmi=hm?lm/(hm*hm)+6.1*(1.8-hm):null;const T=b.sex==='f'?[[14,'Essencial','warn'],[21,'Atleta','ok'],[25,'Boa forma','ok'],[32,'Média','warn'],[Infinity,'Acima do recomendado','bad']]:[[6,'Essencial','warn'],[14,'Atleta','ok'],[18,'Boa forma','ok'],[25,'Média','warn'],[Infinity,'Acima do recomendado','bad']];const c=T.find(x=>fat.v<x[0]);
+  h+=hc('Composição corporal',`<span class="v">${fmt(fat.v)}<small>% de gordura</small></span>`,pill(c[1],c[2]),`<div class="kv"><div><span class="lab">Massa magra</span><b>${fmt(lm)} kg</b></div><div><span class="lab">Massa gorda</span><b>${fmt(fm)} kg</b></div>${ffmi?`<div><span class="lab">FFMI</span><b>${fmt(ffmi)}</b></div>`:''}</div><p>Faixas do American Council on Exercise (${b.sex==='f'?'mulheres: atleta 14–20%, boa forma 21–24%, média 25–31%':'homens: atleta 6–13%, boa forma 14–17%, média 18–24%'}). O FFMI mede a massa magra em relação à altura: subir esse número é sinal de ganho de músculo.</p>`)}
+ const ws=S.measures.filter(m=>num(m.weight)!=null).sort((a,b)=>a.date-b.date);
+ if(ws.length>=2){const last=ws[ws.length-1],ref=latestMeasure('weight',addDays(last.date,-27))||{v:num(ws[0].weight),date:ws[0].date};const dw=num(last.weight)-ref.v,wk=Math.max(1,(last.date-ref.date)/(7*DAY)),rate=dw/wk,goal=p.goal||'manter';const good=goal==='perder'?rate<0:goal==='ganhar'?rate>0:Math.abs(rate)<0.25;
+  h+=hc('Evolução do peso',`<span class="v">${dw>0?'+':dw<0?'−':''}${fmt(Math.abs(dw))} <small>kg</small></span>`,pill(good?'No rumo do objetivo':'Fora do objetivo',good?'ok':'warn'),`<p>De ${fmt(ref.v)} kg (${dShort(ref.date)}) para ${fmt(num(last.weight))} kg (${dShort(last.date)}): ${rate>0?'+':rate<0?'−':''}${fmt(Math.abs(rate))} kg por semana. ${goal==='perder'?'Para perder gordura sem perder músculo, o ideal é 0,5% a 1% do peso por semana.':goal==='ganhar'?'Para ganhar massa com pouca gordura, mire em cerca de 0,25% a 0,5% do peso por semana.':'Para manter, variações de até 0,25 kg por semana são normais.'}</p>`)}
+ const t0=sod(Date.now()),cur4=S.workouts.filter(w=>w.start>=addDays(t0,-27)),prev4=S.workouts.filter(w=>w.start>=addDays(t0,-55)&&w.start<addDays(t0,-27));
+ const vc=cur4.reduce((a,w)=>a+wStats(w).vol,0),vp=prev4.reduce((a,w)=>a+wStats(w).vol,0),prs=cur4.reduce((a,w)=>a+(w.prs?w.prs.length:0),0);const dv=vp?(vc-vp)/vp*100:null;
+ h+=hc('Treinos · últimas 4 semanas',`<span class="v">${fmt(cur4.length/4)} <small>treinos/semana</small></span>`,dv==null?'':pill(`Volume ${dv>=0?'+':'−'}${fmtInt(Math.abs(dv))}%`,dv>=0?'ok':'warn'),`<div class="kv"><div><span class="lab">Treinos</span><b>${cur4.length}</b></div><div><span class="lab">Volume</span><b>${fmt(vc/1000)} t</b></div><div><span class="lab">Recordes</span><b>${prs}</b></div></div><p>Comparado com as 4 semanas anteriores (${prev4.length} treinos, ${fmt(vp/1000)} t). Volume subindo aos poucos, com recordes aparecendo, é sinal de progressão.</p>`);
+ h+=`<h3 class="sh">Fontes e limites</h3><p class="muted small" style="margin:0">IMC: faixas da OMS. TMB: equação de Mifflin-St Jeor, a mais precisa entre as fórmulas comuns segundo revisão do Journal of the American Dietetic Association (2005). Água: 35 ml/kg (homens) e 31 ml/kg (mulheres), alinhado às ingestões adequadas da EFSA (2,5 L e 2,0 L por dia). Cintura/altura: diretriz NICE NG246 (2025). Proteína: posição da International Society of Sports Nutrition (2017). Gordura corporal: American Council on Exercise. São estimativas para acompanhamento e não substituem avaliação de médico ou nutricionista.</p>`;
+ return h+'</main>'};
+
 /* ---------- PERFIS ---------- */
 VIEWS.perfis=()=>{const first=!REGS.current;
  const rows=REGS.list.map(pr=>{const d=readProfile(pr.id);const ws=d&&d.workouts||[];const last=ws.length?Math.max(...ws.map(w=>w.start)):0;const cur=pr.id===REGS.current;
@@ -965,6 +1088,14 @@ const A={
  menu:d=>{const it=MENU[+d.k];closeSheet();it&&it.f()},
  more:()=>{UI.feedN+=12;rerender()},
  useProfile:d=>switchProfile(d.id),
+ pdSex:d=>{S.profile.sex=d.k;save();rerender()},
+ pdAct:d=>{S.profile.activity=d.k;save();rerender()},
+ pdGoal:d=>{S.profile.goal=d.k;save();rerender()},
+ addWater:d=>{const ml=+d.ml;if(!ml)return;S.water=S.water||{};const k=dkey(Date.now()),g=waterGoal().ml,before=waterOn(k);(S.water[k]=S.water[k]||[]).push({t:Date.now(),ml});save();rerender();toast(before<g&&before+ml>=g?'Meta de água batida!':`+${fmtInt(ml)} ml`)},
+ customWater:()=>askText('Quanto você bebeu? (ml)','','Ex.: 350').then(v=>{closeSheet();const ml=Math.round(num(v)||0);if(ml<1||ml>3000){if(v)toast('Informe um valor entre 1 e 3.000 ml.');return}A.addWater({ml})}),
+ delWater:d=>{const k=dkey(Date.now());if(S.water&&S.water[k]){S.water[k].splice(+d.i,1);save();rerender()}},
+ waterCfg:()=>{const p=S.profile,c=cupsOf(),g=waterGoal();sheet(`<h3>Ajustes da água</h3><label class="fld"><span>Meta diária personalizada (ml)</span><input class="inp" id="wc-goal" inputmode="numeric" placeholder="Automática: ${fmtInt(g.ml)} ml" value="${esc(p.waterManual||'')}"></label><p class="small">Deixe em branco para usar a meta calculada pelo peso, sexo e treino do dia.</p><div class="fld"><span>Botões de copo (ml)</span><div class="row2">${[0,1,2,3].map(i=>`<input class="inp" id="wc-c${i}" inputmode="numeric" value="${c[i]||''}" aria-label="Copo ${i+1}">`).join('')}</div></div><div class="ask-b"><button class="btn sec" data-a="closeSheet">Cancelar</button><button class="btn pri" data-a="saveWaterCfg">Salvar</button></div>`)},
+ saveWaterCfg:()=>{const g=Math.round(num($('#wc-goal').value)||0);S.profile.waterManual=g>=500&&g<=8000?g:null;S.profile.cups=[0,1,2,3].map(i=>Math.round(num($('#wc-c'+i).value)||0)).filter(v=>v>0&&v<=3000);save();closeSheet();rerender();toast('Ajustes salvos')},
  setTheme:d=>{const t=themeOf(d.k);S.profile.theme=t[0];S.profile.accent=t[11];save();applyAccent();rerender()},
  setAccent:d=>{S.profile.accent=d.k;save();applyAccent();rerender()},
  addProfile:()=>askText('Novo perfil','','Nome da pessoa').then(v=>{closeSheet();const n=(v||'').trim();if(!n)return;if(REGS.list.some(p=>norm(p.name)===norm(n))){toast('Já existe um perfil com esse nome.');return}REGS.list.push({id:(slug(n)||'perfil')+'-'+uid().slice(0,4),name:n});saveReg();rerender();toast('Perfil criado. Toque nele para usar.')}),
@@ -1066,6 +1197,8 @@ document.addEventListener('input',e=>{const t=e.target,f=t.dataset.f;if(!f)retur
  if(f==='nxName'){p.f.name=v;return} if(f==='nxMu'){p.f.muscle=v;return} if(f==='nxEq'){p.f.equipment=v;return}
  if(f==='mDate'){const d=v.split('-');if(d.length===3)p.m.date=new Date(+d[0],d[1]-1,+d[2]).getTime();return}
  if(f==='mVal'){p.m[t.dataset.k]=v;return}
+ if(f==='pd'){const k=t.dataset.k;S.profile[k]=k==='height'?(num(v)&&num(v)>=100&&num(v)<=250?num(v):S.profile[k]):v;save();return}
+ if(f==='pdWeight'){const n=num(v);if(n&&n>=20&&n<=400){const d=sod(Date.now());let m=S.measures.find(x=>x.date===d);if(!m){m={id:uid(),date:d};S.measures.push(m)}m.weight=n;save()}return}
  if(f==='pname'){S.profile.name=v;const r=REGS.list.find(x=>x.id===REGS.current);if(r&&v.trim()){r.name=v.trim();saveReg()}save();return}
  if(f==='pf'){S.profile[t.dataset.k]=t.checked;save();if(t.dataset.k==='wake'&&!t.checked)unwake();if(t.dataset.k==='notify'&&t.checked)askNotify(t);return}
  if(f==='impMu'){const x=S.exercises.find(z=>z.id===t.dataset.id);if(x){x.muscle=v;save()}return}
