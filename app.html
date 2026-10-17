@@ -283,6 +283,14 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .mrow{display:flex;justify-content:space-between;gap:10px;padding:12px 4px;border-bottom:1px solid var(--line);text-align:left;width:100%}
 .mrow:last-child{border-bottom:0}
 .small{font-size:14px}
+.kv2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.kv2 button{background:var(--surface-2);border-radius:12px;padding:10px 12px;text-align:left;display:flex;flex-direction:column;gap:4px;min-width:0}
+.kv2 b{font:700 22px/1.1 var(--display);font-variant-numeric:tabular-nums}
+.kv2 b small{font-size:13px;color:var(--muted);font-weight:600;margin-left:2px}
+.kv2 em{font-style:normal;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kv2 .pill{align-self:flex-start;font-size:11px;padding:2px 8px}
+.bar1{height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden}
+.bar1 i{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .3s}
 .ring{position:relative;width:min(240px,70vw);aspect-ratio:1;max-width:100%}
 .ring svg{width:100%;height:100%;display:block}
 .ring-bg{fill:none;stroke:var(--surface-2);stroke-width:16}
@@ -701,7 +709,7 @@ VIEWS.inicio=()=>{
  <div class="stat3"><div><span class="lab">Treinos</span><b>${thisW.length}</b></div><div><span class="lab">Tempo</span><b>${fmtDur(dur)}</b></div><div><span class="lab">Volume</span><b>${fmtInt(vol)}<small style="font-size:14px"> kg</small></b></div></div>
  <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<div class="dchip${has?' has':''}${d===today?' today':''}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></div>`}).join('')}</div></section>`;
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button>`;
- {const wg=waterGoal(),wt=waterOn(dkey(Date.now()));h+=`<button class="tile" data-a="tab" data-t="agua">${I.drop}<span class="spacer">Água hoje</span><span class="num" style="font-size:18px">${fmtInt(wt)} / ${fmtInt(wg.ml)} ml</span></button>`}
+ h+=homeHealth();
  if(backupDue()){const n=S.workouts.length-(S.profile.lastBackupN||0);h+=`<section class="alert"><b>Backup pendente</b><span>${n>0?`${n} treino(s) novo(s) desde o último backup.`:'Você ainda não fez backup.'} Se os dados do navegador forem apagados, o histórico se perde.</span><div class="row"><button class="btn pri sm" data-a="backupSheet">Fazer backup</button><button class="btn ghost sm" data-a="snoozeBackup">Lembrar depois</button></div></section>`}
  h+=`<h2 class="h">Seus treinos</h2>`;
  if(!ws.length)h+=`<div class="emptybox">${I.dumbbell}<b>Nenhum treino registrado ainda</b><span>Comece uma rotina na aba Treino. Se você já usava outro app, importe o histórico em Configurações.</span><div class="row" style="flex-wrap:wrap;justify-content:center"><button class="btn pri sm" data-a="tab" data-t="treino">Ir para Treino</button><button class="btn sec sm" data-a="go" data-v="config">Importar histórico</button></div></div>`;
@@ -963,6 +971,21 @@ const waterOn=k=>(S.water&&S.water[k]||[]).reduce((a,x)=>a+x.ml,0);
 const cupsOf=()=>{const c=(S.profile.cups||[]).map(Number).filter(v=>v>0);return c.length?c:[200,300,500,750]};
 function waterStreak(){let d=sod(Date.now());if(waterOn(dkey(d))<waterGoal(d).ml)d=addDays(d,-1);let n=0;while(n<3650&&waterOn(dkey(d))>=waterGoal(d).ml&&waterOn(dkey(d))>0){n++;d=addDays(d,-1)}return n}
 const pill=(t,k='')=>`<span class="pill ${k}">${t}</span>`;
+
+function homeHealth(){const b=bodyData(),p=S.profile,wg=waterGoal(),wt=waterOn(dkey(Date.now()));
+ const water=`<div class="form" style="gap:8px"><div class="row"><span class="lab spacer">${I.drop.replace('class="i"','class="i" style="width:15px;height:15px;vertical-align:-3px;color:var(--accent)"')} Água hoje</span><b class="num" style="font-size:18px">${fmtInt(wt)} / ${fmtInt(wg.ml)} ml</b></div><div class="bar1"><i style="width:${Math.min(100,wg.ml?wt/wg.ml*100:0).toFixed(0)}%"></i></div><div class="chips">${cupsOf().slice(0,3).map(ml=>`<button class="chip" data-a="addWater" data-ml="${ml}">+${fmtInt(ml)} ml</button>`).join('')}<button class="chip" data-a="tab" data-t="agua">Abrir</button></div></div>`;
+ const head=`<div class="row"><span class="lab spacer">Seu resumo de saúde</span><button class="tb" style="padding:4px 2px" data-a="go" data-v="dados">${I.edit.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Editar dados</button></div>`;
+ if(!b.ok)return`<section class="card form">${head}<p class="muted small" style="margin:0">Falta${b.missing.length>1?'m':''}: ${b.missing.join(', ')}. Preencha para ver aqui seu IMC, taxa metabólica, gasto diário, calorias, água e proteína.</p><div><button class="btn pri sm" data-a="go" data-v="dados">${I.idcard} Preencher dados pessoais</button></div>${water}</section>`;
+ const hm=b.h/100,bmi=b.w/(hm*hm),c=BMI_C.find(x=>bmi<x[0]),tmb=mifflin(b.w,b.h,b.age,b.sex),act=actOf(),tdee=tmb*act[2],goal=p.goal||'manter',kcal=r50(goal==='perder'?tdee*.8:goal==='ganhar'?tdee*1.1:tdee),[a1,a2]=goal==='perder'?[2.3,3.1]:[1.6,2.0],gl=GOALS.find(g=>g[0]===goal)[1];
+ const t=(lab,val,sub)=>`<button data-a="go" data-v="saude"><span class="lab">${lab}</span>${val}${sub}</button>`;
+ return`<section class="card form">${head}<div class="kv2">
+ ${t('IMC',`<b>${fmt(bmi)}</b>`,pill(c[1],c[2]))}
+ ${t('Peso',`<b>${fmt(b.w)}<small>kg</small></b>`,`<em>${b.wDate?'em '+dShort(b.wDate):''} · ${fmt(b.h)} cm</em>`)}
+ ${t('Taxa basal',`<b>${fmtInt(tmb)}<small>kcal</small></b>`,'<em>em repouso, por dia</em>')}
+ ${t('Gasto diário',`<b>${fmtInt(tdee)}<small>kcal</small></b>`,`<em>nível ${act[1].toLowerCase()}</em>`)}
+ ${t('Calorias sugeridas',`<b>${fmtInt(kcal)}<small>kcal</small></b>`,`<em>${gl.toLowerCase()}</em>`)}
+ ${t('Proteína',`<b>${fmtInt(b.w*a1)}–${fmtInt(b.w*a2)}<small>g</small></b>`,'<em>por dia</em>')}
+ </div>${water}<button class="btn sm sec" data-a="go" data-v="saude">${I.heart} Ver todas as métricas de saúde</button></section>`}
 
 VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=autoAct();const age=ageOf(p.birth);
  return bar('Dados pessoais')+`<main class="page"><p class="muted" style="margin:0">Estes dados são de ${esc(p.name)} e servem para calcular IMC, taxa metabólica, gasto diário, meta de água e proteína. Ficam só neste aparelho.</p>
