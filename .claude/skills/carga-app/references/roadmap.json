@@ -46,8 +46,8 @@
     {
       "ordem": 8,
       "modulo": "Publicação",
-      "progresso": 0.6,
-      "resumo": "Código no GitHub (xSam10-10/Carga); falta ativar o Pages nas configurações e instalar nos celulares."
+      "progresso": 0.85,
+      "resumo": "Site no ar em xsam10-10.github.io/Carga, atualizado a cada envio; falta instalar nos dois celulares."
     }
   ],
   "itens": [
@@ -293,8 +293,8 @@
     ],
     [
       "Publicação",
-      "parcial",
-      "Código enviado ao GitHub; falta ativar o Pages (Settings → Pages → GitHub Actions)"
+      "pronto",
+      "Site no ar pelo GitHub Pages, publicado a cada envio"
     ],
     [
       "Publicação",
@@ -305,7 +305,7 @@
   "proximos": [
     [
       "Publicação",
-      "Publicar no GitHub Pages e instalar nos dois celulares"
+      "Instalar o app nos celulares do Samuel e da Carol"
     ],
     [
       "Nutrição",
@@ -368,6 +368,10 @@
     [
       "2026-10-17",
       "Projeto enviado ao GitHub (xSam10-10/Carga)"
+    ],
+    [
+      "2026-10-17",
+      "Site publicado no GitHub Pages"
     ]
   ]
 }
