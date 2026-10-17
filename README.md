@@ -16,4 +16,4 @@ Registro de treinos de musculação que roda no navegador e pode ser instalado n
 ## Memória do projeto e roadmap
 
 - `.claude/skills/carga-app/`: skill com objetivo, regras, arquitetura, identidade visual, pipeline de imagens e decisões. É lida automaticamente pelo Claude Code neste repositório.
-- `.claude/skills/carga-app/references/roadmap.md`: acompanhamento do desenvolvimento, com o status de cada módulo (treino, água, corpo, nutrição, metas, gráficos).
+- `.claude/skills/carga-app/references/roadmap.json`: acompanhamento do desenvolvimento (fonte); `roadmap.md` e o painel visual https://claude.ai/artifact/T86Moh6PbAnUH4K5Hr6Bk6 saem dele via `scripts/roadmap.py`.

@@ -1,0 +1,214 @@
+<style>
+.rc{display:flex;flex-direction:column;gap:var(--cds-gap-lg);font-family:var(--font-anthropic-sans);max-width:72rem;margin-inline:auto}
+.rc h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0;text-wrap:balance}
+.rc h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0}
+.rc-take{color:var(--color-fg-muted);margin:var(--cds-gap-xs) 0 0;max-width:62ch}
+.rc-card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);display:flex;flex-direction:column;gap:var(--cds-gap-md);min-width:0}
+.rc-note{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);margin:0}
+.rc-hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:var(--cds-gap-md)}
+.rc-big{font-family:var(--font-anthropic-serif);font-weight:400;font-size:3.4rem;line-height:1;font-variant-numeric:tabular-nums}
+.rc-track{height:12px;border-radius:999px;background:var(--cds-chart-grid);overflow:hidden}
+.rc-track i{display:block;height:100%;width:0;border-radius:999px;transition:width var(--cds-dur-slow) var(--cds-ease-out)}
+.rc-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--cds-gap-sm)}
+.rc-tile{border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-sm) var(--cds-pad-md);display:flex;flex-direction:column;gap:2px}
+.rc-tile .rc-num{font-family:var(--font-anthropic-serif);font-size:var(--cds-font-size-title);font-variant-numeric:tabular-nums}
+.rc-tile .rc-lab{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);display:flex;align-items:center;gap:6px}
+.rc-dot{width:.55rem;height:.55rem;border-radius:50%;flex:none}
+.rc-mods{display:flex;flex-direction:column;gap:var(--cds-gap-md);min-height:20rem}
+.rc-mod{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px var(--cds-gap-md);align-items:baseline}
+.rc-mod .rc-name{font-weight:var(--cds-font-weight-medium)}
+.rc-mod .rc-pct{font-variant-numeric:tabular-nums;font-weight:var(--cds-font-weight-medium)}
+.rc-mod .rc-track{grid-column:1/-1;height:10px}
+.rc-mod .rc-sum{grid-column:1/-1;color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
+.rc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:var(--cds-gap-md)}
+.rc ol{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:var(--cds-gap-sm)}
+.rc-tag{display:inline-block;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);border:1px solid var(--color-border-line);border-radius:999px;padding:0 8px;margin-left:6px;white-space:nowrap}
+.rc table{width:100%;border-collapse:collapse;font-size:var(--cds-font-size-body)}
+.rc th{text-align:left;color:var(--color-fg-muted);font-weight:var(--cds-font-weight-medium);font-size:var(--cds-font-size-caption);padding:0 var(--cds-pad-sm) var(--cds-pad-xs) 0;border-bottom:1px solid var(--color-border-line)}
+.rc td{padding:var(--cds-pad-xs) var(--cds-pad-sm) var(--cds-pad-xs) 0;border-bottom:1px solid var(--color-border-line);vertical-align:top}
+.rc td:first-child{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--color-fg-muted)}
+.rc-filters{display:flex;flex-wrap:wrap;gap:var(--cds-gap-xs)}
+.rc-filters button{font:inherit;font-size:var(--cds-font-size-caption);border:1px solid var(--color-border-line);background:transparent;color:var(--color-fg);border-radius:999px;padding:4px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.rc-filters button[aria-pressed="true"]{background:var(--color-fg);color:var(--color-bg);border-color:var(--color-fg)}
+.rc-filters button:focus-visible{outline:2px solid var(--color-fg);outline-offset:2px}
+.rc-items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--cds-gap-xs)}
+.rc-items li{display:flex;gap:var(--cds-gap-sm);align-items:baseline}
+.rc-chip{flex:none;font-size:var(--cds-font-size-caption);border-radius:999px;padding:0 8px;border:1px solid currentColor;white-space:nowrap}
+.rc-empty{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
+[data-dash-source-state=empty]{color:transparent}
+[data-dash-source-state=refreshing]{opacity:.5;transition:opacity var(--cds-dur-slow)}
+</style>
+<div class="rc">
+  <header>
+    <h1 id="titulo">Roadmap do Carga</h1>
+    <p class="rc-take dash-skeleton" id="take">—</p>
+  </header>
+
+  <section class="rc-hero" id="resumo">
+    <div class="rc-card">
+      <h2>Progresso geral</h2>
+      <p class="rc-note">Média dos módulos rumo ao app de saúde completo</p>
+      <div><b class="rc-big dash-skeleton" data-source="geral" data-field="pct" id="geralPct">—</b><span class="rc-big">%</span></div>
+      <div class="rc-track"><i id="geralBar"></i></div>
+    </div>
+    <div class="rc-card">
+      <h2>Itens do roadmap</h2>
+      <p class="rc-note">Quantos itens há em cada situação, somando todos os módulos</p>
+      <div class="rc-tiles" id="tiles"></div>
+    </div>
+  </section>
+
+  <section class="rc-card" id="modulos">
+    <h2>Progresso por módulo</h2>
+    <p class="rc-note">Cada barra é o quanto do módulo já está no app</p>
+    <div class="rc-mods" id="mods" data-source="modulos"></div>
+  </section>
+
+  <div class="rc-grid">
+    <section class="rc-card" id="proximos">
+      <h2>Próximos passos</h2>
+      <p class="rc-note">Na ordem combinada</p>
+      <ol id="prox"></ol>
+    </section>
+    <section class="rc-card" id="entregas">
+      <h2>Entregas</h2>
+      <p class="rc-note">O que já foi para o app</p>
+      <div style="overflow-x:auto">
+        <table data-source="entregas" data-row-key="n">
+          <thead><tr><th data-field="data">Data</th><th data-field="entrega">Entrega</th></tr></thead>
+          <tbody id="entBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <section id="itens" style="display:flex;flex-direction:column;gap:var(--cds-gap-md)">
+    <div style="display:flex;flex-direction:column;gap:var(--cds-gap-xs)">
+      <h2>Itens por módulo</h2>
+      <p class="rc-note">Pronto, parcial, a fazer e as sugestões aprovadas para implementar aos poucos</p>
+    </div>
+    <div class="rc-filters" id="filtros" role="group" aria-label="Filtrar por situação"></div>
+    <div class="rc-grid" id="itemGrid"></div>
+  </section>
+</div>
+<script>
+(() => {
+  const ST = ['pronto', 'parcial', 'a fazer', 'sugestão'];
+  const LAB = {'pronto': 'Pronto', 'parcial': 'Parcial', 'a fazer': 'A fazer', 'sugestão': 'Sugestão'};
+  const COL = {'pronto': 'var(--color-ok)', 'parcial': 'var(--color-warn)', 'a fazer': 'var(--color-fg-muted)', 'sugestão': dash.colors[3]};
+  window.rcCOL = COL; window.rcLAB = LAB; window.rcST = ST;
+
+  dash.calc('geral', {
+    title: 'Progresso geral', description: 'Média simples do progresso de todos os módulos, em %.',
+    inputs: ['modulos'],
+    fn: (modulos) => [{pct: Math.round(modulos.reduce((a, m) => a + Number(m.pct), 0) / modulos.length)}]
+  });
+  dash.calc('contagem', {
+    title: 'Itens por situação', description: 'Quantos itens do roadmap estão prontos, parciais, a fazer ou como sugestão.',
+    inputs: ['itens'],
+    fn: (itens) => ['pronto', 'parcial', 'a fazer', 'sugestão'].map(s => ({status: s, n: itens.filter(i => i.status === s).length}))
+  });
+
+  const enc = v => encodeURIComponent(String(v));
+  const el = (tag, attrs = {}, text) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); if (text != null) e.textContent = text; return e; };
+
+  dash.onData(() => {
+    const M = dash.data('modulos'), G = dash.data('geral'), C = dash.data('contagem'), P = dash.data('proximos'), E = dash.data('entregas');
+
+    // resumo
+    const gp = document.getElementById('geralPct'), bar = document.getElementById('geralBar'), take = document.getElementById('take');
+    if (G.status === 'ok' && G.data.length) {
+      gp.classList.remove('dash-skeleton'); gp.textContent = G.data[0].pct;
+      requestAnimationFrame(() => { bar.style.width = G.data[0].pct + '%'; bar.style.background = dash.colors[0]; });
+    } else { gp.textContent = '—'; bar.style.width = '0'; }
+    if (M.status === 'ok' && P.status === 'ok' && M.data.length) {
+      const quase = M.data.filter(m => Number(m.pct) >= 85).map(m => m.modulo);
+      const lista = quase.length > 1 ? quase.slice(0, -1).join(', ') + ' e ' + quase[quase.length - 1] : quase.join('');
+      const prox = P.data[0];
+      take.classList.remove('dash-skeleton');
+      take.textContent = (quase.length ? `Quase completos: ${lista}. ` : '') + `Próximo passo: ${prox ? prox.passo.charAt(0).toLowerCase() + prox.passo.slice(1) : 'definir'}.`;
+    }
+
+    // contagem
+    const tiles = document.getElementById('tiles'); tiles.replaceChildren();
+    if (C.status === 'ok') for (const s of ST) {
+      const t = el('div', {class: 'rc-tile'});
+      const lab = el('span', {class: 'rc-lab'}); const dot = el('i', {class: 'rc-dot'}); dot.style.background = COL[s]; lab.append(dot, LAB[s]);
+      t.append(el('b', {class: 'rc-num', 'data-source': 'contagem', 'data-field': 'n', 'data-where': 'status=' + enc(s)}, C.data.find(r => r.status === s).n), lab);
+      tiles.append(t);
+    }
+
+    // módulos
+    const mods = document.getElementById('mods'); mods.replaceChildren();
+    if (M.status === 'ok') for (const m of [...M.data].sort((a, b) => a.ordem - b.ordem)) {
+      const w = 'ordem=' + m.ordem;
+      const row = el('div', {class: 'rc-mod', id: 'mod-' + m.ordem});
+      const tr = el('div', {class: 'rc-track'}); const fill = el('i'); fill.style.background = Number(m.pct) >= 85 ? 'var(--color-ok)' : dash.colors[0];
+      tr.append(fill);
+      const pct = el('span', {class: 'rc-pct'}); pct.append(el('span', {'data-source': 'modulos', 'data-field': 'pct', 'data-where': w}, m.pct), '%');
+      row.append(el('span', {class: 'rc-name', 'data-source': 'modulos', 'data-field': 'modulo', 'data-where': w}, m.modulo), pct, tr,
+        el('span', {class: 'rc-sum', 'data-source': 'modulos', 'data-field': 'resumo', 'data-where': w}, m.resumo));
+      mods.append(row);
+      requestAnimationFrame(() => { fill.style.width = Number(m.pct) + '%'; });
+    }
+
+    // próximos
+    const ol = document.getElementById('prox'); ol.replaceChildren();
+    if (P.status === 'ok') for (const p of P.data) {
+      const li = el('li');
+      li.append(el('span', {'data-source': 'proximos', 'data-field': 'passo', 'data-where': 'ordem=' + p.ordem}, p.passo),
+        el('span', {class: 'rc-tag', 'data-source': 'proximos', 'data-field': 'modulo', 'data-where': 'ordem=' + p.ordem}, p.modulo));
+      ol.append(li);
+    }
+
+    // entregas (mais recentes primeiro)
+    const tb = document.getElementById('entBody'); tb.replaceChildren();
+    if (E.status === 'ok') for (const e of [...E.data].reverse()) {
+      const tr = el('tr', {'data-key': e.n});
+      tr.append(el('td', {}, e.data), el('td', {}, e.entrega));
+      tb.append(tr);
+    }
+
+    window.rcDrawItems && window.rcDrawItems();
+  });
+
+  // itens com filtro por situação
+  let filtro = 'todos';
+  const fbox = document.getElementById('filtros');
+  const drawFilters = () => {
+    fbox.replaceChildren();
+    for (const s of ['todos', ...ST]) {
+      const b = el('button', {type: 'button', 'aria-pressed': String(filtro === s)});
+      if (s !== 'todos') { const d = el('i', {class: 'rc-dot'}); d.style.background = COL[s]; b.append(d); }
+      b.append(s === 'todos' ? 'Todos' : LAB[s]);
+      b.addEventListener('click', () => { filtro = s; drawFilters(); window.rcDrawItems(); });
+      fbox.append(b);
+    }
+  };
+  drawFilters();
+  window.rcDrawItems = () => {
+    const M = dash.data('modulos'), I = dash.data('itens');
+    const grid = document.getElementById('itemGrid'); grid.replaceChildren();
+    if (M.status !== 'ok' || I.status !== 'ok') return;
+    for (const m of [...M.data].sort((a, b) => a.ordem - b.ordem)) {
+      const its = I.data.filter(i => i.modulo === m.modulo && (filtro === 'todos' || i.status === filtro));
+      const card = el('section', {class: 'rc-card', id: 'itens-' + m.ordem});
+      card.append(el('h2', {}, m.modulo));
+      if (!its.length) card.append(el('p', {class: 'rc-empty'}, 'Nenhum item nesta situação.'));
+      else {
+        const ul = el('ul', {class: 'rc-items'});
+        for (const i of its) {
+          const li = el('li');
+          const chip = el('span', {class: 'rc-chip', 'data-source': 'itens', 'data-field': 'status', 'data-where': 'id=' + i.id}, i.status);
+          chip.style.color = COL[i.status];
+          li.append(chip, el('span', {'data-source': 'itens', 'data-field': 'item', 'data-where': 'id=' + i.id}, i.item));
+          ul.append(li);
+        }
+        card.append(ul);
+      }
+      grid.append(card);
+    }
+  };
+  window.rcDrawItems();
+})();
+</script>

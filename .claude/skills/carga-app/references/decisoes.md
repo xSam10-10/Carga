@@ -22,3 +22,5 @@ Registre aqui toda decisão nova, com data, para não voltar a discutir o que j�
 | out/2026 | Ícones pequenos de músculo continuam com o desenho simples | O realista fica ilegível em ~30 px |
 | out/2026 | Marca (logo, ícone, abertura) sempre no verde, independente do tema | Reconhecimento da marca |
 | out/2026 | Skill `carga-app` guardada no repositório (`.claude/skills/`) | Para migrar de chat ou ambiente perdendo o mínimo |
+| out/2026 | Todas as sugestões 💡 do roadmap foram aprovadas para implementar aos poucos | O usuário gostou das sugestões; a ordem fica em "Próximos passos" |
+| out/2026 | Painel visual do roadmap (artifact Dashboard) alimentado por `roadmap.json` | Acompanhar a evolução do projeto em barras de progresso |

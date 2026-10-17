@@ -16,7 +16,7 @@ Ser o app mais completo para acompanhar a saúde:
 - **Corpo:** medidas, peso, IMC, % de gordura, fotos de evolução.
 - **Metas e gráficos:** semanais, mensais, anuais e desde o início.
 
-O que já existe e o que falta está em `references/roadmap.md`. **Atualize o roadmap sempre que entregar algo.**
+O que já existe e o que falta está em `references/roadmap.md`. Lá também estão as **sugestões aprovadas pelo usuário** (marcadas com 💡), para implementar aos poucos. **Atualize o roadmap sempre que entregar algo**, como descrito em "Roadmap e painel visual" mais abaixo.
 
 ## Regras que o usuário definiu (não quebrar)
 
@@ -52,9 +52,21 @@ O que já existe e o que falta está em `references/roadmap.md`. **Atualize o ro
 5. Publique o Artifact.
 6. Faça o commit com autor `Samuel Costa <samuel.costa@unilever.com>`, seguindo as regras de atribuição da sessão.
 7. Gere `carga-projeto.zip` (sem `.git` e `tools/.cache`) e `carga-site.zip` (conteúdo de `dist/`) e mande ao usuário.
-8. Atualize `references/roadmap.md` e, se aprendeu algo novo, esta skill.
+8. Atualize o roadmap e o painel visual (seção abaixo) e, se aprendeu algo novo, esta skill.
 
 GitHub e Pages (pendente até hoje): `references/publicacao-github.md`.
+
+## Roadmap e painel visual
+
+- **Fonte única:** `references/roadmap.json`, com módulos (progresso de 0 a 1), itens (status `pronto`, `parcial`, `a fazer` ou `sugestão`), próximos passos, referências de outros apps e entregas. O `roadmap.md` é **gerado**; não o edite à mão.
+- **Painel** "Roadmap do Carga" (artifact do tipo Dashboard): https://claude.ai/artifact/T86Moh6PbAnUH4K5Hr6Bk6. Ele mostra o progresso geral, as barras por módulo, os itens por situação (com filtro), os próximos passos e as entregas. O código da página está em `scripts/painel-roadmap.html`, gravado no documento `files/index.html` do painel.
+- **Para atualizar depois de uma entrega:**
+  1. Edite `roadmap.json`: mude o status dos itens, o progresso do módulo e acrescente a entrega com a data.
+  2. Rode `python3 scripts/roadmap.py <pasta>`. Isso regenera o `roadmap.md` e cria `modulos.json`, `itens.json`, `proximos.json` e `entregas.json` na pasta.
+  3. Suba cada JSON como asset do painel: Artifact `publish` com `url` do painel, `asset: true` e `file_path`, um arquivo por chamada.
+  4. Com ArtifactData, faça `update` em `datasets/<id>` com o novo `source.url` (devolvido pelo upload), `source.name` e `updated: {at, by}`. Leia antes para obter a versão.
+  5. Apague os assets antigos (Artifact `delete` com `path` igual ao id).
+- **Se a página do painel mudar:** grave `{text: <conteúdo de scripts/painel-roadmap.html>}` em `files/index.html`.
 
 ## Onde está cada conhecimento
 
