@@ -12,3 +12,8 @@ Registro de treinos de musculação que roda no navegador e pode ser instalado n
 - `tools/instrucoes.py`: passo a passo em português por padrão de movimento
 - `python3 tools/build_catalog.py && python3 tools/inject_catalog.py` regenera `img/ex-*.webp` e o catálogo dentro do `app.html`
 - Imagens de execução: [free-exercise-db](https://github.com/yuhonas/free-exercise-db) (domínio público, Unlicense)
+
+## Memória do projeto e roadmap
+
+- `.claude/skills/carga-app/`: skill com objetivo, regras, arquitetura, identidade visual, pipeline de imagens e decisões. É lida automaticamente pelo Claude Code neste repositório.
+- `.claude/skills/carga-app/references/roadmap.md`: acompanhamento do desenvolvimento, com o status de cada módulo (treino, água, corpo, nutrição, metas, gráficos).
