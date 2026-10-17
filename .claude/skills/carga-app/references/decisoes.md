@@ -27,3 +27,6 @@ Registre aqui toda decisão nova, com data, para não voltar a discutir o que j�
 | 17/10/2026 | Senha de entrada fixa (8 dígitos), igual nos dois celulares, pedida a cada abertura do app | Pedido do usuário. O código guarda só o hash PBKDF2-SHA256 (sal `carga-v1-lock`, 150 mil iterações), porque o repositório é público. **Nunca escreva a senha em texto puro no código, na skill ou em commits**; quem precisar dela pergunta ao usuário |
 | 17/10/2026 | ~~Calorias estimadas pela FC média (Keytel)~~ (removido no mesmo dia) | Substituído pelo registro direto das calorias do relógio |
 | 17/10/2026 | Calorias do treino digitadas a partir do relógio, num pop-up no fim do treino; frequência cardíaca removida do app | O relógio (Samsung/Apple) já calcula as calorias e é mais fiel que uma fórmula |
+| 17/10/2026 | Nutrição no modelo do Samsung Health (vídeo do usuário), com a identidade do Carga | Referência escolhida pelo usuário; 5ª aba "Nutrição" |
+| 17/10/2026 | Base de alimentos: TACO 4ª ed. (NEPA/UNICAMP), valores por 100 g; dados do projeto taco-api (MIT) | Gratuita, brasileira, funciona offline; o Samsung usa FatSecret, que não tem dados abertos |
+| 17/10/2026 | Tendências da nutrição usam o seletor de período do app em vez de Dias/Semanas/Meses | Mantém o padrão dos outros gráficos (pedido anterior do usuário) |

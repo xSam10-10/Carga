@@ -16,6 +16,7 @@ tools/                   geradores (ver imagens-e-avatares.md)
   build_catalog.py       baixa fotos (free-exercise-db), monta sprites e tools/catalog.js
   inject_catalog.py      injeta o catálogo em app.html entre /*CAT-START*/ e /*CAT-END*/
   build_body.py          mapa corporal: injeta BODY entre /*BODY-START*/ e /*BODY-END*/
+  build_taco.py          base de alimentos TACO (tools/taco/*.csv, do projeto taco-api, MIT) → /*TACO-START*/…/*TACO-END*/
   musculos/*.webp        17 artes aprovadas (fonte do mapa corporal)
   silhueta.py            vetoriza a arte das silhuetas do avatar de água
   logo.py                gera ícones SVG e a abertura (<!--SPLASH-START-->…<!--SPLASH-END-->)
@@ -37,6 +38,9 @@ tools/                   geradores (ver imagens-e-avatares.md)
   - `profile` guarda: `name`, `sex` ('m'|'f'), `birth`, `height`, `theme`, `accent`, `photo` (dataURL reduzida), `rest`, `sound`, `vibrate`, `wake`, `notify`, `weekStart`, `prevMode`, `livePR`, `hints`, `ssScroll`, `water` (config), dados de atividade e objetivo, `lastBackup`, `lastBackupN`, `backupSnooze`, `collapsed`.
   - `workouts[]`: `{id, name, start, end, exercises:[{exId, sets:[{type:'n'|'w'|..., kg, reps, km, min, done}]}], prs}`.
   - `water`: `{ 'AAAA-MM-DD': [{t, ml}] }`.
+  - `meals[]`: `{id, d:'AAAA-MM-DD', m:'cafe'|'lanche1'|'almoco'|'lanche2'|'jantar'|'ceia', t:'HH:MM', it:[{f:'t123'|'u…', q:gramas} | {n:'Calorias rápidas', kcal}]}`. Há no máximo um registro por tipo de refeição por dia.
+  - `foods[]` (alimentos próprios): `{id:'u…', name, por:g, v:[15 nutrientes por 100 g]}`; `fav[]` (ids favoritos); `mealTpl[]` (refeições salvas: `{id, name, it}`).
+  - `profile.nutri`: `{mode:'auto'|'manual', kcal, pC, pG, pP}`.
   - `measures[]`: registros de medidas (peso, cintura etc.) com data.
   - `active`: treino em andamento (sobrevive ao fechar o app).
 - **Cópias automáticas:** IndexedDB `carga`, store `snaps` (`snapshot`, `autoSnapshot`, `restoreFrom`).
@@ -73,6 +77,17 @@ tools/                   geradores (ver imagens-e-avatares.md)
   - Proteína pela ISSN 2017.
 - **Tema:** `THEMES`, `ACCENTS`, `applyAccent()` (escreve `#accent-style`, `data-theme` e a meta theme-color). Ver identidade-visual.md.
 
+## Nutrição (código)
+- O bloco fica em `app.html`, entre `/* ---------- NUTRIÇÃO` e `/* Senha de entrada`.
+- Vetor de nutrientes `NK`: kcal, prot, gord, carb, fib, sat, col, na, k, ca, fe, mg, zn, vc, va (índices 0 a 14).
+  - TACO: `food('t<índice>')`.
+  - Alimento próprio: `food('u…')`.
+  - `itemNut`, `sumNut`, `dayNut(dkey)` e `nutriPlan()` (metas) fazem as contas.
+- Telas: `dieta`, `refeicao` (p.w é a cópia de trabalho; OK grava em `S.meals`), `alimentos` (p.pick, p.sel, p.tab), `novoAlimento`, `nutrientes`, `dietaTend` (chave de período `dieta`) e `metasNutri`.
+- Entradas usam `data-f="n:…"`, tratadas em `nInput`. As ações ficam num `Object.assign(A, {...})`.
+- As classes CSS novas têm prefixo próprio (`nmr`, `nfx`, `nemp`, `nsub`…). O app já tinha `.mrow`, `.fx`, `.empty` e `.sub` com outros estilos.
+- Cores fixas por macro: carboidrato `--violet`, gordura `--coral` (token novo), proteína `--amber`, nas classes `.t0/.t1/.t2` (texto) e `.m0/.m1/.m2` (fundo e preenchimento).
+
 ## Convenções de código
 
 - JS compacto, no mesmo estilo do arquivo: funções curtas numa linha, template strings, sem framework e sem dependências externas (só a fonte Barlow do Google Fonts).
@@ -82,10 +97,11 @@ tools/                   geradores (ver imagens-e-avatares.md)
 
 ## Armadilhas já encontradas
 
-- **Colisão de classes CSS.** Já deram conflito: `.sec`, `.bar`, `.wcard`, `.mini` (a barra fixa do treino) e spans dentro de `.wcard`, que recebem margem. Em componentes novos, use prefixo próprio e confira o estilo computado.
+- **Colisão de classes CSS.** Já deram conflito: `.sec`, `.bar`, `.wcard`, `.mini` (a barra fixa do treino), spans dentro de `.wcard` (que recebem margem), `.mrow`, `.fx`, `.empty` e `.sub`. Antes de criar classes novas, rode uma checagem de colisão com as regras já existentes. Em componentes novos, use prefixo próprio e confira o estilo computado.
 - **Regras de mesma especificidade:** a última vence. Exemplo: `.wcard{display:flex}` passou por cima de `.hcard`, e a correção foi usar `.wcard.hcard`.
 - **`clipPath` com `<use>`** não funciona bem. Desenhe as formas explicitamente.
 - **`content-visibility`** escondia linhas nas capturas. Ficou só em `#exlist .exrow`.
+- **`back()` é assíncrono** (usa `history.back()`): leia o estado da tela anterior antes de chamar `back()`, como em `fDone`.
 - **Testes no Playwright:**
   - funções do app ficam dentro de uma IIFE, então `page.evaluate` não as enxerga; teste pela interface ou semeando o `localStorage` com `addInitScript`;
   - a abertura (splash) cobre a tela por 2,6 s; clique em `#splash` para pular;

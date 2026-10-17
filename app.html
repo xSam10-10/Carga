@@ -9,7 +9,7 @@
   --bg:#F1F3EF; --surface:#FFFFFF; --surface-2:#E7EAE4; --line:#D9DDD5;
   --fg:#141918; --muted:#66706D;
   --accent:#0D7556; --accent-ink:#FFFFFF; --accent-soft:#D3EBE0;
-  --amber:#A86F06; --amber-soft:#F5E6C4; --danger:#B83A29; --danger-soft:#F6DBD6; --violet:#6247B8;
+  --amber:#A86F06; --amber-soft:#F5E6C4; --danger:#B83A29; --danger-soft:#F6DBD6; --violet:#6247B8; --coral:#D2603A;
   --body:#DADDD6; --muscle-0:#C6CBC3;
   --display:'Barlow Condensed','Arial Narrow',system-ui,sans-serif;
   --text:'Barlow',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -19,13 +19,13 @@
   --bg:#0D1110; --surface:#161B1A; --surface-2:#202725; --line:#2A3230;
   --fg:#E8EDEA; --muted:#95A09C;
   --accent:#33C391; --accent-ink:#03140D; --accent-soft:#12392B;
-  --amber:#E3AA3C; --amber-soft:#3A2C10; --danger:#EE6E5A; --danger-soft:#3C1C17; --violet:#A38CF0;
+  --amber:#E3AA3C; --amber-soft:#3A2C10; --danger:#EE6E5A; --danger-soft:#3C1C17; --violet:#A38CF0; --coral:#F08B67;
   --body:#28302E; --muscle-0:#353E3B; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0D1110; --surface:#161B1A; --surface-2:#202725; --line:#2A3230;
   --fg:#E8EDEA; --muted:#95A09C;
   --accent:#33C391; --accent-ink:#03140D; --accent-soft:#12392B;
-  --amber:#E3AA3C; --amber-soft:#3A2C10; --danger:#EE6E5A; --danger-soft:#3C1C17; --violet:#A38CF0;
+  --amber:#E3AA3C; --amber-soft:#3A2C10; --danger:#EE6E5A; --danger-soft:#3C1C17; --violet:#A38CF0; --coral:#F08B67;
   --body:#28302E; --muscle-0:#353E3B; color-scheme:dark}
 
 *,*::before,*::after{box-sizing:border-box}
@@ -174,7 +174,7 @@ textarea:focus,.inp:focus{border-color:var(--accent)}
 
 /* abas */
 .nav{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--surface);border-top:1px solid var(--line);padding:0 max(8px,env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(8px,env(safe-area-inset-left,0px))}
-.nav-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);height:64px}
+.nav-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);height:64px}
 .nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:13px;font-weight:600;color:var(--muted)}
 .nav button span.ic{width:58px;height:30px;border-radius:999px;display:grid;place-items:center;transition:background .15s}
 .nav button.on{color:var(--accent)}
@@ -435,6 +435,63 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .ssnote{font-size:14px;color:var(--violet);font-weight:600;padding:4px}
 .alert{background:var(--amber-soft);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
 .alert b{font-size:17px}
+/* Nutrição: cores fixas por macronutriente (carboidrato violeta, gordura coral, proteína âmbar), iguais em todo o app */
+.t0{color:var(--violet)}.t1{color:var(--coral)}.t2{color:var(--amber)}
+.m0{background:var(--violet);fill:var(--violet)}.m1{background:var(--coral);fill:var(--coral)}.m2{background:var(--amber);fill:var(--amber)}
+.dnav{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:6px}
+.dnav-t{min-height:40px;border-radius:999px;background:var(--surface-2);font-weight:600;font-size:16px;text-transform:capitalize}
+.dnav .ib[disabled]{opacity:.3}
+.nk{display:flex;flex-direction:column;gap:12px}
+.nbig{font:600 46px/1 var(--display);font-variant-numeric:tabular-nums}.nbig small{font-size:18px;color:var(--muted)}
+.ngoal{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-weight:600;font-size:14px}.ngoal .i{width:15px;height:15px;vertical-align:-2px;color:var(--accent)}
+.nbar{position:relative;height:12px;border-radius:6px;background:var(--surface-2)}
+.nbar i{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--accent);z-index:1}.nbar i.over{background:var(--danger)}
+.nbar s{position:absolute;top:-3px;bottom:-3px;border-radius:4px;background:var(--accent-soft);opacity:.9}
+.nbar u{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--fg);z-index:2;border-radius:1px}
+.ninfo{display:flex;flex-direction:column;gap:10px;text-align:left;width:100%}
+.ninfo .i{width:18px;height:18px;color:var(--muted)}
+.mbox{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mbox>div{border:1px solid var(--line);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.mbox span{font-size:12px;font-weight:600}.mbox b{font:600 22px/1.1 var(--display);font-variant-numeric:tabular-nums}.mbox b small{font-size:13px;color:var(--muted);margin-left:1px}.mbox em{font-style:normal;font-size:11px;color:var(--muted)}
+.mbar{display:flex;height:12px;border-radius:6px;overflow:hidden;gap:2px}
+.mbar.rec{height:5px;opacity:.45}.mbar.nemp i{background:var(--surface-2)}
+.nmr{display:grid;grid-template-columns:auto repeat(3,1fr);gap:6px;font-size:11.5px;align-items:center}.nmr span{color:var(--muted);min-width:76px}.nmr b{text-align:center}
+.mlist{display:flex;flex-direction:column;padding:6px 10px}
+.mline{display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--line);min-height:58px}.mline:last-of-type{border-bottom:0}
+.mtap{flex:1;display:flex;align-items:center;gap:12px;text-align:left;min-width:0;padding:8px 0}
+.mk{flex:none;width:46px;height:46px;border-radius:50%;background:var(--surface-2);display:flex;flex-direction:column;align-items:center;justify-content:center;font:600 15px/1 var(--display)}.mk small{font:500 9px var(--text);color:var(--muted)}
+.mline b em{font-style:normal;font-weight:500}
+.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mlist .mi .i{color:var(--accent)}.mi.dg,.mi.dg .i{color:var(--danger)}
+.nmini{display:flex;flex-direction:column;gap:8px;text-align:left;width:100%}.nmini .spacer b{font-size:15px}
+.chart .goal{stroke:var(--fg);stroke-width:1.2;stroke-dasharray:4 3;opacity:.55}
+.mhead{display:grid;grid-template-columns:1fr 120px;gap:8px}
+.mtot{display:flex;flex-direction:column;gap:4px}.mtot b{font:600 20px var(--display)}
+.ftabs{grid-auto-columns:auto}.ftabs button{font-size:13px;padding:0 8px}
+.flist{padding:4px 8px;display:flex;flex-direction:column}
+.frow{display:flex;align-items:center;gap:12px;text-align:left;min-height:56px;padding:6px 4px;border-bottom:1px solid var(--line);content-visibility:auto;contain-intrinsic-size:auto 58px}.frow:last-child{border-bottom:0}
+.frow.on{background:var(--accent-soft);border-radius:10px}
+.fck{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:var(--accent-ink)}.frow.on .fck{background:var(--accent);border-color:var(--accent)}.fck .i{width:16px;height:16px}
+.fstar{color:var(--amber)}.fstar .i{fill:currentColor}
+.fdock{position:fixed;left:0;right:0;bottom:0;z-index:26;padding:12px max(16px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:linear-gradient(transparent,var(--bg) 30%)}
+.fdock .btn{max-width:600px;margin:0 auto;display:flex}
+.fdock .btn[disabled]{opacity:.5}
+.fld{display:flex;flex-direction:column;gap:6px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pq{display:grid;grid-template-columns:44px 1fr auto 44px;align-items:center;gap:8px}.pq .inp{text-align:center;font:600 24px var(--display)}
+.ntab{width:100%;border-collapse:collapse;font-size:14px}.ntab td{padding:5px 0;border-bottom:1px solid var(--line)}.ntab td:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}.ntab tr:first-child td{font-weight:700;font-size:16px}.ntab tr.nsub td:first-child{padding-left:14px;color:var(--muted)}
+.nlist{display:flex;flex-direction:column;gap:18px}
+.nut{display:flex;flex-direction:column;gap:6px}
+.nv.low{color:var(--muted)}.nv.ok{color:var(--accent)}.nv.high{color:var(--danger)}
+.nzb{position:relative;height:8px;border-radius:4px;background:var(--surface-2);overflow:visible}
+.nzb s{position:absolute;top:0;bottom:0;border-radius:4px}.nzb .lo{left:0;background:var(--surface-2)}.nzb .ok{background:var(--accent-soft)}.nzb .hi{background:var(--danger-soft)}
+.nzb i{position:absolute;top:-4px;width:4px;height:16px;margin-left:-2px;border-radius:2px;background:var(--fg)}
+.ntop{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:12.5px;color:var(--muted)}.ntop b{font-weight:600;color:var(--fg)}
+.pmg{display:grid;grid-template-columns:1fr auto 1fr auto;gap:4px 10px;font-size:13px;color:var(--muted)}.pmg b{color:var(--fg);font-variant-numeric:tabular-nums}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}.leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.nfx{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.nw{white-space:nowrap;font-weight:600}
+.linkb{color:var(--accent);font-weight:600;text-decoration:underline;font-size:inherit}
 /* Abertura no estilo do Hevy: tela preta desde o primeiro quadro, só o símbolo parado no centro,
    e um esmaecimento curto revela o app. A expansão a partir do ícone fica por conta do sistema. */
 html.sp-on{background:#000}
@@ -501,6 +558,8 @@ const toDateInput=ts=>toLocalInput(ts).slice(0,10);
 /* ---------- ícones ---------- */
 const ic=p=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
 const I={
+ food:ic('<path d="M7 3v7a2 2 0 0 0 4 0V3M9 10v11M16 21V3c-2.2 1.2-3 3.6-3 6.5V13h3"/>'),
+ star:ic('<path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.8Z"/>'),
  fire:ic('<path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.4 2.4-5.4 3.6-8.3.4 1.9 1.4 3 2.6 3.6C11.3 6.6 12.6 4.3 15 3c-.5 2.8.6 4.6 2 6.4 1.2 1.6 1.5 3 1.5 5.2C18.5 18.4 15.9 21 12 21Z"/>'),
  home:ic('<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/>'),
  dumbbell:ic('<path d="M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11"/>'),
@@ -1091,13 +1150,13 @@ const top_=()=>stack[stack.length-1];
 function cur(){const t=top_();return t.p.live||t.v==='finish'?S.active:t.p.s}
 
 const VIEWS={};
-const NAV_VIEWS=new Set(['relatorio','inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados']);
+const NAV_VIEWS=new Set(['relatorio','inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados','dieta','dietaTend','nutrientes','metasNutri']);
 function render(keep){const t=top_();const y=scrollY;const V=VIEWS[t.v]||VIEWS.treino;$('#app').innerHTML=V(t.p);chrome();if(keep)scrollTo(0,y);if(V.after)V.after(t.p)}
 const rerender=()=>render(true);
 function chrome(){
  const t=top_();const nav=$('#nav');const showNav=NAV_VIEWS.has(t.v)&&!!REGS.current;nav.hidden=!showNav;
  const tabOf=stack[0].v;
- nav.innerHTML=`<div class="nav-in">${[['inicio','Início',I.home],['treino','Treino',I.dumbbell],['agua','Água',I.drop],['perfil','Perfil',I.user]].map(([k,l,i])=>`<button class="${tabOf===k?'on':''}" data-a="tab" data-t="${k}" aria-label="${l}"><span class="ic">${i}</span>${l}</button>`).join('')}</div>`;
+ nav.innerHTML=`<div class="nav-in">${[['inicio','Início',I.home],['treino','Treino',I.dumbbell],['dieta','Nutrição',I.food],['agua','Água',I.drop],['perfil','Perfil',I.user]].map(([k,l,i])=>`<button class="${tabOf===k?'on':''}" data-a="tab" data-t="${k}" aria-label="${l}"><span class="ic">${i}</span>${l}</button>`).join('')}</div>`;
  const showMini=S.active&&showNav;
  $('#mini').innerHTML=showMini?`<div class="mini"><button data-a="resume"><span class="t"><b>Treino em andamento</b><span><span data-clock>${clock(Date.now()-S.active.start)}</span> · ${esc(S.active.name)}</span></span><span class="btn sm pri">Retomar</span></button></div>`:'';
  document.querySelector('.page')?.style.setProperty('padding-bottom',showMini?'200px':'');
@@ -1219,6 +1278,7 @@ VIEWS.inicio=()=>{
  <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<div class="dchip${has?' has':''}${d===today?' today':''}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></div>`}).join('')}</div></section>`;
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button>`;
  h+=homeHealth();
+ h+=homeNutri();
  if(backupDue()){const n=S.workouts.length-(S.profile.lastBackupN||0);h+=`<section class="alert"><b>Backup pendente</b><span>${n>0?`${n} treino(s) novo(s) desde o último backup.`:'Você ainda não fez backup.'} Se os dados do navegador forem apagados, o histórico se perde.</span><div class="row"><button class="btn pri sm" data-a="backupSheet">Fazer backup</button><button class="btn ghost sm" data-a="snoozeBackup">Lembrar depois</button></div></section>`}
  h+=`<h2 class="h">Seus treinos</h2>`;
  if(!ws.length)h+=`<div class="emptybox">${I.dumbbell}<b>Nenhum treino registrado ainda</b><span>Comece uma rotina na aba Treino. Se você já usava outro app, importe o histórico em Configurações.</span><div class="row" style="flex-wrap:wrap;justify-content:center"><button class="btn pri sm" data-a="tab" data-t="treino">Ir para Treino</button><button class="btn sec sm" data-a="go" data-v="config">Importar histórico</button></div></div>`;
@@ -1862,6 +1922,7 @@ const A={
 document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el||el.disabled)return;const f=A[el.dataset.a];if(f){e.preventDefault();f(el.dataset,el)}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheetOpen())closeSheet();if(e.key==='Enter'&&e.target.id==='ask-in'&&e.target.tagName==='INPUT')A.askOk()});
 document.addEventListener('input',e=>{const t=e.target,f=t.dataset.f;if(!f)return;const p=top_().p;const v=t.value;
+ if(f.startsWith('n:')){nInput(f.slice(2),t,v);return}
  if(f==='q'){p.q=v;$('#exlist').innerHTML=exListHTML(p,top_().v==='picker');return}
 
  if(f==='nxName'){p.f.name=v;return} if(f==='nxMu'){p.f.muscle=v;return} if(f==='nxEq'){p.f.equipment=v;return}
@@ -1888,6 +1949,770 @@ document.addEventListener('focusin',e=>{if(e.target.classList&&e.target.classLis
 
 try{history.replaceState({n:1},'')}catch(e){useHist=false}
 applyAccent();
+/* ---------- NUTRIÇÃO (referência: Samsung Health › Refeição) ----------
+   Dados por perfil: S.meals [{id,d:'AAAA-MM-DD',m:tipo,t:'HH:MM',it:[{f:id,q:gramas}|{n:nome,kcal}]}],
+   S.foods (alimentos próprios, valores por 100 g), S.fav (ids favoritos), S.mealTpl (refeições salvas).
+   Base: TACO 4ª ed. (NEPA/UNICAMP), por 100 g. Índices do vetor de nutrientes em NK. */
+/*TACO-START*/const TACO_CAT=["Cereais e derivados", "Verduras, hortaliças e derivados", "Frutas e derivados", "Gorduras e óleos", "Pescados e frutos do mar", "Carnes e derivados", "Leite e derivados", "Bebidas (alcoólicas e não alcoólicas)", "Ovos e derivados", "Produtos açucarados", "Miscelâneas", "Outros alimentos industrializados", "Alimentos preparados", "Leguminosas e derivados", "Nozes e sementes"];
+const TACO=`Arroz, integral, cozido|0|124|2.6|1|25.8|2.7|0.3||1|75|5|0.3|59|0.7||
+Arroz, integral, cru|0|360|7.3|1.9|77.5|4.8|0.3||2|173|8|0.9|110|1.4||
+Arroz, tipo 1, cozido|0|128|2.5|0.2|28.1|1.6|0.2||1|15|4|0.1|2|0.5||
+Arroz, tipo 1, cru|0|358|7.2|0.3|78.8|1.6|0.1||1|62|4|0.7|30|1.2||
+Arroz, tipo 2, cozido|0|130|2.6|0.4|28.2|1.1|0.1||2|20|3|0.1|6|0.5||
+Arroz, tipo 2, cru|0|358|7.2|0.3|78.9|1.7|0.1||1|57|5|0.6|29|1.3||
+Aveia, flocos, crua|0|394|13.9|8.5|66.6|9.1|1.5||5|336|48|4.4|119|2.6|1.4|
+Biscoito, doce, maisena|0|443|8.1|12|75.2|2.1|3.9||352|142|54|1.8|37|1|6.2|
+Biscoito, doce, recheado com chocolate|0|472|6.4|19.6|70.5|3|6.2|0|239|232|27|2.3|48|1|3.5|
+Biscoito, doce, recheado com morango|0|471|5.7|19.6|71|1.5|6.1|0|230|113|36|1.5|27|0.7|0|
+Biscoito, doce, wafer, recheado de chocolate|0|502|5.6|24.7|67.5|1.8|6.5|0|137|240|23|2.4|48|0.9|0|
+Biscoito, doce, wafer, recheado de morango|0|513|4.5|26.4|67.4|0.8|6.7|1|120|75|14|1.1|19|0.5||
+Biscoito, salgado, cream cracker|0|432|10.1|14.4|68.7|2.5|4.4||854|181|20|2.2|40|1.1||
+Bolo, mistura para|0|419|6.2|6.1|84.7|1.7|2.1|0|463|75|59|1.2|28|0.6|0|
+Bolo, pronto, aipim|0|324|4.4|12.7|47.9|0.7|5|73|111|135|85|0.5|10|0.4|0|
+Bolo, pronto, chocolate|0|410|6.2|18.5|54.7|1.4|5.5|77|283|212|75|2.1|28|0.7|0|
+Bolo, pronto, coco|0|333|5.7|11.3|52.3|1.1|4.9|63|190|143|57|0.8|16|0.7|0|0
+Bolo, pronto, milho|0|311|4.8|12.4|45.1|0.7|4.5|82|134|118|83|0.7|10|0.4|0|
+Canjica, branca, crua|0|358|7.2|1|78.1|5.5|0.3||1|93|2|0.3|12|0.4|0|
+Canjica, com leite integral|0|112|2.4|1.2|23.6|1.2|0.6|1|28|70|43|0.1|6|0.3|0|
+Cereais, milho, flocos, com sal|0|370|7.3|1.6|80.8|5.3|0.5||272|69|2|0.5|20|0.6|0|
+Cereais, milho, flocos, sem sal|0|363|6.9|1.2|80.4|1.8|0.3||31|29|2|1.7|17|0.3|0|
+Cereais, mingau, milho, infantil|0|394|6.4|1.1|87.3|3.2|0.3||399|82|219|3|16|0.4|109.4|
+Cereais, mistura para vitamina, trigo, cevada e aveia|0|381|8.9|2.1|81.6|5|0.5||1163|244|584|12.6|72|2|13.1|
+Cereal matinal, milho|0|365|7.2|1|83.8|4.1|0.4||655|83|143|3.1|11|7.6|17.3|15
+Cereal matinal, milho, açúcar|0|377|4.7|0.7|88.8|2.1|0.2||405|52|56|3.9|8|8.5|14.6|15
+Creme de arroz, pó|0|386|7|1.2|83.9|1.1|0.4||1|115|7|0.6|51|1.9|0|
+Creme de milho, pó|0|333|4.8|1.6|86.1|3.7|0.3||594|166|323|4.3|30|0.8|96.3|
+Curau, milho verde|0|78|2.4|1.6|13.9|0.5|0.8|5|21|162|53|0.4|16|0.4|0|16
+Curau, milho verde, mistura para|0|402|2.2|13.4|79.8|2.5|3||223|55|31|0.9|9|0.2|0|
+Farinha, de arroz, enriquecida|0|363|1.3|0.3|85.5|0.6|0.2||17|13|1|31.4|4|8.5|173.6|
+Farinha, de centeio, integral|0|336|12.5|1.8|73.3|15.5|0.3||41|334|34|4.7|120|2.7|0|
+Farinha, de milho, amarela|0|351|7.2|1.5|79.1|5.5|0.4||45|58|1|2.3|31|0.6|0|9
+Farinha, de rosca|0|371|11.4|1.5|75.8|4.8|0.6||333|212|35|6.7|57|1.7|0|
+Farinha, de trigo|0|360|9.8|1.4|75.1|2.3|0.3||1|151|18|1|31|0.8|0|
+Farinha, láctea, de cereais|0|415|11.9|5.8|77.8|1.9|3.3|11|125|366|196|8.7|58|1.7|24.3|
+Lasanha, massa fresca, cozida|0|164|5.8|1.2|32.5|1.6|0.6||207|54|10|1.2|4|0.4||
+Lasanha, massa fresca, crua|0|220|7|1.3|45.1|1.6|0.5||667|137|17|1.9|13|0.8||
+Macarrão, instantâneo|0|436|8.8|17.2|62.4|5.6|||1516|148|18|0.8|19|0.5|0|
+Macarrão, trigo, cru|0|371|10|1.3|77.9|2.9|||7|147|17|0.9|28|0.8|0|
+Macarrão, trigo, cru, com ovos|0|371|10.3|2|76.6|2.3|0.5|18|15|134|19|0.9|0|0.8|0|
+Milho, amido, cru|0|361|0.6|0|87.1|0.7|||8|9|1|0.1|3|0.1|0|
+Milho, fubá, cru|0|353|7.2|1.9|78.9|4.7|0.4||0|168|3|0.9|41|1.1|0|13
+Milho, verde, cru|0|138|6.6|0.6|28.6|3.9|0.2||1|185|2|0.4|33|0.5|0|16
+Milho, verde, enlatado, drenado|0|98|3.2|2.4|17.1|4.6|0.6||260|162|2|0.6|20|0.5|1.7|24
+Mingau tradicional, pó|0|373|0.6|0.4|89.3|0.9|0.1||15|0|522|42|4|15.2|0|
+Pamonha, barra para cozimento, pré-cozida|0|171|2.6|4.8|30.7|2.4|0.5||132|125|4|0.4|15|0.4|0|
+Pão, aveia, forma|0|343|12.4|5.7|59.6|6|1.1|0|606|210|109|4.7|57|1.7|0|
+Pão, de soja|0|309|11.3|3.6|56.5|5.7|0.7||663|296|90|3.3|48|1.5|0|
+Pão, glúten, forma|0|253|12|2.7|44.1|2.5|0.5||22|65|156|5.7|24|1.3|0|
+Pão, milho, forma|0|292|8.3|3.1|56.4|4.3|0.6|6|507|89|78|3|29|0.8|0|
+Pão, trigo, forma, integral|0|253|9.4|3.7|49.9|6.9|0.7||506|163|132|3|60|1.6|0|
+Pão, trigo, francês|0|300|8|3.1|58.6|2.3|1||648|142|16|1|25|0.8||
+Pão, trigo, sovado|0|311|8.4|2.8|61.5|2.4|0.8|17|431|91|52|2.3|22|2.7|0|
+Pastel, de carne, cru|0|289|10.7|8.8|42|1|3.7|18|1309|166|17|2|18|1.7|0|
+Pastel, de carne, frito|0|388|10.1|20.1|43.8|1|4.8|25|1040|156|13|2.5|14|1.2||
+Pastel, de queijo, cru|0|308|9.9|9.6|45.9|1.1||14|985|103|155|1|16|1|0|
+Pastel, de queijo, frito|0|422|8.7|22.7|48.1|0.9||15|821|124|126|1.3|15|0.8|0|
+Pastel, massa, crua|0|310|6.9|5.5|57.4|1.4|2.1||1344|167|13|1.1|14|0.6||
+Pastel, massa, frita|0|570|6|40.9|49.3|1.3|6.9||1175|143|11|1.4|13|0.5||
+Pipoca, com óleo de soja, sem sal|0|448|9.9|15.9|70.3|14.3|2.4||4|256|3|1.2|91|2|0|
+Polenta, pré-cozida|0|103|2.3|0.3|23.3|2.4|||442|100|1|0|4|0.1|0|
+Torrada, pão francês|0|377|10.5|3.3|74.6|3.4|0.9||829|189|19|1.2|32|0.9|0|
+Abóbora, cabotian, cozida|1|48|1.4|0.7|10.8|2.5|0.1||1|199|8|0.3|9|0.3|7.5|
+Abóbora, cabotian, crua|1|39|1.7|0.5|8.4|2.2|0.1||0|351|18|0.4|9|0.3|5.1|223
+Abóbora, menina brasileira, crua|1|14|0.6|0|3.3|1.2|||0|165|9|0.2|4|0|1.5|554
+Abóbora, moranga, crua|1|12|1|0.1|2.7|1.7|||0|125|3|0|2|0.1|9.6|139
+Abóbora, moranga, refogada|1|29|0.4|0.8|6|1.5|0.1||3|183|19|0.1|7|0.1|6.7|48
+Abóbora, pescoço, crua|1|24|0.7|0.1|6.1|2.3|||1|264|9|0.3|7|0.2|2.1|
+Abobrinha, italiana, cozida|1|15|1.1|0.2|3|1.6|0.1||1|126|17|0.2|17|0.3|2.1|
+Abobrinha, italiana, crua|1|19|1.1|0.1|4.3|1.4|||0|253|15|0.2|20|0.2|6.9|20
+Abobrinha, italiana, refogada|1|24|1.1|0.8|4.2|1.4|0.1||2|194|21|0.4|13|0.3|7.5|21
+Abobrinha, paulista, crua|1|31|0.6|0.1|7.9|2.6|||1|213|19|0.2|9|0.2|17.5|
+Acelga, crua|1|21|1.4|0.1|4.6|1.1|||1|240|43|0.3|10|0.3|22.6|
+Agrião, cru|1|17|2.7|0.2|2.3|2.1|||7|218|133|3.1|18|0.7|60.1|229
+Aipo, cru|1|19|0.8|0.1|4.3|1|||10|274|65|0.7|9|0.1|5.9|458
+Alface, americana, crua|1|9|0.6|0.1|1.7|1|||7|136|14|0.3|6|0.2|11|
+Alface, crespa, crua|1|11|1.3|0.2|1.7|1.8|||3|267|38|0.4|11|0.3|15.6|117
+Alface, lisa, crua|1|14|1.7|0.1|2.4|2.3|||4|349|28|0.6|9|0.3|21.4|184
+Alface, roxa, crua|1|13|0.9|0.2|2.5|2|||7|308|34|2.5|9|0.2|13.5|156
+Alfavaca, crua|1|29|2.7|0.5|5.2|4.1|0.1||5|261|258|1.3|84|0.7|0|
+Alho, cru|1|113|7|0.2|23.9|4.3|||5|535|14|0.8|21|0.8||
+Alho-poró, cru|1|32|1.4|0.1|6.9|2.5|||2|224|34|0.6|11|0.2|14.1|8
+Almeirão, cru|1|18|1.8|0.2|3.3|2.6|||2|369|19|0.7|21|0.3|1.7|283
+Almeirão, refogado|1|65|1.7|4.8|5.7|3.4|0.8||15|315|63|1.6|17|0.2|1.5|
+Batata, baroa, cozida|1|80|0.9|0.2|18.9|1.8|||2|258|12|0.4|8|0.4|17.1|
+Batata, baroa, crua|1|101|1|0.2|24|2.1|||0|505|17|0.3|12|0.2|7.6|12
+Batata, doce, cozida|1|77|0.6|0.1|18.4|2.2|||3|148|17|0.2|11|0.1|23.8|
+Batata, doce, crua|1|118|1.3|0.1|28.2|2.6|||9|340|21|0.4|17|0.2|16.5|
+Batata, frita, tipo chips, industrializada|1|543|5.6|36.6|51.2|2.5|12.9||607|1014|12|0.7|24|0.6|0|
+Batata, inglesa, cozida|1|52|1.2|0|11.9|1.3|||2|161|4|0.2|5|0.2|3.8|
+Batata, inglesa, crua|1|64|1.8|0|14.7|1.2|||0|302|4|0.4|15|0.2|31.1|
+Batata, inglesa, frita|1|267|5|13.1|35.6|8.1|2.1||2|489|6|0.4|14|0.4|16.3|
+Batata, inglesa, sauté|1|68|1.3|0.9|14.1|1.4|0.3||8|199|4|0.3|6|0.2|0|
+Berinjela, cozida|1|19|0.7|0.1|4.5|2.5|||1|105|11|0.2|9|0.1|0|
+Berinjela, crua|1|20|1.2|0.1|4.4|2.9|||0|205|9|0.2|13|0.1|3|12
+Beterraba, cozida|1|32|1.3|0.1|7.2|1.9|||23|245|15|0.2|17|0.4|1.2|
+Beterraba, crua|1|49|1.9|0.1|11.1|3.4|||10|375|18|0.3|24|0.5|3.1|
+Biscoito, polvilho doce|1|438|1.3|12.2|80.5|1.2|2.4|9|98|54|30|1.8|6|0.1|0|
+Brócolis, cozido|1|25|2.1|0.5|4.4|3.4|0.1||2|119|51|0.5|15|0.2|42|
+Brócolis, cru|1|25|3.6|0.3|4|2.9|0.1||3|322|86|0.6|30|0.5|34.3|140
+Cará, cozido|1|78|1.5|0.1|18.9|2.6|||1|203|5|0.3|15|0.2|0|
+Cará, cru|1|96|2.3|0.1|23|7.3|||0|212|4|0.2|11|0.2|8.8|
+Caruru, cru|1|34|3.2|0.6|6|4.5|0.1||14|279|455|4.5|197|6|5.4|953
+Catalonha, crua|1|24|1.9|0.3|4.8|2|0.1||9|412|57|3.1|17|0.5|7.3|
+Catalonha, refogada|1|63|2|4.8|4.8|3.7|0.7||25|452|63|1.2|16|0.4|0|425
+Cebola, crua|1|39|1.7|0.1|8.9|2.2|||1|176|14|0.2|12|0.2|4.7|
+Cebolinha, crua|1|20|1.9|0.4|3.4|3.6|||2|206|80|0.6|25|0.3|31.8|67
+Cenoura, cozida|1|30|0.8|0.2|6.7|2.6|0||8|176|26|0.1|14|0.2|0|306
+Cenoura, crua|1|34|1.3|0.2|7.7|3.2|||3|315|23|0.2|11|0.2|5.1|663
+Chicória, crua|1|14|1.1|0.1|2.9|2.2|||14|425|45|0.5|14|0.1|6.5|
+Chuchu, cozido|1|19|0.4|0|4.8|1|||2|54|8|0.1|7|0.1|5.6|
+Chuchu, cru|1|17|0.7|0.1|4.1|1.3|||0|126|12|0.2|7|0.1|10.6|
+Coentro, folhas desidratadas|1|309|20.9|10.4|48|37.3|||18|3223|784|81.4|393|4.7|40.8|
+Couve, manteiga, crua|1|27|2.9|0.5|4.3|3.1|0.1||6|403|131|0.5|35|0.4|96.7|248
+Couve, manteiga, refogada|1|90|1.7|6.6|8.7|5.7|1||11|315|177|0.5|26|0.2|76.9|192
+Couve-flor, crua|1|23|1.9|0.2|4.5|2.4|||3|256|18|0.5|12|0.3|36.1|1
+Couve-flor, cozida|1|19|1.2|0.3|3.9|2.1|0.1||2|80|16|0.1|5|0.3|23.7|
+Espinafre, Nova Zelândia, cru|1|16|2|0.2|2.6|2.1|||17|336|98|0.4|82|0.3|2.4|242
+Espinafre, Nova Zelândia, refogado|1|67|2.7|5.4|4.2|2.5|0.9||47|149|112|0.6|123|0.6|5.3|312
+Farinha, de mandioca, crua|1|361|1.6|0.3|87.9|6.4|0.1||1|340|65|1.1|37|0.4|0|
+Farinha, de mandioca, torrada|1|365|1.2|0.3|89.2|6.5|0.1||10|328|76|1.2|40|0.4|0|
+Farinha, de puba|1|360|1.6|0.5|87.3|4.2|0.2||4|338|41|1.4|27|0.3|0|
+Fécula, de mandioca|1|331|0.5|0.3|81.1|0.6|||2|48|12|0.1|3|0|0|
+Feijão, broto, cru|1|39|4.2|0.1|7.8|2|||2|189|14|0.8|25|0.6|12|
+Inhame, cru|1|97|2.1|0.2|23.2|1.7|0.1||0|568|12|0.4|29|0.3|5.6|
+Jiló, cru|1|27|1.4|0.2|6.2|4.8|0.1||0|213|20|0.3|21|0.1|6.8|6
+Jurubeba, crua|1|126|4.4|3.9|23.1|23.9|0.5||1|619|151|0.9|65|0.6|13.8|
+Mandioca, cozida|1|125|0.6|0.3|30.1|1.6|0.1||1|100|19|0.1|27|0.2|11.1|
+Mandioca, crua|1|151|1.1|0.3|36.2|1.9|0.1||2|208|15|0.3|44|0.2|16.5|
+Mandioca, farofa, temperada|1|406|2.1|9.1|80.3|7.8|1.9||575|201|66|1.4|34|0.2|0|
+Mandioca, frita|1|300|1.4|11.2|50.3|1.9|1.7||9|176|23|0.3|95|0.4|0|
+Manjericão, cru|1|21|2|0.4|3.6|3.3|0.1||4|252|211|1|58|0.5|2.3|517
+Maxixe, cru|1|14|1.4|0.1|2.7|2.2|||11|328|21|0.4|10|0.2|9.6|3
+Mostarda, folha, crua|1|18|2.1|0.2|3.2|1.9|||3|364|68|1.1|16|0.3|38.6|
+Nhoque, batata, cozido|1|181|5.9|1.9|36.8|1.8|0.6|15|7|164|11|1.6|18|0.5|0|
+Nabo, cru|1|18|1.2|0.1|4.1|2.6|||2|280|42|0.2|15|0.2|9.6|
+Palmito, juçara, em conserva|1|23|1.8|0.4|4.3|3.2|0.1||514|244|58|0.3|34|0.7|2|
+Palmito, pupunha, em conserva|1|29|2.5|0.5|5.5|2.6|||563|206|32|0.2|25|0.4|8.7|
+Pão, de queijo, assado|1|363|5.1|24.6|34.2|0.6||68|773|93|102|0.3|8|0.6||
+Pão, de queijo, cru|1|295|3.6|14|38.5|1|3.4|63|405|58|88|0.3|7|0.4||
+Pepino, cru|1|10|0.9|0|2|1.1|||0|154|10|0.1|9|0.1|5|2
+Pimentão, amarelo, cru|1|28|1.2|0.4|6|1.9|||0|221|10|0.4|11|0.2|201.4|20
+Pimentão, verde, cru|1|21|1.1|0.2|4.9|2.6|||0|174|9|0.4|8|0.1|100.2|23
+Pimentão, vermelho, cru|1|23|1|0.1|5.5|1.6|||0|211|6|0.3|11|0.2|158.2|43
+Polvilho, doce|1|351|0.4|0|86.8|0.2|||2|38|27|0.5|4|0|0|
+Quiabo, cru|1|30|1.9|0.3|6.4|4.6|||1|249|112|0.4|50|0.6|5.6|25
+Rabanete, cru|1|14|1.4|0.1|2.7|2.2|||11|328|21|0.4|10|0.2|9.6|
+Repolho, branco, cru|1|17|0.9|0.1|3.9|1.9|||4|150|35|0.2|9|0.2|18.7|3
+Repolho, roxo, cru|1|31|1.9|0.1|7.2|2|||2|328|44|0.5|18|0.3|43.2|
+Repolho, roxo, refogado|1|42|1.8|1.2|7.6|1.8|0.2||3|321|43|0.5|17|0.3|40.5|
+Rúcula, crua|1|13|1.8|0.1|2.2|1.7|||9|233|117|0.9|18|0.2|46.3|266
+Salsa, crua|1|33|3.3|0.6|5.7|1.9|0.1||2|711|179|3.2|21|1.3|51.7|872
+Seleta de legumes, enlatada|1|57|3.4|0.4|12.7|3.1|0.1||398|122|16|1.1|16|0.5|0|122
+Serralha, crua|1|30|2.7|0.7|4.9|3.5|0.1||19|265|126|1.3|30|1.3|1.5|567
+Taioba, crua|1|34|2.9|0.9|5.4|4.5|0.2||1|290|141|1.9|38|0.6|17.9|580
+Tomate, com semente, cru|1|15|1.1|0.2|3.1|1.2|||1|222|7|0.2|11|0.1|21.2|27
+Tomate, extrato|1|61|2.4|0.2|15|2.8|||498|680|29|2.1|29|0.4|18|83
+Tomate, molho industrializado|1|38|1.4|0.9|7.7|3.1|0.1||418|388|12|1.6|17|0.1|2.7|38
+Tomate, purê|1|28|1.4|0|6.9|1|||104|308|13|1.3|15|0.3|5.4|45
+Tomate, salada|1|21|0.8|0|5.1|2.3|||5|161|7|0.3|10|0.2|12.8|
+Vagem, crua|1|25|1.8|0.2|5.3|2.4|||0|208|41|0.4|18|0.3|1.2|16
+Abacate, cru|2|96|1.2|8.4|6|6.3|2.3||0|206|8|0.2|15|0.2|8.7|
+Abacaxi, cru|2|48|0.9|0.1|12.3|1|||0|131|22|0.3|18|0.1|34.6|
+Abacaxi, polpa, congelada|2|31|0.5|0.1|7.8|0.3|||1|107|14|0.4|10|0.1|1.2|1
+Abiu, cru|2|62|0.8|0.7|14.9|1.7|0.3||0|128|6|0.2|9|0.1|10.3|
+Açaí, polpa, com xarope de guaraná e glucose|2|110|0.7|3.7|21.5|1.7|0.7||15|75|22|0.3|13|0.2|10.3|
+Açaí, polpa, congelada|2|58|0.8|3.9|6.2|2.6|0.7||5|124|35|0.4|17|0.3|0|
+Acerola, crua|2|33|0.9|0.2|8|1.5|||0|165|13|0.2|13|0.1|941.4|124
+Acerola, polpa, congelada|2|22|0.6|0|5.5|0.7|||1|112|8|0.2|9|0.1|623.2|96
+Ameixa, calda, enlatada|2|183|0.4|0|46.9|0.5|||3|221|13|2.2|10|0.1|4.3|
+Ameixa, crua|2|53|0.8|0|13.9|2.4|||0|134|6|0.1|5|0.1|7.6|14
+Ameixa, em calda, enlatada, drenada|2|177|1|0.3|47.7|4.5|0.1||3|263|39|2.7|14|0.2|5.2|
+Atemóia, crua|2|97|1|0.3|25.3|2.1|0.1||1|300|23|0.2|25|0.2|10.1|
+Banana, da terra, crua|2|128|1.4|0.2|33.7|1.5|||0|328|4|0.3|24|0.2|15.7|119
+Banana, doce em barra|2|280|2.2|0.1|75.7|3.8|||10|518|12|0.6|49|0.3|0|14
+Banana, figo, crua|2|105|1.1|0.1|27.8|2.8|||0|387|6|0.2|30|0.1|17.5|
+Banana, maçã, crua|2|87|1.8|0.1|22.3|2.6|||0|264|3|0.2|24|0.1|10.5|3
+Banana, nanica, crua|2|92|1.4|0.1|23.8|1.9|||0|376|3|0.3|28|0.2|5.9|7
+Banana, ouro, crua|2|112|1.5|0.2|29.3|2|||0|355|3|0.3|28|0.3|7.6|25
+Banana, pacova, crua|2|78|1.2|0.1|20.3|2|||1|267|5|0.4|30|0.1|0|
+Banana, prata, crua|2|98|1.3|0.1|26|2|||0|358|8|0.4|26|0.1|21.6|16
+Cacau, cru|2|74|1|0.1|19.4|2.2|||1|72|12|0.3|25|0.6|13.6|
+Cajá-Manga, cru|2|46|1.3|0|11.4|2.6|||1|119|13|0.2|11|0.2|26.7|
+Cajá, polpa, congelada|2|26|0.6|0.2|6.4|1.4|||7|148|9|0.3|7|0.1|0|53
+Caju, cru|2|43|1|0.3|10.3|1.7|||3|124|1|0.2|10|0.1|219.3|7
+Caju, polpa, congelada|2|37|0.5|0.2|9.4|0.8|||4|88|1|0.1|7|0.1|119.7|11
+Caju, suco concentrado, envasado|2|45|0.4|0.2|10.7|0.6|||45|107|1|0.1|8|0.1|138.7|5
+Caqui, chocolate, cru|2|71|0.4|0.1|19.3|6.5|||2|164|18|0.1|9|0.2|29.6|
+Carambola, crua|2|46|0.9|0.2|11.5|2|||4|133|5|0.2|7|0.2|60.9|
+Ciriguela, crua|2|76|1.4|0.4|18.9|3.9|0.2||2|248|27|0.4|18|0.5|27|
+Cupuaçu, cru|2|49|1.2|1|10.4|3.1|0.4||3|331|13|0.5|18|0.3|24.5|
+Cupuaçu, polpa, congelada|2|49|0.8|0.6|11.4|1.6|0.3||1|291|5|0.3|14|0.2|10.5|
+Figo, cru|2|41|1|0.2|10.2|1.8|||0|174|27|0.2|11|0.1|0.8|
+Figo, enlatado, em calda|2|184|0.6|0.2|50.3|2|||7|39|33|0.5|7|0.1|5.2|
+Fruta-pão, crua|2|67|1.1|0.2|17.2|5.5|0.1||1|188|34|0.2|24|0.1|9.9|
+Goiaba, branca, com casca, crua|2|52|0.9|0.5|12.4|6.3|0.1||0|220|5|0.2|7|0.2|99.2|
+Goiaba, doce em pasta|2|269|0.6|0|74.1|3.7|||4|165|10|0.4|6|0.1|23.1|68
+Goiaba, doce, cascão|2|286|0.4|0.1|78.7|4.4|||11|251|15|0.4|10|0.1|34.3|25
+Goiaba, vermelha, com casca, crua|2|54|1.1|0.4|13|6.2|0.1||0|198|4|0.2|7|0.1|80.6|19
+Graviola, crua|2|62|0.8|0.2|15.8|1.9|0||4|250|40|0.2|23|0.1|19.1|
+Graviola, polpa, congelada|2|38|0.6|0.1|9.8|1.2|||3|170|6|0.1|10|0.1|10.5|
+Jabuticaba, crua|2|58|0.6|0.1|15.3|2.3|||0|130|8|0.1|18|0.3|16.2|
+Jaca, crua|2|88|1.4|0.3|22.5|2.4|0.1||2|234|11|0.4|40|0.2|14.8|
+Jambo, cru|2|27|0.9|0.1|6.5|5.1|||22|135|14|0.1|14|0.1|3.8|
+Jamelão, cru|2|41|0.5|0.1|10.6|1.8|||1|394|3|0|2|0|27.1|4
+Kiwi, cru|2|51|1.3|0.6|11.5|2.7|0.1||0|269|24|0.3|11|0.1|70.8|3
+Laranja, baía, crua|2|45|1|0.1|11.5|1.1|||0|174|35|0.1|9|0.1|56.9|2
+Laranja, baía, suco|2|37|0.7|0|8.7|0|||0|173|6|0.1|8|0|94.5|2
+Laranja, da terra, crua|2|51|1.1|0.2|12.9|4|||1|173|51|0.1|14|0.2|34.7|
+Laranja, da terra, suco|2|41|0.7|0.1|9.6|1|||0|145|13|0.1|10|0.1|44.3|2
+Laranja, lima, crua|2|46|1.1|0.1|11.5|1.8|||1|130|31|0.1|10|0.1|43.5|
+Laranja, lima, suco|2|39|0.7|0.1|9.2|0.4|||0|129|8|0|11|0|41.3|
+Laranja, pêra, crua|2|37|1|0.1|8.9|0.8|||0|163|22|0.1|9|0.1|53.7|0
+Laranja, pêra, suco|2|33|0.7|0.1|7.6|0|||0|149|7|0|8|0|73.3|1
+Laranja, valência, crua|2|46|0.8|0.2|11.7|1.7|||1|158|34|0.1|14|0.1|47.8|
+Laranja, valência, suco|2|36|0.5|0.1|8.6|0.4|||0|143|9|0|10|0||1
+Limão, cravo, suco|2|14|0.3|0|5.2|0|||0|120|10|0.1|9||32.8|16
+Limão, galego, suco|2|22|0.6|0.1|7.3|0|||0|113|5|0.1|6|0.1|34.5|
+Limão, tahiti, cru|2|32|0.9|0.1|11.1|1.2|||1|128|51|0.2|10|0.2|38.2|
+Maçã, Argentina, com casca, crua|2|63|0.2|0.2|16.6|2|0.1||1|117|3|0.1|5|0|1.5|
+Maçã, Fuji, com casca, crua|2|56|0.3|0|15.2|1.3|||0|75|2|0.1|2|0|2.4|2
+Macaúba, crua|2|404|2.1|40.7|13.9|13.4|7.1||1|306|67|0.8|66|0.7|13.4|510
+Mamão, doce em calda, drenado|2|196|0.2|0.1|54|1.3|||3|68|20|0.1|6|0.1|3.9|
+Mamão, Formosa, cru|2|45|0.8|0.1|11.6|1.8|||3|222|25|0.2|17|0.1|78.5|74
+Mamão, Papaia, cru|2|40|0.5|0.1|10.4|1|||2|126|22|0.2|22|0.1|82.2|59
+Mamão verde, doce em calda, drenado|2|209|0.3|0.1|57.6|1.2|||5|9|12|0.2|5|0|0|
+Manga, Haden, crua|2|64|0.4|0.3|16.7|1.6|0.1||1|148|12|0.1|8|0.1|17.4|81
+Manga, Palmer, crua|2|72|0.4|0.2|19.4|1.6|||2|157|12|0.1|9|0.1|65.5|393
+Manga, polpa, congelada|2|48|0.4|0.2|12.5|1.1|0.1||7|131|7|0.1|9|0.1|24.9|
+Manga, Tommy Atkins, crua|2|51|0.9|0.2|12.8|2.1|0.1||0|138|8|0.1|7|0.1|7.9|59
+Maracujá, cru|2|68|2|2.1|12.3|1.1|0.2||2|338|5|0.6|28|0.4|19.8|57
+Maracujá, polpa, congelada|2|39|0.8|0.2|9.6|0.5|||8|228|5|0.3|10|0.2|7.3|
+Maracujá, suco concentrado, envasado|2|42|0.8|0.2|9.6|0.4|||22|201|4|0.3|4|0.1|13.7|
+Melancia, crua|2|33|0.9|0|8.1|0.1|||0|104|8|0.2|10|0.1|6.1|31
+Melão, cru|2|29|0.7|0|7.5|0.3|||11|216|3|0.2|6|0.1|8.7|1
+Mexerica, Murcote, crua|2|58|0.9|0.1|14.9|3.1|||1|159|33|0.1|12|0.1|21.8|
+Mexerica, Rio, crua|2|37|0.7|0.1|9.3|2.7|||2|125|17|0.1|8|0.2|112|
+Morango, cru|2|30|0.9|0.3|6.8|1.7|||0|184|11|0.3|10|0.2|63.6|
+Nêspera, crua|2|43|0.3|0|11.5|3|||0|113|20|0.1|10|0.1|3.2|85
+Pequi, cru|2|205|2.3|18|13|19|||0|298|32|0.3|30|1|8.3|30
+Pêra, Park, crua|2|61|0.2|0.2|16.1|3|0.1||1|102|9|0.3|6|0.1|2.4|
+Pêra, Williams, crua|2|53|0.6|0.1|14|3|||0|116|8|0.1|6|0.1|2.8|
+Pêssego, Aurora, cru|2|36|0.8|0|9.3|1.4|||0|124|3|0.2|4|0.1|3.3|
+Pêssego, enlatado, em calda|2|63|0.7|0|16.9|1|||3|95|4|0.6|4|0.1|0|24
+Pinha, crua|2|88|1.5|0.3|22.4|3.4|0.1||1|283|21|0.2|31|0.2|35.9|
+Pitanga, crua|2|41|0.9|0.2|10.2|3.2|||2|113|18|0.4|12|0.4|24.9|77
+Pitanga, polpa, congelada|2|19|0.3|0.1|4.8|0.7|||5|87|8|0.4|6|0.1|0|73
+Romã, crua|2|56|0.4|0|15.1|0.4|||1|485|5|0.3|13|0.7|8.1|
+Tamarindo, cru|2|276|3.2|0.5|72.5|6.4|0.1||0|723|37|0.6|59|0.7|7.2|
+Tangerina, Poncã, crua|2|38|0.8|0.1|9.6|0.9|||0|131|13|0.1|8|0|48.8|24
+Tangerina, Poncã, suco|2|36|0.5|0|8.8|0|||0|119|4|0|6|0|41.8|26
+Tucumã, cru|2|262|2.1|19.1|26.5|12.7|4.7||4|401|46|0.6|121|0.9|18|1181
+Umbu, cru|2|37|0.8|0|9.4|2|||0|152|12|0.1|11|0.4|24.1|
+Umbu, polpa, congelada|2|34|0.5|0.1|8.8|1.3|||6|154|11|0.2|8|0.1|4|
+Uva, Itália, crua|2|53|0.7|0.2|13.6|0.9|||0|162|7|0.1|5|0|3.3|3
+Uva, Rubi, crua|2|49|0.6|0.2|12.7|0.9|||8|159|8|0.2|6|0|1.9|
+Uva, suco concentrado, envasado|2|58|0|0|14.7|0.2|||10|54|9|0.1|7|0.1|21|
+Azeite, de dendê|3|884||100|||43.1|||||||||
+Azeite, de oliva, extra virgem|3|884||100|||14.9|||||||||
+Manteiga, com sal|3|726|0.4|82.4|0.1||49.2|201|579|15|9|0.2|1|0|0|
+Manteiga, sem sal|3|758|0.4|86|0||51.5|214|4|5|4|0|1|0|0|
+Margarina, com óleo hidrogenado, com sal (65% de lipídeos)|3|596|0|67.4|0||14.9||894|21|6|0.1|1|0|0|
+Margarina, com óleo hidrogenado, sem sal (80% de lipídeos)|3|723|0|81.7|0||||78|2|3|0.1|1|0|0|
+Margarina, com óleo interesterificado, com sal (65%de lipídeos)|3|594|0|67.2|0||21.9||561|15|5|0|1|0|0|
+Margarina, com óleo interesterificado, sem sal (65% de lipídeos)|3|593|0|67.1|0||20.9||33|5|5|0.1|1|0|0|
+Óleo, de babaçu|3|884||100|||50.9|||||||||
+Óleo, de canola|3|884||100|||7.9|||||||||
+Óleo, de girassol|3|884||100|||10.8|||||||||
+Óleo, de milho|3|884||100|||15.2|||||||||
+Óleo, de pequi|3|884||100|||39.9|||||||||
+Óleo, de soja|3|884||100|||15.2|||||||||
+Abadejo, filé, congelado, assado|4|112|23.5|1.2|0||0.6|103|334|156|23|0.5|20|0.5||0
+Abadejo, filé, congelado,cozido|4|91|19.3|0.9|0||0.4|87|189|146|17|0.3|16|0.4||0
+Abadejo, filé, congelado, cru|4|59|13.1|0.4|0||0.1|31|79|148|10|0.1|14|0.4||0
+Abadejo, filé, congelado, grelhado|4|130|27.6|1.3|0||0.6|136|305|279|20|0.3|22|0.4||6
+Atum, conserva em óleo|4|166|26.2|6|0||1|53|362|280|7|1.2|29|0.6||0
+Atum, fresco, cru|4|118|25.7|0.9|0||0.5|48|30|308|7|1.3|32|0.4||20
+Bacalhau, salgado, cru|4|136|29|1.3|0||0.6|139|13585|434|157|0.9|49|0.7||0
+Bacalhau, salgado, refogado|4|140|24|3.6|1.2||0.9|112|1256|50|59|0.2|15|0.6|0|0
+Cação, posta, com farinha de trigo, frita|4|208|25|10|3.1|0.5|1.5|75|160|420|30|1|26|0.6||17
+Cação, posta, cozida|4|116|25.6|0.7|0||0.2|83|115|249|10|0.3|21|0.6||12
+Cação, posta, crua|4|83|17.9|0.8|0||0.1|36|176|299|9|0.2|19|0.3||6
+Camarão, Rio Grande, grande, cozido|4|90|19|1|0||0.4|241|367|102|90|1.3|19|1.2||0
+Camarão, Rio Grande, grande, cru|4|47|10|0.5|0||0.1|124|201|72|51|0.7|27|0.7||20
+Camarão, Sete Barbas, sem cabeça, com casca, frito|4|231|18.4|15.6|2.9||2.5|283|99|107|960|2.4|74|1.1||0
+Caranguejo, cozido|4|83|18.5|0.4|0||0.2|85|360|186|357|2.9|52|5.7|0|0
+Corimba, cru|4|128|17.4|6|0||2.5|40|47|317|40|0.5|23|0.4||0
+Corimbatá, assado|4|261|19.9|19.6|0||4.8|80|40|326|22|1|24|0.7||0
+Corimbatá, cozido|4|239|20.1|16.9|0||4.5|75|37|254|65|0.6|23|1||0
+Corvina de água doce, crua|4|101|18.9|2.2|0||1.2|73|45|293|39|0.3|25|0.4||8
+Corvina do mar, crua|4|94|18.6|1.6|0||0.7|67|68|339||0.4|24|0.4||65
+Corvina grande, assada|4|147|26.8|3.6|0||1.5|117|85|291|60|0.5|24|0.7||0
+Corvina grande, cozida|4|100|23.4|2.6|0||0.7|123|68|194|69|0.6|22|0.7||6
+Dourada de água doce, fresca|4|131|18.8|5.6|0||3|52|40|393|12|0.2|26|0.5||0
+Lambari, congelado, cru|4|131|16.8|6.5|0||2|159|48|244|1181|0.9|45|3.3||4
+Lambari, congelado, frito|4|327|28.4|22.8|0||5.5|246|65|331|1881|0.8|66|5.6||9
+Lambari, fresco, cru|4|152|15.7|9.4|0||3.4|144|41|207|590|0.6|32|2.4||0
+Manjuba, com farinha de trigo, frita|4|344|23.5|22.6|10.2|0.4|5.5|282|37|319|763|3|47|3.8||30
+Manjuba, frita|4|349|30.1|24.5|0||5.3|270|41|318|575|0.9|32|3.2||12
+Merluza, filé, assado|4|122|26.6|0.9|0||0.2|91|120|364|36|0.4|20|0.9||0
+Merluza, filé, cru|4|89|16.6|2|0||0.9|57|80|340|20|0.2|27|0.3||0
+Merluza, filé, frito|4|192|26.9|8.5|0||1.4|109|90|447|36|0.4|38|0.6||0
+Pescada, branca, crua|4|111|16.3|4.6|0||0.8|51|76|261|16|0.2|19|0.3||3
+Pescada, branca, frita|4|223|27.4|11.8|0||2.3|165|107|355|378|0.5|30|1.1||39
+Pescada, filé, com farinha de trigo, frito|4|283|21.4|19.1|5|0|2.2|73|91|216|26|0.9|28|0.4||18
+Pescada, filé, cru|4|107|16.7|4|0||0.9|65|77|253|14|0.2|23|0.3||48
+Pescada, filé, frito|4|154|28.6|3.6|0||1|81|115|249|10|0.3|21|0.6||4
+Pescada, filé, molho escabeche|4|142|11.8|8|5|0.8|1.3|43|51|208|20|1.5|18|0.3|6.9|
+Pescadinha, crua|4|76|15.5|1.1|0||0.3|84|120|304|332|0.5|34|0.6||0
+Pintado, assado|4|192|36.5|4|0||1.8|126|81|527|114|0.8|42|2.1||7
+Pintado, cru|4|91|18.6|1.3|0||0.6|50|43|294|12|0.2|24|0.4||0
+Pintado, grelhado|4|152|30.8|2.3|0||1.1|99|53|360|69|0.5|27|0.8||5
+Porquinho, cru|4|93|20.5|0.6|0||0.4|49|67|313|26|0.4|24|0.7||5
+Salmão, filé, com pele, fresco, grelhado|4|229|23.9|14|0||3.1|85|85|384|29|0.5|28|0.6||0
+Salmão, sem pele, fresco, cru|4|170|19.3|9.7|0||2.5|53|64|376|9|0.2|27|0.3||0
+Salmão, sem pele, fresco, grelhado|4|243|26.1|14.5|0||3.6|73|96|518|15|0.4|38|0.5||0
+Sardinha, assada|4|164|32.2|3|0||1.7|109|74|574|438|1.3|51|1.8||0
+Sardinha, conserva em óleo|4|285|15.9|24|0||4.1|73|666|367|550|3.5|35|1.6||0
+Sardinha, frita|4|257|33.4|12.7|0||2.6|103|60|460|482|1.1|39|1.6||0
+Sardinha, inteira, crua|4|114|21.1|2.7|0||1.7|61|60|312|167|1.3|29|1.3||0
+Tucunaré, filé, congelado, cru|4|88|18|1.2|0||0.6|47|57|288|19|0.3|26|0.4||0
+Apresuntado|5|129|13.5|6.7|2.9||1.9|38|943|270|23|0.9|15|1.6|0|
+Caldo de carne, tablete|5|241|7.8|16.6|15.1|0.6|7.8|0|22180|218|129|0|22|0||
+Caldo de galinha, tablete|5|251|6.3|20.4|10.6|11.8|9.4|2|22300|68|16|0.7|13|0.3||
+Carne, bovina, acém, moído, cozido|5|212|26.7|10.9|0||4.8|103|52|256|4|2.7|17|8.1||0
+Carne, bovina, acém, moído, cru|5|137|19.4|5.9|0||2.7|58|49|237|3|1.8|14|6.3||2
+Carne, bovina, acém, sem gordura, cozido|5|215|27.3|10.9|0||5.5|107|56|254|7|2.4|14|8||0
+Carne, bovina, acém, sem gordura, cru|5|144|20.8|6.1|0||2.8|53|50|234|5|1.5|13|5.2||2
+Carne, bovina, almôndegas, cruas|5|189|12.3|11.2|9.8||3.9|34|621|328|22|1.6|24|2.3||
+Carne, bovina, almôndegas, fritas|5|272|18.2|15.8|14.3||4.2|36|1030|536|27|1.9|48|2.6||
+Carne, bovina, bucho, cozido|5|133|21.6|4.5|0||2.4|245|38|70|13|0.6|7|2.5||0
+Carne, bovina, bucho, cru|5|137|20.5|5.5|0||3.3|145|45|85|9|0.5|6|2.1||0
+Carne, bovina, capa de contra-filé, com gordura, crua|5|217|19.2|15|0||6.9|63|58|267|6|1.5|17|3.5||4
+Carne, bovina, capa de contra-filé, com gordura, grelhada|5|312|30.7|20|0||8.8|120|81|323|7|2.6|18|6.2||0
+Carne, bovina, capa de contra-filé, sem gordura, crua|5|131|21.5|4.3|0||1.9|58|79|325|6|2|20|4.6||0
+Carne, bovina, capa de contra-filé, sem gordura, grelhada|5|239|35.1|10|0||4.3|80|83|385|9|2.8|26|7.6||0
+Carne, bovina, charque, cozido|5|263|36.4|11.9|0||4.8|113|1443|90|15|3.5|13|6.1||0
+Carne, bovina, charque, cru|5|249|22.7|16.8|0||8.7|81|5875|236|15|1.5|13|3.9||0
+Carne, bovina, contra-filé, à milanesa|5|352|20.6|24|12.2|0.4|7.2|99|77|271|15|2.9|27|2.9||
+Carne, bovina, contra-filé de costela, cru|5|202|19.8|13.1|0||6.7|52|39|245|3|1.6|14|4.4||3
+Carne, bovina, contra-filé de costela, grelhado|5|275|29.9|16.3|0||8.8|98|51|383|4|2.8|24|6.7||0
+Carne, bovina, contra-filé, com gordura, cru|5|206|21.2|12.8|0||5.6|73|44|285|4|1.3|18|2.8||4
+Carne, bovina, contra-filé, com gordura, grelhado|5|278|32.4|15.5|0||7.4|144|57|352|4|2.4|19|4.8||0
+Carne, bovina, contra-filé, sem gordura, cru|5|157|24|6|0||2.7|59|53|335|4|1.7|21|3.2||0
+Carne, bovina, contra-filé, sem gordura, grelhado|5|194|35.9|4.5|0||2|102|58|386|5|2.4|21|5.1||0
+Carne, bovina, costela, assada|5|373|28.8|27.7|0||11.8|95|92|270|28|2.2|20|5.5||0
+Carne, bovina, costela, crua|5|358|16.7|31.8|0||14.9|44|70|151||1.2|12|2.7||5
+Carne, bovina, coxão duro, sem gordura, cozido|5|217|31.9|8.9|0||3.5|71|41|252|4|1.7|14|5||2
+Carne, bovina, coxão duro, sem gordura, cru|5|148|21.5|6.2|0||2.9|60|49|358|3|1.9|21|2.8||2
+Carne, bovina, coxão mole, sem gordura, cozido|5|219|32.4|8.9|0||4.3|84|44|239|4|2.6|13|4.7||2
+Carne, bovina, coxão mole, sem gordura, cru|5|169|21.2|8.7|0||3.9|84|61|335|3|1.9|21|2.6||3
+Carne, bovina, cupim, assado|5|330|28.6|23|0||5.5|91|72|321|8|2.7|18|5.3||0
+Carne, bovina, cupim, cru|5|221|19.5|15.3|0||6.8|51|47|151|4|1.1|13|2.4||3
+Carne, bovina, fígado, cru|5|141|20.7|5.4|1.1||2.8|393|76|265|4|5.6|12|3.5||7937
+Carne, bovina, fígado, grelhado|5|225|29.9|9|4.2||4.7|601|82|309|6|5.8|10|4||14574
+Carne, bovina, filé mingnon, sem gordura, cru|5|143|21.6|5.6|0||2.9|55|49|322|3|1.9|21|2.8||4
+Carne, bovina, filé mingnon, sem gordura, grelhado|5|220|32.8|8.8|0||4.5|103|58|326|4|2.9|28|4.1||0
+Carne, bovina, flanco, sem gordura, cozido|5|196|29.4|7.8|0||3.9|62|42|249|4|2.8|14|5.6||2
+Carne, bovina, flanco, sem gordura, cru|5|141|20|6.2|0||3.1|50|54|324|3|1.6|18|4.5||2
+Carne, bovina, fraldinha, com gordura, cozida|5|338|24.2|26|0||12.1|65|39|207|3|2|14|6.5||0
+Carne, bovina, fraldinha, com gordura, crua|5|221|17.6|16.1|0||7.3|54|51|274|3|1.5|16|4.2||5
+Carne, bovina, lagarto, cozido|5|222|32.9|9.1|0||3.9|56|48|254|4|1.9|13|7||3
+Carne, bovina, lagarto, cru|5|135|20.5|5.2|0||2.3|56|54|362|3|1.3|20|2.4||2
+Carne, bovina, língua, cozida|5|315|21.4|24.8|0||11.2|105|59|175|6|2.1|12|4.1||0
+Carne, bovina, língua, crua|5|215|17.1|15.8|0||6.8|118|73|251|5|1.7|15|2.9||0
+Carne, bovina, maminha, crua|5|153|20.9|7|0||3.1|51|37|274|3|1.1|16|3.5||3
+Carne, bovina, maminha, grelhada|5|153|30.7|2.4|0||9.7|88|58|386|4|2.4|21|5.6||0
+Carne, bovina, miolo de alcatra, sem gordura, cru|5|163|21.6|7.8|0||3.4|60|43|299|3|2|20|3||4
+Carne, bovina, miolo de alcatra, sem gordura, grelhado|5|241|31.9|11.6|0||5.1|92|52|385|5|3.2|26|4.8||0
+Carne, bovina, músculo, sem gordura, cozido|5|194|31.2|6.7|0||2.9|56|62|253|5|2.4|13|6.4||2
+Carne, bovina, músculo, sem gordura, cru|5|142|21.6|5.5|0||2.2|51|66|296|4|1.9|17|3.7||2
+Carne, bovina, paleta, com gordura, crua|5|159|21.4|7.5|0||3.5|58|65|250|4|1.8|14|3.7||0
+Carne, bovina, paleta, sem gordura, cozida|5|194|29.7|7.4|0||3.4|56|58|250|6|2.2|18|6.8||0
+Carne, bovina, paleta, sem gordura, crua|5|141|21|5.7|0||2.7|42|66|319|4|1.9|18|3.3||3
+Carne, bovina, patinho, sem gordura, cru|5|133|21.7|4.5|0||2|56|49|318|3|1.8|20|4.5||2
+Carne, bovina, patinho, sem gordura, grelhado|5|219|35.9|7.3|0||3.1|126|60|421|5|3|27|8.1||0
+Carne, bovina, peito, sem gordura, cozido|5|338|22.2|27|0||11.7|100|56|204|4|1.6|14|3.9||0
+Carne, bovina, peito, sem gordura, cru|5|259|17.6|20.4|0||8.2|59|64|241|4|1.3|15|2.6||4
+Carne, bovina, picanha, com gordura, crua|5|213|18.8|14.7|0||6.1|60|38|232|2|1.7|14|3.8||3
+Carne, bovina, picanha, com gordura, grelhada|5|289|26.4|19.5|0||7.9|92|60|355|4|3.2|24|5.5||0
+Carne, bovina, picanha, sem gordura, crua|5|134|21.3|4.7|0||2|75|61|322|3|2.1|20|4.2||0
+Carne, bovina, picanha, sem gordura, grelhada|5|238|31.9|11.3|0||4.5|100|61|377|4|3.6|25|6.7||0
+Carne, bovina, seca, cozida|5|313|26.9|21.9|0||10.5|100|1943|86|13|1.9|12|7.7||0
+Carne, bovina, seca, crua|5|313|19.7|25.4|0||8.7|92|4440|190|14|1.3|12|3.7||0
+Coxinha de frango, frita|5|283|9.6|11.8|34.5|5|2.6|15|532|166|18|1.3|17|0.5|0|
+Croquete, de carne, cru|5|246|12|15.6|13.9|||30|711|221|15|2.5|24|2.7|0|
+Croquete, de carne, frito|5|347|16.9|22.7|18.1||5.1|38|916|313|18|2.3|30|3.3|0|
+Empada de frango, pré-cozida, assada|5|358|6.9|15.6|47.5|2.2||23|525|138|16|1.2|18|0.6||
+Empada, de frango, pré-cozida|5|377|7.3|22.9|35.5|2.2|5.4|23|771|156|14|0.7|17|0.5||
+Frango, asa, com pele, crua|5|213|18.1|15.1|0||4.4|113|96|211|11|0.6|23|1.2||10
+Frango, caipira, inteiro, com pele, cozido|5|243|23.9|15.6|0||4.4|110|56|210|17|1.7|18|1.7||16
+Frango, caipira, inteiro, sem pele, cozido|5|196|29.6|7.7|0||2.2|106|53|224|66|2.1|23|2.7||6
+Frango, coração, cru|5|222|12.6|18.6|0||4.9|159|95|220|6|4.1|20|2||9
+Frango, coração, grelhado|5|207|22.4|12.1|0.6||3.5|280|128|243|8|6.5|20|3.4||0
+Frango, coxa, com pele, assada|5|215|28.5|10.4|0.1||3.1|145|95|318|8|1.2|14|2.6||6
+Frango, coxa, com pele, crua|5|161|17.1|9.8|0||3|97|95|275|8|0.7|26|2||10
+Frango, coxa, sem pele, cozida|5|167|26.9|5.8|0||2|133|64|191|12|0.8|11|2.8||0
+Frango, coxa, sem pele, crua|5|120|17.8|4.9|0||1.6|91|98|291|8|0.8|27|2.2||12
+Frango, fígado, cru|5|106|17.6|3.5|0||1.3|341|82|281|6|9.5|28|3.7||3863
+Frango, filé, à milanesa|5|221|28.5|7.8|7.5|1.1|1.6|84|122|408|9|1.1|35|0.8||7
+Frango, inteiro, com pele, cru|5|226|16.4|17.3|0||5.2|85|63|217|6|0.6|24|1.1||7
+Frango, inteiro, sem pele, assado|5|187|28|7.5|0||2.1|111|70|283|9|0.6|14|1.6||0
+Frango, inteiro, sem pele, cozido|5|170|25|7.1|0||2.2|99|51|217|8|0.5|12|1.2||0
+Frango, inteiro, sem pele, cru|5|129|20.6|4.6|0||1.4|78|73|238|7|0.5|27|1.2||4
+Frango, peito, com pele, assado|5|212|33.4|7.6|0||2.2|109|56|380|8|0.5|18|1||6
+Frango, peito, com pele, cru|5|149|20.8|6.7|0||2.2|80|62|252|8|0.4|28|0.6||4
+Frango, peito, sem pele, cozido|5|163|31.5|3.2|0||1.1|89|36|231|6|0.3|14|0.9||0
+Frango, peito, sem pele, cru|5|119|21.5|3|0||1.1|59|56|267|7|0.4|31|0.7||2
+Frango, peito, sem pele, grelhado|5|159|32|2.5|0||0.9|89|50|387|5|0.3|18|0.8||0
+Frango, sobrecoxa, com pele, assada|5|260|28.7|15.2|0||4.2|158|96|323|11|1.2|15|2.2||8
+Frango, sobrecoxa, com pele, crua|5|255|15.5|20.9|0||6.5|88|68|190|7|0.7|22|1.3||7
+Frango, sobrecoxa, sem pele, assada|5|233|29.2|12|0||3.3|145|106|382|12|1.2|17|2.2||11
+Frango, sobrecoxa, sem pele, crua|5|162|17.6|9.6|0||3|84|80|241|6|0.9|26|1.7||4
+Hambúrguer, bovino, cru|5|215|13.2|16.2|4.2||5.7|70|869|383|34|1.9|25|1.7||
+Hambúrguer, bovino, frito|5|258|20|17|6.3||5.9|49|1252|660|62|3|60|3.2||
+Hambúrguer, bovino, grelhado|5|210|13.2|12.4|11.3||5.1|59|1090|538|56|2.6|48|3||
+Lingüiça, frango, crua|5|218|14.2|17.4|0||5.2|64|1126|280|11|0.5|19|0.7||
+Lingüiça, frango, frita|5|245|18.3|18.5|0||5|76|1374|364|15|0.8|29|1.2||
+Lingüiça, frango, grelhada|5|244|18.2|18.4|0||4.7|80|1351|356|14|0.7|21|1||
+Lingüiça, porco, crua|5|227|16.1|17.6|0||4|53|1176|316|6|0.4|14|1.4||
+Lingüiça, porco, frita|5|280|20.5|21.3|0||6.5|75|1432|409|8|0.9|18|3.1||
+Lingüiça, porco, grelhada|5|296|23.2|21.9|0||7|82|1456|427|8|1|19|3.5||
+Mortadela|5|269|12|21.6|5.8||6.1|83|1212|247|67|1.5|19|1||
+Peru, congelado, assado|5|163|26.2|5.7|0||1.6|91|628|175|14|0.6|12|1.2||0
+Peru, congelado, cru|5|94|18.1|1.8|0||0.4|68|711|281|10|0.9|19|1.4||0
+Porco, bisteca, crua|5|164|21.5|8|0||3.5|56|54|335|6|0.5|24|1.4||0
+Porco, bisteca, frita|5|311|33.7|18.5|0||6|126|63|404|69|0.8|29|2.2||10
+Porco, bisteca, grelhada|5|280|28.9|17.4|0||7.5|82|51|366|34|0.9|25|2.3||0
+Porco, costela, assada|5|402|30.2|30.3|0||11.8|113|63|246|17|1|14|3.1||0
+Porco, costela, crua|5|256|18|19.8|0||7.4|69|88|248|15|0.9|18|2.3||0
+Porco, lombo, assado|5|210|35.7|6.4|0||2.6|103|39|311|20|0.5|18|1.8||0
+Porco, lombo, cru|5|176|22.6|8.8|0||3.3|55|53|334|4|0.5|24|0.9||0
+Porco, orelha, salgada, crua|5|258|18.5|19.9|0||7.3|83|616|228|5|1.4|2|0.6||0
+Porco, pernil, assado|5|262|32.1|13.9|0||4.8|110|62|395|18|1.3|27|3.3||0
+Porco, pernil, cru|5|186|20.1|11.1|0||4.2|59|102|256|13|0.9|23|1.7||0
+Porco, rabo, salgado, cru|5|377|15.6|34.5|0||11.6|89|1158|24|22|0.6|4|1.4||0
+Presunto, com capa de gordura|5|128|14.4|6.8|1.4||1.9|40|1021|295|12|0.7|17|1.3||
+Presunto, sem capa de gordura|5|94|14.3|2.7|2.1||0.9|36|1039|307|23|0.8|18|1.5||
+Quibe, assado|5|136|14.6|2.7|12.9|1.9|1.2|34|40|288|16|2.2|36|4.1|0|
+Quibe, cru|5|109|12.4|1.7|10.8|1.6|0.7|27|39|242|12|1.7|26|2.8|0|
+Quibe, frito|5|254|14.9|15.8|12.3||4.6|38|836|322|22|2|39|2.8|0|
+Salame|5|398|25.8|30.6|2.9||9.6|85|1574|548|87|1.3|30|3.2||
+Toucinho, cru|5|593|11.5|60.3|0||17.7|73|50|58|2|0.4|4|0.2||0
+Toucinho, frito|5|697|27.3|64.3|0||20|89|125|171|9|0.9|9|0.8||0
+Bebida láctea, pêssego|6|55|2.1|1.9|7.6|0.3|1.1|5|46|62|89|0|9|0.2|2.1|
+Creme de Leite|6|221|1.5|22.5|4.5||11.8|66|52|119|83|0.3|8|0.3|0|
+Iogurte, natural|6|51|4.1|3|1.9||1.8|14|52|71|143|0|11|0.4|0.9|
+Iogurte, natural, desnatado|6|41|3.8|0.3|5.8||0.2|3|60|182|157|0|12|0.5|0.3|
+Iogurte, sabor morango|6|70|2.7|2.3|9.7|0.2|1.4|7|38|52|101|0|8|0.3|0|
+Iogurte, sabor pêssego|6|68|2.5|2.3|9.4|0.7|1.4|8|37|52|95|0.1|8|0.3|0|
+Leite, condensado|6|313|7.7|6.7|57||4.2|28|94|329|246|0.1|22|0.9|2.1|
+Leite, de cabra|6|66|3.1|3.8|5.2||2.4|14|74|140|112|0.1|10|0.4|0|
+Leite, de vaca, achocolatado|6|83|2.1|2.2|14.2|0.6|1.1|6|72|155|70|0.5|13|0.3|3.3|
+Leite, de vaca, desnatado, pó|6|362|34.7|0.9|53||0.6|25|432|1556|1363|0.9|109|3.8||
+Leite, de vaca, integral, pó|6|497|25.4|26.9|39.2||16.3|85|323|1132|890|0.5|77|2.7||
+Leite, fermentado|6|70|1.9|0.1|15.7|||2|33|94|72|0|6|0.3|0.5|
+Queijo, minas, frescal|6|264|17.4|20.2|3.2||11.4|62|31|105|579|0.9|7|0.3|0|
+Queijo, minas, meia cura|6|321|21.2|24.6|3.6||13.2|76|501|120|696|0.2|27|2.7||
+Queijo, mozarela|6|330|22.6|25.2|3||14.2|80|581|62|875|0.3|24|3.5||
+Queijo, parmesão|6|453|35.6|33.5|1.7||19.7|106|1844|96|992|0.5|33|4.4|0|
+Queijo, pasteurizado|6|303|9.4|27.4|5.7||15.9|82|780|194|323|0.3|16|1.3|0|
+Queijo, petit suisse, morango|6|121|5.8|2.8|18.5||1.6|12|412|121|731|0.1|27|2.7|0|
+Queijo, prato|6|360|22.7|29.1|1.9||16.3|91|580|73|940|0.3|28|3.5||
+Queijo, requeijão, cremoso|6|257|9.6|23.4|2.4||13.7|74|558|93|259|0.1|12|1.3|0|
+Queijo, ricota|6|140|12.6|8.1|3.8||4.5|49|283|112|253|0.1|12|0.5|0|
+Bebida isotônica, sabores variados|7|26|0|0|6.4||||44|13|1|0.7|0|0||
+Café, infusão 10%|7|9|0.7|0.1|1.5||||1|156|3|0|10|0||
+Cana, aguardente 1|7|216|||||||3|0|0|0|0|0||
+Cana, caldo de|7|65|0|0|18.2|0.1|||0|18|9|0.8|12|0.1|2.8|
+Cerveja, pilsen 2|7|41|0.6|0|3.3||||4|29|5|0|7|0|0|
+Chá, erva-doce, infusão 5%|7|1|0|0|0.4||||1|10|2|0|1|0||
+Chá, mate, infusão 5%|7|3|0|0.1|0.6||||0|5|1|0|2|0||
+Chá, preto, infusão 5%|7|2|0|0|0.6||||0|13|0|0|1|0||
+Coco, água de|7|22|0|0|5.3|0.1|||2|162|19|0|5|0|2.4|
+Refrigerante, tipo água tônica|7|31|0|0|8||||8|2|1|0|0|0||
+Refrigerante, tipo cola|7|34|0|0|8.7||||7|1|1|0|0|0||
+Refrigerante, tipo guaraná|7|39|0|0|10||||9|1|1|0|0|0||
+Refrigerante, tipo laranja|7|46|0|0|11.8||||9|16|2|0|1|0||
+Refrigerante, tipo limão|7|40|0|0|10.3||||9|4|2|0|1|0||
+Omelete, de queijo|8|268|15.6|22|0.4||6.4|384|216|127|166|1.4|14|1.4|0|
+Ovo, de codorna, inteiro, cru|8|177|13.7|12.7|0.8||8.9|568|129|79|79|3.3|11|2.1||
+Ovo, de galinha, clara, cozida/10minutos|8|59|13.4|0.1|0||||181|146|6|0.1|11|0||
+Ovo, de galinha, gema, cozida/10minutos|8|353|15.9|30.8|1.6||9.2|1272|45|87|114|2.9|9|2.9||
+Ovo, de galinha, inteiro, cozido/10minutos|8|146|13.3|9.5|0.6||2.9|397|146|139|49|1.5|11|1.2||
+Ovo, de galinha, inteiro, cru|8|143|13|8.9|1.6||2.6|356|168|150|42|1.6|13|1.1||
+Ovo, de galinha, inteiro, frito|8|240|15.6|18.6|1.2||4.1|516|166|184|73|2.1|16|1.5|0|
+Achocolatado, pó|9|401|4.2|2.2|91.2|3.9|1.1|0|65|496|44|5.4|77|1|0|
+Açúcar, cristal|9|387|0.3|0|99.6||||0|3|8|0.2|1|0||
+Açúcar, mascavo|9|369|0.8|0.1|94.5||||25|522|127|8.3|80|0.5|0|
+Açúcar, refinado|9|387|0.3|0|99.5||||12|6|4|0.1|1|0||
+Chocolate, ao leite|9|540|7.2|30.3|59.6|2.2|17.5|17|77|355|191|1.6|57|1.1|0|
+Chocolate, ao leite, com castanha do Pará|9|559|7.4|34.2|55.4|2.5|14.1|16|64|431|171|1.5|80|1.3|1.4|
+Chocolate, ao leite, dietético|9|557|6.9|33.8|56.3|2.8|19.2|13|85|458|188|3.3|67|1.1|2|
+Chocolate, meio amargo|9|475|4.9|29.9|62.4|4.9|13.1|2|9|432|45|3.6|107|1.5|2.1|
+Cocada branca|9|449|1.1|13.6|81.4|3.6|8.4||29|183|7|1.2|17|0.4|0|
+Doce, de abóbora, cremoso|9|199|0.9|0.2|54.6|2.3|0||0|137|13|0.9|6|0|0.1|
+Doce, de leite, cremoso|9|306|5.5|6|59.5||1.3|20|120|259|195|0.1|16|0.5|0|36
+Geléia, mocotó, natural|9|106|2.1|0.1|24.2||0|0|43|2|4|0.1|1|0|0|
+Glicose de milho|9|292|0|0|79.4||||59|5|6|0.1|2|0||
+Maria mole|9|301|3.8|0.2|73.6|0.7|||15|24|13|0.4|7|0.1|0|
+Maria mole, coco queimado|9|307|3.9|0.1|75.1|0.6|||14|36|19|0.5|6|0.1|0|
+Marmelada|9|257|0.4|0.1|70.8|4.1|||11|83|11|0.7|6|0.1|0|
+Mel, de abelha|9|309|0|0|84||||6|99|10|0.3|6|0.2|0.7|
+Melado|9|297|0|0|76.6||||4|395|102|5.4|115|0.3|0|
+Quindim|9|411|4.7|24.4|46.3|3.2|11.3|271|27|111|37|1.4|15|1.1|0|
+Rapadura|9|352|1|0.1|90.8||||22|459|30|4.4|47|0.6|0|
+Café, pó, torrado|10|419|14.7|11.9|65.8|51.2|5.3||1|1609|107|8.1|165|0.5|0|
+Capuccino, pó|10|417|11.3|8.6|73.6|2.4|4|29|382|886|467|2.3|71|1.1|0|
+Fermento em pó, químico|10|90|0.5|0.1|43.9||||10052|||||||
+Fermento, biológico, levedura, tablete|10|90|17|1.5|7.7|4.2|||40|576|18|2.6|38|11|0|
+Gelatina, sabores variados, pó|10|380|8.9|0|89.2||||235|7|27|0.3|2|0|40|
+Shoyu|10|61|3.3|0.3|11.6||0||5024|165|15|0.5|24|0.2|0|
+Tempero a base de sal|10|21|2.7|0.3|2.1|0.6|||32560|||||||
+Azeitona, preta, conserva|11|194|1.2|20.3|5.5|4.6|3.5||1567|79|59|5.5|5|0.3|0|
+Azeitona, verde, conserva|11|137|0.9|14.2|4.1|3.8|2.3||1347|20|46|0.2|4|0.1|0|
+Chantilly, spray, com gordura vegetal|11|315|0.5|27.3|16.9||25.9|0|110|5|2|0|1|0.1||
+Leite, de coco|11|166|1|18.4|2.2|0.7|15.6||44|144|6|0.5|17|0.3|0|
+Maionese, tradicional com ovos|11|302|0.6|30.5|7.9||4.1|42|787|16|3|0.1|1|0.1|0|
+Acarajé|12|289|8.3|19.9|19.1|9.4|9.1|25|305|354|124|1.9|51|1.2||
+Arroz carreteiro|12|154|10.8|7.1|11.6|1.5|3.2|36|1622|87|13|1|9|2.7||
+Baião de dois, arroz e feijão-de-corda|12|136|6.2|3.2|20.4|5.1|0.6|4|93|157|33|0.6|19|0.6|0|
+Barreado|12|165|18.3|9.5|0.2|0.1|3.3|60|48|295|15|2.4|21|4.8|0|
+Bife à cavalo, com contra filé|12|291|23.7|21.1|0||7.9|257|83|272|26|2.1|19|3.2||
+Bolinho de arroz|12|274|8|8.3|41.7|2.7|1.8|70|59|96|24|2.1|13|0.9|0|
+Camarão à baiana|12|101|7.9|6|3.2|0.4|1.6|117|85|139|43|1.4|15|0.5|4.1|
+Charuto, de repolho|12|78|6.8|1.1|10.1|1.5|0.5|21|12|184|23|0.9|13|1.8|4.8|
+Cuscuz, de milho, cozido com sal|12|113|2.2|0.7|25.3|2.1|0.2||248|11|2|0.2|3|0.2|0|
+Cuscuz, paulista|12|142|2.6|4.6|22.5|2.4|1.8|15|236|53|14|0.3|5|0.2|0|
+Cuxá, molho|12|80|5.6|3.6|5.7|3|0.6|58|1344|124|105|0.9|34|0.6|10.3|16
+Dobradinha|12|125|19.8|4.4|0||2.5|144|29|58|11|1|8|2.7||
+Estrogonofe de carne|12|173|15|10.8|3||5.3|66|123|322|28|2.7|22|2|0|
+Estrogonofe de frango|12|157|17.6|8|2.6||3.7|80|99|307|26|1.5|25|0.6|0|
+Feijão tropeiro mineiro|12|152|10.2|6.8|19.6|3.6|2.2|68|365|349|41|2.2|36|1.4|0|
+Feijoada|12|117|8.7|6.5|11.6|5.1|1.9|22|278|303|32|1.3|32|0.8|0|
+Frango, com açafrão|12|113|9.7|6.2|4.1|0.2|1.6|50|29|256|13|0.8|16|0.5|5.3|
+Macarrão, molho bolognesa|12|120|4.9|0.9|22.5|0.8|0.3|7|9|84|11|1.4|10|0.8|0|
+Maniçoba|12|134|10|8.7|3.4|2.2|2.9|43|407|148|66|3.2|24|2|0|111
+Quibebe|12|86|8.6|2.7|6.6|1.7|1||247|153|8|0.8|10|1.6|0|52
+Salada, de legumes, com maionese|12|96|1.1|7|8.9|2.2|1.1|7|228|141|12|0.2|9|0.2|0|141
+Salada, de legumes, cozida no vapor|12|35|2|0.3|7.1|2.5|0.1||3|244|33|0.4|19|0.3|29.4|255
+Salpicão, de frango|12|148|13.9|7.8|4.6|0.4|1.3|53|248|149|9|0.3|13|0.4|9.3|7
+Sarapatel|12|123|18.5|4.4|1.1||1.4|315|216|199|12|7.2|13|1.8|0|
+Tabule|12|57|2|1.2|10.6|2.1|0.2||1|188|19|0.6|18|0.6|16.2|
+Tacacá|12|47|7|0.4|3.4|0.2|0.2|71|1349|240|45|0.9|30|0.8|0|18
+Tapioca, com manteiga|12|348|0.1|10.9|63.6|0|6|31|158|19|30|0.2|3|0|0|
+Tucupi, com pimenta-de-cheiro|12|27|2.1|0.3|4.7|0.2|0.1||5|391|28|1.1|42|0.9|46.4|25
+Vaca atolada|12|145|5.1|9.3|10.1|2.3|4.1|19|26|220|63|0.7|16|1.2|0|
+Vatapá|12|255|6|23.2|9.7|1.7|7.5|44|880|209|47|1.4|39|0.9|0|
+Virado à paulista|12|307|10.2|25.6|14.1|2.2|8.3|66|346|237|41|1.1|22|1|0|
+Yakisoba|12|113|7.5|2.6|18.3|1.1|0.6||794|159|14|0.6|13|0.7|0|31
+Amendoim, grão, cru|13|544|27.2|43.9|20.3|8|8.7||0|580|0|2.5|171|3.2|0|
+Amendoim, torrado, salgado|13|606|22.5|54|18.7|7.8|9.7||376|496|39|1.3|159|2.1|0|
+Ervilha, em vagem|13|88|7.5|0.5|14.2|9.7|0||0|311|24|1.4|42|1.2|12.4|
+Ervilha, enlatada, drenada|13|74|4.6|0.4|13.4|5.1|0.1||372|147|22|1.4|23|0.9||5
+Feijão, carioca, cozido|13|76|4.8|0.5|13.6|8.5|0.1||2|255|27|1.3|42|0.7|0|
+Feijão, carioca, cru|13|329|20|1.3|61.2|18.4|0.2||0|1352|123|8|210|2.9||
+Feijão, fradinho, cozido|13|78|5.1|0.6|13.5|7.5|0.2||1|253|17|1.1|38|1.1|0|
+Feijão, fradinho, cru|13|339|20.2|2.4|61.2|23.6|0.7||10|1083|78|5.1|178|3.9|0|
+Feijão, jalo, cozido|13|93|6.1|0.5|16.5|13.9|0.1||1|348|29|1.9|44|1|0|
+Feijão, jalo, cru|13|328|20.1|0.9|61.5|30.3|0.3||25|1276|98|7|170|3|0|
+Feijão, preto, cozido|13|77|4.5|0.5|14|8.4|0.1||2|256|29|1.5|40|0.7|0|
+Feijão, preto, cru|13|324|21.3|1.2|58.8|21.8|0.2||0|1416|111|6.5|188|2.9||
+Feijão, rajado, cozido|13|85|5.5|0.4|15.3|9.3|0.1||1|315|29|1.4|42|0.9|0|
+Feijão, rajado, cru|13|326|17.3|1.2|62.9|24|0.4||14|1135|111|18.6|170|2.6|0|
+Feijão, rosinha, cozido|13|68|4.5|0.5|11.8|4.8|0.2||2|241|19|1.2|43|1.3|0|
+Feijão, rosinha, cru|13|337|20.9|1.3|62.2|20.6|0.6||24|1109|68|5.3|184|4|0|
+Feijão, roxo, cozido|13|77|5.7|0.5|12.9|11.5|0.1||1|268|23|1.4|34|1|0|
+Feijão, roxo, cru|13|331|22.2|1.2|60|33.8|0.3||10|1221|120|6.9|162|3.3|0|
+Grão-de-bico, cru|13|355|21.2|5.4|57.9|12.4|0.9||5|1116|114|5.4|146|3.2|0|
+Guandu, cru|13|344|19|2.1|64|21.3|0.6||2|1215|129|1.9|166|2|1.5|
+Lentilha, cozida|13|93|6.3|0.5|16.3|7.9|0.1||1|220|16|1.5|22|1.1|0|
+Lentilha, crua|13|339|23.2|0.8|62|16.9|0.1||0|887|54|7|94|3.5||
+Paçoca, amendoim|13|487|16|26.1|52.4|7.3|4.1||167|348|22|1.1|101|1.6|0|
+Pé-de-moleque, amendoim|13|503|13.2|28|54.7|3.4|5.1||16|355|27|1.3|108|1.4|0|
+Soja, farinha|13|404|36|14.6|38.4|20.2|||6|1922|206|13.1|242|4.5|0|
+Soja, extrato solúvel, natural, fluido|13|39|2.4|1.6|4.3|0.4|0.2||57|121|17|0.4|15|0.3|0|
+Soja, extrato solúvel, pó|13|459|35.7|26.2|28.5|7.3|3.3||83|1607|359|7|216|5.8|9.2|
+Soja, queijo (tofu)|13|64|6.6|4|2.1|0.8|0.4||1|182|81|1.4|38|0.9|0|
+Tremoço, cru|13|381|33.6|10.3|43.8|32.3|1.2||3|708|177|2.8|121|4.2|25|
+Tremoço, em conserva|13|121|11.1|3.8|12.4|14.4|0.4||1809|5|16|0.3|4|0.6|0|
+Amêndoa, torrada, salgada|14|581|18.6|47.3|29.5|11.6|4.8||279|640|237|3.1|222|2.6|0|
+Castanha-de-caju, torrada, salgada|14|570|18.5|46.3|29.1|3.7|7.7||125|671|33|5.2|237|4.7|0|
+Castanha-do-Brasil, crua|14|643|14.5|63.5|15.1|7.9|15.3||1|651|146|2.3|365|4.2|0|
+Coco, cru|14|406|3.7|42|10.4|5.4|30||15|354|6|1.8|51|0.9|2.5|
+Farinha, de mesocarpo de babaçu, crua|14|329|1.4|0.2|79.2|17.9|||12|362|61|18.3|39|0.3|0|
+Gergelim, semente|14|584|21.2|50.4|21.6|11.9|7.8||3|546|825|5.4|361|5.2|0|
+Linhaça, semente|14|495|14.1|32.3|43.3|33.5|4.2||9|869|211|4.7|347|4.4|0|
+Pinhão, cozido|14|174|3|0.7|43.9|15.6|0.3||1|727|16|0.8|53|0.8|27.7|
+Pupunha, cozida|14|219|2.5|12.8|29.6|4.3|3.1||1|303|28|0.5|25|0.3|2.2|438
+Noz, crua|14|620|14|59.4|18.4|7.2|5.6||5|533|105|2|153|2.1|0|`;/*TACO-END*/
+function homeNutri(){nS();const k=dkey(Date.now()),n=dayNut(k),P=nutriPlan(),v=Math.round(n[0]);return`<section class="card form"><div class="row"><span class="lab spacer">${I.food.replace('class="i"','class="i" style="width:15px;height:15px;vertical-align:-3px;color:var(--accent)"')} Nutrição hoje</span><b class="num" style="font-size:18px">${fmtInt(v)} / ${fmtInt(P.kcal)} kcal</b></div><div class="bar1"><i style="width:${Math.min(100,v/P.kcal*100).toFixed(0)}%"></i></div><div class="row small" style="flex-wrap:wrap;gap:6px 14px"><span class="t0 nw">Carb. ${fmtInt(n[3])}/${P.gC} g</span><span class="t1 nw">Gord. ${fmtInt(n[2])}/${P.gG} g</span><span class="t2 nw">Prot. ${fmtInt(n[1])}/${P.gP} g</span></div><div class="chips"><button class="chip" data-a="tab" data-t="dieta">Registrar refeição</button></div></section>`}
+const NK=['kcal','prot','gord','carb','fib','sat','col','na','k','ca','fe','mg','zn','vc','va'];
+const MEALS=[['cafe','Café da manhã','07:30'],['lanche1','Lanche da manhã','10:00'],['almoco','Almoço','12:30'],['lanche2','Lanche da tarde','16:00'],['jantar','Jantar','19:30'],['ceia','Ceia','22:00']];
+const mealName=k=>(MEALS.find(m=>m[0]===k)||MEALS[0])[1];
+let TACO_ROWS=null;
+const tacoRows=()=>TACO_ROWS||(TACO_ROWS=TACO.split('\n').map((l,i)=>{const c=l.split('|');return{id:'t'+i,name:c[0],cat:+c[1],v:c.slice(2).map(x=>x===''?null:+x),norm:norm(c[0])}}));
+const nS=()=>{S.meals=S.meals||[];S.foods=S.foods||[];S.fav=S.fav||[];S.mealTpl=S.mealTpl||[];return S};
+function food(id){if(!id)return null;if(id[0]==='t')return tacoRows()[+id.slice(1)]||null;const u=nS().foods.find(x=>x.id===id);return u?{id:u.id,name:u.name,v:u.v,por:u.por,own:true,norm:norm(u.name)}:null}
+// nutrientes de um item (vetor na mesma ordem de NK); itens de "calorias rápidas" só têm kcal
+function itemNut(it){if(it.f==null){const o=NK.map(()=>0);o[0]=num(it.kcal)||0;return o}const f=food(it.f);if(!f)return NK.map(()=>0);const k=(num(it.q)||0)/100;return f.v.map(x=>(x||0)*k)}
+const sumNut=items=>items.reduce((a,it)=>{const n=itemNut(it);return a.map((x,i)=>x+n[i])},NK.map(()=>0));
+const mealsOn=d=>nS().meals.filter(m=>m.d===d);
+const dayNut=d=>sumNut(mealsOn(d).flatMap(m=>m.it));
+const itemName=it=>it.f==null?(it.n||'Calorias rápidas'):(food(it.f)?.name||'Alimento removido');
+const itemSub=it=>{if(it.f==null)return`${fmtInt(num(it.kcal)||0)} kcal`;const f=food(it.f),n=itemNut(it);return`${fmtInt(n[0])} kcal, ${fmt(num(it.q)||0)} g${f&&f.por&&f.por!==100?` · ${fmt((num(it.q)||0)/f.por)} porção`:''}`};
+
+/* Metas: calorias pela mesma conta do cartão de saúde (Mifflin-St Jeor × atividade × objetivo); proteína pela faixa da ISSN; gordura 25%; carboidrato completa. Tudo pode ser trocado em Metas. */
+function nutriPlan(){const p=S.profile,b=bodyData(),cfg=p.nutri||{};let auto=null,prot=null;
+ if(b.ok){const tdee=mifflin(b.w,b.h,b.age,b.sex)*actOf()[2],goal=p.goal||'manter';auto=r50(goal==='perder'?tdee*.8:goal==='ganhar'?tdee*1.1:tdee);const[a1,a2]=goal==='perder'?[2.3,3.1]:[1.6,2.0];prot=Math.round((a1+a2)/2*b.w)}
+ const kcal=cfg.mode==='manual'&&num(cfg.kcal)?num(cfg.kcal):(auto||2000);
+ let pP,pG,pC;if(cfg.mode==='manual'&&num(cfg.pP)!=null){pP=num(cfg.pP);pG=num(cfg.pG);pC=num(cfg.pC)}else{pP=prot?Math.min(40,Math.max(15,Math.round(prot*4/kcal*100))):20;pG=25;pC=100-pP-pG}
+ return{kcal,lo:Math.round(kcal*.9),hi:Math.round(kcal*1.1),auto,pP,pG,pC,gP:Math.round(kcal*pP/100/4),gG:Math.round(kcal*pG/100/9),gC:Math.round(kcal*pC/100/4),manual:cfg.mode==='manual',sex:p.sex}}
+// Referências diárias para adultos (DRI/IOM; sódio: limite CDRR 2.300 mg; saturada: até 10% das calorias). [índice, nome, unidade, f(sexo,plano)->[mínimo, máximo]]
+const MICRO=[[1,'Proteína','g',(s,P)=>[P.gP,null]],[4,'Fibras','g',s=>[s==='f'?25:38,null]],[5,'Gordura saturada','g',(s,P)=>[null,Math.round(P.kcal*.1/9)]],[6,'Colesterol','mg',()=>[null,300]],[7,'Sódio','mg',()=>[null,2300]],
+ [8,'Potássio','mg',s=>[s==='f'?2600:3400,null]],[9,'Cálcio','mg',()=>[1000,2500]],[10,'Ferro','mg',s=>[s==='f'?18:8,45]],[11,'Magnésio','mg',s=>[s==='f'?320:420,null]],[12,'Zinco','mg',s=>[s==='f'?8:11,40]],[13,'Vitamina C','mg',s=>[s==='f'?75:90,2000]],[14,'Vitamina A','mcg',s=>[s==='f'?700:900,3000]]];
+
+/* ---- componentes ---- */
+const nDay=()=>UI.nDay??sod(Date.now());
+const dayLabel=d=>d===sod(Date.now())?'Hoje':d===addDays(sod(Date.now()),-1)?'Ontem':new Date(d).toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'}).replace('.','');
+function macroBar(n,P){const kc=[n[3]*4,n[2]*9,n[1]*4],tot=kc.reduce((a,b)=>a+b,0);const real=tot?kc.map(x=>Math.round(x/tot*100)):[0,0,0];const rec=[P.pC,P.pG,P.pP];
+ const seg=(arr,cls)=>`<div class="mbar ${cls}">${arr.map((v,i)=>`<i class="m${i}" style="flex:${Math.max(v,.0001)}"></i>`).join('')}</div>`;
+ return`<div class="nmr"><span>Real</span>${real.map((v,i)=>`<b class="t${i}">${tot?v+'%':'–'}</b>`).join('')}</div>${seg(tot?real:[1,1,1],tot?'':'nemp')}${seg(rec,'rec')}<div class="nmr"><span>Recomendado</span>${rec.map((v,i)=>`<b class="t${i}">${v}%</b>`).join('')}</div>`}
+function macroBoxes(n,P){return`<div class="mbox">${[['Carboidrato',3,P.gC,0],['Gordura',2,P.gG,1],['Proteína',1,P.gP,2]].map(([l,i,g,c])=>`<div><span class="t${c}">${l}</span><b>${fmt(Math.round(n[i]*10)/10)}<small>g</small></b><em>meta ${fmtInt(g)} g</em></div>`).join('')}</div>`}
+function kcalCard(n,P){const v=Math.round(n[0]),max=Math.max(P.hi*1.15,v*1.05),pc=x=>Math.min(100,x/max*100).toFixed(1);const diff=P.kcal-v;
+ return`<section class="card nk"><div class="row" style="align-items:flex-end"><div class="nfx"><b class="nbig">${fmtInt(v)}</b><span class="muted">kcal consumidas</span></div><div class="ngoal"><span>${I.flame} Meta ${fmtInt(P.kcal)} kcal</span><span class="muted small">faixa ${fmtInt(P.lo)} – ${fmtInt(P.hi)}</span></div></div>
+ <div class="nbar"><i style="width:${pc(v)}%" class="${v>P.hi?'over':''}"></i><s style="left:${pc(P.lo)}%;width:${(pc(P.hi)-pc(P.lo)).toFixed(1)}%"></s><u style="left:${pc(P.kcal)}%"></u></div>
+ <p class="muted small" style="margin:0">${v===0?'Nada registrado neste dia.':diff>0?`Faltam <b>${fmtInt(diff)} kcal</b> para a meta.`:`<b>${fmtInt(-diff)} kcal</b> acima da meta.`}</p></section>`}
+function nMini(d,P){const days=[...Array(7)].map((_,i)=>addDays(d,i-6));const vals=days.map(x=>dayNut(dkey(x))[0]);const W=320,H=96,pb=18,max=niceMax(Math.max(P.hi,...vals));const bw=W/7;const Y=v=>(H-pb)*(1-v/max);const logged=vals.filter(v=>v>0);const avg=logged.length?logged.reduce((a,b)=>a+b,0)/logged.length:0;
+ let g=`<line class="goal" x1="0" x2="${W}" y1="${Y(P.kcal)}" y2="${Y(P.kcal)}"/>`;days.forEach((x,i)=>{const h=(H-pb)-Y(vals[i]);g+=`<rect class="bx${x===d?' now':''}" x="${(i*bw+bw*.28).toFixed(1)}" y="${Y(vals[i]).toFixed(1)}" width="${(bw*.44).toFixed(1)}" height="${Math.max(vals[i]>0?2:0,h).toFixed(1)}" rx="3"><title>${dShort(x)}: ${fmtInt(vals[i])} kcal</title></rect><text class="ax" x="${(i*bw+bw/2).toFixed(1)}" y="${H-4}" text-anchor="middle">${new Date(x).getDate()}</text>`});
+ return`<button class="card nmini" data-a="go" data-v="dietaTend"><div class="row"><span class="nfx"><b>Últimos 7 dias</b><span class="muted small">${logged.length?`Média ${fmtInt(avg)} kcal nos ${logged.length} dia(s) com registro`:'Sem registros ainda'}</span></span>${I.chev}</div><svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Calorias dos últimos 7 dias">${g}</svg></button>`}
+
+/* ---- tela principal ---- */
+VIEWS.dieta=()=>{nS();const d=nDay(),k=dkey(d),P=nutriPlan(),n=dayNut(k),ms=mealsOn(k),today=sod(Date.now());
+ let h=bar('Nutrição',{left:'',right:`<button class="ib" data-a="go" data-v="dietaTend" aria-label="Tendências">${I.chart}</button><button class="ib" data-a="nMenu" aria-label="Opções">${I.dots}</button>`})+'<main class="page">';
+ h+=`<div class="dnav"><button class="ib" data-a="nDay" data-k="-1" aria-label="Dia anterior">${I.left}</button><button class="dnav-t" data-a="nToday">${dayLabel(d)}</button><button class="ib" data-a="nDay" data-k="1" aria-label="Próximo dia" ${d>=today?'disabled':''}>${I.chev}</button></div>`;
+ h+=kcalCard(n,P);
+ h+=`<button class="card ninfo" data-a="go" data-v="nutrientes"><div class="row"><b class="spacer">Macronutrientes</b><span class="muted small">Ver nutrientes</span>${I.chev}</div>${macroBoxes(n,P)}${macroBar(n,P)}</button>`;
+ h+=`<h3 class="sh">Registrar refeição</h3><section class="card mlist">${MEALS.map(([mk,ml])=>{const m=ms.find(x=>x.m===mk);const kc=m?Math.round(sumNut(m.it)[0]):0;return`<div class="mline"><button class="mtap" data-a="mealOpen" data-m="${mk}"><span class="mk">${fmtInt(kc)}<small>kcal</small></span><span class="nfx"><b>${ml}${m?` <em class="muted small">${m.t}</em>`:''}</b>${m&&m.it.length?`<span class="muted small clamp2">${esc(m.it.map(itemName).join(', '))}</span>`:''}</span></button><button class="ib" data-a="mealOpen" data-m="${mk}" data-add="1" aria-label="Adicionar em ${ml}">${I.plus}</button></div>`}).join('')}</section>`;
+ h+=nMini(d,P);
+ if(!bodyData().ok&&!P.manual)h+=`<p class="muted small" style="margin:0">A meta de ${fmtInt(P.kcal)} kcal é provisória. Preencha sexo, nascimento, altura e peso em <button class="linkb" data-a="go" data-v="dados">Dados pessoais</button> para calcular a sua.</p>`;
+ return h+'</main>'};
+
+/* ---- editor da refeição ---- */
+function mealWork(d,mk){const k=dkey(d),m=mealsOn(k).find(x=>x.m===mk);const now=new Date();return m?{id:m.id,d:k,m:m.m,t:m.t,it:m.it.map(x=>({...x})),orig:m.m}:{id:uid(),d:k,m:mk,t:k===dkey(Date.now())?String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0'):(MEALS.find(x=>x[0]===mk)||MEALS[0])[2],it:[],orig:null}}
+VIEWS.refeicao=p=>{const w=p.w;if(!w)return bar('Refeição')+'<main class="page"></main>';const n=sumNut(w.it);
+ let h=bar('Registrar refeição',{right:`<button class="btn sm pri" data-a="mealOk">OK</button>`})+'<main class="page">';
+ h+=`<div class="mhead"><select class="inp msel" id="m-type" data-f="n:mtype" aria-label="Refeição">${MEALS.map(([k,l])=>`<option value="${k}"${k===w.m?' selected':''}>${l}</option>`).join('')}</select><input class="inp mtime" id="m-time" type="time" value="${w.t}" data-f="n:mtime" aria-label="Hora"></div>`;
+ h+=`<section class="card mtot"><b>Total: ${fmtInt(n[0])} kcal</b><span class="muted small">Carboidrato ${fmt(Math.round(n[3]*10)/10)} g · Gordura ${fmt(Math.round(n[2]*10)/10)} g · Proteína ${fmt(Math.round(n[1]*10)/10)} g</span></section>`;
+ h+=`<h3 class="sh">Alimentos</h3><section class="card mlist">${w.it.map((it,i)=>`<div class="mline"><button class="mtap" data-a="${it.f==null?'quickEdit':'portion'}" data-i="${i}"><span class="nfx"><b>${esc(itemName(it))}</b><span class="muted small">${itemSub(it)}</span></span></button>${it.f==null?`<button class="ib" data-a="itemDel" data-i="${i}" aria-label="Remover">${I.x}</button>`:`<button class="ib" data-a="itemQ" data-i="${i}" data-k="-1" aria-label="Diminuir">−</button><button class="ib" data-a="itemQ" data-i="${i}" data-k="1" aria-label="Aumentar">${I.plus}</button>`}</div>`).join('')}
+ <button class="mi" data-a="addFood">${I.plus}Adicionar alimento</button><button class="mi" data-a="quickKcal">${I.flame}Adicionar calorias</button></section>`;
+ h+=`<section class="card mlist">${w.it.length?`<button class="mi" data-a="saveTpl">${I.copy}Salvar como refeição pessoal</button>`:''}${w.orig?`<button class="mi dg" data-a="mealDel">${I.trash}Excluir esta refeição</button>`:''}</section>`;
+ return h+'</main>'};
+
+/* ---- seletor de alimentos ---- */
+const FT=[['todos','Todos'],['fav','Favoritos'],['meus','Meus alimentos'],['ref','Minhas refeições']];
+function foodList(p){const q=norm(p.q||''),sel=p.sel||[];const row=f=>{const on=sel.includes(f.id);const v0=f.v[0]||0;return`<button class="frow${on?' on':''}" data-a="fPick" data-id="${f.id}"><span class="fck">${on?I.check:''}</span><span class="nfx"><b>${esc(f.name)}</b><span class="muted small">${fmtInt(f.por&&f.por!==100?v0*f.por/100:v0)} kcal, ${f.por&&f.por!==100?`1 porção (${fmt(f.por)} g)`:'100 g'}${f.own?' · meu':''}</span></span>${S.fav.includes(f.id)?`<span class="fstar">${I.star}</span>`:''}</button>`};
+ if(p.tab==='ref'){const ts=S.mealTpl.filter(t=>!q||norm(t.name).includes(q));return ts.length?ts.map(t=>{const on=sel.includes('r:'+t.id);return`<button class="frow${on?' on':''}" data-a="fPick" data-id="r:${t.id}"><span class="fck">${on?I.check:''}</span><span class="nfx"><b>${esc(t.name)}</b><span class="muted small">${fmtInt(sumNut(t.it)[0])} kcal · ${esc(t.it.map(itemName).join(', '))}</span></span></button>`}).join(''):`<p class="empty">Nenhuma refeição salva. No editor de refeição, use "Salvar como refeição pessoal".</p>`}
+ let fs=p.tab==='fav'?S.fav.map(food).filter(Boolean):p.tab==='meus'?S.foods.map(x=>food(x.id)):[...S.foods.map(x=>food(x.id)),...tacoRows()];
+ if(p.tab==='todos'&&p.cat!=null&&p.cat!=='')fs=fs.filter(f=>f.cat===+p.cat);
+ if(q){const ws=q.split(/\s+/).filter(Boolean);fs=fs.filter(f=>ws.every(w=>f.norm.includes(w))).sort((a,b)=>(b.norm.startsWith(q)?1:0)-(a.norm.startsWith(q)?1:0))}
+ const empty=p.tab==='fav'?'Toque na estrela de um alimento para guardá-lo aqui.':p.tab==='meus'?'Você ainda não criou alimentos.':'Nenhum alimento encontrado. Tente outra palavra ou crie o seu.';
+ return(p.tab==='meus'?`<button class="mi" data-a="go" data-v="novoAlimento">${I.plus}Criar alimento</button>`:'')+(fs.length?fs.slice(0,250).map(row).join('')+(fs.length>250?`<p class="muted small" style="text-align:center">Mostrando 250 de ${fs.length}. Refine a busca.</p>`:''):`<p class="empty">${empty}</p>`)}
+VIEWS.alimentos=p=>{p.tab=p.tab||'todos';p.sel=p.sel||[];
+ let h=bar(p.pick?'Adicionar alimento':'Alimentos')+`<main class="page" style="padding-bottom:96px"><input class="inp" id="f-q" type="search" placeholder="Buscar alimento (ex.: arroz, frango, banana)" value="${esc(p.q||'')}" data-f="n:fq" autocomplete="off">
+ <div class="seg ftabs">${FT.map(([k,l])=>`<button class="${p.tab===k?'on':''}" data-a="fTab" data-k="${k}">${l}</button>`).join('')}</div>`;
+ if(p.tab==='todos')h+=`<select class="inp" id="f-cat" data-f="n:fcat" aria-label="Categoria"><option value="">Todas as categorias (TACO)</option>${TACO_CAT.map((c,i)=>`<option value="${i}"${String(p.cat)===String(i)?' selected':''}>${esc(c)}</option>`).join('')}</select>`;
+ h+=`<section class="card flist" id="fl">${foodList(p)}</section></main>`;
+ if(p.pick)h+=`<div class="fdock"><button class="btn pri wide" data-a="fDone" ${p.sel.length?'':'disabled'}>${p.sel.length?`Adicionar ${p.sel.length} item(ns)`:'Selecione os alimentos'}</button></div>`;
+ return h};
+
+/* ---- criar alimento ---- */
+const NF=[['name','Nome','text'],['por','Tamanho da porção (g)','num'],['kcal','Calorias (kcal)','num'],['carb','Carboidrato (g)','num'],['prot','Proteína (g)','num'],['gord','Gordura (g)','num'],['fib','Fibras (g)','num'],['na','Sódio (mg)','num']];
+VIEWS.novoAlimento=p=>{p.f=p.f||{por:'100'};return bar('Criar alimento',{right:`<button class="btn sm pri" data-a="saveFood">Salvar</button>`})+`<main class="page"><p class="muted small" style="margin:0">Use os valores da tabela nutricional da embalagem para uma porção. O app converte para 100 g.</p><section class="card form">${NF.map(([k,l,t])=>`<label class="fld"><span class="lab">${l}</span><input class="inp" id="nf-${k}" ${t==='num'?'inputmode="decimal"':''} value="${esc(p.f[k]||'')}" data-f="n:nf" data-k="${k}"></label>`).join('')}</section></main>`};
+
+/* ---- porção (folha) ---- */
+const NUT_ROWS=[[0,'Calorias','kcal'],[3,'Carboidrato','g'],[4,'  Fibras','g'],[1,'Proteína','g'],[2,'Gordura total','g'],[5,'  Saturada','g'],[6,'Colesterol','mg'],[7,'Sódio','mg'],[8,'Potássio','mg'],[9,'Cálcio','mg'],[10,'Ferro','mg'],[11,'Magnésio','mg'],[12,'Zinco','mg'],[13,'Vitamina C','mg'],[14,'Vitamina A','mcg']];
+function portionHTML(id,q,ctl=true){const f=food(id);if(!f)return'';const it={f:id,q},n=itemNut(it),fav=S.fav.includes(id);const kc=[n[3]*4,n[2]*9,n[1]*4],t=kc.reduce((a,b)=>a+b,0)||1;
+ return`<div class="row"><span class="nfx"><b style="font-size:17px">${esc(f.name)}</b><span class="muted small">${fmtInt(n[0])} kcal em ${fmt(q)} g${f.own?'':' · TACO'}</span></span><button class="ib" data-a="favT" data-id="${id}" aria-label="${fav?'Tirar dos':'Pôr nos'} favoritos" aria-pressed="${fav}"><span class="${fav?'fstar':''}">${I.star}</span></button></div>
+ ${ctl?`<div class="pq"><button class="ib" data-a="pStep" data-k="-1" aria-label="Menos">−</button><input class="inp" id="p-q" inputmode="decimal" value="${fmt(q)}" data-f="n:pq" aria-label="Quantidade em gramas"><span class="muted">g</span><button class="ib" data-a="pStep" data-k="1" aria-label="Mais">${I.plus}</button></div>
+ <div class="chips">${[...(f.por&&f.por!==100?[[f.por,'1 porção']]:[]),[50,'50 g'],[100,'100 g'],[150,'150 g'],[200,'200 g']].map(([g,l])=>`<button class="chip" data-a="pSet" data-g="${g}">${l}</button>`).join('')}</div>`:''}
+ <div class="mbar">${[3,2,1].map((i,k)=>`<i class="m${k}" style="flex:${Math.max(kc[[0,1,2][k]],.0001)}"></i>`).join('')}</div><div class="nmr"><span></span>${['Carb.','Gord.','Prot.'].map((l,k)=>`<b class="t${k}">${l} ${Math.round(kc[k]/t*100)}%</b>`).join('')}</div>
+ <table class="ntab">${NUT_ROWS.map(([i,l,u])=>`<tr class="${l.startsWith('  ')?'nsub':''}"><td>${l.trim()}</td><td>${f.v[i]==null?'–':fmt(Math.round(n[i]*10)/10)+' '+u}</td></tr>`).join('')}</table>
+ <p class="muted small" style="margin:0">${f.own?'Alimento criado por você.':'Fonte: TACO 4ª edição (NEPA/UNICAMP). "–" = sem dado na tabela.'}</p>`}
+function portionSheet(i){const w=top_().p.w,it=w.it[i];UI.pi={i,q:num(it.q)||100};sheet(`<div class="form" id="psheet">${portionHTML(it.f,UI.pi.q)}</div><div class="ask-b"><button class="btn sec" data-a="itemDel" data-i="${i}">Remover</button><button class="btn pri" data-a="pSave">Salvar</button></div>`)}
+const pRefresh=()=>{const w=top_().p.w,it=w.it[UI.pi.i];const el=$('#psheet');if(el){const a=document.activeElement&&document.activeElement.id==='p-q';el.innerHTML=portionHTML(it.f,UI.pi.q);if(a){const x=$('#p-q');x.focus();x.setSelectionRange(x.value.length,x.value.length)}}};
+
+/* ---- nutrientes do dia ---- */
+VIEWS.nutrientes=()=>{const d=nDay(),k=dkey(d),P=nutriPlan(),n=dayNut(k),items=mealsOn(k).flatMap(m=>m.it);
+ let h=bar('Nutrientes')+`<main class="page"><p class="muted small" style="margin:0">${dayLabel(d)}. Cada barra mostra a faixa recomendada para adultos (${P.sex==='f'?'mulheres':'homens'}): abaixo, dentro ou acima. Os alimentos que mais contribuíram aparecem embaixo.</p>`;
+ h+=`<section class="card ninfo">${macroBoxes(n,P)}${macroBar(n,P)}</section>`;
+ h+=`<section class="card nlist">${MICRO.map(([i,l,u,fn])=>{const[mn,mx]=fn(P.sex,P),v=n[i];const top=items.filter(it=>it.f!=null).map(it=>[itemName(it),itemNut(it)[i]]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const scale=Math.max(v,(mx||mn*1.6))*1.08||1,pc=x=>Math.min(100,x/scale*100).toFixed(1);const st=mn!=null&&v<mn?'low':mx!=null&&v>mx?'high':'ok';
+  return`<div class="nut"><div class="row"><b class="spacer">${l}</b><b class="nv ${st}">${fmt(Math.round(v*10)/10)} ${u}</b></div><div class="nzb">${mn!=null?`<s class="lo" style="width:${pc(mn)}%"></s>`:''}<s class="ok" style="left:${mn!=null?pc(mn):0}%;width:${mx!=null?(pc(mx)-(mn!=null?pc(mn):0)).toFixed(1):(100-(mn!=null?pc(mn):0)).toFixed(1)}%"></s>${mx!=null?`<s class="hi" style="left:${pc(mx)}%;right:0"></s>`:''}<i style="left:${pc(v)}%"></i></div><div class="row muted small"><span class="nfx">${mn!=null?`mín. ${fmtInt(mn)} ${u}`:''}</span><span>${mx!=null?`${mn!=null?'máx.':'até'} ${fmtInt(mx)} ${u}`:''}</span></div>${top.length?`<div class="ntop">${top.map(([nm,x])=>`<span>${esc(nm)}</span><b>${fmt(Math.round(x*10)/10)} ${u}</b>`).join('')}</div>`:''}</div>`}).join('')}</section>`;
+ h+=`<p class="muted small" style="margin:0">Referências: Ingestão Dietética de Referência (IOM/National Academies) para adultos; sódio pelo limite de redução de risco (2.300 mg); gordura saturada até 10% das calorias (OMS). Valores dos alimentos: TACO. Não substitui um nutricionista.</p>`;
+ return h+'</main>'};
+
+/* ---- tendências (Dias/Semanas/Meses do Samsung = seletor de período do app) ---- */
+function nSeries(){const o=perOf('dieta'),bk=buckets(o.p,o.g),today=sod(Date.now());
+ return bk.map(([a,z,l])=>{let n=NK.map(()=>0),dd=0;const pm={};for(let d=a;d<z&&d<=today;d=addDays(d,1)){const ms=mealsOn(dkey(d));if(!ms.length)continue;dd++;for(const m of ms){const x=sumNut(m.it);n=n.map((v,i)=>v+x[i]);pm[m.m]=(pm[m.m]||0)+x[0]}}return{l,a,z,dd,avg:dd?n.map(v=>v/dd):NK.map(()=>0),pm}})}
+VIEWS.dietaTend=()=>{nS();const P=nutriPlan(),rows=nSeries(),met=UI.nMet||'kcal';const days=rows.reduce((a,r)=>a+r.dd,0);
+ const tot=rows.reduce((a,r)=>a.map((v,i)=>v+r.avg[i]*r.dd),NK.map(()=>0)),avg=days?tot.map(v=>v/days):tot;const pm={};rows.forEach(r=>{for(const k in r.pm)pm[k]=(pm[k]||0)+r.pm[k]});
+ let h=bar('Tendências da nutrição')+`<main class="page">${perCtl('dieta')}<div class="seg"><button class="${met==='kcal'?'on':''}" data-a="nMet" data-k="kcal">Calorias</button><button class="${met==='mac'?'on':''}" data-a="nMet" data-k="mac">Macronutrientes</button></div>`;
+ if(met==='kcal'){h+=`<section class="card form"><span class="lab">Média por dia registrado</span><b class="nbig">${fmtInt(avg[0])}<small> kcal</small></b><span class="muted small">${days} dia(s) com registro no período · meta ${fmtInt(P.kcal)} kcal</span>${days?`<div class="pmg">${MEALS.filter(([k])=>pm[k]).map(([k,l])=>`<span>${l}</span><b>${fmtInt(pm[k]/days)}</b>`).join('')}</div>`:''}${nChart(rows,P,'kcal')}</section>`}
+ else{h+=`<section class="card form"><span class="lab">Média por dia registrado</span>${macroBoxes(avg,P)}${macroBar(avg,P)}${nChart(rows,P,'mac')}<div class="leg"><span><i class="m0"></i>Carboidrato</span><span><i class="m1"></i>Gordura</span><span><i class="m2"></i>Proteína</span></div><p class="muted small" style="margin:0">Barras em calorias de cada macronutriente (carboidrato e proteína 4 kcal/g, gordura 9 kcal/g).</p></section>`}
+ return h+'</main>'};
+function nChart(rows,P,met){const W=340,H=170,pl=36,pb=22,pt=8;const vals=rows.map(r=>r.avg[0]);const max=niceMax(Math.max(P.hi,...vals,1));const bw=(W-pl)/rows.length;const Y=v=>pt+(H-pt-pb)*(1-v/max);let g='';const labs=sparseLabels(rows.map(r=>[0,0,r.l]));
+ for(let i=0;i<=2;i++){const v=max*i/2,y=Y(v);g+=`<line class="grid" x1="${pl}" x2="${W}" y1="${y}" y2="${y}"/><text class="ax" x="${pl-5}" y="${y+3}" text-anchor="end">${fmtInt(v)}</text>`}
+ rows.forEach((r,i)=>{const x=pl+i*bw+bw*.18,w=Math.max(1.5,bw*.64);if(met==='kcal'){const ok=r.dd&&r.avg[0]>=P.lo&&r.avg[0]<=P.hi;g+=`<rect class="bx${ok?' now':''}" x="${x.toFixed(1)}" y="${Y(r.avg[0]).toFixed(1)}" width="${w.toFixed(1)}" height="${(H-pb-Y(r.avg[0])).toFixed(1)}" rx="${Math.min(4,w/2).toFixed(1)}"><title>${r.l}: ${fmtInt(r.avg[0])} kcal por dia</title></rect>`}
+  else{let y0=H-pb;[[r.avg[3]*4,0],[r.avg[2]*9,1],[r.avg[1]*4,2]].forEach(([v,c])=>{const hh=(H-pt-pb)*v/max;y0-=hh;g+=`<rect class="m${c}" x="${x.toFixed(1)}" y="${y0.toFixed(1)}" width="${w.toFixed(1)}" height="${hh.toFixed(1)}"><title>${r.l}: ${['Carboidrato','Gordura','Proteína'][c]} ${fmtInt(v)} kcal</title></rect>`})}
+  if(labs[i])g+=`<text class="ax" x="${(x+w/2).toFixed(1)}" y="${H-6}" text-anchor="middle">${labs[i]}</text>`});
+ g+=`<line class="goal" x1="${pl}" x2="${W}" y1="${Y(P.kcal)}" y2="${Y(P.kcal)}"/><text class="ax" x="${W}" y="${Y(P.kcal)-4}" text-anchor="end">meta</text>`;
+ return`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Calorias por período">${g}</svg>`}
+
+/* ---- metas ---- */
+VIEWS.metasNutri=()=>{const P=nutriPlan(),c=S.profile.nutri||{};const man=c.mode==='manual';
+ return bar('Metas de nutrição')+`<main class="page"><div class="seg"><button class="${man?'':'on'}" data-a="nMode" data-k="auto">Automática</button><button class="${man?'on':''}" data-a="nMode" data-k="manual">Personalizada</button></div>
+ ${man?`<section class="card form"><label class="fld"><span class="lab">Calorias por dia (kcal)</span><input class="inp" id="nm-kcal" inputmode="numeric" value="${esc(String(c.kcal??P.kcal))}" data-f="n:nm" data-k="kcal"></label>
+ <div class="g3">${[['pC','Carb. (%)'],['pG','Gord. (%)'],['pP','Prot. (%)']].map(([k,l])=>`<label class="fld"><span class="lab">${l}</span><input class="inp" id="nm-${k}" inputmode="numeric" value="${esc(String(c[k]??P[k]))}" data-f="n:nm" data-k="${k}"></label>`).join('')}</div><p class="muted small" id="nm-sum" style="margin:0">${nmSum()}</p></section>`
+ :`<section class="card form"><p style="margin:0">Calculada pelos seus dados: taxa metabólica (Mifflin-St Jeor) × nível de atividade, ajustada ao objetivo. Proteína pela faixa da ISSN para quem treina, gordura em 25% das calorias e carboidrato no restante.</p>${P.auto?'':`<p class="muted small" style="margin:0">Faltam dados pessoais; usando 2.000 kcal até você preencher. <button class="linkb" data-a="go" data-v="dados">Preencher</button></p>`}</section>`}
+ <section class="card form"><span class="lab">Meta atual</span><b class="nbig">${fmtInt(P.kcal)}<small> kcal</small></b><span class="muted small">Faixa ${fmtInt(P.lo)} – ${fmtInt(P.hi)} kcal</span>${macroBoxes(NK.map(()=>0),P).replace(/<b>0<small>g<\/small><\/b>/g,'')}</section></main>`};
+function nmSum(){const c=S.profile.nutri||{},s=(num(c.pC)||0)+(num(c.pG)||0)+(num(c.pP)||0);return s===100?'A soma dá 100%.':`A soma está em ${fmt(s)}%; ajuste para 100%.`}
+
+/* ---- ações ---- */
+Object.assign(A,{
+ nDay:d=>{UI.nDay=Math.min(sod(Date.now()),addDays(nDay(),+d.k));rerender()},
+ nToday:()=>{UI.nDay=null;rerender()},
+ nMenu:()=>menu('Nutrição',[{label:'Metas de nutrição',icon:I.flame,f:()=>go('metasNutri')},{label:'Meus alimentos e favoritos',icon:I.note,f:()=>go('alimentos',{tab:'meus'})},{label:'Tendências',icon:I.chart,f:()=>go('dietaTend')}]),
+ mealOpen:d=>{const w=mealWork(nDay(),d.m);go('refeicao',{w});if(d.add&&!w.it.length)setTimeout(()=>A.addFood(),50)},
+ addFood:()=>{go('alimentos',{pick:true,tab:nS().fav.length?'fav':'todos'})},
+ fTab:d=>{const p=top_().p;p.tab=d.k;rerender()},
+ fPick:d=>{const p=top_().p;if(!p.pick){if(d.id[0]!=='r'){UI.view={id:d.id,q:food(d.id)?.por||100};sheet(`<div class="form" id="vsheet">${portionHTML(d.id,UI.view.q,false)}</div>`)}return}const s=p.sel;const i=s.indexOf(d.id);i<0?s.push(d.id):s.splice(i,1);rerender()},
+ fDone:()=>{const p=top_().p,sel=p.sel||[];const w=(stack[stack.length-2]||{}).p?.w;back();if(!w)return;for(const id of sel){if(id.startsWith('r:')){const t=S.mealTpl.find(x=>x.id===id.slice(2));if(t)w.it.push(...t.it.map(x=>({...x})))}else{const f=food(id);w.it.push({f:id,q:f&&f.por?f.por:100})}}save();setTimeout(rerender,0)},
+ itemQ:d=>{const w=top_().p.w,it=w.it[+d.i],f=food(it.f),step=(f&&f.por?f.por:100)/2;it.q=Math.max(0,(num(it.q)||0)+step*(+d.k));if(it.q<=0)w.it.splice(+d.i,1);rerender()},
+ itemDel:d=>{const w=top_().p.w;w.it.splice(+d.i,1);closeSheet();rerender()},
+ portion:d=>portionSheet(+d.i),
+ pStep:d=>{const w=top_().p.w,f=food(w.it[UI.pi.i].f),step=f&&f.por&&f.por!==100?f.por/2:10;UI.pi.q=Math.max(0,Math.round((UI.pi.q+step*(+d.k))*10)/10);pRefresh()},
+ pSet:d=>{UI.pi.q=+d.g;pRefresh()},
+ pSave:()=>{const w=top_().p.w;const q=UI.pi.q;if(q>0)w.it[UI.pi.i].q=q;else w.it.splice(UI.pi.i,1);closeSheet();rerender()},
+ favT:d=>{nS();const i=S.fav.indexOf(d.id);i<0?S.fav.push(d.id):S.fav.splice(i,1);save();if($('#psheet'))pRefresh();else if($('#vsheet'))$('#vsheet').innerHTML=portionHTML(UI.view.id,UI.view.q,false);toast(i<0?'Adicionado aos favoritos':'Removido dos favoritos')},
+ quickKcal:()=>{askText('Adicionar calorias','','kcal, por exemplo 250').then(v=>{const n=num(v);closeSheet();if(v===null||v===undefined)return;if(!(n>0)){toast('Digite um número de calorias.');return}top_().p.w.it.push({n:'Calorias rápidas',kcal:Math.round(n)});rerender()});const x=$('#ask-in');if(x){x.inputMode='numeric'}},
+ quickEdit:d=>{const it=top_().p.w.it[+d.i];askText('Calorias rápidas',String(it.kcal),'kcal').then(v=>{closeSheet();const n=num(v);if(n>0){it.kcal=Math.round(n);rerender()}})},
+ saveTpl:()=>{const w=top_().p.w;askText('Nome da refeição pessoal',mealName(w.m),'Ex.: Café de sempre').then(v=>{closeSheet();if(!v||!String(v).trim())return;nS().mealTpl.push({id:uid(),name:String(v).trim(),it:w.it.map(x=>({...x}))});save();toast('Refeição salva em "Minhas refeições"')})},
+ mealDel:()=>{const w=top_().p.w;ask('Excluir esta refeição?','Os alimentos registrados nela serão apagados.','Excluir',true).then(ok=>{if(!ok)return;closeSheet();S.meals=S.meals.filter(m=>m.id!==w.id);save();back();toast('Refeição excluída')})},
+ mealOk:()=>{const w=top_().p.w;nS();S.meals=S.meals.filter(m=>m.id!==w.id);if(w.it.length){const same=S.meals.find(m=>m.d===w.d&&m.m===w.m);if(same){same.it.push(...w.it);same.t=w.t}else S.meals.push({id:w.id,d:w.d,m:w.m,t:w.t,it:w.it})}save();back();toast(w.it.length?'Refeição salva':'Refeição vazia removida')},
+ saveFood:()=>{const f=top_().p.f||{};const name=(f.name||'').trim();const por=num(f.por)||100;const kcal=num(f.kcal);if(!name){toast('Dê um nome ao alimento.');return}if(kcal==null){toast('Informe as calorias da porção.');return}const k=100/por,g=x=>num(x)==null?null:Math.round(num(x)*k*100)/100;
+  const v=NK.map(()=>null);v[0]=g(kcal);v[1]=g(f.prot)??0;v[2]=g(f.gord)??0;v[3]=g(f.carb)??0;v[4]=g(f.fib);v[7]=g(f.na);nS().foods.push({id:'u'+uid(),name,por,v});save();toast('Alimento criado');back()},
+ nMet:d=>{UI.nMet=d.k;rerender()},
+ nMode:d=>{const c=S.profile.nutri=S.profile.nutri||{};if(d.k==='manual'&&c.mode!=='manual'){const P=nutriPlan();Object.assign(c,{kcal:P.kcal,pC:P.pC,pG:P.pG,pP:P.pP})}c.mode=d.k;save();rerender()}
+});
+function nInput(f,t,v){const p=top_().p;
+ if(f==='fq'){p.q=v;const el=$('#fl');if(el)el.innerHTML=foodList(p);return}
+ if(f==='fcat'){p.cat=v;const el=$('#fl');if(el)el.innerHTML=foodList(p);return}
+ if(f==='mtype'){p.w.m=v;return}
+ if(f==='mtime'){if(/^\d\d:\d\d$/.test(v))p.w.t=v;return}
+ if(f==='pq'){const n=num(v);if(n!=null&&n>=0){UI.pi.q=n;const w=p.w,it=w.it[UI.pi.i];const s=$('#psheet .row .muted.small');if(s){const f2=food(it.f);s.textContent=`${fmtInt(itemNut({f:it.f,q:n})[0])} kcal em ${fmt(n)} g${f2&&f2.own?'':' · TACO'}`}}return}
+ if(f==='nf'){p.f[t.dataset.k]=v;return}
+ if(f==='nm'){const c=S.profile.nutri=S.profile.nutri||{};c[t.dataset.k]=num(v);save();const s=$('#nm-sum');if(s)s.textContent=nmSum();return}}
+
 /* Senha de entrada: a mesma nos dois celulares e fixa. O código guarda só o hash PBKDF2 (o repositório é público);
    é uma barreira de privacidade no aparelho, não criptografa os dados. Pedida a cada abertura do app (sessionStorage). */
 const LOCK={salt:'carga-v1-lock',it:150000,hash:'000641360c9a1e91a4182e1f603cc542184761e40557600b261e90169c25ad18',len:8};

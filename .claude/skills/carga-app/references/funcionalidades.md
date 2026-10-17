@@ -38,6 +38,36 @@
 - **Criar exercício** próprio: nome, equipamento, músculo principal, secundários e tipo.
 - **Detalhe do exercício:** histórico, gráficos (melhor série, volume, 1RM estimado etc.), recordes e músculos trabalhados no mapa corporal.
 
+## Nutrição (aba própria, referência: Samsung Health › Refeição)
+- **Tela do dia** (‹ Hoje ›):
+  - calorias consumidas, meta e faixa recomendada (±10%), com barra e marcador da meta;
+  - cartão de macronutrientes: gramas × meta e barra "Real × Recomendado" em %;
+  - as 6 refeições (Café da manhã, Lanche da manhã, Almoço, Lanche da tarde, Jantar, Ceia), com kcal e alimentos;
+  - mini gráfico dos últimos 7 dias.
+- **Editor de refeição:**
+  - tipo de refeição (se trocar para um tipo que já tem registro no dia, os itens são juntados) e hora;
+  - total de kcal e macros;
+  - alimentos com − e + (meia porção por toque) e toque no item para a folha de porção;
+  - "Adicionar alimento", "Adicionar calorias" (calorias rápidas, sem alimento), "Salvar como refeição pessoal" e "Excluir".
+- **Seletor de alimentos:**
+  - busca sem acento e filtro por categoria da TACO;
+  - abas Todos, Favoritos, Meus alimentos e Minhas refeições;
+  - seleção múltipla com botão fixo "Adicionar N item(ns)";
+  - fora do modo de seleção, mostra só a ficha do alimento.
+- **Folha de porção:** quantidade em g (−/+, atalhos 50/100/150/200 g e "1 porção" para alimentos próprios), barra de macros em %, tabela nutricional completa e estrela de favorito.
+- **Criar alimento:** valores da embalagem por porção; o app converte para 100 g.
+- **Nutrientes do dia:**
+  - proteína, fibras, saturada, colesterol, sódio, potássio, cálcio, ferro, magnésio, zinco e vitaminas C e A;
+  - barra com faixas abaixo, dentro e acima, com mínimo e máximo por sexo (DRI/IOM; sódio 2.300 mg; saturada até 10% das kcal);
+  - os 3 alimentos que mais contribuíram.
+- **Tendências:** o mesmo seletor de período do app (7 dias, Mês, Ano, Tudo; por dia, semana ou mês).
+  - Calorias: média por dia registrado, média por refeição e barras com linha da meta.
+  - Macronutrientes: média em g e %, e barras empilhadas em kcal.
+- **Metas:**
+  - automática: Mifflin × atividade × objetivo, proteína pela faixa ISSN, gordura 25%, carboidrato no resto;
+  - personalizada: kcal e % de cada macro.
+- **No Início:** cartão "Nutrição hoje" com kcal e macros do dia.
+
 ## Água (aba própria)
 - **Meta diária calculada:**
   - 35 ml/kg para homens e 31 ml/kg para mulheres (EFSA);

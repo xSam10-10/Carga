@@ -22,8 +22,8 @@
     {
       "ordem": 4,
       "modulo": "Nutrição",
-      "progresso": 0.0,
-      "resumo": "Dieta, macronutrientes, micronutrientes e diário de refeições. Próximo grande módulo."
+      "progresso": 0.6,
+      "resumo": "Aba Nutrição no modelo do Samsung Health: diário com 6 refeições, TACO (591 alimentos), macros e micronutrientes, metas e tendências. Faltam planos de dieta e código de barras."
     },
     {
       "ordem": 5,
@@ -34,7 +34,7 @@
     {
       "ordem": 6,
       "modulo": "Gráficos e relatórios",
-      "progresso": 0.65,
+      "progresso": 0.72,
       "resumo": "Períodos de 7 dias a desde o início em todos os gráficos; faltam os de nutrição e o painel da semana."
     },
     {
@@ -168,28 +168,28 @@
     ],
     [
       "Nutrição",
-      "a fazer",
+      "pronto",
       "Meta calórica pela TMB, atividade e objetivo"
     ],
     [
       "Nutrição",
-      "a fazer",
+      "pronto",
       "Macronutrientes com meta diária"
     ],
     [
       "Nutrição",
-      "a fazer",
+      "pronto",
       "Micronutrientes com metas por sexo e idade"
     ],
     [
       "Nutrição",
-      "a fazer",
+      "pronto",
       "Base de alimentos TACO em português"
     ],
     [
       "Nutrição",
-      "a fazer",
-      "Diário por refeição, copiar de ontem, favoritos"
+      "parcial",
+      "Diário por refeição e favoritos (falta \"copiar de ontem\")"
     ],
     [
       "Nutrição",
@@ -210,6 +210,16 @@
       "Nutrição",
       "sugestão",
       "Foto do prato com estimativa assistida"
+    ],
+    [
+      "Nutrição",
+      "pronto",
+      "Alimentos próprios, refeições pessoais salvas e calorias rápidas"
+    ],
+    [
+      "Nutrição",
+      "pronto",
+      "Tendências de calorias e macronutrientes por período"
     ],
     [
       "Metas e hábitos",
@@ -253,7 +263,7 @@
     ],
     [
       "Gráficos e relatórios",
-      "a fazer",
+      "pronto",
       "Gráficos de nutrição e aderência à meta"
     ],
     [
@@ -314,7 +324,7 @@
     ],
     [
       "Nutrição",
-      "Nutrição v1: meta calórica, macros e diário com a base TACO"
+      "Nutrição v2: copiar de ontem, planos de dieta e leitor de código de barras"
     ],
     [
       "Metas e hábitos",
@@ -325,8 +335,8 @@
       "Fotos de evolução e medidas por região"
     ],
     [
-      "Nutrição",
-      "Micronutrientes, planos de dieta e painel do dia"
+      "Metas e hábitos",
+      "Painel do dia: treino, água, calorias, proteína e sono num cartão"
     ],
     [
       "Hidratação",
@@ -342,6 +352,11 @@
     [
       "Apple Watch (atividade)",
       "Visual do avatar de água",
+      "aplicado"
+    ],
+    [
+      "Samsung Health (Refeição)",
+      "Diário de refeições, porção, nutrientes, tendências de calorias e macros",
       "aplicado"
     ]
   ],
@@ -385,6 +400,10 @@
     [
       "2026-10-17",
       "Calorias do treino passam a vir do relógio; frequência cardíaca removida"
+    ],
+    [
+      "2026-10-17",
+      "Aba Nutrição: diário de refeições, TACO, macros, micronutrientes, metas e tendências"
     ]
   ]
 }
