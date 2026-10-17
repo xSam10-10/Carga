@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="sp-on">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0D7556">
+<meta name="theme-color" content="#000000">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.webmanifest">
@@ -438,24 +438,15 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .ssnote{font-size:14px;color:var(--violet);font-weight:600;padding:4px}
 .alert{background:var(--amber-soft);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
 .alert b{font-size:17px}
-/* Abertura: tela preta, a marca se desenha, o halter "sobe" e a palavra entra; depois tudo se dissolve no app */
-#splash{position:fixed;inset:0;z-index:9999;background:#000;display:grid;place-items:center;transition:opacity .45s ease}
+/* Abertura no estilo do Hevy: tela preta desde o primeiro quadro, só o símbolo parado no centro,
+   e um esmaecimento curto revela o app. A expansão a partir do ícone fica por conta do sistema. */
+html.sp-on{background:#000}
+#splash{position:fixed;inset:0;z-index:9999;background:#000;display:grid;place-items:center;transition:opacity .24s ease-out}
 #splash.out{opacity:0;pointer-events:none}
-#splash .sp-in{display:flex;flex-direction:column;align-items:center;gap:20px;transition:transform .5s cubic-bezier(.4,0,.2,1)}
-#splash.out .sp-in{transform:scale(1.12)}
-.sp-mark{width:136px;height:136px;overflow:visible;animation:spPop .9s cubic-bezier(.2,1.35,.4,1) .1s both,spGlow 1.4s ease-in-out 1.5s both}
-.sp-c{stroke-dasharray:100 101;stroke-dashoffset:100;animation:spDraw .75s cubic-bezier(.6,0,.2,1) .15s forwards}
-.sp-d{transform-box:view-box;transform-origin:270px 256px;animation:spLift .8s cubic-bezier(.3,1.45,.5,1) .55s both}
-.sp-word{height:46px;width:auto;fill:#fff;overflow:visible;animation:spWord .65s cubic-bezier(.2,.9,.3,1) 1.05s both}
-@keyframes spPop{from{transform:scale(.55);opacity:0}to{transform:none;opacity:1}}
-@keyframes spDraw{from{stroke-dashoffset:100;opacity:0}8%{opacity:1}to{stroke-dashoffset:0;opacity:1}}
-@keyframes spLift{from{transform:rotate(35deg) scale(.2);opacity:0}to{transform:none;opacity:1}}
-@keyframes spWord{from{opacity:0;transform:translateY(16px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
-@keyframes spGlow{0%,100%{filter:drop-shadow(0 0 0 rgba(107,255,176,0))}50%{filter:drop-shadow(0 0 22px rgba(107,255,176,.5))}}
-@media (prefers-reduced-motion:reduce){.sp-mark,.sp-c,.sp-d,.sp-word{animation:none}.sp-c{stroke-dashoffset:0}}
+.sp-mark{width:76px;height:76px;display:block}
 </style>
 
-<!--SPLASH-START--><div id="splash" aria-hidden="true"><div class="sp-in"><svg class="sp-mark" viewBox="0 0 512 512"><defs><linearGradient id="spg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6BFFB0"/><stop offset="1" stop-color="#10B873"/></linearGradient></defs><path class="sp-c" pathLength="100" d="M395.2 357.1A172 172 0 1 1 395.2 154.9" fill="none" stroke="url(#spg)" stroke-width="72" stroke-linecap="round"/><g class="sp-d"><g fill="#000" stroke="#000" stroke-width="32" stroke-linejoin="round" transform="translate(270 256) rotate(-35)"><rect x="-105" y="-15" width="210" height="30" rx="15"/><rect x="91" y="-78" width="44" height="156" rx="18"/><rect x="-135" y="-78" width="44" height="156" rx="18"/><rect x="140" y="-52" width="28" height="104" rx="12"/><rect x="-168" y="-52" width="28" height="104" rx="12"/></g><g fill="url(#spg)" transform="translate(270 256) rotate(-35)"><rect x="-105" y="-15" width="210" height="30" rx="15"/><rect x="91" y="-78" width="44" height="156" rx="18"/><rect x="-135" y="-78" width="44" height="156" rx="18"/><rect x="140" y="-52" width="28" height="104" rx="12"/><rect x="-168" y="-52" width="28" height="104" rx="12"/></g></g></svg><svg class="sp-word" viewBox="-40 -1180 5830 1640"><path d="M539 24C847 24 1090 -160 1136 -442H754C735 -357 652 -286 557 -286C480 -286 440 -336 440 -430C440 -583 522 -770 679 -770C768 -770 790 -696 783 -618H1165C1202 -900 978 -1080 681 -1080C291 -1080 40 -787 40 -440C40 -159 230 24 539 24ZM1572 24C1712 24 1827 -40 1894 -156H1898L1872 0H2262L2437 -1056H2047L2025 -924H2020C1975 -1027 1888 -1080 1751 -1080C1486 -1080 1262 -853 1208 -530C1152 -194 1295 24 1572 24ZM1743 -290C1634 -290 1588 -384 1612 -530C1636 -675 1713 -768 1822 -768C1931 -768 1994 -675 1970 -530C1946 -384 1852 -290 1743 -290ZM2405 0H2805L2889 -506C2912 -647 3006 -736 3131 -736H3277L3330 -1056H3230C3085 -1056 3000 -1006 2938 -864H2936L2968 -1056H2580ZM3721 432C4067 432 4286 291 4344 -63L4508 -1056H4110L4085 -903H4084C4038 -1008 3943 -1080 3796 -1080C3483 -1080 3270 -767 3270 -446C3270 -192 3416 -16 3665 -16C3802 -16 3896 -70 3966 -195H3967L3944 -45C3924 83 3846 158 3725 158C3643 158 3604 123 3599 72H3229C3229 274 3358 432 3721 432ZM3793 -322C3712 -322 3671 -374 3671 -463C3671 -605 3755 -776 3910 -776C3994 -776 4047 -721 4047 -626C4047 -485 3947 -322 3793 -322ZM4886 24C5026 24 5141 -40 5208 -156H5212L5186 0H5576L5751 -1056H5361L5339 -924H5334C5289 -1027 5202 -1080 5065 -1080C4800 -1080 4576 -853 4522 -530C4466 -194 4609 24 4886 24ZM5057 -290C4948 -290 4902 -384 4926 -530C4950 -675 5027 -768 5136 -768C5245 -768 5308 -675 5284 -530C5260 -384 5166 -290 5057 -290Z"/></svg></div></div><!--SPLASH-END-->
+<!--SPLASH-START--><div id="splash" aria-hidden="true"><svg class="sp-mark" viewBox="0 0 512 512"><defs><linearGradient id="spg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6BFFB0"/><stop offset="1" stop-color="#10B873"/></linearGradient></defs><path d="M395.2 357.1A172 172 0 1 1 395.2 154.9" fill="none" stroke="url(#spg)" stroke-width="72" stroke-linecap="round"/><g><g fill="#000" stroke="#000" stroke-width="32" stroke-linejoin="round" transform="translate(270 256) rotate(-35)"><rect x="-105" y="-15" width="210" height="30" rx="15"/><rect x="91" y="-78" width="44" height="156" rx="18"/><rect x="-135" y="-78" width="44" height="156" rx="18"/><rect x="140" y="-52" width="28" height="104" rx="12"/><rect x="-168" y="-52" width="28" height="104" rx="12"/></g><g fill="url(#spg)" transform="translate(270 256) rotate(-35)"><rect x="-105" y="-15" width="210" height="30" rx="15"/><rect x="91" y="-78" width="44" height="156" rx="18"/><rect x="-135" y="-78" width="44" height="156" rx="18"/><rect x="140" y="-52" width="28" height="104" rx="12"/><rect x="-168" y="-52" width="28" height="104" rx="12"/></g></g></svg></div><!--SPLASH-END-->
 <div id="app"></div>
 <div id="mini"></div>
 <div id="restbar"></div>
@@ -1502,7 +1493,7 @@ function applyAccent(){const[,,l,d]=accentOf(S.profile.accent);const t=themeOf(S
  const A=x=>`--accent:${x[0]};--accent-soft:${x[1]};--accent-ink:${x[2]}`;const m=document.querySelector('meta[name="theme-color"]');
  root.setAttribute('data-theme',t[2]);
  st.textContent=`:root[data-theme]{--bg:${t[3]};--surface:${t[4]};--surface-2:${t[5]};--line:${t[6]};--fg:${t[7]};--muted:${t[8]};--body:${t[9]};--muscle-0:${t[10]};${A(t[2]==='dark'?d:l)};color-scheme:${t[2]}}`;
- if(m)m.setAttribute('content',t[3])}
+ if(m){m.dataset.c=t[3];m.setAttribute('content',document.getElementById('splash')?'#000000':t[3])}}
 function themePicker(){const cur=themeOf(S.profile.theme)[0];
  const tile=t=>{const[,,l,d]=accentOf(t[11]);const a=t[2]==='dark'?d:l;return`<span class="thm-p" style="background:${t[3]}"><i style="background:${t[4]};border-color:${t[6]}"><b style="background:${t[7]}"></b><em style="background:${t[8]}"></em></i><u style="background:${a[0]}"></u></span>`};
  return`<div class="themes" role="radiogroup" aria-label="Tema">${THEMES.map(t=>`<button class="thm${t[0]===cur?' on':''}" role="radio" aria-checked="${t[0]===cur}" data-a="setTheme" data-k="${t[0]}">${tile(t)}<span>${t[1]}</span></button>`).join('')}</div>`}
@@ -1860,7 +1851,7 @@ document.addEventListener('focusin',e=>{if(e.target.classList&&e.target.classLis
 
 try{history.replaceState({n:1},'')}catch(e){useHist=false}
 applyAccent();
-(()=>{const sp=document.getElementById('splash');if(!sp)return;const end=()=>{if(sp.classList.contains('out'))return;sp.classList.add('out');setTimeout(()=>sp.remove(),520)};setTimeout(end,matchMedia('(prefers-reduced-motion: reduce)').matches?1000:3000);sp.addEventListener('click',end)})();
+(()=>{const sp=document.getElementById('splash');if(!sp)return;const end=()=>{if(sp.classList.contains('out'))return;sp.classList.add('out');const m=document.querySelector('meta[name="theme-color"]');if(m&&m.dataset.c)m.setAttribute('content',m.dataset.c);setTimeout(()=>sp.remove(),520)};document.documentElement.classList.remove('sp-on');setTimeout(end,2600);sp.addEventListener('click',end)})();
 render();
 if(S.active){wake();schedRest()}
 autoSnapshot();

@@ -70,17 +70,24 @@ def icon(maskable=False, k=None):
 
 
 def splash():
-    wd, ww = word()
+    # Como no Hevy: só o símbolo, parado, no centro da tela preta
     grad = '<defs><linearGradient id="spg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/></linearGradient></defs>' % (G0, G1)
-    return ('<div id="splash" aria-hidden="true"><div class="sp-in">'
-            '<svg class="sp-mark" viewBox="0 0 512 512">%s%s</svg>'
-            '<svg class="sp-word" viewBox="-40 -1180 %d 1640"><path d="%s"/></svg>'
-            '</div></div>') % (grad, mark('url(#spg)', '#000', ' class="sp-c" pathLength="100"', ' class="sp-d"'), ww + 80, wd)
+    return '<div id="splash" aria-hidden="true"><svg class="sp-mark" viewBox="0 0 512 512">%s%s</svg></div>' % (grad, mark('url(#spg)', '#000'))
+
+
+def lockup():
+    """Marca + palavra (arquivo de identidade, para uso fora do app)."""
+    wd, ww = word(); k = 300 / 1640
+    grad = '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/></linearGradient></defs>' % (G0, G1)
+    return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d 860"><rect width="100%%" height="100%%" fill="#000"/>%s'
+            '<g transform="translate(%g 60)">%s</g><path fill="#fff" transform="translate(40 %g) scale(%g)" d="%s"/></svg>') % (
+        ww * k + 80, grad, (ww * k + 80) / 2 - 256, mark('url(#g)', '#000'), 600 + 1180 * k, k, wd)
 
 
 def main():
     open(os.path.join(ROOT, 'icon.svg'), 'w').write(icon())
     open(os.path.join(ROOT, 'icon-maskable.svg'), 'w').write(icon(True))
+    open(os.path.join(ROOT, 'tools', 'logo-carga.svg'), 'w').write(lockup())
     open(os.path.join(ROOT, 'tools', 'icon-apple.svg'), 'w').write(icon(True, .86))  # iOS arredonda sozinho
     p = os.path.join(ROOT, 'app.html'); s = open(p, encoding='utf-8').read()
     s, n = re.subn(r'<!--SPLASH-START-->.*?<!--SPLASH-END-->', lambda _: '<!--SPLASH-START-->' + splash() + '<!--SPLASH-END-->', s, flags=re.S)
