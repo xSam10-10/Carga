@@ -1892,7 +1892,7 @@ try{history.replaceState({n:1},'')}catch(e){useHist=false}
 applyAccent();
 /* Senha de entrada: a mesma nos dois celulares e fixa. O código guarda só o hash PBKDF2 (o repositório é público);
    é uma barreira de privacidade no aparelho, não criptografa os dados. Pedida a cada abertura do app (sessionStorage). */
-const LOCK={salt:'carga-v1-lock',it:150000,hash:'d01f31e6377ee8352b48bff152747be92cd8dd0f0452a060b663d2288f7452d5',len:8};
+const LOCK={salt:'carga-v1-lock',it:150000,hash:'000641360c9a1e91a4182e1f603cc542184761e40557600b261e90169c25ad18',len:8};
 async function lockHash(pin){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),'PBKDF2',false,['deriveBits']);const b=await crypto.subtle.deriveBits({name:'PBKDF2',salt:new TextEncoder().encode(LOCK.salt),iterations:LOCK.it,hash:'SHA-256'},k,256);return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
 (()=>{let ok=false;try{ok=sessionStorage.getItem('carga.ok')===LOCK.hash}catch(e){}if(ok)return;
  const mk=document.querySelector('#splash .sp-mark');const L=document.createElement('div');L.id='lock';L.setAttribute('role','dialog');L.setAttribute('aria-label','Senha do Carga');
