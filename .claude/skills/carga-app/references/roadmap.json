@@ -16,20 +16,20 @@
     {
       "ordem": 3,
       "modulo": "Corpo e medidas",
-      "progresso": 0.55,
+      "progresso": 0.6,
       "resumo": "Peso, medidas, IMC, TMB e indicadores; faltam fotos de evolução e medidas por região."
     },
     {
       "ordem": 4,
       "modulo": "Nutrição",
-      "progresso": 0.6,
+      "progresso": 0.68,
       "resumo": "Aba Nutrição no modelo do Samsung Health: diário com 6 refeições, TACO (591 alimentos), macros e micronutrientes, metas e tendências. Faltam planos de dieta e código de barras."
     },
     {
       "ordem": 5,
       "modulo": "Metas e hábitos",
-      "progresso": 0.15,
-      "resumo": "Já há meta de água e sequências; falta a central de metas com previsão."
+      "progresso": 0.45,
+      "resumo": "Objetivo (perder, manter, ganhar peso, ganhar massa) com meta calórica e de macros por dia e o quanto falta no Início. Falta a central de metas com prazo e previsão."
     },
     {
       "ordem": 6,
@@ -233,6 +233,21 @@
     ],
     [
       "Metas e hábitos",
+      "pronto",
+      "Objetivo com déficit/superávit calculado por fontes científicas (4 objetivos)"
+    ],
+    [
+      "Metas e hábitos",
+      "pronto",
+      "Meta de hoje no Início: falta em kcal e por macronutriente"
+    ],
+    [
+      "Metas e hábitos",
+      "pronto",
+      "Gasto do dia pelo relógio (calorias ativas) ou pelo nível de atividade"
+    ],
+    [
+      "Metas e hábitos",
       "a fazer",
       "Central de metas: peso, gordura, carga-alvo, treinos por semana, proteína"
     ],
@@ -324,8 +339,8 @@
   ],
   "proximos": [
     [
-      "Publicação",
-      "Instalar o app nos celulares do Samuel e da Carol"
+      "Treino",
+      "Exercícios avulsos (caminhada, bicicleta, natação) com as calorias do relógio somando na meta do dia"
     ],
     [
       "Nutrição",
@@ -421,6 +436,10 @@
     [
       "2026-10-17",
       "Som do recorde igual ao do Hevy e tempos da animação ajustados"
+    ],
+    [
+      "2026-10-17",
+      "Objetivos e metas: déficit/superávit, macros e o que falta hoje no Início"
     ]
   ]
 }

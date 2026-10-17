@@ -9,6 +9,12 @@
   - foto ou iniciais como avatar.
 
 ## Início
+- **Meta de hoje** (primeiro cartão, `homeNutri`):
+  - objetivo (toque leva a Dados pessoais) e quanto **falta** em kcal, com anel de %;
+  - Meta, Consumido (soma da aba Nutrição) e Exercício (calorias do relógio no dia);
+  - a conta da meta escrita por extenso;
+  - aviso quando há treino de hoje sem calorias registradas;
+  - barras de **Proteína, Carboidrato e Gordura** com "Faltam X g".
 - Faixa da semana: dias com treino ficam marcados com a cor de destaque, e o dia de hoje é destacado.
 - Botão "Retomar treino em andamento".
 - **Cartão de saúde**, que se atualiza quando os dados mudam: IMC, TMB, gasto diário, meta de água e outros indicadores.
@@ -91,7 +97,8 @@
   - todos os gráficos com período de 7 dias, mês, ano ou desde o início, por dia ou por semana.
 - **Relatório mensal e calendário** (dias treinados, sequência de semanas).
 - **Medidas:** peso, cintura e outras, com gráficos.
-- **Saúde:** dados corporais (sexo, nascimento, altura, nível de atividade, objetivo) e os indicadores com fonte citada.
+- **Dados pessoais:** sexo, nascimento, altura, peso, nível de atividade (5 níveis por frequência semanal; automático pelos treinos), **objetivo** (Perder peso, Manter peso, Ganhar peso, Ganhar massa muscular) e **como calcular o gasto** (Automático, Pelo relógio, Pelo nível), com a conta resumida (basal, gasto, ajuste, meta e macros).
+- **Saúde:** IMC, TMB, "Gasto e meta de hoje" com a meta dos 4 objetivos e a variação esperada por semana, macronutrientes por dia, água, cintura/altura, composição e evolução do peso, sempre com fonte citada.
 - **Configurações:**
   - tema (6) e cor de destaque (15);
   - início da semana, modo da coluna "Anterior", recorde ao vivo, dicas, descanso padrão, som, vibração, notificações;

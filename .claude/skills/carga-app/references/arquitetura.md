@@ -77,6 +77,30 @@ tools/                   geradores (ver imagens-e-avatares.md)
   - Proteína pela ISSN 2017.
 - **Tema:** `THEMES`, `ACCENTS`, `applyAccent()` (escreve `#accent-style`, `data-theme` e a meta theme-color). Ver identidade-visual.md.
 
+## Motor de energia e metas (`energyPlan`) — LEIA antes de mexer em calorias
+- **Fonte única** para Início, Saúde, Dados pessoais e Nutrição (`nutriPlan(d)` usa ele, salvo a meta personalizada). Não recalcule calorias em outro lugar.
+- **TMB:** Mifflin-St Jeor (`mifflin`).
+- **Gasto do dia** (`energyMode`: `profile.energyMode` = 'auto' | 'relogio' | 'nivel'; o auto usa o relógio se há treinos com kcal nas últimas 4 semanas):
+  - relógio: TMB × 1,2 + `exKcalOn(d)`, a soma de `w.kcal` dos treinos do dia e de `S.extra` (exercícios avulsos, próxima entrega: `{t, kcal, ...}`);
+  - nível: TMB × fator de `ACT`.
+  - Nunca some as calorias do relógio no modo nível: seria contar o exercício duas vezes.
+- **Objetivos** (`GOALS`, `goalOf()`; o antigo 'ganhar' = massa é migrado para 'massa'):
+  - perder: −20%, piso de max(TMB, 1.200 F / 1.500 M);
+  - manter: 0;
+  - ganhar: +400 kcal;
+  - massa: +10%.
+- **Macros:**
+  - proteína `PROT_GKG` (g/kg; perder 2,2, manter 1,6, ganhar 1,6, massa 2,0; sedentário 1,6/1,2/1,2/1,6), sobre o peso de referência (IMC 25) se o IMC passar de 30;
+  - gordura: max(25% das kcal, 0,6 g/kg);
+  - carboidrato: o restante.
+- **Níveis (`ACT`)** e corte do automático por treinos/semana (média de 4 semanas):
+  - Sedentário 1,2 (<1);
+  - Levemente ativo 1,375 (1–3);
+  - Normal 1,55 (3–5);
+  - Ativo 1,725 (6–7);
+  - Muito ativo 1,9 (2×/dia ou trabalho pesado).
+- **Fontes:** ver `references/decisoes.md`.
+
 ## Nutrição (código)
 - O bloco fica em `app.html`, entre `/* ---------- NUTRIÇÃO` e `/* Senha de entrada`.
 - Vetor de nutrientes `NK`: kcal, prot, gord, carb, fib, sat, col, na, k, ca, fe, mg, zn, vc, va (índices 0 a 14).

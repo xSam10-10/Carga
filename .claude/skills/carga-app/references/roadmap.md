@@ -7,15 +7,15 @@
 
 Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada para implementar aos poucos.
 
-## Visão geral (progresso geral: 70%)
+## Visão geral (progresso geral: 75%)
 
 | Módulo | Status | Progresso | Resumo |
 |---|---|---|---|
 | 1. Treino | ✅ | 92% | Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios e mapa corporal hiper-realista. |
 | 2. Hidratação | ✅ | 85% | Meta por peso e sexo, copos rápidos, avatar animado, sequência e gráficos. |
-| 3. Corpo e medidas | 🟡 | 55% | Peso, medidas, IMC, TMB e indicadores; faltam fotos de evolução e medidas por região. |
-| 4. Nutrição | 🟡 | 60% | Aba Nutrição no modelo do Samsung Health: diário com 6 refeições, TACO (591 alimentos), macros e micronutrientes, metas e tendências. Faltam planos de dieta e código de barras. |
-| 5. Metas e hábitos | 🟡 | 15% | Já há meta de água e sequências; falta a central de metas com previsão. |
+| 3. Corpo e medidas | 🟡 | 60% | Peso, medidas, IMC, TMB e indicadores; faltam fotos de evolução e medidas por região. |
+| 4. Nutrição | 🟡 | 68% | Aba Nutrição no modelo do Samsung Health: diário com 6 refeições, TACO (591 alimentos), macros e micronutrientes, metas e tendências. Faltam planos de dieta e código de barras. |
+| 5. Metas e hábitos | 🟡 | 45% | Objetivo (perder, manter, ganhar peso, ganhar massa) com meta calórica e de macros por dia e o quanto falta no Início. Falta a central de metas com prazo e previsão. |
 | 6. Gráficos e relatórios | 🟡 | 72% | Períodos de 7 dias a desde o início em todos os gráficos; faltam os de nutrição e o painel da semana. |
 | 7. Identidade e plataforma | ✅ | 92% | Logo, abertura, senha de entrada, 6 temas, 15 cores, perfis separados, backup. |
 | 8. Publicação | ✅ | 85% | Site no ar em xsam10-10.github.io/Carga, atualizado a cada envio; falta instalar nos dois celulares. |
@@ -65,6 +65,9 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 
 ## 5. Metas e hábitos
 - ✅ Meta de água e sequência de semanas treinadas
+- ✅ Objetivo com déficit/superávit calculado por fontes científicas (4 objetivos)
+- ✅ Meta de hoje no Início: falta em kcal e por macronutriente
+- ✅ Gasto do dia pelo relógio (calorias ativas) ou pelo nível de atividade
 - ⬜ Central de metas: peso, gordura, carga-alvo, treinos por semana, proteína
 - ⬜ Tendência e previsão de chegada à meta
 - 💡 Conquistas pessoais (sem rede social)
@@ -92,7 +95,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 
 ## Ordem dos próximos passos
 
-1. **Publicação:** Instalar o app nos celulares do Samuel e da Carol
+1. **Treino:** Exercícios avulsos (caminhada, bicicleta, natação) com as calorias do relógio somando na meta do dia
 2. **Nutrição:** Nutrição v2: copiar de ontem, planos de dieta e leitor de código de barras
 3. **Metas e hábitos:** Central de metas com previsão de chegada
 4. **Corpo e medidas:** Fotos de evolução e medidas por região
@@ -125,3 +128,4 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 17/10/2026 | Abertura do app instalado já começa só com o símbolo (sem o quadrado verde) |
 | 17/10/2026 | Animação de recorde no treino: medalha, balão e confetes |
 | 17/10/2026 | Som do recorde igual ao do Hevy e tempos da animação ajustados |
+| 17/10/2026 | Objetivos e metas: déficit/superávit, macros e o que falta hoje no Início |

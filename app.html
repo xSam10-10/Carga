@@ -507,6 +507,15 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 #prpop .pt-t{display:flex;flex-direction:column;min-width:0}#prpop .pt-t b{font-size:14px;overflow:hidden;text-overflow:ellipsis}#prpop em{font-style:normal;font-size:13px;font-weight:600;color:#E9A21B;transition:opacity .18s,transform .18s}#prpop em.sw{opacity:0;transform:translateY(6px)}
 #prpop .av{width:34px;height:34px;flex:none}
 .confetti{position:fixed;inset:0;width:100vw;height:100vh;z-index:69;pointer-events:none}
+.goalpick{display:grid;grid-template-columns:1fr 1fr;gap:8px}.goalpick button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:2px solid transparent;text-align:left}.goalpick button b{font-size:15px}.goalpick button em{font-style:normal;font-size:12px;color:var(--muted)}.goalpick button.on{border-color:var(--accent);background:var(--accent-soft)}
+.mplan{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.mplan>div{display:flex;flex-direction:column;gap:2px;background:var(--surface-2);border-radius:10px;padding:8px}.mplan span{font-size:11px;color:var(--muted)}.mplan b{font:600 18px var(--display);font-variant-numeric:tabular-nums}.mplan .on{background:var(--accent-soft)}.mplan .on b{color:var(--accent)}
+.hgoal .lab .i{width:15px;height:15px;vertical-align:-3px;color:var(--accent)}
+.gpill{font-size:13px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.hbig{display:flex;align-items:center;gap:12px}.hbig b{font:600 44px/1 var(--display);font-variant-numeric:tabular-nums}.hbig b.over{color:var(--danger)}.hbig span{color:var(--muted);font-size:14px}
+.hring{flex:none;width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--surface-2) 0);display:grid;place-items:center;position:relative}.hring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--surface)}.hring span{position:relative;font:600 15px var(--display)}
+.heq{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.heq>div{background:var(--surface-2);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}.heq span{font-size:11px;color:var(--muted)}.heq b{font:600 19px var(--display);font-variant-numeric:tabular-nums}
+.hms{display:flex;flex-direction:column;gap:10px}.hm{display:flex;flex-direction:column;gap:4px}.hm .row{gap:6px}.hm-l{font-weight:600;font-size:14px}.hm b{font:600 17px var(--display);font-variant-numeric:tabular-nums}
+.hmb{height:9px;border-radius:5px;background:var(--surface-2);overflow:hidden}.hmb i{display:block;height:100%;border-radius:5px;transition:width .4s}.hm-over{color:var(--danger)}
 /* Abertura no estilo do Hevy: tela preta desde o primeiro quadro, só o símbolo parado no centro,
    e um esmaecimento curto revela o app. A expansão a partir do ícone fica por conta do sistema. */
 html.sp-on{background:#000}
@@ -1292,8 +1301,8 @@ VIEWS.inicio=()=>{
  <div class="stat3"><div><span class="lab">Treinos</span><b>${thisW.length}</b></div><div><span class="lab">Tempo</span><b>${fmtDur(dur)}</b></div><div><span class="lab">Volume</span><b>${fmtInt(vol)}<small style="font-size:14px"> kg</small></b></div></div>
  <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<div class="dchip${has?' has':''}${d===today?' today':''}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></div>`}).join('')}</div></section>`;
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button>`;
- h+=homeHealth();
  h+=homeNutri();
+ h+=homeHealth();
  if(backupDue()){const n=S.workouts.length-(S.profile.lastBackupN||0);h+=`<section class="alert"><b>Backup pendente</b><span>${n>0?`${n} treino(s) novo(s) desde o último backup.`:'Você ainda não fez backup.'} Se os dados do navegador forem apagados, o histórico se perde.</span><div class="row"><button class="btn pri sm" data-a="backupSheet">Fazer backup</button><button class="btn ghost sm" data-a="snoozeBackup">Lembrar depois</button></div></section>`}
  h+=`<h2 class="h">Seus treinos</h2>`;
  if(!ws.length)h+=`<div class="emptybox">${I.dumbbell}<b>Nenhum treino registrado ainda</b><span>Comece uma rotina na aba Treino. Se você já usava outro app, importe o histórico em Configurações.</span><div class="row" style="flex-wrap:wrap;justify-content:center"><button class="btn pri sm" data-a="tab" data-t="treino">Ir para Treino</button><button class="btn sec sm" data-a="go" data-v="config">Importar histórico</button></div></div>`;
@@ -1364,7 +1373,7 @@ function updateLiveStats(){const s=cur();if(!s||s.kind!=='live')return;const st=
 function cleanSet(st){return{type:st.type||'n',kg:num(st.kg),reps:num(st.reps),km:num(st.km),t:st.min!==''&&st.min!=null&&num(st.min)!=null?Math.round(num(st.min)*60):null}}
 /* Calorias do treino: o valor que o relógio mostra (Samsung Health ou app Fitness), digitado no fim do treino */
 const kcalOf=w=>num(w.kcal)>0?Math.round(num(w.kcal)):null;
-function kcalSheet(cur,onSave){sheet(`<h3>Calorias gastas</h3><p class="muted small" style="margin:0">Veja no relógio ou no celular o total de calorias deste treino: no <b>Samsung Health</b>, abra o exercício e procure "Calorias"; no <b>iPhone</b>, app Fitness, no resumo do treino ("Calorias ativas" ou "Calorias totais").</p><input class="inp" id="ask-in" type="number" inputmode="numeric" min="1" max="5000" value="${cur||''}" placeholder="kcal, por exemplo 320"><div class="ask-b"><button class="btn sec" data-a="closeSheet">${cur?'Cancelar':'Pular'}</button><button class="btn pri" data-a="askOk">Salvar</button></div>`);
+function kcalSheet(cur,onSave){sheet(`<h3>Calorias gastas</h3><p class="muted small" style="margin:0">Use as <b>calorias ativas</b> do treino, que somam à sua meta do dia: no <b>iPhone</b>, app Fitness, "Calorias ativas"; no <b>Samsung Health</b>, abra o exercício e veja "Calorias". Evite "Calorias totais": elas já incluem o gasto em repouso, que o app calcula pela taxa basal.</p><input class="inp" id="ask-in" type="number" inputmode="numeric" min="1" max="5000" value="${cur||''}" placeholder="kcal, por exemplo 320"><div class="ask-b"><button class="btn sec" data-a="closeSheet">${cur?'Cancelar':'Pular'}</button><button class="btn pri" data-a="askOk">Salvar</button></div>`);
  const h=v=>{const t=String(v).trim(),n=num(t);if(t&&!(n>=1&&n<=5000)){toast('Use um valor entre 1 e 5.000 kcal.');ASKRES=h;return}onSave(t?Math.round(n):null);closeSheet()};ASKRES=h;setTimeout(()=>$('#ask-in')?.focus(),250)}
 function toWorkout(s,end){const w=_toWorkout(s,end);w.kcal=kcalOf(s);return w}
 function _toWorkout(s,end){return{id:s.kind==='edit'?s.id:uid(),name:(s.name||'').trim()||'Treino',notes:s.notes||'',start:s.start,end,routineId:s.routineId||null,exercises:(()=>{const x=s.exercises.map(e=>({exId:e.exId,notes:e.notes||'',ss:e.ss||null,sets:e.sets.filter(st=>st.done).map(cleanSet)})).filter(e=>e.sets.length);fixSS({exercises:x});return x})()}}
@@ -1613,11 +1622,41 @@ const dkey=ts=>{const d=new Date(ts);return d.getFullYear()+'-'+String(d.getMont
 const fmtM=cm=>(cm/100).toFixed(2).replace('.',',');
 function latestMeasure(k,before=Infinity){const ms=S.measures.filter(m=>num(m[k])!=null&&m.date<before).sort((a,b)=>b.date-a.date);return ms[0]?{v:num(ms[0][k]),date:ms[0].date}:null}
 function ageOf(b){if(!b)return null;const[y,m,d]=String(b).split('-').map(Number);if(!y)return null;const n=new Date();let a=n.getFullYear()-y;if(n.getMonth()+1<m||(n.getMonth()+1===m&&n.getDate()<d))a--;return a>=10&&a<120?a:null}
-const ACT=[['sed','Sedentário',1.2,'Pouco ou nenhum exercício'],['leve','Leve',1.375,'1 a 2 treinos por semana'],['mod','Moderado',1.55,'3 a 4 treinos por semana'],['alto','Alto',1.725,'5 a 6 treinos por semana'],['muito','Muito alto',1.9,'Treino diário intenso ou trabalho físico pesado']];
+/* Níveis de atividade: fatores de McArdle/Katch (os mais usados com Mifflin-St Jeor), faixas por frequência semanal de exercício.
+   "Normal" corresponde a cumprir a recomendação da OMS (150–300 min/semana de atividade moderada). */
+const ACT=[['sed','Sedentário',1.2,'Pouco ou nenhum exercício (menos de 1 treino por semana)'],['leve','Levemente ativo',1.375,'Exercício leve 1 a 3 dias por semana'],['mod','Normal',1.55,'Exercício moderado 3 a 5 dias por semana'],['alto','Ativo',1.725,'Exercício intenso 6 a 7 dias por semana'],['muito','Muito ativo',1.9,'Treino 2 vezes por dia ou trabalho físico pesado']];
 const perWeek4=()=>S.workouts.filter(w=>w.start>=addDays(sod(Date.now()),-27)).length/4;
-function autoAct(){const n=perWeek4();return n<0.5?ACT[0]:n<2.5?ACT[1]:n<4.5?ACT[2]:n<6.5?ACT[3]:ACT[4]}
+function autoAct(){const n=perWeek4();return n<1?ACT[0]:n<3?ACT[1]:n<5.5?ACT[2]:n<8?ACT[3]:ACT[4]}
 function actOf(){const k=S.profile.activity||'auto';return k==='auto'?autoAct():(ACT.find(a=>a[0]===k)||autoAct())}
-const GOALS=[['perder','Perder gordura'],['manter','Manter peso'],['ganhar','Ganhar massa']];
+const GOALS=[['perder','Perder peso'],['manter','Manter peso'],['ganhar','Ganhar peso'],['massa','Ganhar massa muscular']];
+/* ---------- MOTOR DE ENERGIA E METAS (fonte única para Início, Saúde, Dados pessoais e Nutrição) ----------
+   1) TMB: Mifflin-St Jeor (Frankenfield et al., J Am Diet Assoc 2005: a mais precisa das equações comuns).
+   2) Gasto do dia, em dois modos para não contar o exercício duas vezes:
+      · relógio: TMB × 1,2 (rotina sem treino, inclui digestão) + calorias ATIVAS de exercício registradas no dia;
+      · nível:   TMB × fator do nível de atividade (estimativa média, quando não há calorias registradas).
+   3) Objetivo (sobre o gasto do dia):
+      · perder peso: −20% → ~0,5–1% do peso/semana (Helms et al., JISSN 2014; ISSN 2017), nunca abaixo da TMB nem de 1.200 kcal (mulheres) / 1.500 kcal (homens);
+      · manter: 0;
+      · ganhar peso: +400 kcal/dia (NHS: 300–500 kcal acima do habitual);
+      · ganhar massa muscular: +10% → ~0,25–0,5% do peso/semana (Iraki et al., Sports 2019: superávit de 10–20%).
+   4) Macros: proteína em g/kg (ISSN 2017: 1,4–2,0; em déficit, mais alta; Iraki 2019: 1,6–2,2 em ganho de massa),
+      gordura 25% das calorias e no mínimo 0,6 g/kg (IOM: 20–35%; Iraki: 0,5–1,5 g/kg), carboidrato no restante.
+      Com IMC acima de 30, a proteína usa o peso de referência (IMC 25), para não superestimar. */
+const GOAL_TXT={perder:'déficit de 20%',manter:'manutenção',ganhar:'+400 kcal por dia',massa:'superávit de 10%'};
+const PROT_GKG={perder:[2.2,1.6],manter:[1.6,1.2],ganhar:[1.6,1.2],massa:[2.0,1.6]}; // [treina, sedentário]
+const exKcalOn=d=>{const a=sod(d),z=addDays(a,1);return S.workouts.filter(w=>w.start>=a&&w.start<z).reduce((t,w)=>t+(num(w.kcal)||0),0)+((S.extra||[]).filter(x=>x.t>=a&&x.t<z).reduce((t,x)=>t+(num(x.kcal)||0),0))};
+const watchUser=()=>S.workouts.some(w=>w.start>=addDays(sod(Date.now()),-27)&&num(w.kcal)>0)||(S.extra||[]).length>0;
+function energyMode(){const m=S.profile.energyMode||'auto';return m==='auto'?(watchUser()?'relogio':'nivel'):m}
+function goalOf(){const p=S.profile;if(p.goal==='ganhar'&&!p.goalV){p.goal='massa';p.goalV=2;try{save()}catch(e){}}return p.goal||'manter'}
+function energyPlan(d=Date.now()){const p=S.profile,b=bodyData(),goal=goalOf(),act=actOf(),mode=energyMode(),ex=exKcalOn(d);
+ if(!b.ok)return{ok:false,goal,act,mode,ex,missing:b.missing};
+ const tmb=mifflin(b.w,b.h,b.age,b.sex),hm=b.h/100,bmi=b.w/(hm*hm),refW=bmi>30?25*hm*hm:b.w;
+ const rotina=mode==='relogio'?tmb*1.2:tmb*act[2],gasto=rotina+(mode==='relogio'?ex:0);
+ const floor=Math.max(tmb,b.sex==='f'?1200:1500);let adj=goal==='perder'?-.2*gasto:goal==='ganhar'?400:goal==='massa'?.1*gasto:0,meta=gasto+adj,capped=false;
+ if(goal==='perder'&&meta<floor){meta=floor;adj=meta-gasto;capped=true}
+ meta=Math.round(meta/10)*10;const sed=act[0]==='sed'&&mode!=='relogio'||mode==='relogio'&&perWeek4()<1;const gkg=PROT_GKG[goal][sed?1:0];
+ const prot=Math.round(gkg*refW),fat=Math.round(Math.max(meta*.25/9,.6*refW)),carb=Math.max(0,Math.round((meta-prot*4-fat*9)/4));
+ return{ok:true,goal,act,mode,ex,tmb,rotina,gasto,adj,meta,capped,floor,bmi,refW,gkg,prot,fat,carb,kgWeek:(meta-gasto)*7/7700,sex:b.sex,w:b.w}}
 function bodyData(){const p=S.profile;const w=latestMeasure('weight');const h=num(p.height);const age=ageOf(p.birth);const missing=[];if(!p.sex)missing.push('sexo');if(!age)missing.push('data de nascimento');if(!h)missing.push('altura');if(!w)missing.push('peso');return{w:w&&w.v,wDate:w&&w.date,h,age,sex:p.sex,missing,ok:!missing.length}}
 const mifflin=(w,h,a,sex)=>10*w+6.25*h-5*a+(sex==='m'?5:-161);
 const r50=v=>Math.round(v/50)*50;
@@ -1634,19 +1673,19 @@ function homeHealth(){const b=bodyData(),p=S.profile,wg=waterGoal(),wt=waterOn(d
  const water=`<div class="form" style="gap:8px"><div class="row"><span class="lab spacer">${I.drop.replace('class="i"','class="i" style="width:15px;height:15px;vertical-align:-3px;color:var(--accent)"')} Água hoje</span><b class="num" style="font-size:18px">${fmtInt(wt)} / ${fmtInt(wg.ml)} ml</b></div><div class="bar1"><i style="width:${Math.min(100,wg.ml?wt/wg.ml*100:0).toFixed(0)}%"></i></div><div class="chips">${cupsOf().slice(0,3).map(ml=>`<button class="chip" data-a="addWater" data-ml="${ml}">+${fmtInt(ml)} ml</button>`).join('')}<button class="chip" data-a="tab" data-t="agua">Abrir</button></div></div>`;
  const head=`<div class="row"><span class="lab spacer">Seu resumo de saúde</span><button class="tb" style="padding:4px 2px" data-a="go" data-v="dados">${I.edit.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Editar dados</button></div>`;
  if(!b.ok)return`<section class="card form">${head}<p class="muted small" style="margin:0">Falta${b.missing.length>1?'m':''}: ${b.missing.join(', ')}. Preencha para ver aqui seu IMC, taxa metabólica, gasto diário, calorias, água e proteína.</p><div><button class="btn pri sm" data-a="go" data-v="dados">${I.idcard} Preencher dados pessoais</button></div>${water}</section>`;
- const hm=b.h/100,bmi=b.w/(hm*hm),c=BMI_C.find(x=>bmi<x[0]),tmb=mifflin(b.w,b.h,b.age,b.sex),act=actOf(),tdee=tmb*act[2],goal=p.goal||'manter',kcal=r50(goal==='perder'?tdee*.8:goal==='ganhar'?tdee*1.1:tdee),[a1,a2]=goal==='perder'?[2.3,3.1]:[1.6,2.0],gl=GOALS.find(g=>g[0]===goal)[1];
+ const hm=b.h/100,bmi=b.w/(hm*hm),c=BMI_C.find(x=>bmi<x[0]),E=energyPlan(),tmb=E.tmb,gl=GOALS.find(g=>g[0]===E.goal)[1];
  const t=(lab,val,sub)=>`<button data-a="go" data-v="saude"><span class="lab">${lab}</span>${val}${sub}</button>`;
  return`<section class="card form">${head}<div class="kv2">
  ${t('IMC',`<b>${fmt(bmi)}</b>`,pill(c[1],c[2]))}
  ${t('Peso',`<b>${fmt(b.w)}<small>kg</small></b>`,`<em>${b.wDate?'em '+dShort(b.wDate):''} · ${fmt(b.h)} cm</em>`)}
  ${t('Taxa basal',`<b>${fmtInt(tmb)}<small>kcal</small></b>`,'<em>em repouso, por dia</em>')}
- ${t('Gasto diário',`<b>${fmtInt(tdee)}<small>kcal</small></b>`,`<em>nível ${act[1].toLowerCase()}</em>`)}
- ${t('Calorias sugeridas',`<b>${fmtInt(kcal)}<small>kcal</small></b>`,`<em>${gl.toLowerCase()}</em>`)}
- ${t('Proteína',`<b>${fmtInt(b.w*a1)}–${fmtInt(b.w*a2)}<small>g</small></b>`,'<em>por dia</em>')}
+ ${t('Gasto hoje',`<b>${fmtInt(E.gasto)}<small>kcal</small></b>`,`<em>${E.mode==='relogio'?'rotina + exercício':'nível '+E.act[1].toLowerCase()}</em>`)}
+ ${t('Meta de calorias',`<b>${fmtInt(E.meta)}<small>kcal</small></b>`,`<em>${gl.toLowerCase()}</em>`)}
+ ${t('Proteína',`<b>${fmtInt(E.prot)}<small>g</small></b>`,`<em>${fmt(E.gkg)} g/kg por dia</em>`)}
  </div>${water}<button class="btn sm sec" data-a="go" data-v="saude">${I.heart} Ver todas as métricas de saúde</button></section>`}
 
 VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=autoAct();const age=ageOf(p.birth);
- return bar('Dados pessoais')+`<main class="page"><p class="muted" style="margin:0">Estes dados são de ${esc(p.name)} e servem para calcular IMC, taxa metabólica, gasto diário, meta de água e proteína. Ficam só neste aparelho.</p>
+ return bar('Dados pessoais')+`<main class="page"><p class="muted" style="margin:0">Estes dados são de ${esc(p.name)} e servem para calcular IMC, taxa metabólica, gasto diário, meta de calorias e macronutrientes, água e proteína. Ficam só neste aparelho.</p>
  <section class="card form">
  <div class="fld"><span>Sexo</span><div class="chips">${[['m','Masculino'],['f','Feminino']].map(([k,l])=>`<button class="chip${p.sex===k?' on':''}" data-a="pdSex" data-k="${k}">${l}</button>`).join('')}</div></div>
  <div class="row2"><label class="fld"><span>Data de nascimento${age?` · ${age} anos`:''}</span><input class="inp" type="date" id="pd-birth" data-f="pd" data-k="birth" value="${esc(p.birth||'')}"></label>
@@ -1655,7 +1694,11 @@ VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=auto
  <p class="muted small" style="margin:-4px 0 0">${w?`Último registro: ${fmt(w.v)} kg em ${new Date(w.date).toLocaleDateString('pt-BR')}. `:''}Ao alterar, o peso de hoje é gravado em Medidas.</p></section>
  <section class="card form"><div class="fld"><span>Nível de atividade</span><div class="chips"><button class="chip${(p.activity||'auto')==='auto'?' on':''}" data-a="pdAct" data-k="auto">Automático</button>${ACT.map(a=>`<button class="chip${p.activity===a[0]?' on':''}" data-a="pdAct" data-k="${a[0]}">${a[1]}</button>`).join('')}</div></div>
  <p class="muted small" style="margin:0">${(p.activity||'auto')==='auto'?`Automático: ${fmt(perWeek4())} treinos por semana nas últimas 4 semanas → <b>${aa[1]}</b> (${aa[3].toLowerCase()}).`:esc(actOf()[3])+'.'} Considere também o dia a dia: quem anda muito ou trabalha em pé pode subir um nível.</p>
- <div class="fld"><span>Objetivo</span><div class="chips">${GOALS.map(([k,l])=>`<button class="chip${(p.goal||'manter')===k?' on':''}" data-a="pdGoal" data-k="${k}">${l}</button>`).join('')}</div></div></section>
+ </section>
+ <section class="card form"><div class="fld"><span>Objetivo</span><div class="goalpick">${GOALS.map(([k,l])=>`<button class="${goalOf()===k?'on':''}" data-a="pdGoal" data-k="${k}"><b>${l}</b><em>${GOAL_TXT[k]}</em></button>`).join('')}</div></div>
+ <div class="fld"><span>Como calcular o gasto de calorias</span><div class="chips">${[['auto','Automático'],['relogio','Pelo relógio'],['nivel','Pelo nível de atividade']].map(([k,l])=>`<button class="chip${(p.energyMode||'auto')===k?' on':''}" data-a="pdEMode" data-k="${k}">${l}</button>`).join('')}</div></div>
+ <p class="muted small" style="margin:0">${energyMode()==='relogio'?'<b>Pelo relógio</b>: gasto do dia = taxa basal × 1,2 (rotina sem treino) + as calorias ativas dos treinos registradas no dia. É o cálculo mais próximo do real; registre sempre as calorias do relógio no fim do treino.':'<b>Pelo nível de atividade</b>: gasto do dia = taxa basal × fator do nível acima, uma média que já inclui os treinos.'}${(p.energyMode||'auto')==='auto'?' No automático, o app usa o relógio quando há treinos com calorias registradas nas últimas 4 semanas.':''}</p>
+ ${(()=>{const E=energyPlan();return E.ok?`<div class="mplan"><div><span>Taxa basal</span><b>${fmtInt(E.tmb)}</b></div><div><span>Gasto hoje</span><b>${fmtInt(E.gasto)}</b></div><div><span>${E.adj>=0?'Ajuste':'Déficit'}</span><b>${E.adj>0?'+':E.adj<0?'−':''}${fmtInt(Math.abs(E.adj))}</b></div><div class="on"><span>Meta</span><b>${fmtInt(E.meta)}</b></div></div><p class="muted small" style="margin:0">kcal por dia. Proteína ${fmtInt(E.prot)} g · Carboidrato ${fmtInt(E.carb)} g · Gordura ${fmtInt(E.fat)} g.</p>`:''})()}</section>
  <button class="btn pri" data-a="go" data-v="saude">${I.heart} Ver métricas de saúde</button></main>`};
 
 function waterSeries(){const o=perOf('agua'),bk=buckets(o.p,o.g),today=sod(Date.now());const wk=Object.keys(S.water||{}).filter(k=>(S.water[k]||[]).length).sort()[0];const f0=wk?(()=>{const[y,m,d]=wk.split('-').map(Number);return new Date(y,m-1,d).getTime()})():today;
@@ -1690,14 +1733,14 @@ VIEWS.saude=()=>{const b=bodyData(),p=S.profile;let h=bar('Saúde',{right:`<butt
  let target=null;
  if(b.w&&b.h){const hm=b.h/100,bmi=b.w/(hm*hm),lo=18.5*hm*hm,hi=24.9*hm*hm,c=BMI_C.find(x=>bmi<x[0]);target=bmi>24.9?hi:bmi<18.5?lo:null;const pos=Math.max(0,Math.min(100,(bmi-15)/25*100));
   h+=hc('IMC · Índice de massa corporal',`<span class="v">${fmt(bmi)}</span>`,pill(c[1],c[2]),`<div class="scale"><i style="left:${pos.toFixed(1)}%"></i></div><div class="scale-l"><span>15</span><span>18,5</span><span>25</span><span>30</span><span>40</span></div><p>Faixa saudável (OMS): IMC de 18,5 a 24,9. Para ${fmtM(b.h)} m, isso é de <b>${fmt(lo)} a ${fmt(hi)} kg</b>. ${target?`Peso de referência: <b>${fmt(target)} kg</b> (${target>b.w?'+':'−'}${fmt(Math.abs(target-b.w))} kg).`:'Seu peso está dentro da faixa.'}</p><p class="small">Para quem faz musculação, o IMC pode exagerar, porque músculo pesa mais que gordura. Use junto com a cintura e o percentual de gordura.</p>`)}
- if(b.ok){const tmb=mifflin(b.w,b.h,b.age,b.sex),act=actOf(),tdee=tmb*act[2],goal=p.goal||'manter';
+ if(b.ok){const E=energyPlan(),tmb=E.tmb,goal=E.goal;
   h+=hc('Taxa metabólica basal (TMB)',`<span class="v">${fmtInt(tmb)} <small>kcal/dia</small></span>`,'',`<p>Energia que o corpo gasta em repouso total. Calculada pela equação de Mifflin-St Jeor (${b.sex==='m'?'masculino':'feminino'}, ${b.age} anos, ${fmt(b.h)} cm, ${fmt(b.w)} kg).${target?` No peso de referência (${fmt(target)} kg), seria <b>${fmtInt(mifflin(target,b.h,b.age,b.sex))} kcal/dia</b>.`:''}</p><p class="small">É uma estimativa: costuma acertar dentro de 10% na maioria das pessoas. Só exames como a calorimetria medem o valor exato.</p>`);
-  const kcal={perder:tdee*.8,manter:tdee,ganhar:tdee*1.1};
-  h+=hc('Gasto diário estimado',`<span class="v">${fmtInt(tdee)} <small>kcal/dia</small></span>`,pill(act[1]),`<p>TMB × ${String(act[2]).replace('.',',')} (nível ${act[1].toLowerCase()}${(p.activity||'auto')==='auto'?', calculado pelos seus treinos':''}).</p><div class="goalt">${GOALS.map(([k,l])=>`<div class="${goal===k?'on':''}"><span>${l}</span><b>${fmtInt(r50(kcal[k]))} kcal</b><em>${k==='perder'?'−20%':k==='ganhar'?'+10%':'manutenção'}</em></div>`).join('')}</div><p class="small">Sugestão de consumo diário para o objetivo marcado em Dados pessoais. Ajuste conforme a evolução do peso a cada 2 a 3 semanas.</p>`)}
+  const at=(g)=>{const x=g==='perder'?Math.max(E.gasto*.8,E.floor):g==='ganhar'?E.gasto+400:g==='massa'?E.gasto*1.1:E.gasto;return Math.round(x/10)*10};
+  h+=hc('Gasto e meta de hoje',`<span class="v">${fmtInt(E.gasto)} <small>kcal gastas</small></span>`,pill(E.mode==='relogio'?'Pelo relógio':'Nível '+E.act[1].toLowerCase()),`<p>${E.mode==='relogio'?`Rotina sem treino: TMB × 1,2 = <b>${fmtInt(E.rotina)} kcal</b>, mais <b>${fmtInt(E.ex)} kcal</b> de exercício registradas hoje (calorias ativas do relógio).`:`TMB × ${String(E.act[2]).replace('.',',')} (nível ${E.act[1].toLowerCase()}: ${E.act[3].toLowerCase()}) = <b>${fmtInt(E.gasto)} kcal</b>, estimativa média que já inclui os treinos.`}</p><div class="goalt">${GOALS.map(([k,l])=>`<div class="${goal===k?'on':''}"><span>${l}</span><b>${fmtInt(at(k))} kcal</b><em>${GOAL_TXT[k]}</em></div>`).join('')}</div>${E.capped?`<p class="small">A meta de perda foi limitada a ${fmtInt(E.floor)} kcal, para não ficar abaixo da sua taxa basal nem do mínimo seguro.</p>`:''}<p class="small">Meta para o objetivo marcado em Dados pessoais. Nesse ritmo, a variação esperada é de ${E.kgWeek>0?'+':E.kgWeek<0?'−':''}${fmt(Math.abs(Math.round(E.kgWeek*100)/100))} kg por semana. Reavalie a cada 2 a 3 semanas pela balança.</p><div><button class="btn sm sec" data-a="go" data-v="dados">Ajustar objetivo e atividade</button></div>`)}
  const wg=waterGoal(),wt=waterOn(dkey(Date.now()));
  h+=hc('Água por dia',`<span class="v">${fmt(wg.ml/1000)} <small>litros</small></span>`,pill(`${fmtInt(wt)} ml hoje`,wt>=wg.ml?'ok':''),`<p>${esc(wg.how)}. Base de 35 ml por kg para homens e 31 ml por kg para mulheres, mais 500 ml por hora de treino no dia.</p><div><button class="btn sm sec" data-a="tab" data-t="agua">${I.drop} Abrir Água</button></div>`);
- if(b.w){const goal=p.goal||'manter',[a1,a2]=goal==='perder'?[2.3,3.1]:[1.6,2.0];
-  h+=hc('Proteína por dia',`<span class="v">${fmtInt(b.w*a1)}–${fmtInt(b.w*a2)} <small>g</small></span>`,'',`<p>${String(a1).replace('.',',')} a ${String(a2).replace('.',',')} g por kg de peso${goal==='perder'?', faixa indicada para preservar massa muscular em déficit calórico':', faixa indicada para quem faz musculação'} (Sociedade Internacional de Nutrição Esportiva). Divida em 3 a 5 refeições de 20 a 40 g.</p>`)}
+ if(b.ok){const E=energyPlan();
+  h+=hc('Macronutrientes por dia',`<span class="v">${fmtInt(E.prot)} <small>g de proteína</small></span>`,'',`<div class="kv"><div><span class="lab">Proteína</span><b>${fmtInt(E.prot)} g</b></div><div><span class="lab">Carboidrato</span><b>${fmtInt(E.carb)} g</b></div><div><span class="lab">Gordura</span><b>${fmtInt(E.fat)} g</b></div></div><p>Proteína: ${fmt(E.gkg)} g por kg${E.refW!==E.w?` do peso de referência (${fmt(Math.round(E.refW*10)/10)} kg, IMC 25)`:''}, faixa da Sociedade Internacional de Nutrição Esportiva para ${E.goal==='perder'?'preservar músculo em déficit':E.goal==='massa'?'ganho de massa (1,6–2,2 g/kg)':'quem treina (1,4–2,0 g/kg)'}. Gordura: 25% das calorias (mínimo 0,6 g/kg). Carboidrato: o restante, para energia dos treinos. Divida a proteína em 3 a 5 refeições de 20 a 40 g.</p>`)}
  const waist=latestMeasure('waist');
  if(waist&&b.h){const r=waist.v/b.h,c=r<0.4?['Abaixo do esperado','warn']:r<0.5?['Saudável','ok']:r<0.6?['Aumentada','warn']:['Alta','bad'];
   h+=hc('Relação cintura/altura',`<span class="v">${r.toFixed(2).replace('.',',')}</span>`,pill(c[0],c[1]),`<p>Cintura de ${fmt(waist.v)} cm ÷ altura de ${fmt(b.h)} cm. A recomendação é manter a cintura abaixo da metade da altura (menos de 0,5), ou seja, abaixo de <b>${fmt(b.h/2)} cm</b>. É um bom indicador da gordura abdominal, que o IMC não mostra.</p>`)}
@@ -1706,8 +1749,8 @@ VIEWS.saude=()=>{const b=bodyData(),p=S.profile;let h=bar('Saúde',{right:`<butt
  if(fat&&b.w){const fm=b.w*fat.v/100,lm=b.w-fm,hm=b.h?b.h/100:null,ffmi=hm?lm/(hm*hm)+6.1*(1.8-hm):null;const T=b.sex==='f'?[[14,'Essencial','warn'],[21,'Atleta','ok'],[25,'Boa forma','ok'],[32,'Média','warn'],[Infinity,'Acima do recomendado','bad']]:[[6,'Essencial','warn'],[14,'Atleta','ok'],[18,'Boa forma','ok'],[25,'Média','warn'],[Infinity,'Acima do recomendado','bad']];const c=T.find(x=>fat.v<x[0]);
   h+=hc('Composição corporal',`<span class="v">${fmt(fat.v)}<small>% de gordura</small></span>`,pill(c[1],c[2]),`<div class="kv"><div><span class="lab">Massa magra</span><b>${fmt(lm)} kg</b></div><div><span class="lab">Massa gorda</span><b>${fmt(fm)} kg</b></div>${ffmi?`<div><span class="lab">FFMI</span><b>${fmt(ffmi)}</b></div>`:''}</div><p>Faixas do American Council on Exercise (${b.sex==='f'?'mulheres: atleta 14–20%, boa forma 21–24%, média 25–31%':'homens: atleta 6–13%, boa forma 14–17%, média 18–24%'}). O FFMI mede a massa magra em relação à altura: subir esse número é sinal de ganho de músculo.</p>`)}
  const ws=S.measures.filter(m=>num(m.weight)!=null).sort((a,b)=>a.date-b.date);
- if(ws.length>=2){const last=ws[ws.length-1],ref=latestMeasure('weight',addDays(last.date,-27))||{v:num(ws[0].weight),date:ws[0].date};const dw=num(last.weight)-ref.v,wk=Math.max(1,(last.date-ref.date)/(7*DAY)),rate=dw/wk,goal=p.goal||'manter';const good=goal==='perder'?rate<0:goal==='ganhar'?rate>0:Math.abs(rate)<0.25;
-  h+=hc('Evolução do peso',`<span class="v">${dw>0?'+':dw<0?'−':''}${fmt(Math.abs(dw))} <small>kg</small></span>`,pill(good?'No rumo do objetivo':'Fora do objetivo',good?'ok':'warn'),`<p>De ${fmt(ref.v)} kg (${dShort(ref.date)}) para ${fmt(num(last.weight))} kg (${dShort(last.date)}): ${rate>0?'+':rate<0?'−':''}${fmt(Math.abs(rate))} kg por semana. ${goal==='perder'?'Para perder gordura sem perder músculo, o ideal é 0,5% a 1% do peso por semana.':goal==='ganhar'?'Para ganhar massa com pouca gordura, mire em cerca de 0,25% a 0,5% do peso por semana.':'Para manter, variações de até 0,25 kg por semana são normais.'}</p>`)}
+ if(ws.length>=2){const last=ws[ws.length-1],ref=latestMeasure('weight',addDays(last.date,-27))||{v:num(ws[0].weight),date:ws[0].date};const dw=num(last.weight)-ref.v,wk=Math.max(1,(last.date-ref.date)/(7*DAY)),rate=dw/wk,goal=goalOf();const good=goal==='perder'?rate<0:goal==='ganhar'||goal==='massa'?rate>0:Math.abs(rate)<0.25;
+  h+=hc('Evolução do peso',`<span class="v">${dw>0?'+':dw<0?'−':''}${fmt(Math.abs(dw))} <small>kg</small></span>`,pill(good?'No rumo do objetivo':'Fora do objetivo',good?'ok':'warn'),`<p>De ${fmt(ref.v)} kg (${dShort(ref.date)}) para ${fmt(num(last.weight))} kg (${dShort(last.date)}): ${rate>0?'+':rate<0?'−':''}${fmt(Math.abs(rate))} kg por semana. ${goal==='perder'?'Para perder gordura sem perder músculo, o ideal é 0,5% a 1% do peso por semana.':goal==='massa'?'Para ganhar massa com pouca gordura, mire em cerca de 0,25% a 0,5% do peso por semana.':goal==='ganhar'?'Para ganhar peso de forma saudável, cerca de 0,25 a 0,5 kg por semana.':'Para manter, variações de até 0,25 kg por semana são normais.'}</p>`)}
  const t0=sod(Date.now()),cur4=S.workouts.filter(w=>w.start>=addDays(t0,-27)),prev4=S.workouts.filter(w=>w.start>=addDays(t0,-55)&&w.start<addDays(t0,-27));
  const vc=cur4.reduce((a,w)=>a+wStats(w).vol,0),vp=prev4.reduce((a,w)=>a+wStats(w).vol,0),prs=cur4.reduce((a,w)=>a+(w.prs?w.prs.length:0),0);const dv=vp?(vc-vp)/vp*100:null;
  h+=hc('Treinos · últimas 4 semanas',`<span class="v">${fmt(cur4.length/4)} <small>treinos/semana</small></span>`,dv==null?'':pill(`Volume ${dv>=0?'+':'−'}${fmtInt(Math.abs(dv))}%`,dv>=0?'ok':'warn'),`<div class="kv"><div><span class="lab">Treinos</span><b>${cur4.length}</b></div><div><span class="lab">Volume</span><b>${fmt(vc/1000)} t</b></div><div><span class="lab">Recordes</span><b>${prs}</b></div></div><p>Comparado com as 4 semanas anteriores (${prev4.length} treinos, ${fmt(vp/1000)} t). Volume subindo aos poucos, com recordes aparecendo, é sinal de progressão.</p>`);
@@ -1815,7 +1858,8 @@ const A={
  pPrev:d=>{S.profile.prevMode=d.k;save();rerender()},
  pdSex:d=>{S.profile.sex=d.k;save();rerender()},
  pdAct:d=>{S.profile.activity=d.k;save();rerender()},
- pdGoal:d=>{S.profile.goal=d.k;save();rerender()},
+ pdGoal:d=>{S.profile.goal=d.k;S.profile.goalV=2;save();rerender()},
+ pdEMode:d=>{S.profile.energyMode=d.k;save();rerender()},
  addWater:d=>{const ml=+d.ml;if(!ml)return;S.water=S.water||{};const k=dkey(Date.now()),g=waterGoal().ml,before=waterOn(k);UI.wPrev=before/g;(S.water[k]=S.water[k]||[]).push({t:Date.now(),ml});save();rerender();toast(before<g&&before+ml>=g?'Meta de água batida!':`+${fmtInt(ml)} ml`)},
  customWater:()=>askText('Quanto você bebeu? (ml)','','Ex.: 350').then(v=>{closeSheet();const ml=Math.round(num(v)||0);if(ml<1||ml>3000){if(v)toast('Informe um valor entre 1 e 3.000 ml.');return}A.addWater({ml})}),
  delWater:d=>{const k=dkey(Date.now());if(S.water&&S.water[k]){UI.wPrev=waterOn(k)/waterGoal().ml;S.water[k].splice(+d.i,1);save();rerender()}},
@@ -2576,7 +2620,20 @@ Linhaça, semente|14|495|14.1|32.3|43.3|33.5|4.2||9|869|211|4.7|347|4.4|0|
 Pinhão, cozido|14|174|3|0.7|43.9|15.6|0.3||1|727|16|0.8|53|0.8|27.7|
 Pupunha, cozida|14|219|2.5|12.8|29.6|4.3|3.1||1|303|28|0.5|25|0.3|2.2|438
 Noz, crua|14|620|14|59.4|18.4|7.2|5.6||5|533|105|2|153|2.1|0|`;/*TACO-END*/
-function homeNutri(){nS();const k=dkey(Date.now()),n=dayNut(k),P=nutriPlan(),v=Math.round(n[0]);return`<section class="card form"><div class="row"><span class="lab spacer">${I.food.replace('class="i"','class="i" style="width:15px;height:15px;vertical-align:-3px;color:var(--accent)"')} Nutrição hoje</span><b class="num" style="font-size:18px">${fmtInt(v)} / ${fmtInt(P.kcal)} kcal</b></div><div class="bar1"><i style="width:${Math.min(100,v/P.kcal*100).toFixed(0)}%"></i></div><div class="row small" style="flex-wrap:wrap;gap:6px 14px"><span class="t0 nw">Carb. ${fmtInt(n[3])}/${P.gC} g</span><span class="t1 nw">Gord. ${fmtInt(n[2])}/${P.gG} g</span><span class="t2 nw">Prot. ${fmtInt(n[1])}/${P.gP} g</span></div><div class="chips"><button class="chip" data-a="tab" data-t="dieta">Registrar refeição</button></div></section>`}
+/* Início › Meta de hoje: objetivo, meta calculada (motor de energia), consumido (aba Nutrição), quanto falta e barras por macro */
+function homeNutri(){nS();const now=Date.now(),k=dkey(now),n=dayNut(k),P=nutriPlan(now),E=P.E,v=Math.round(n[0]),left=P.kcal-v,pc=Math.min(100,v/P.kcal*100);
+ const gl=(GOALS.find(g=>g[0]===goalOf())||GOALS[1])[1];
+ const noKcal=E.mode==='relogio'?S.workouts.filter(w=>w.start>=sod(now)&&!(num(w.kcal)>0)):[];
+ const mb=(lab,cls,got,tgt)=>{const r=tgt?got/tgt:0,rest=Math.round(tgt-got);return`<div class="hm"><div class="row"><span class="${cls} hm-l">${lab}</span><span class="nfx"></span><b>${fmtInt(got)}</b><span class="muted small">/ ${fmtInt(tgt)} g</span></div><div class="hmb"><i class="${cls.replace('t','m')}" style="width:${Math.min(100,r*100).toFixed(1)}%"></i></div><span class="small ${rest<0?'hm-over':'muted'}">${rest>0?`Faltam ${fmtInt(rest)} g`:rest<0?`${fmtInt(-rest)} g acima da meta`:'Meta batida'}</span></div>`};
+ if(!E.ok&&!P.manual)return`<section class="card form hgoal"><div class="row"><span class="lab nfx">${I.flame} Meta de hoje</span></div><p style="margin:0">Para calcular a sua meta de calorias e macronutrientes, preencha ${E.missing.join(', ')} e escolha o objetivo.</p><div><button class="btn pri sm" data-a="go" data-v="dados">${I.idcard} Preencher dados e objetivo</button></div></section>`;
+ return`<section class="card form hgoal"><div class="row"><span class="lab nfx">${I.flame} Meta de hoje</span><button class="gpill" data-a="go" data-v="dados">${esc(gl)}${P.manual?' · personalizada':''}</button></div>
+ <div class="hbig"><div class="nfx"><b class="${left<0?'over':''}">${fmtInt(Math.abs(left))}</b><span>${left>=0?'kcal faltam para a meta':'kcal acima da meta'}</span></div><div class="hring" style="--p:${pc.toFixed(1)}"><span>${Math.round(v/P.kcal*100)}%</span></div></div>
+ <div class="nbar"><i style="width:${pc.toFixed(1)}%" class="${v>P.hi?'over':''}"></i><u style="left:100%"></u></div>
+ <div class="heq"><div><span>Meta</span><b>${fmtInt(P.kcal)}</b></div><div><span>Consumido</span><b>${fmtInt(v)}</b></div><div><span>Exercício</span><b>${!E.ok?'–':E.mode==='relogio'?(E.ex?'+'+fmtInt(E.ex):'0'):'<small style="font-size:13px">no nível</small>'}</b></div></div>
+ ${E.ok&&!P.manual?`<p class="muted small" style="margin:0">Gasto de hoje ${fmtInt(E.gasto)} kcal (${E.mode==='relogio'?`basal ${fmtInt(E.tmb)} × 1,2 + exercício ${fmtInt(E.ex)}`:`basal ${fmtInt(E.tmb)} × ${String(E.act[2]).replace('.',',')}, nível ${E.act[1].toLowerCase()}`}) ${E.adj<0?'−':E.adj>0?'+':''} ${E.adj?fmtInt(Math.abs(E.adj))+' ('+GOAL_TXT[E.goal]+')':'(manutenção)'} = meta ${fmtInt(E.meta)} kcal.</p>`:''}
+ ${noKcal.length?`<button class="hrbox" data-a="kcalSaved" data-id="${noKcal[0].id}">${I.fire}<span class="spacer"><b>Treino de hoje sem calorias</b><span class="muted small">Informe as calorias do relógio para a meta ficar exata</span></span>${I.chev}</button>`:''}
+ <div class="hms">${mb('Proteína','t2',n[1],P.gP)}${mb('Carboidrato','t0',n[3],P.gC)}${mb('Gordura','t1',n[2],P.gG)}</div>
+ <div class="chips"><button class="chip" data-a="tab" data-t="dieta">Registrar refeição</button><button class="chip" data-a="go" data-v="dados">Ajustar objetivo</button></div></section>`}
 const NK=['kcal','prot','gord','carb','fib','sat','col','na','k','ca','fe','mg','zn','vc','va'];
 const MEALS=[['cafe','Café da manhã','07:30'],['lanche1','Lanche da manhã','10:00'],['almoco','Almoço','12:30'],['lanche2','Lanche da tarde','16:00'],['jantar','Jantar','19:30'],['ceia','Ceia','22:00']];
 const mealName=k=>(MEALS.find(m=>m[0]===k)||MEALS[0])[1];
@@ -2593,11 +2650,10 @@ const itemName=it=>it.f==null?(it.n||'Calorias rápidas'):(food(it.f)?.name||'Al
 const itemSub=it=>{if(it.f==null)return`${fmtInt(num(it.kcal)||0)} kcal`;const f=food(it.f),n=itemNut(it);return`${fmtInt(n[0])} kcal, ${fmt(num(it.q)||0)} g${f&&f.por&&f.por!==100?` · ${fmt((num(it.q)||0)/f.por)} porção`:''}`};
 
 /* Metas: calorias pela mesma conta do cartão de saúde (Mifflin-St Jeor × atividade × objetivo); proteína pela faixa da ISSN; gordura 25%; carboidrato completa. Tudo pode ser trocado em Metas. */
-function nutriPlan(){const p=S.profile,b=bodyData(),cfg=p.nutri||{};let auto=null,prot=null;
- if(b.ok){const tdee=mifflin(b.w,b.h,b.age,b.sex)*actOf()[2],goal=p.goal||'manter';auto=r50(goal==='perder'?tdee*.8:goal==='ganhar'?tdee*1.1:tdee);const[a1,a2]=goal==='perder'?[2.3,3.1]:[1.6,2.0];prot=Math.round((a1+a2)/2*b.w)}
- const kcal=cfg.mode==='manual'&&num(cfg.kcal)?num(cfg.kcal):(auto||2000);
- let pP,pG,pC;if(cfg.mode==='manual'&&num(cfg.pP)!=null){pP=num(cfg.pP);pG=num(cfg.pG);pC=num(cfg.pC)}else{pP=prot?Math.min(40,Math.max(15,Math.round(prot*4/kcal*100))):20;pG=25;pC=100-pP-pG}
- return{kcal,lo:Math.round(kcal*.9),hi:Math.round(kcal*1.1),auto,pP,pG,pC,gP:Math.round(kcal*pP/100/4),gG:Math.round(kcal*pG/100/9),gC:Math.round(kcal*pC/100/4),manual:cfg.mode==='manual',sex:p.sex}}
+function nutriPlan(d=Date.now()){const p=S.profile,cfg=p.nutri||{},E=energyPlan(d),man=cfg.mode==='manual';
+ if(man&&num(cfg.kcal)&&num(cfg.pP)!=null){const kcal=num(cfg.kcal),pP=num(cfg.pP),pG=num(cfg.pG),pC=num(cfg.pC);return{kcal,lo:Math.round(kcal*.95),hi:Math.round(kcal*1.05),auto:E.ok?E.meta:null,pP,pG,pC,gP:Math.round(kcal*pP/100/4),gG:Math.round(kcal*pG/100/9),gC:Math.round(kcal*pC/100/4),manual:true,sex:p.sex,E}}
+ const kcal=E.ok?E.meta:2000,gP=E.ok?E.prot:Math.round(kcal*.2/4),gG=E.ok?E.fat:Math.round(kcal*.25/9),gC=E.ok?E.carb:Math.round((kcal-gP*4-gG*9)/4);const pct=x=>Math.round(x/kcal*100);
+ return{kcal,lo:Math.round(kcal*.95),hi:Math.round(kcal*1.05),auto:E.ok?E.meta:null,pP:pct(gP*4),pG:pct(gG*9),pC:100-pct(gP*4)-pct(gG*9),gP,gG,gC,manual:false,sex:p.sex,E}}
 // Referências diárias para adultos (DRI/IOM; sódio: limite CDRR 2.300 mg; saturada: até 10% das calorias). [índice, nome, unidade, f(sexo,plano)->[mínimo, máximo]]
 const MICRO=[[1,'Proteína','g',(s,P)=>[P.gP,null]],[4,'Fibras','g',s=>[s==='f'?25:38,null]],[5,'Gordura saturada','g',(s,P)=>[null,Math.round(P.kcal*.1/9)]],[6,'Colesterol','mg',()=>[null,300]],[7,'Sódio','mg',()=>[null,2300]],
  [8,'Potássio','mg',s=>[s==='f'?2600:3400,null]],[9,'Cálcio','mg',()=>[1000,2500]],[10,'Ferro','mg',s=>[s==='f'?18:8,45]],[11,'Magnésio','mg',s=>[s==='f'?320:420,null]],[12,'Zinco','mg',s=>[s==='f'?8:11,40]],[13,'Vitamina C','mg',s=>[s==='f'?75:90,2000]],[14,'Vitamina A','mcg',s=>[s==='f'?700:900,3000]]];
@@ -2618,7 +2674,7 @@ function nMini(d,P){const days=[...Array(7)].map((_,i)=>addDays(d,i-6));const va
  return`<button class="card nmini" data-a="go" data-v="dietaTend"><div class="row"><span class="nfx"><b>Últimos 7 dias</b><span class="muted small">${logged.length?`Média ${fmtInt(avg)} kcal nos ${logged.length} dia(s) com registro`:'Sem registros ainda'}</span></span>${I.chev}</div><svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Calorias dos últimos 7 dias">${g}</svg></button>`}
 
 /* ---- tela principal ---- */
-VIEWS.dieta=()=>{nS();const d=nDay(),k=dkey(d),P=nutriPlan(),n=dayNut(k),ms=mealsOn(k),today=sod(Date.now());
+VIEWS.dieta=()=>{nS();const d=nDay(),k=dkey(d),P=nutriPlan(d),n=dayNut(k),ms=mealsOn(k),today=sod(Date.now());
  let h=bar('Nutrição',{left:'',right:`<button class="ib" data-a="go" data-v="dietaTend" aria-label="Tendências">${I.chart}</button><button class="ib" data-a="nMenu" aria-label="Opções">${I.dots}</button>`})+'<main class="page">';
  h+=`<div class="dnav"><button class="ib" data-a="nDay" data-k="-1" aria-label="Dia anterior">${I.left}</button><button class="dnav-t" data-a="nToday">${dayLabel(d)}</button><button class="ib" data-a="nDay" data-k="1" aria-label="Próximo dia" ${d>=today?'disabled':''}>${I.chev}</button></div>`;
  h+=kcalCard(n,P);
@@ -2679,7 +2735,7 @@ function portionSheet(i){const w=top_().p.w,it=w.it[i];UI.pi={i,q:num(it.q)||100
 const pRefresh=()=>{const w=top_().p.w,it=w.it[UI.pi.i];const el=$('#psheet');if(el){const a=document.activeElement&&document.activeElement.id==='p-q';el.innerHTML=portionHTML(it.f,UI.pi.q);if(a){const x=$('#p-q');x.focus();x.setSelectionRange(x.value.length,x.value.length)}}};
 
 /* ---- nutrientes do dia ---- */
-VIEWS.nutrientes=()=>{const d=nDay(),k=dkey(d),P=nutriPlan(),n=dayNut(k),items=mealsOn(k).flatMap(m=>m.it);
+VIEWS.nutrientes=()=>{const d=nDay(),k=dkey(d),P=nutriPlan(d),n=dayNut(k),items=mealsOn(k).flatMap(m=>m.it);
  let h=bar('Nutrientes')+`<main class="page"><p class="muted small" style="margin:0">${dayLabel(d)}. Cada barra mostra a faixa recomendada para adultos (${P.sex==='f'?'mulheres':'homens'}): abaixo, dentro ou acima. Os alimentos que mais contribuíram aparecem embaixo.</p>`;
  h+=`<section class="card ninfo">${macroBoxes(n,P)}${macroBar(n,P)}</section>`;
  h+=`<section class="card nlist">${MICRO.map(([i,l,u,fn])=>{const[mn,mx]=fn(P.sex,P),v=n[i];const top=items.filter(it=>it.f!=null).map(it=>[itemName(it),itemNut(it)[i]]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,3);
@@ -2710,7 +2766,7 @@ VIEWS.metasNutri=()=>{const P=nutriPlan(),c=S.profile.nutri||{};const man=c.mode
  return bar('Metas de nutrição')+`<main class="page"><div class="seg"><button class="${man?'':'on'}" data-a="nMode" data-k="auto">Automática</button><button class="${man?'on':''}" data-a="nMode" data-k="manual">Personalizada</button></div>
  ${man?`<section class="card form"><label class="fld"><span class="lab">Calorias por dia (kcal)</span><input class="inp" id="nm-kcal" inputmode="numeric" value="${esc(String(c.kcal??P.kcal))}" data-f="n:nm" data-k="kcal"></label>
  <div class="g3">${[['pC','Carb. (%)'],['pG','Gord. (%)'],['pP','Prot. (%)']].map(([k,l])=>`<label class="fld"><span class="lab">${l}</span><input class="inp" id="nm-${k}" inputmode="numeric" value="${esc(String(c[k]??P[k]))}" data-f="n:nm" data-k="${k}"></label>`).join('')}</div><p class="muted small" id="nm-sum" style="margin:0">${nmSum()}</p></section>`
- :`<section class="card form"><p style="margin:0">Calculada pelos seus dados: taxa metabólica (Mifflin-St Jeor) × nível de atividade, ajustada ao objetivo. Proteína pela faixa da ISSN para quem treina, gordura em 25% das calorias e carboidrato no restante.</p>${P.auto?'':`<p class="muted small" style="margin:0">Faltam dados pessoais; usando 2.000 kcal até você preencher. <button class="linkb" data-a="go" data-v="dados">Preencher</button></p>`}</section>`}
+ :`<section class="card form"><p style="margin:0">É a mesma meta do Início, calculada pelos seus dados: taxa basal (Mifflin-St Jeor), gasto do dia (pelo relógio ou pelo nível de atividade) e o objetivo escolhido em Dados pessoais. Proteína em g/kg conforme o objetivo, gordura em 25% das calorias e carboidrato no restante.</p><div><button class="btn sm sec" data-a="go" data-v="dados">Ver objetivo e cálculo</button></div>${P.auto?'':`<p class="muted small" style="margin:0">Faltam dados pessoais; usando 2.000 kcal até você preencher. <button class="linkb" data-a="go" data-v="dados">Preencher</button></p>`}</section>`}
  <section class="card form"><span class="lab">Meta atual</span><b class="nbig">${fmtInt(P.kcal)}<small> kcal</small></b><span class="muted small">Faixa ${fmtInt(P.lo)} – ${fmtInt(P.hi)} kcal</span>${macroBoxes(NK.map(()=>0),P).replace(/<b>0<small>g<\/small><\/b>/g,'')}</section></main>`};
 function nmSum(){const c=S.profile.nutri||{},s=(num(c.pC)||0)+(num(c.pG)||0)+(num(c.pP)||0);return s===100?'A soma dá 100%.':`A soma está em ${fmt(s)}%; ajuste para 100%.`}
 
