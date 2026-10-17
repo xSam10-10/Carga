@@ -84,6 +84,7 @@ tools/                   geradores (ver imagens-e-avatares.md)
   - relógio: TMB × 1,2 + `exKcalOn(d)`, a soma de `w.kcal` dos treinos do dia e de `S.extra` (exercícios avulsos, próxima entrega: `{t, kcal, ...}`);
   - nível: TMB × fator de `ACT`.
   - Nunca some as calorias do relógio no modo nível: seria contar o exercício duas vezes.
+- **Fórmula do dia (definida pelo usuário):** `base` = rotina + ajuste do objetivo (`goalAdj(goal, rotina)`, piso aplicado na base); `meta` = base + exercício do relógio (`exAdd`, 100% do valor, só no modo relógio). No Início: **Falta = Meta base + Exercício − Consumido**. Não aplique a porcentagem do objetivo sobre o exercício.
 - **Objetivos** (`GOALS`, `goalOf()`; o antigo 'ganhar' = massa é migrado para 'massa'):
   - perder: −20%, piso de max(TMB, 1.200 F / 1.500 M);
   - manter: 0;
