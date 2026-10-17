@@ -7,7 +7,7 @@
 
 Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada para implementar aos poucos.
 
-## Visão geral (progresso geral: 51%)
+## Visão geral (progresso geral: 57%)
 
 | Módulo | Status | Progresso | Resumo |
 |---|---|---|---|
@@ -18,7 +18,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 5. Metas e hábitos | 🟡 | 15% | Já há meta de água e sequências; falta a central de metas com previsão. |
 | 6. Gráficos e relatórios | 🟡 | 65% | Períodos de 7 dias a desde o início em todos os gráficos; faltam os de nutrição e o painel da semana. |
 | 7. Identidade e plataforma | ✅ | 90% | Logo, abertura, 6 temas, 15 cores, perfis separados, backup. |
-| 8. Publicação | 🟡 | 10% | Workflow do GitHub Pages pronto; falta conectar o GitHub e instalar nos celulares. |
+| 8. Publicação | 🟡 | 60% | Código no GitHub (xSam10-10/Carga); falta ativar o Pages nas configurações e instalar nos celulares. |
 
 ## 1. Treino
 - ✅ Rotinas, pastas, modelos prontos e treino vazio
@@ -83,7 +83,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - 💡 Bloqueio por PIN ou biometria
 
 ## 8. Publicação
-- 🟡 Workflow do GitHub Pages pronto; falta conectar e enviar
+- 🟡 Código enviado ao GitHub; falta ativar o Pages (Settings → Pages → GitHub Actions)
 - ⬜ App instalado nos dois celulares pelo Pages
 
 ## Ordem dos próximos passos
@@ -112,3 +112,4 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 17/10/2026 | Mapa corporal hiper-realista (17 grupos) e Início com os últimos 10 treinos |
 | 17/10/2026 | Skill carga-app com toda a memória do projeto |
 | 17/10/2026 | Painel visual do roadmap |
+| 17/10/2026 | Projeto enviado ao GitHub (xSam10-10/Carga) |

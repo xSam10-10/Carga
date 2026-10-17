@@ -1,85 +1,373 @@
 {
   "objetivo": "O app de saúde mais completo do mercado: treino, dieta (macros e micros), água, medidas, metas e gráficos num lugar só, para o Samuel e a Carol.",
   "modulos": [
-    {"ordem": 1, "modulo": "Treino", "progresso": 0.90, "resumo": "Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios e mapa corporal hiper-realista."},
-    {"ordem": 2, "modulo": "Hidratação", "progresso": 0.85, "resumo": "Meta por peso e sexo, copos rápidos, avatar animado, sequência e gráficos."},
-    {"ordem": 3, "modulo": "Corpo e medidas", "progresso": 0.55, "resumo": "Peso, medidas, IMC, TMB e indicadores; faltam fotos de evolução e medidas por região."},
-    {"ordem": 4, "modulo": "Nutrição", "progresso": 0.0, "resumo": "Dieta, macronutrientes, micronutrientes e diário de refeições. Próximo grande módulo."},
-    {"ordem": 5, "modulo": "Metas e hábitos", "progresso": 0.15, "resumo": "Já há meta de água e sequências; falta a central de metas com previsão."},
-    {"ordem": 6, "modulo": "Gráficos e relatórios", "progresso": 0.65, "resumo": "Períodos de 7 dias a desde o início em todos os gráficos; faltam os de nutrição e o painel da semana."},
-    {"ordem": 7, "modulo": "Identidade e plataforma", "progresso": 0.90, "resumo": "Logo, abertura, 6 temas, 15 cores, perfis separados, backup."},
-    {"ordem": 8, "modulo": "Publicação", "progresso": 0.10, "resumo": "Workflow do GitHub Pages pronto; falta conectar o GitHub e instalar nos celulares."}
+    {
+      "ordem": 1,
+      "modulo": "Treino",
+      "progresso": 0.9,
+      "resumo": "Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios e mapa corporal hiper-realista."
+    },
+    {
+      "ordem": 2,
+      "modulo": "Hidratação",
+      "progresso": 0.85,
+      "resumo": "Meta por peso e sexo, copos rápidos, avatar animado, sequência e gráficos."
+    },
+    {
+      "ordem": 3,
+      "modulo": "Corpo e medidas",
+      "progresso": 0.55,
+      "resumo": "Peso, medidas, IMC, TMB e indicadores; faltam fotos de evolução e medidas por região."
+    },
+    {
+      "ordem": 4,
+      "modulo": "Nutrição",
+      "progresso": 0.0,
+      "resumo": "Dieta, macronutrientes, micronutrientes e diário de refeições. Próximo grande módulo."
+    },
+    {
+      "ordem": 5,
+      "modulo": "Metas e hábitos",
+      "progresso": 0.15,
+      "resumo": "Já há meta de água e sequências; falta a central de metas com previsão."
+    },
+    {
+      "ordem": 6,
+      "modulo": "Gráficos e relatórios",
+      "progresso": 0.65,
+      "resumo": "Períodos de 7 dias a desde o início em todos os gráficos; faltam os de nutrição e o painel da semana."
+    },
+    {
+      "ordem": 7,
+      "modulo": "Identidade e plataforma",
+      "progresso": 0.9,
+      "resumo": "Logo, abertura, 6 temas, 15 cores, perfis separados, backup."
+    },
+    {
+      "ordem": 8,
+      "modulo": "Publicação",
+      "progresso": 0.6,
+      "resumo": "Código no GitHub (xSam10-10/Carga); falta ativar o Pages nas configurações e instalar nos celulares."
+    }
   ],
   "itens": [
-    ["Treino","pronto","Rotinas, pastas, modelos prontos e treino vazio"],
-    ["Treino","pronto","Sessão ao vivo: tipos de série, coluna Anterior, descanso, superséries, notas"],
-    ["Treino","pronto","Recordes ao vivo, progressão de carga, aquecimento, calculadora de anilhas"],
-    ["Treino","pronto","Catálogo de 465 exercícios com fotos, passo a passo, filtros e criar exercício"],
-    ["Treino","pronto","Mapa corporal hiper-realista com 17 grupos"],
-    ["Treino","pronto","Importar histórico do Hevy"],
-    ["Treino","sugestão","Periodização em blocos (força, hipertrofia, deload)"],
-    ["Treino","sugestão","Volume semanal por grupo com faixa recomendada e alerta de grupo esquecido"],
-    ["Treino","sugestão","Mapa de recuperação muscular"],
-    ["Treino","sugestão","RPE e RIR por série"],
-    ["Treino","sugestão","Animações próprias para exercícios sem foto"],
-    ["Hidratação","pronto","Meta por peso, sexo e treino do dia"],
-    ["Hidratação","pronto","Copos rápidos, avatar animado, sequência e gráficos"],
-    ["Hidratação","sugestão","Lembretes ao longo do dia"],
-    ["Hidratação","sugestão","Ajuste da meta em dias quentes"],
-    ["Hidratação","sugestão","Outras bebidas com fator de hidratação"],
-    ["Corpo e medidas","pronto","Peso e medidas com gráfico"],
-    ["Corpo e medidas","pronto","IMC, TMB, gasto diário, cintura/altura, proteína sugerida"],
-    ["Corpo e medidas","parcial","% de gordura com histórico próprio"],
-    ["Corpo e medidas","sugestão","Fotos de evolução lado a lado"],
-    ["Corpo e medidas","sugestão","Medidas por região no mapa corporal"],
-    ["Corpo e medidas","sugestão","Bioimpedância manual"],
-    ["Nutrição","a fazer","Meta calórica pela TMB, atividade e objetivo"],
-    ["Nutrição","a fazer","Macronutrientes com meta diária"],
-    ["Nutrição","a fazer","Micronutrientes com metas por sexo e idade"],
-    ["Nutrição","a fazer","Base de alimentos TACO em português"],
-    ["Nutrição","a fazer","Diário por refeição, copiar de ontem, favoritos"],
-    ["Nutrição","a fazer","Planos de dieta por objetivo"],
-    ["Nutrição","sugestão","Leitor de código de barras (Open Food Facts)"],
-    ["Nutrição","sugestão","Ciclo de carboidrato ligado aos dias de treino"],
-    ["Nutrição","sugestão","Foto do prato com estimativa assistida"],
-    ["Metas e hábitos","pronto","Meta de água e sequência de semanas treinadas"],
-    ["Metas e hábitos","a fazer","Central de metas: peso, gordura, carga-alvo, treinos por semana, proteína"],
-    ["Metas e hábitos","a fazer","Tendência e previsão de chegada à meta"],
-    ["Metas e hábitos","sugestão","Conquistas pessoais (sem rede social)"],
-    ["Metas e hábitos","sugestão","Hábitos diários: sono, passos, suplementos"],
-    ["Metas e hábitos","sugestão","Painel do dia num único cartão"],
-    ["Gráficos e relatórios","pronto","Períodos de 7 dias, mês, ano e desde o início em todos os gráficos"],
-    ["Gráficos e relatórios","pronto","Relatório mensal, calendário, radar e evolução por músculo"],
-    ["Gráficos e relatórios","a fazer","Gráficos de nutrição e aderência à meta"],
-    ["Gráficos e relatórios","a fazer","Painel Saúde da semana e do mês"],
-    ["Gráficos e relatórios","sugestão","Relatório em PDF para nutricionista ou médico"],
-    ["Gráficos e relatórios","sugestão","Correlações: proteína × carga, sono × desempenho"],
-    ["Identidade e plataforma","pronto","Logo, ícones e abertura no estilo do Hevy"],
-    ["Identidade e plataforma","pronto","6 temas, 15 cores de destaque, foto de perfil"],
-    ["Identidade e plataforma","pronto","Perfis separados, backup, cópias automáticas"],
-    ["Identidade e plataforma","sugestão","Sincronizar os dois celulares"],
-    ["Identidade e plataforma","sugestão","Bloqueio por PIN ou biometria"],
-    ["Publicação","parcial","Workflow do GitHub Pages pronto; falta conectar e enviar"],
-    ["Publicação","a fazer","App instalado nos dois celulares pelo Pages"]
+    [
+      "Treino",
+      "pronto",
+      "Rotinas, pastas, modelos prontos e treino vazio"
+    ],
+    [
+      "Treino",
+      "pronto",
+      "Sessão ao vivo: tipos de série, coluna Anterior, descanso, superséries, notas"
+    ],
+    [
+      "Treino",
+      "pronto",
+      "Recordes ao vivo, progressão de carga, aquecimento, calculadora de anilhas"
+    ],
+    [
+      "Treino",
+      "pronto",
+      "Catálogo de 465 exercícios com fotos, passo a passo, filtros e criar exercício"
+    ],
+    [
+      "Treino",
+      "pronto",
+      "Mapa corporal hiper-realista com 17 grupos"
+    ],
+    [
+      "Treino",
+      "pronto",
+      "Importar histórico do Hevy"
+    ],
+    [
+      "Treino",
+      "sugestão",
+      "Periodização em blocos (força, hipertrofia, deload)"
+    ],
+    [
+      "Treino",
+      "sugestão",
+      "Volume semanal por grupo com faixa recomendada e alerta de grupo esquecido"
+    ],
+    [
+      "Treino",
+      "sugestão",
+      "Mapa de recuperação muscular"
+    ],
+    [
+      "Treino",
+      "sugestão",
+      "RPE e RIR por série"
+    ],
+    [
+      "Treino",
+      "sugestão",
+      "Animações próprias para exercícios sem foto"
+    ],
+    [
+      "Hidratação",
+      "pronto",
+      "Meta por peso, sexo e treino do dia"
+    ],
+    [
+      "Hidratação",
+      "pronto",
+      "Copos rápidos, avatar animado, sequência e gráficos"
+    ],
+    [
+      "Hidratação",
+      "sugestão",
+      "Lembretes ao longo do dia"
+    ],
+    [
+      "Hidratação",
+      "sugestão",
+      "Ajuste da meta em dias quentes"
+    ],
+    [
+      "Hidratação",
+      "sugestão",
+      "Outras bebidas com fator de hidratação"
+    ],
+    [
+      "Corpo e medidas",
+      "pronto",
+      "Peso e medidas com gráfico"
+    ],
+    [
+      "Corpo e medidas",
+      "pronto",
+      "IMC, TMB, gasto diário, cintura/altura, proteína sugerida"
+    ],
+    [
+      "Corpo e medidas",
+      "parcial",
+      "% de gordura com histórico próprio"
+    ],
+    [
+      "Corpo e medidas",
+      "sugestão",
+      "Fotos de evolução lado a lado"
+    ],
+    [
+      "Corpo e medidas",
+      "sugestão",
+      "Medidas por região no mapa corporal"
+    ],
+    [
+      "Corpo e medidas",
+      "sugestão",
+      "Bioimpedância manual"
+    ],
+    [
+      "Nutrição",
+      "a fazer",
+      "Meta calórica pela TMB, atividade e objetivo"
+    ],
+    [
+      "Nutrição",
+      "a fazer",
+      "Macronutrientes com meta diária"
+    ],
+    [
+      "Nutrição",
+      "a fazer",
+      "Micronutrientes com metas por sexo e idade"
+    ],
+    [
+      "Nutrição",
+      "a fazer",
+      "Base de alimentos TACO em português"
+    ],
+    [
+      "Nutrição",
+      "a fazer",
+      "Diário por refeição, copiar de ontem, favoritos"
+    ],
+    [
+      "Nutrição",
+      "a fazer",
+      "Planos de dieta por objetivo"
+    ],
+    [
+      "Nutrição",
+      "sugestão",
+      "Leitor de código de barras (Open Food Facts)"
+    ],
+    [
+      "Nutrição",
+      "sugestão",
+      "Ciclo de carboidrato ligado aos dias de treino"
+    ],
+    [
+      "Nutrição",
+      "sugestão",
+      "Foto do prato com estimativa assistida"
+    ],
+    [
+      "Metas e hábitos",
+      "pronto",
+      "Meta de água e sequência de semanas treinadas"
+    ],
+    [
+      "Metas e hábitos",
+      "a fazer",
+      "Central de metas: peso, gordura, carga-alvo, treinos por semana, proteína"
+    ],
+    [
+      "Metas e hábitos",
+      "a fazer",
+      "Tendência e previsão de chegada à meta"
+    ],
+    [
+      "Metas e hábitos",
+      "sugestão",
+      "Conquistas pessoais (sem rede social)"
+    ],
+    [
+      "Metas e hábitos",
+      "sugestão",
+      "Hábitos diários: sono, passos, suplementos"
+    ],
+    [
+      "Metas e hábitos",
+      "sugestão",
+      "Painel do dia num único cartão"
+    ],
+    [
+      "Gráficos e relatórios",
+      "pronto",
+      "Períodos de 7 dias, mês, ano e desde o início em todos os gráficos"
+    ],
+    [
+      "Gráficos e relatórios",
+      "pronto",
+      "Relatório mensal, calendário, radar e evolução por músculo"
+    ],
+    [
+      "Gráficos e relatórios",
+      "a fazer",
+      "Gráficos de nutrição e aderência à meta"
+    ],
+    [
+      "Gráficos e relatórios",
+      "a fazer",
+      "Painel Saúde da semana e do mês"
+    ],
+    [
+      "Gráficos e relatórios",
+      "sugestão",
+      "Relatório em PDF para nutricionista ou médico"
+    ],
+    [
+      "Gráficos e relatórios",
+      "sugestão",
+      "Correlações: proteína × carga, sono × desempenho"
+    ],
+    [
+      "Identidade e plataforma",
+      "pronto",
+      "Logo, ícones e abertura no estilo do Hevy"
+    ],
+    [
+      "Identidade e plataforma",
+      "pronto",
+      "6 temas, 15 cores de destaque, foto de perfil"
+    ],
+    [
+      "Identidade e plataforma",
+      "pronto",
+      "Perfis separados, backup, cópias automáticas"
+    ],
+    [
+      "Identidade e plataforma",
+      "sugestão",
+      "Sincronizar os dois celulares"
+    ],
+    [
+      "Identidade e plataforma",
+      "sugestão",
+      "Bloqueio por PIN ou biometria"
+    ],
+    [
+      "Publicação",
+      "parcial",
+      "Código enviado ao GitHub; falta ativar o Pages (Settings → Pages → GitHub Actions)"
+    ],
+    [
+      "Publicação",
+      "a fazer",
+      "App instalado nos dois celulares pelo Pages"
+    ]
   ],
   "proximos": [
-    ["Publicação", "Publicar no GitHub Pages e instalar nos dois celulares"],
-    ["Nutrição", "Nutrição v1: meta calórica, macros e diário com a base TACO"],
-    ["Metas e hábitos", "Central de metas com previsão de chegada"],
-    ["Corpo e medidas", "Fotos de evolução e medidas por região"],
-    ["Nutrição", "Micronutrientes, planos de dieta e painel do dia"],
-    ["Hidratação", "Lembretes de água, hábitos e conquistas"]
+    [
+      "Publicação",
+      "Publicar no GitHub Pages e instalar nos dois celulares"
+    ],
+    [
+      "Nutrição",
+      "Nutrição v1: meta calórica, macros e diário com a base TACO"
+    ],
+    [
+      "Metas e hábitos",
+      "Central de metas com previsão de chegada"
+    ],
+    [
+      "Corpo e medidas",
+      "Fotos de evolução e medidas por região"
+    ],
+    [
+      "Nutrição",
+      "Micronutrientes, planos de dieta e painel do dia"
+    ],
+    [
+      "Hidratação",
+      "Lembretes de água, hábitos e conquistas"
+    ]
   ],
   "referencias": [
-    ["Hevy", "Treino, sessão ao vivo, estatísticas, mapa corporal, abertura", "aplicado"],
-    ["Apple Watch (atividade)", "Visual do avatar de água", "aplicado"]
+    [
+      "Hevy",
+      "Treino, sessão ao vivo, estatísticas, mapa corporal, abertura",
+      "aplicado"
+    ],
+    [
+      "Apple Watch (atividade)",
+      "Visual do avatar de água",
+      "aplicado"
+    ]
   ],
   "entregas": [
-    ["2026-10-17", "App de treino completo, aba Água, temas e cores, perfis, saúde no Início"],
-    ["2026-10-17", "Avatar de água com as silhuetas aprovadas"],
-    ["2026-10-17", "Logo, ícones e abertura no estilo do Hevy"],
-    ["2026-10-17", "Mapa corporal hiper-realista (17 grupos) e Início com os últimos 10 treinos"],
-    ["2026-10-17", "Skill carga-app com toda a memória do projeto"],
-    ["2026-10-17", "Painel visual do roadmap"]
+    [
+      "2026-10-17",
+      "App de treino completo, aba Água, temas e cores, perfis, saúde no Início"
+    ],
+    [
+      "2026-10-17",
+      "Avatar de água com as silhuetas aprovadas"
+    ],
+    [
+      "2026-10-17",
+      "Logo, ícones e abertura no estilo do Hevy"
+    ],
+    [
+      "2026-10-17",
+      "Mapa corporal hiper-realista (17 grupos) e Início com os últimos 10 treinos"
+    ],
+    [
+      "2026-10-17",
+      "Skill carga-app com toda a memória do projeto"
+    ],
+    [
+      "2026-10-17",
+      "Painel visual do roadmap"
+    ],
+    [
+      "2026-10-17",
+      "Projeto enviado ao GitHub (xSam10-10/Carga)"
+    ]
   ]
 }

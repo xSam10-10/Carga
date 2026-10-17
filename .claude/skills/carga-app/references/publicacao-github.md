@@ -2,19 +2,17 @@
 
 ## Situação atual (17/10/2026)
 
-- **Repositório:** `xsam2025-boop/carga`, criado pelo usuário.
-- **Problema:** nas sessões em nuvem, `add_repo` respondeu "vincule sua conta do GitHub", mesmo depois de o usuário conectar pelo celular. Por isso nada foi enviado ao GitHub ainda. O histórico git existe localmente e vai num pacote (`carga.bundle`).
-- O workflow `.github/workflows/pages.yml` já está pronto: a cada push na `main`, ele publica a pasta `dist/` no GitHub Pages.
+- **Repositório:** https://github.com/xSam10-10/Carga (conta do usuário: **xSam10-10**; o `xsam2025-boop` era um nome antigo errado). Público, branch `main`, com o histórico completo do projeto enviado.
+- **Conectar numa sessão:** `add_repo` com owner `xSam10-10`, repo `Carga`, acesso `push`. Se falhar, use `list_repos` para ver o nome exato que a conexão enxerga.
+- **Pages:** o workflow `.github/workflows/pages.yml` publica `dist/` a cada push na `main`. Na primeira vez, a ação `configure-pages` falha com "Resource not accessible by integration", porque o token do workflow não pode **criar** o site do Pages. O dono precisa ativar uma única vez: **Settings → Pages → Build and deployment → Source: GitHub Actions**. Depois disso, rode o workflow de novo (Actions → "Publicar no GitHub Pages" → Re-run, ou faça um push).
+- **Endereço do site:** https://xsam10-10.github.io/Carga/
 
-## Próxima tentativa (passo a passo)
+## Se a conexão não aparecer
+1. A conta precisa estar vinculada em https://claude.ai/connect-github.
+2. O app do Claude precisa estar instalado no repositório: github.com/settings/installations → Claude → Configure → Repository access.
+3. As permissões são definidas quando a sessão começa. Se mesmo assim não aparecer, abra uma sessão nova com o repositório selecionado.
 
-1. Pedir ao usuário que conecte o GitHub de preferência **pelo computador**, em claude.ai → Configurações → Conectores / GitHub. Ele precisa autorizar o app do Claude no repositório `carga` (ou em "todos os repositórios").
-2. Na sessão, chamar `add_repo` (owner `xsam2025-boop`, repo `carga`, acesso `push`). Não faça checagens antes; se der erro, leia `read_documentation` em `github.access` e repasse ao usuário o motivo exato.
-3. Clonar e enviar o conteúdo atual: copiar os arquivos do projeto (ou usar o bundle) para a `main` e fazer o push.
-4. No GitHub: Settings → Pages → Source: **GitHub Actions**. O workflow já tenta ativar sozinho (`enablement: true`).
-5. O site fica em `https://xsam2025-boop.github.io/carga/`. No celular: abrir no Chrome, menu ⋮ → **Instalar app** (ou "Adicionar à tela inicial"). No iPhone: Safari → Compartilhar → Adicionar à Tela de Início.
-
-**Plano B sem conector:** o usuário sobe o conteúdo de `carga-site.zip` pela interface web do GitHub (Add file → Upload files), ou usa o GitHub Desktop com `carga-projeto.zip`.
+**Plano B sem conector:** subir o conteúdo do `carga-projeto.zip` pela interface web do GitHub (Add file → Upload files).
 
 ## Pacotes entregues ao usuário a cada versão
 
