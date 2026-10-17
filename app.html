@@ -882,14 +882,14 @@ const ACCENTS=[
  ['oliva','Oliva',['#5B7A12','#E4EDCF','#FFFFFF'],['#A8D84A','#2D3A12','#141C02']],
  ['grafite','Grafite',['#3D4A55','#E1E5E9','#FFFFFF'],['#A7B6C4','#27303A','#0D1218']]];
 const accentOf=k=>ACCENTS.find(a=>a[0]===k)||ACCENTS[0];
-// [chave, nome, tipo, fundo, superfície, superfície 2, linha, texto, texto suave, corpo, músculo vazio]
+// [chave, nome, tipo, fundo, superfície, superfície 2, linha, texto, texto suave, corpo, músculo vazio, cor sugerida]
 const THEMES=[
- ['claro','Claro','light','#F1F3EF','#FFFFFF','#E7EAE4','#D9DDD5','#141918','#66706D','#DADDD6','#C6CBC3'],
- ['escuro','Escuro','dark','#0D1110','#161B1A','#202725','#2A3230','#E8EDEA','#95A09C','#28302E','#353E3B'],
- ['areia','Areia','light','#F3EEE6','#FFFCF7','#E9E2D6','#DCD3C4','#2A231B','#796D5F','#E1D8CA','#D0C5B3'],
- ['lavanda','Lavanda','light','#F1EFF8','#FFFFFF','#E6E2F2','#D7D1E8','#1C1730','#6A6484','#DDD8EB','#C9C3DD'],
- ['meianoite','Meia-noite','dark','#0A0F1E','#121A2E','#1B2440','#26304E','#E5EAF6','#8F9AB9','#212A45','#2D3755'],
- ['mocha','Mocha','dark','#16110E','#211A16','#2C231E','#3A2E27','#F3EBE5','#AE9D91','#2E2520','#3D322B']];
+ ['claro','Claro','light','#F1F3EF','#FFFFFF','#E7EAE4','#D9DDD5','#141918','#66706D','#DADDD6','#C6CBC3','verde'],
+ ['escuro','Escuro','dark','#0D1110','#161B1A','#202725','#2A3230','#E8EDEA','#95A09C','#28302E','#353E3B','petroleo'],
+ ['areia','Areia','light','#F3EEE6','#FFFCF7','#E9E2D6','#DCD3C4','#2A231B','#796D5F','#E1D8CA','#D0C5B3','laranja'],
+ ['lavanda','Lavanda','light','#F1EFF8','#FFFFFF','#E6E2F2','#D7D1E8','#1C1730','#6A6484','#DDD8EB','#C9C3DD','roxo'],
+ ['meianoite','Meia-noite','dark','#0A0F1E','#121A2E','#1B2440','#26304E','#E5EAF6','#8F9AB9','#212A45','#2D3755','ciano'],
+ ['mocha','Mocha','dark','#16110E','#211A16','#2C231E','#3A2E27','#F3EBE5','#AE9D91','#2E2520','#3D322B','mocha']];
 const sysDark=()=>{try{return matchMedia('(prefers-color-scheme: dark)').matches}catch(e){return false}};
 const themeOf=k=>THEMES.find(t=>t[0]===(k==='preto'?'escuro':k))||THEMES[sysDark()?1:0];
 function applyAccent(){const[,,l,d]=accentOf(S.profile.accent);const t=themeOf(S.profile.theme);const root=document.documentElement;
@@ -898,10 +898,10 @@ function applyAccent(){const[,,l,d]=accentOf(S.profile.accent);const t=themeOf(S
  root.setAttribute('data-theme',t[2]);
  st.textContent=`:root[data-theme]{--bg:${t[3]};--surface:${t[4]};--surface-2:${t[5]};--line:${t[6]};--fg:${t[7]};--muted:${t[8]};--body:${t[9]};--muscle-0:${t[10]};${A(t[2]==='dark'?d:l)};color-scheme:${t[2]}}`;
  if(m)m.setAttribute('content',t[3])}
-function themePicker(){const cur=themeOf(S.profile.theme)[0];const[,,l,d]=accentOf(S.profile.accent);
- const tile=t=>{const a=t[2]==='dark'?d:l;return`<span class="thm-p" style="background:${t[3]}"><i style="background:${t[4]};border-color:${t[6]}"><b style="background:${t[7]}"></b><em style="background:${t[8]}"></em></i><u style="background:${a[0]}"></u></span>`};
+function themePicker(){const cur=themeOf(S.profile.theme)[0];
+ const tile=t=>{const[,,l,d]=accentOf(t[11]);const a=t[2]==='dark'?d:l;return`<span class="thm-p" style="background:${t[3]}"><i style="background:${t[4]};border-color:${t[6]}"><b style="background:${t[7]}"></b><em style="background:${t[8]}"></em></i><u style="background:${a[0]}"></u></span>`};
  return`<div class="themes" role="radiogroup" aria-label="Tema">${THEMES.map(t=>`<button class="thm${t[0]===cur?' on':''}" role="radio" aria-checked="${t[0]===cur}" data-a="setTheme" data-k="${t[0]}">${tile(t)}<span>${t[1]}</span></button>`).join('')}</div>`}
-function accentPicker(){const cur=accentOf(S.profile.accent)[0];return`<div class="swatches" role="radiogroup" aria-label="Cor do app">${ACCENTS.map(([k,n,l,d])=>`<button class="swc${k===cur?' on':''}" role="radio" aria-checked="${k===cur}" data-a="setAccent" data-k="${k}"><i style="--c:${l[0]};--k:${l[2]};--cd:${d[0]};--kd:${d[2]}">${k===cur?I.check:''}</i><span>${n}</span></button>`).join('')}</div>`}
+function accentPicker(){const cur=accentOf(S.profile.accent)[0];const th=themeOf(S.profile.theme);const sug=accentOf(th[11]);return`<p class="muted small" style="margin:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span>Sugerida para o tema ${th[1]}: <b style="color:var(--fg)">${sug[1]}</b></span>${cur!==sug[0]?`<button class="btn sm sec" data-a="setAccent" data-k="${sug[0]}">Usar sugerida</button>`:''}</p><div class="swatches" role="radiogroup" aria-label="Cor do app">${ACCENTS.map(([k,n,l,d])=>`<button class="swc${k===cur?' on':''}" role="radio" aria-checked="${k===cur}" data-a="setAccent" data-k="${k}"><i style="--c:${l[0]};--k:${l[2]};--cd:${d[0]};--kd:${d[2]}">${k===cur?I.check:''}</i><span>${n}</span></button>`).join('')}</div>`}
 
 /* ---------- PERFIS ---------- */
 VIEWS.perfis=()=>{const first=!REGS.current;
@@ -965,7 +965,7 @@ const A={
  menu:d=>{const it=MENU[+d.k];closeSheet();it&&it.f()},
  more:()=>{UI.feedN+=12;rerender()},
  useProfile:d=>switchProfile(d.id),
- setTheme:d=>{S.profile.theme=d.k;save();applyAccent();rerender()},
+ setTheme:d=>{const t=themeOf(d.k);S.profile.theme=t[0];S.profile.accent=t[11];save();applyAccent();rerender()},
  setAccent:d=>{S.profile.accent=d.k;save();applyAccent();rerender()},
  addProfile:()=>askText('Novo perfil','','Nome da pessoa').then(v=>{closeSheet();const n=(v||'').trim();if(!n)return;if(REGS.list.some(p=>norm(p.name)===norm(n))){toast('Já existe um perfil com esse nome.');return}REGS.list.push({id:(slug(n)||'perfil')+'-'+uid().slice(0,4),name:n});saveReg();rerender();toast('Perfil criado. Toque nele para usar.')}),
  profMenu:d=>{const pr=REGS.list.find(p=>p.id===d.id);if(!pr)return;const cur=pr.id===REGS.current;menu(pr.name,[
