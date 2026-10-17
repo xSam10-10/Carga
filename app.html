@@ -849,7 +849,7 @@ VIEWS.config=()=>{const pr=S.profile;const sw=(k,l,d)=>`<label class="switch"><s
  <section class="card" style="display:flex;align-items:center;gap:12px"><span class="ava sm">${ini(pr.name)}</span><span style="flex:1;min-width:0"><span class="lab">Perfil em uso</span><b style="font-size:18px">${esc(pr.name)}</b><br><span class="muted small">As configurações e dados abaixo valem só para este perfil.</span></span><button class="btn sm sec" data-a="go" data-v="perfis">Trocar</button></section>
  <section class="card form"><label class="fld"><span>Nome do perfil</span><input class="inp" id="p-name" data-f="pname" value="${esc(pr.name)}"></label>
  <div class="fld"><span>Descanso padrão para exercícios novos</span><div class="chips">${[0,60,90,120,180].map(v=>`<button class="chip${pr.rest===v?' on':''}" data-a="pRest" data-k="${v}">${fmtRest(v)}</button>`).join('')}</div></div></section>
- <section class="card form"><span class="lab">Tema</span>${themePicker()}<span class="lab" style="margin-top:6px">Cor de destaque</span>${accentPicker()}<p class="muted small" style="margin:0">Tema e cor valem só para este perfil. Automático segue o modo claro ou escuro do celular.</p></section>
+ <section class="card form"><span class="lab">Tema</span>${themePicker()}<span class="lab" style="margin-top:6px">Cor de destaque</span>${accentPicker()}<p class="muted small" style="margin:0">Tema e cor valem só para este perfil.</p></section>
  <section class="card">${sw('sound','Som ao fim do descanso','')}${sw('vibrate','Vibrar ao fim do descanso','')}${sw('wake','Manter tela ligada no treino','Evita que o celular apague durante a sessão.')}${sw('notify','Avisar fim do descanso com a tela bloqueada','Mostra uma notificação quando o descanso acaba. Funciona no app instalado. Se o Android economizar bateria demais, o aviso pode atrasar alguns segundos.')}</section>
  <h3 class="sh">Importar do Hevy</h3>
  <section class="card form"><p class="muted" style="margin:0">No Hevy: Perfil → engrenagem → <b>Exportar e importar dados</b> → <b>Exportar treinos</b>. Ele gera um arquivo .csv. Escolha esse arquivo aqui. Treinos já importados são ignorados, então pode repetir sem duplicar.</p><span class="btn pri filebtn">${I.downl} Escolher arquivo CSV<input type="file" accept=".csv,text/csv,text/plain" data-file="hevy" aria-label="Arquivo CSV do Hevy"></span></section>
@@ -867,41 +867,40 @@ VIEWS.config=()=>{const pr=S.profile;const sw=(k,l,d)=>`<label class="switch"><s
 // [nome, claro: cor, fundo suave, texto sobre a cor | escuro: cor, fundo suave, texto sobre a cor]
 const ACCENTS=[
  ['verde','Verde',['#0D7556','#D3EBE0','#FFFFFF'],['#33C391','#12392B','#03140D']],
+ ['petroleo','Petróleo',['#0B6E80','#D2EAEE','#FFFFFF'],['#3BC0D4','#0F3940','#031418']],
+ ['ciano','Ciano',['#0279A3','#D3ECF5','#FFFFFF'],['#38C8F2','#0E3442','#021720']],
  ['azul','Azul',['#1F5FD1','#DCE6FA','#FFFFFF'],['#6EA0FF','#15274D','#06132E']],
  ['indigo','Índigo',['#3D47B8','#DFE1F6','#FFFFFF'],['#8B95FF','#1E2350','#0A0D2E']],
- ['petroleo','Petróleo',['#0B6E80','#D2EAEE','#FFFFFF'],['#3BC0D4','#0F3940','#031418']],
  ['roxo','Roxo',['#6A3FC6','#E6DEF7','#FFFFFF'],['#A98BFF','#2A1F4D','#130A2A']],
+ ['magenta','Magenta',['#A8279A','#F3D9EF','#FFFFFF'],['#EE7BE0','#45183F','#26071F']],
  ['rosa','Rosa',['#C2367A','#F7DCE9','#FFFFFF'],['#FF7DB7','#4A1830','#2A0516']],
  ['vinho','Vinho',['#8E2445','#F1D9E1','#FFFFFF'],['#E2729A','#401526','#25040F']],
  ['vermelho','Vermelho',['#C0362C','#F7DAD6','#FFFFFF'],['#FF7A6B','#4A1A15','#2A0703']],
  ['laranja','Laranja',['#B4520C','#F8E2D0','#FFFFFF'],['#FF9A4D','#4A2710','#2A1203']],
  ['dourado','Dourado',['#946700','#F4E7C2','#FFFFFF'],['#F2B83A','#43330D','#241A00']],
+ ['mocha','Mocha',['#7A4E36','#EEDFD6','#FFFFFF'],['#D6A283','#3D2A20','#1E120B']],
  ['oliva','Oliva',['#5B7A12','#E4EDCF','#FFFFFF'],['#A8D84A','#2D3A12','#141C02']],
  ['grafite','Grafite',['#3D4A55','#E1E5E9','#FFFFFF'],['#A7B6C4','#27303A','#0D1218']]];
 const accentOf=k=>ACCENTS.find(a=>a[0]===k)||ACCENTS[0];
 // [chave, nome, tipo, fundo, superfície, superfície 2, linha, texto, texto suave, corpo, músculo vazio]
 const THEMES=[
- ['auto','Automático',null],
  ['claro','Claro','light','#F1F3EF','#FFFFFF','#E7EAE4','#D9DDD5','#141918','#66706D','#DADDD6','#C6CBC3'],
  ['escuro','Escuro','dark','#0D1110','#161B1A','#202725','#2A3230','#E8EDEA','#95A09C','#28302E','#353E3B'],
  ['areia','Areia','light','#F3EEE6','#FFFCF7','#E9E2D6','#DCD3C4','#2A231B','#796D5F','#E1D8CA','#D0C5B3'],
+ ['lavanda','Lavanda','light','#F1EFF8','#FFFFFF','#E6E2F2','#D7D1E8','#1C1730','#6A6484','#DDD8EB','#C9C3DD'],
  ['meianoite','Meia-noite','dark','#0A0F1E','#121A2E','#1B2440','#26304E','#E5EAF6','#8F9AB9','#212A45','#2D3755'],
- ['preto','Preto','dark','#000000','#0C0C0C','#171717','#242424','#F2F2F2','#9B9B9B','#1C1C1C','#2B2B2B']];
-const themeOf=k=>THEMES.find(t=>t[0]===k)||THEMES[0];
-const HOST_THEME=document.documentElement.getAttribute('data-theme');
+ ['mocha','Mocha','dark','#16110E','#211A16','#2C231E','#3A2E27','#F3EBE5','#AE9D91','#2E2520','#3D322B']];
+const sysDark=()=>{try{return matchMedia('(prefers-color-scheme: dark)').matches}catch(e){return false}};
+const themeOf=k=>THEMES.find(t=>t[0]===(k==='preto'?'escuro':k))||THEMES[sysDark()?1:0];
 function applyAccent(){const[,,l,d]=accentOf(S.profile.accent);const t=themeOf(S.profile.theme);const root=document.documentElement;
  let st=$('#accent-style');if(!st){st=document.createElement('style');st.id='accent-style';document.body.appendChild(st)}
  const A=x=>`--accent:${x[0]};--accent-soft:${x[1]};--accent-ink:${x[2]}`;const m=document.querySelector('meta[name="theme-color"]');
- if(!t[2]){if(HOST_THEME==null)root.removeAttribute('data-theme');else root.setAttribute('data-theme',HOST_THEME);
-  st.textContent=`:root{${A(l)}}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){${A(d)}}}:root[data-theme="dark"]{${A(d)}}`;
-  if(m)m.setAttribute('content',matchMedia('(prefers-color-scheme: dark)').matches?'#0D1110':'#F1F3EF');return}
  root.setAttribute('data-theme',t[2]);
  st.textContent=`:root[data-theme]{--bg:${t[3]};--surface:${t[4]};--surface-2:${t[5]};--line:${t[6]};--fg:${t[7]};--muted:${t[8]};--body:${t[9]};--muscle-0:${t[10]};${A(t[2]==='dark'?d:l)};color-scheme:${t[2]}}`;
  if(m)m.setAttribute('content',t[3])}
 function themePicker(){const cur=themeOf(S.profile.theme)[0];const[,,l,d]=accentOf(S.profile.accent);
  const tile=t=>{const a=t[2]==='dark'?d:l;return`<span class="thm-p" style="background:${t[3]}"><i style="background:${t[4]};border-color:${t[6]}"><b style="background:${t[7]}"></b><em style="background:${t[8]}"></em></i><u style="background:${a[0]}"></u></span>`};
- return`<div class="themes" role="radiogroup" aria-label="Tema">${THEMES.map(t=>{let p;if(!t[2]){const c=THEMES[1],e=THEMES[2];p=`<span class="thm-p" style="background:linear-gradient(135deg,${c[3]} 0 50%,${e[3]} 50% 100%)"><i style="background:linear-gradient(135deg,${c[4]} 0 50%,${e[4]} 50% 100%);border-color:${c[6]}"><b style="background:linear-gradient(90deg,${c[7]} 0 50%,${e[7]} 50%)"></b><em style="background:linear-gradient(90deg,${c[8]} 0 50%,${e[8]} 50%)"></em></i><u style="background:linear-gradient(90deg,${l[0]} 0 50%,${d[0]} 50%)"></u></span>`}else p=tile(t);
-  return`<button class="thm${t[0]===cur?' on':''}" role="radio" aria-checked="${t[0]===cur}" data-a="setTheme" data-k="${t[0]}">${p}<span>${t[1]}</span></button>`}).join('')}</div>`}
+ return`<div class="themes" role="radiogroup" aria-label="Tema">${THEMES.map(t=>`<button class="thm${t[0]===cur?' on':''}" role="radio" aria-checked="${t[0]===cur}" data-a="setTheme" data-k="${t[0]}">${tile(t)}<span>${t[1]}</span></button>`).join('')}</div>`}
 function accentPicker(){const cur=accentOf(S.profile.accent)[0];return`<div class="swatches" role="radiogroup" aria-label="Cor do app">${ACCENTS.map(([k,n,l,d])=>`<button class="swc${k===cur?' on':''}" role="radio" aria-checked="${k===cur}" data-a="setAccent" data-k="${k}"><i style="--c:${l[0]};--k:${l[2]};--cd:${d[0]};--kd:${d[2]}">${k===cur?I.check:''}</i><span>${n}</span></button>`).join('')}</div>`}
 
 /* ---------- PERFIS ---------- */
