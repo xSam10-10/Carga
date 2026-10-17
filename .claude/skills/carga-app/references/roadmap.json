@@ -1,445 +1,463 @@
 {
-  "objetivo": "O app de saúde mais completo do mercado: treino, dieta (macros e micros), água, medidas, metas e gráficos num lugar só, para o Samuel e a Carol.",
-  "modulos": [
-    {
-      "ordem": 1,
-      "modulo": "Treino",
-      "progresso": 0.92,
-      "resumo": "Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios e mapa corporal hiper-realista."
-    },
-    {
-      "ordem": 2,
-      "modulo": "Hidratação",
-      "progresso": 0.85,
-      "resumo": "Meta por peso e sexo, copos rápidos, avatar animado, sequência e gráficos."
-    },
-    {
-      "ordem": 3,
-      "modulo": "Corpo e medidas",
-      "progresso": 0.6,
-      "resumo": "Peso, medidas, IMC, TMB e indicadores; faltam fotos de evolução e medidas por região."
-    },
-    {
-      "ordem": 4,
-      "modulo": "Nutrição",
-      "progresso": 0.68,
-      "resumo": "Aba Nutrição no modelo do Samsung Health: diário com 6 refeições, TACO (591 alimentos), macros e micronutrientes, metas e tendências. Faltam planos de dieta e código de barras."
-    },
-    {
-      "ordem": 5,
-      "modulo": "Metas e hábitos",
-      "progresso": 0.45,
-      "resumo": "Objetivo (perder, manter, ganhar peso, ganhar massa) com meta calórica e de macros por dia e o quanto falta no Início. Falta a central de metas com prazo e previsão."
-    },
-    {
-      "ordem": 6,
-      "modulo": "Gráficos e relatórios",
-      "progresso": 0.72,
-      "resumo": "Períodos de 7 dias a desde o início em todos os gráficos; faltam os de nutrição e o painel da semana."
-    },
-    {
-      "ordem": 7,
-      "modulo": "Identidade e plataforma",
-      "progresso": 0.92,
-      "resumo": "Logo, abertura, senha de entrada, 6 temas, 15 cores, perfis separados, backup."
-    },
-    {
-      "ordem": 8,
-      "modulo": "Publicação",
-      "progresso": 0.85,
-      "resumo": "Site no ar em xsam10-10.github.io/Carga, atualizado a cada envio; falta instalar nos dois celulares."
-    }
+ "objetivo": "O app de saúde mais completo do mercado: treino, dieta (macros e micros), água, medidas, metas e gráficos num lugar só, para o Samuel e a Carol.",
+ "modulos": [
+  {
+   "ordem": 1,
+   "modulo": "Treino",
+   "progresso": 0.95,
+   "resumo": "Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios, mapa corporal e aba Exercícios (avulsos com calorias do relógio)."
+  },
+  {
+   "ordem": 2,
+   "modulo": "Hidratação",
+   "progresso": 0.85,
+   "resumo": "Meta por peso e sexo, copos rápidos, avatar animado, sequência e gráficos."
+  },
+  {
+   "ordem": 3,
+   "modulo": "Corpo e medidas",
+   "progresso": 0.65,
+   "resumo": "Peso, medidas, IMC, TMB e indicadores; faltam fotos de evolução e medidas por região."
+  },
+  {
+   "ordem": 4,
+   "modulo": "Nutrição",
+   "progresso": 0.68,
+   "resumo": "Aba Nutrição no modelo do Samsung Health: diário com 6 refeições, TACO (591 alimentos), macros e micronutrientes, metas e tendências. Faltam planos de dieta e código de barras."
+  },
+  {
+   "ordem": 5,
+   "modulo": "Metas e hábitos",
+   "progresso": 0.45,
+   "resumo": "Objetivo (perder, manter, ganhar peso, ganhar massa) com meta calórica e de macros por dia e o quanto falta no Início. Falta a central de metas com prazo e previsão."
+  },
+  {
+   "ordem": 6,
+   "modulo": "Gráficos e relatórios",
+   "progresso": 0.72,
+   "resumo": "Períodos de 7 dias a desde o início em todos os gráficos; faltam os de nutrição e o painel da semana."
+  },
+  {
+   "ordem": 7,
+   "modulo": "Identidade e plataforma",
+   "progresso": 0.92,
+   "resumo": "Logo, abertura, senha de entrada, 6 temas, 15 cores, perfis separados, backup."
+  },
+  {
+   "ordem": 8,
+   "modulo": "Publicação",
+   "progresso": 0.85,
+   "resumo": "Site no ar em xsam10-10.github.io/Carga, atualizado a cada envio; falta instalar nos dois celulares."
+  }
+ ],
+ "itens": [
+  [
+   "Treino",
+   "pronto",
+   "Rotinas, pastas, modelos prontos e treino vazio"
   ],
-  "itens": [
-    [
-      "Treino",
-      "pronto",
-      "Rotinas, pastas, modelos prontos e treino vazio"
-    ],
-    [
-      "Treino",
-      "pronto",
-      "Sessão ao vivo: tipos de série, coluna Anterior, descanso, superséries, notas"
-    ],
-    [
-      "Treino",
-      "pronto",
-      "Recordes ao vivo, progressão de carga, aquecimento, calculadora de anilhas"
-    ],
-    [
-      "Treino",
-      "pronto",
-      "Catálogo de 465 exercícios com fotos, passo a passo, filtros e criar exercício"
-    ],
-    [
-      "Treino",
-      "pronto",
-      "Mapa corporal hiper-realista com 17 grupos"
-    ],
-    [
-      "Treino",
-      "pronto",
-      "Importar histórico do Hevy"
-    ],
-    [
-      "Treino",
-      "pronto",
-      "Calorias do treino registradas do relógio (pop-up no fim do treino)"
-    ],
-    [
-      "Treino",
-      "pronto",
-      "Animação de recorde ao vivo: medalha, balão e confetes (estilo Hevy)"
-    ],
-    [
-      "Treino",
-      "sugestão",
-      "Periodização em blocos (força, hipertrofia, deload)"
-    ],
-    [
-      "Treino",
-      "sugestão",
-      "Volume semanal por grupo com faixa recomendada e alerta de grupo esquecido"
-    ],
-    [
-      "Treino",
-      "sugestão",
-      "Mapa de recuperação muscular"
-    ],
-    [
-      "Treino",
-      "sugestão",
-      "RPE e RIR por série"
-    ],
-    [
-      "Treino",
-      "sugestão",
-      "Animações próprias para exercícios sem foto"
-    ],
-    [
-      "Hidratação",
-      "pronto",
-      "Meta por peso, sexo e treino do dia"
-    ],
-    [
-      "Hidratação",
-      "pronto",
-      "Copos rápidos, avatar animado, sequência e gráficos"
-    ],
-    [
-      "Hidratação",
-      "sugestão",
-      "Lembretes ao longo do dia"
-    ],
-    [
-      "Hidratação",
-      "sugestão",
-      "Ajuste da meta em dias quentes"
-    ],
-    [
-      "Hidratação",
-      "sugestão",
-      "Outras bebidas com fator de hidratação"
-    ],
-    [
-      "Corpo e medidas",
-      "pronto",
-      "Peso e medidas com gráfico"
-    ],
-    [
-      "Corpo e medidas",
-      "pronto",
-      "IMC, TMB, gasto diário, cintura/altura, proteína sugerida"
-    ],
-    [
-      "Corpo e medidas",
-      "parcial",
-      "% de gordura com histórico próprio"
-    ],
-    [
-      "Corpo e medidas",
-      "sugestão",
-      "Fotos de evolução lado a lado"
-    ],
-    [
-      "Corpo e medidas",
-      "sugestão",
-      "Medidas por região no mapa corporal"
-    ],
-    [
-      "Corpo e medidas",
-      "sugestão",
-      "Bioimpedância manual"
-    ],
-    [
-      "Nutrição",
-      "pronto",
-      "Meta calórica pela TMB, atividade e objetivo"
-    ],
-    [
-      "Nutrição",
-      "pronto",
-      "Macronutrientes com meta diária"
-    ],
-    [
-      "Nutrição",
-      "pronto",
-      "Micronutrientes com metas por sexo e idade"
-    ],
-    [
-      "Nutrição",
-      "pronto",
-      "Base de alimentos TACO em português"
-    ],
-    [
-      "Nutrição",
-      "parcial",
-      "Diário por refeição e favoritos (falta \"copiar de ontem\")"
-    ],
-    [
-      "Nutrição",
-      "a fazer",
-      "Planos de dieta por objetivo"
-    ],
-    [
-      "Nutrição",
-      "sugestão",
-      "Leitor de código de barras (Open Food Facts)"
-    ],
-    [
-      "Nutrição",
-      "sugestão",
-      "Ciclo de carboidrato ligado aos dias de treino"
-    ],
-    [
-      "Nutrição",
-      "sugestão",
-      "Foto do prato com estimativa assistida"
-    ],
-    [
-      "Nutrição",
-      "pronto",
-      "Alimentos próprios, refeições pessoais salvas e calorias rápidas"
-    ],
-    [
-      "Nutrição",
-      "pronto",
-      "Tendências de calorias e macronutrientes por período"
-    ],
-    [
-      "Metas e hábitos",
-      "pronto",
-      "Meta de água e sequência de semanas treinadas"
-    ],
-    [
-      "Metas e hábitos",
-      "pronto",
-      "Objetivo com déficit/superávit calculado por fontes científicas (4 objetivos)"
-    ],
-    [
-      "Metas e hábitos",
-      "pronto",
-      "Meta de hoje no Início: falta em kcal e por macronutriente"
-    ],
-    [
-      "Metas e hábitos",
-      "pronto",
-      "Gasto do dia pelo relógio (calorias ativas) ou pelo nível de atividade"
-    ],
-    [
-      "Metas e hábitos",
-      "a fazer",
-      "Central de metas: peso, gordura, carga-alvo, treinos por semana, proteína"
-    ],
-    [
-      "Metas e hábitos",
-      "a fazer",
-      "Tendência e previsão de chegada à meta"
-    ],
-    [
-      "Metas e hábitos",
-      "sugestão",
-      "Conquistas pessoais (sem rede social)"
-    ],
-    [
-      "Metas e hábitos",
-      "sugestão",
-      "Hábitos diários: sono, passos, suplementos"
-    ],
-    [
-      "Metas e hábitos",
-      "sugestão",
-      "Painel do dia num único cartão"
-    ],
-    [
-      "Gráficos e relatórios",
-      "pronto",
-      "Períodos de 7 dias, mês, ano e desde o início em todos os gráficos"
-    ],
-    [
-      "Gráficos e relatórios",
-      "pronto",
-      "Relatório mensal, calendário, radar e evolução por músculo"
-    ],
-    [
-      "Gráficos e relatórios",
-      "pronto",
-      "Gráficos de nutrição e aderência à meta"
-    ],
-    [
-      "Gráficos e relatórios",
-      "a fazer",
-      "Painel Saúde da semana e do mês"
-    ],
-    [
-      "Gráficos e relatórios",
-      "sugestão",
-      "Relatório em PDF para nutricionista ou médico"
-    ],
-    [
-      "Gráficos e relatórios",
-      "sugestão",
-      "Correlações: proteína × carga, sono × desempenho"
-    ],
-    [
-      "Identidade e plataforma",
-      "pronto",
-      "Logo, ícones e abertura no estilo do Hevy"
-    ],
-    [
-      "Identidade e plataforma",
-      "pronto",
-      "6 temas, 15 cores de destaque, foto de perfil"
-    ],
-    [
-      "Identidade e plataforma",
-      "pronto",
-      "Perfis separados, backup, cópias automáticas"
-    ],
-    [
-      "Identidade e plataforma",
-      "sugestão",
-      "Sincronizar os dois celulares"
-    ],
-    [
-      "Identidade e plataforma",
-      "pronto",
-      "Senha de entrada nos dois celulares"
-    ],
-    [
-      "Publicação",
-      "pronto",
-      "Site no ar pelo GitHub Pages, publicado a cada envio"
-    ],
-    [
-      "Publicação",
-      "a fazer",
-      "App instalado nos dois celulares pelo Pages"
-    ]
+  [
+   "Treino",
+   "pronto",
+   "Sessão ao vivo: tipos de série, coluna Anterior, descanso, superséries, notas"
   ],
-  "proximos": [
-    [
-      "Treino",
-      "Exercícios avulsos (caminhada, bicicleta, natação) com as calorias do relógio somando na meta do dia"
-    ],
-    [
-      "Nutrição",
-      "Nutrição v2: copiar de ontem, planos de dieta e leitor de código de barras"
-    ],
-    [
-      "Metas e hábitos",
-      "Central de metas com previsão de chegada"
-    ],
-    [
-      "Corpo e medidas",
-      "Fotos de evolução e medidas por região"
-    ],
-    [
-      "Metas e hábitos",
-      "Painel do dia: treino, água, calorias, proteína e sono num cartão"
-    ],
-    [
-      "Hidratação",
-      "Lembretes de água, hábitos e conquistas"
-    ]
+  [
+   "Treino",
+   "pronto",
+   "Recordes ao vivo, progressão de carga, aquecimento, calculadora de anilhas"
   ],
-  "referencias": [
-    [
-      "Hevy",
-      "Treino, sessão ao vivo, estatísticas, mapa corporal, abertura",
-      "aplicado"
-    ],
-    [
-      "Apple Watch (atividade)",
-      "Visual do avatar de água",
-      "aplicado"
-    ],
-    [
-      "Samsung Health (Refeição)",
-      "Diário de refeições, porção, nutrientes, tendências de calorias e macros",
-      "aplicado"
-    ]
+  [
+   "Treino",
+   "pronto",
+   "Catálogo de 465 exercícios com fotos, passo a passo, filtros e criar exercício"
   ],
-  "entregas": [
-    [
-      "2026-10-17",
-      "App de treino completo, aba Água, temas e cores, perfis, saúde no Início"
-    ],
-    [
-      "2026-10-17",
-      "Avatar de água com as silhuetas aprovadas"
-    ],
-    [
-      "2026-10-17",
-      "Logo, ícones e abertura no estilo do Hevy"
-    ],
-    [
-      "2026-10-17",
-      "Mapa corporal hiper-realista (17 grupos) e Início com os últimos 10 treinos"
-    ],
-    [
-      "2026-10-17",
-      "Skill carga-app com toda a memória do projeto"
-    ],
-    [
-      "2026-10-17",
-      "Painel visual do roadmap"
-    ],
-    [
-      "2026-10-17",
-      "Projeto enviado ao GitHub (xSam10-10/Carga)"
-    ],
-    [
-      "2026-10-17",
-      "Site publicado no GitHub Pages"
-    ],
-    [
-      "2026-10-17",
-      "Senha de entrada e calorias do treino pela frequência cardíaca"
-    ],
-    [
-      "2026-10-17",
-      "Calorias do treino passam a vir do relógio; frequência cardíaca removida"
-    ],
-    [
-      "2026-10-17",
-      "Aba Nutrição: diário de refeições, TACO, macros, micronutrientes, metas e tendências"
-    ],
-    [
-      "2026-10-17",
-      "Abertura do app instalado já começa só com o símbolo (sem o quadrado verde)"
-    ],
-    [
-      "2026-10-17",
-      "Animação de recorde no treino: medalha, balão e confetes"
-    ],
-    [
-      "2026-10-17",
-      "Som do recorde igual ao do Hevy e tempos da animação ajustados"
-    ],
-    [
-      "2026-10-17",
-      "Objetivos e metas: déficit/superávit, macros e o que falta hoje no Início"
-    ]
+  [
+   "Treino",
+   "pronto",
+   "Mapa corporal hiper-realista com 17 grupos"
+  ],
+  [
+   "Treino",
+   "pronto",
+   "Importar histórico do Hevy"
+  ],
+  [
+   "Treino",
+   "pronto",
+   "Calorias do treino registradas do relógio (pop-up no fim do treino)"
+  ],
+  [
+   "Treino",
+   "pronto",
+   "Animação de recorde ao vivo: medalha, balão e confetes (estilo Hevy)"
+  ],
+  [
+   "Treino",
+   "sugestão",
+   "Periodização em blocos (força, hipertrofia, deload)"
+  ],
+  [
+   "Treino",
+   "sugestão",
+   "Volume semanal por grupo com faixa recomendada e alerta de grupo esquecido"
+  ],
+  [
+   "Treino",
+   "sugestão",
+   "Mapa de recuperação muscular"
+  ],
+  [
+   "Treino",
+   "sugestão",
+   "RPE e RIR por série"
+  ],
+  [
+   "Treino",
+   "sugestão",
+   "Animações próprias para exercícios sem foto"
+  ],
+  [
+   "Treino",
+   "pronto",
+   "Aba Exercícios: 53 exercícios avulsos (caminhada, corrida, bicicleta, natação…), favoritos, criar exercício, calorias obrigatórias e distância/FC opcionais"
+  ],
+  [
+   "Hidratação",
+   "pronto",
+   "Meta por peso, sexo e treino do dia"
+  ],
+  [
+   "Hidratação",
+   "pronto",
+   "Copos rápidos, avatar animado, sequência e gráficos"
+  ],
+  [
+   "Hidratação",
+   "sugestão",
+   "Lembretes ao longo do dia"
+  ],
+  [
+   "Hidratação",
+   "sugestão",
+   "Ajuste da meta em dias quentes"
+  ],
+  [
+   "Hidratação",
+   "sugestão",
+   "Outras bebidas com fator de hidratação"
+  ],
+  [
+   "Corpo e medidas",
+   "pronto",
+   "Peso e medidas com gráfico"
+  ],
+  [
+   "Corpo e medidas",
+   "pronto",
+   "IMC, TMB, gasto diário, cintura/altura, proteína sugerida"
+  ],
+  [
+   "Corpo e medidas",
+   "parcial",
+   "% de gordura com histórico próprio"
+  ],
+  [
+   "Corpo e medidas",
+   "sugestão",
+   "Fotos de evolução lado a lado"
+  ],
+  [
+   "Corpo e medidas",
+   "sugestão",
+   "Medidas por região no mapa corporal"
+  ],
+  [
+   "Corpo e medidas",
+   "sugestão",
+   "Bioimpedância manual"
+  ],
+  [
+   "Corpo e medidas",
+   "pronto",
+   "Meus dados: todos os lançamentos pessoais concentrados no Perfil"
+  ],
+  [
+   "Nutrição",
+   "pronto",
+   "Meta calórica pela TMB, atividade e objetivo"
+  ],
+  [
+   "Nutrição",
+   "pronto",
+   "Macronutrientes com meta diária"
+  ],
+  [
+   "Nutrição",
+   "pronto",
+   "Micronutrientes com metas por sexo e idade"
+  ],
+  [
+   "Nutrição",
+   "pronto",
+   "Base de alimentos TACO em português"
+  ],
+  [
+   "Nutrição",
+   "parcial",
+   "Diário por refeição e favoritos (falta \"copiar de ontem\")"
+  ],
+  [
+   "Nutrição",
+   "a fazer",
+   "Planos de dieta por objetivo"
+  ],
+  [
+   "Nutrição",
+   "sugestão",
+   "Leitor de código de barras (Open Food Facts)"
+  ],
+  [
+   "Nutrição",
+   "sugestão",
+   "Ciclo de carboidrato ligado aos dias de treino"
+  ],
+  [
+   "Nutrição",
+   "sugestão",
+   "Foto do prato com estimativa assistida"
+  ],
+  [
+   "Nutrição",
+   "pronto",
+   "Alimentos próprios, refeições pessoais salvas e calorias rápidas"
+  ],
+  [
+   "Nutrição",
+   "pronto",
+   "Tendências de calorias e macronutrientes por período"
+  ],
+  [
+   "Metas e hábitos",
+   "pronto",
+   "Meta de água e sequência de semanas treinadas"
+  ],
+  [
+   "Metas e hábitos",
+   "pronto",
+   "Objetivo com déficit/superávit calculado por fontes científicas (4 objetivos)"
+  ],
+  [
+   "Metas e hábitos",
+   "pronto",
+   "Meta de hoje no Início: falta em kcal e por macronutriente"
+  ],
+  [
+   "Metas e hábitos",
+   "pronto",
+   "Gasto do dia pelo relógio (calorias ativas) ou pelo nível de atividade"
+  ],
+  [
+   "Metas e hábitos",
+   "a fazer",
+   "Central de metas: peso, gordura, carga-alvo, treinos por semana, proteína"
+  ],
+  [
+   "Metas e hábitos",
+   "a fazer",
+   "Tendência e previsão de chegada à meta"
+  ],
+  [
+   "Metas e hábitos",
+   "sugestão",
+   "Conquistas pessoais (sem rede social)"
+  ],
+  [
+   "Metas e hábitos",
+   "sugestão",
+   "Hábitos diários: sono, passos, suplementos"
+  ],
+  [
+   "Metas e hábitos",
+   "sugestão",
+   "Painel do dia num único cartão"
+  ],
+  [
+   "Gráficos e relatórios",
+   "pronto",
+   "Períodos de 7 dias, mês, ano e desde o início em todos os gráficos"
+  ],
+  [
+   "Gráficos e relatórios",
+   "pronto",
+   "Relatório mensal, calendário, radar e evolução por músculo"
+  ],
+  [
+   "Gráficos e relatórios",
+   "pronto",
+   "Gráficos de nutrição e aderência à meta"
+  ],
+  [
+   "Gráficos e relatórios",
+   "a fazer",
+   "Painel Saúde da semana e do mês"
+  ],
+  [
+   "Gráficos e relatórios",
+   "sugestão",
+   "Relatório em PDF para nutricionista ou médico"
+  ],
+  [
+   "Gráficos e relatórios",
+   "sugestão",
+   "Correlações: proteína × carga, sono × desempenho"
+  ],
+  [
+   "Identidade e plataforma",
+   "pronto",
+   "Logo, ícones e abertura no estilo do Hevy"
+  ],
+  [
+   "Identidade e plataforma",
+   "pronto",
+   "6 temas, 15 cores de destaque, foto de perfil"
+  ],
+  [
+   "Identidade e plataforma",
+   "pronto",
+   "Perfis separados, backup, cópias automáticas"
+  ],
+  [
+   "Identidade e plataforma",
+   "sugestão",
+   "Sincronizar os dois celulares"
+  ],
+  [
+   "Identidade e plataforma",
+   "pronto",
+   "Senha de entrada nos dois celulares"
+  ],
+  [
+   "Publicação",
+   "pronto",
+   "Site no ar pelo GitHub Pages, publicado a cada envio"
+  ],
+  [
+   "Publicação",
+   "a fazer",
+   "App instalado nos dois celulares pelo Pages"
   ]
+ ],
+ "proximos": [
+  [
+   "Nutrição",
+   "Nutrição v2: copiar de ontem, planos de dieta e leitor de código de barras"
+  ],
+  [
+   "Metas e hábitos",
+   "Central de metas com previsão de chegada"
+  ],
+  [
+   "Corpo e medidas",
+   "Fotos de evolução e medidas por região"
+  ],
+  [
+   "Metas e hábitos",
+   "Painel do dia: treino, água, calorias, proteína e sono num cartão"
+  ],
+  [
+   "Hidratação",
+   "Lembretes de água, hábitos e conquistas"
+  ]
+ ],
+ "referencias": [
+  [
+   "Hevy",
+   "Treino, sessão ao vivo, estatísticas, mapa corporal, abertura",
+   "aplicado"
+  ],
+  [
+   "Apple Watch (atividade)",
+   "Visual do avatar de água",
+   "aplicado"
+  ],
+  [
+   "Samsung Health (Refeição)",
+   "Diário de refeições, porção, nutrientes, tendências de calorias e macros",
+   "aplicado"
+  ]
+ ],
+ "entregas": [
+  [
+   "2026-10-17",
+   "App de treino completo, aba Água, temas e cores, perfis, saúde no Início"
+  ],
+  [
+   "2026-10-17",
+   "Avatar de água com as silhuetas aprovadas"
+  ],
+  [
+   "2026-10-17",
+   "Logo, ícones e abertura no estilo do Hevy"
+  ],
+  [
+   "2026-10-17",
+   "Mapa corporal hiper-realista (17 grupos) e Início com os últimos 10 treinos"
+  ],
+  [
+   "2026-10-17",
+   "Skill carga-app com toda a memória do projeto"
+  ],
+  [
+   "2026-10-17",
+   "Painel visual do roadmap"
+  ],
+  [
+   "2026-10-17",
+   "Projeto enviado ao GitHub (xSam10-10/Carga)"
+  ],
+  [
+   "2026-10-17",
+   "Site publicado no GitHub Pages"
+  ],
+  [
+   "2026-10-17",
+   "Senha de entrada e calorias do treino pela frequência cardíaca"
+  ],
+  [
+   "2026-10-17",
+   "Calorias do treino passam a vir do relógio; frequência cardíaca removida"
+  ],
+  [
+   "2026-10-17",
+   "Aba Nutrição: diário de refeições, TACO, macros, micronutrientes, metas e tendências"
+  ],
+  [
+   "2026-10-17",
+   "Abertura do app instalado já começa só com o símbolo (sem o quadrado verde)"
+  ],
+  [
+   "2026-10-17",
+   "Animação de recorde no treino: medalha, balão e confetes"
+  ],
+  [
+   "2026-10-17",
+   "Som do recorde igual ao do Hevy e tempos da animação ajustados"
+  ],
+  [
+   "2026-10-17",
+   "Objetivos e metas: déficit/superávit, macros e o que falta hoje no Início"
+  ],
+  [
+   "2026-10-17",
+   "Meta do dia: exercício do relógio somado por inteiro; relógio como padrão; dias de treino por semana"
+  ],
+  [
+   "2026-10-17",
+   "Meus dados no Perfil, reset geral com restauração e assinatura"
+  ],
+  [
+   "2026-10-17",
+   "Aba Exercícios: exercícios avulsos com calorias, distância e frequência cardíaca"
+  ]
+ ]
 }

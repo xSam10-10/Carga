@@ -114,3 +114,12 @@
 - **Reset geral (17/10/2026):** `RESET_ID` zera todos os perfis uma vez por aparelho; os dados antigos vão para `carga.old.*` e voltam em Configurações → "Restaurar dados de antes do reset". Testes Playwright precisam gravar `localStorage['carga.reset']=RESET_ID` antes de semear dados.
 - **Assinatura:** "by Samuel Costa" discreto (`.byline`) no rodapé de Configurações.
 
+## Aba Exercícios (view `ativ`) — 17/10/2026
+- Referência: "Meus exercícios" do Samsung Health (vídeos do usuário). **Só o que funciona offline**: nada de GPS, mapa, cronômetro ao vivo ou leitura do relógio.
+- 6ª aba da barra (`ativ`); a antiga tile "Exercícios" do Perfil (catálogo de musculação) virou "Catálogo".
+- Catálogo `AEX` (53 itens em 8 categorias `ACAT`; unidade de distância km, m ou nenhuma) + criados pelo usuário em `S.exCustom`; favoritos em `profile.exFav` (padrão caminhada, corrida, bicicleta, natação).
+- Registro `ativForm`: **calorias obrigatórias** (não salva sem); duração, distância (só nos que têm unidade), frequência cardíaca média e notas são opcionais. Salvo em `S.extra` `{id,t,ex,name,kcal,dur,dist(km),hr,notes}`; natação digita metros e guarda km.
+- `exKcalOn` soma `S.extra` na meta do dia (exercício entra por inteiro); a meta de água soma +500 ml por hora também desses exercícios.
+- Tela da aba: resumo de hoje, favoritos, gráfico de calorias por período (`perCtl('ativ')`) e registros por dia, incluindo os treinos de musculação. Detalhe `ativDet` com ritmo/velocidade calculados. Atalho "Exercício" no Início (`homeAtiv`).
+- Frequência cardíaca aqui é só informação opcional pedida pelo usuário; não entra em nenhum cálculo (regra 6 continua).
+

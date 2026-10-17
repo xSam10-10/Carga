@@ -7,13 +7,13 @@
 
 Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada para implementar aos poucos.
 
-## Visão geral (progresso geral: 75%)
+## Visão geral (progresso geral: 76%)
 
 | Módulo | Status | Progresso | Resumo |
 |---|---|---|---|
-| 1. Treino | ✅ | 92% | Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios e mapa corporal hiper-realista. |
+| 1. Treino | ✅ | 95% | Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios, mapa corporal e aba Exercícios (avulsos com calorias do relógio). |
 | 2. Hidratação | ✅ | 85% | Meta por peso e sexo, copos rápidos, avatar animado, sequência e gráficos. |
-| 3. Corpo e medidas | 🟡 | 60% | Peso, medidas, IMC, TMB e indicadores; faltam fotos de evolução e medidas por região. |
+| 3. Corpo e medidas | 🟡 | 65% | Peso, medidas, IMC, TMB e indicadores; faltam fotos de evolução e medidas por região. |
 | 4. Nutrição | 🟡 | 68% | Aba Nutrição no modelo do Samsung Health: diário com 6 refeições, TACO (591 alimentos), macros e micronutrientes, metas e tendências. Faltam planos de dieta e código de barras. |
 | 5. Metas e hábitos | 🟡 | 45% | Objetivo (perder, manter, ganhar peso, ganhar massa) com meta calórica e de macros por dia e o quanto falta no Início. Falta a central de metas com prazo e previsão. |
 | 6. Gráficos e relatórios | 🟡 | 72% | Períodos de 7 dias a desde o início em todos os gráficos; faltam os de nutrição e o painel da semana. |
@@ -34,6 +34,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - 💡 Mapa de recuperação muscular
 - 💡 RPE e RIR por série
 - 💡 Animações próprias para exercícios sem foto
+- ✅ Aba Exercícios: 53 exercícios avulsos (caminhada, corrida, bicicleta, natação…), favoritos, criar exercício, calorias obrigatórias e distância/FC opcionais
 
 ## 2. Hidratação
 - ✅ Meta por peso, sexo e treino do dia
@@ -49,6 +50,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - 💡 Fotos de evolução lado a lado
 - 💡 Medidas por região no mapa corporal
 - 💡 Bioimpedância manual
+- ✅ Meus dados: todos os lançamentos pessoais concentrados no Perfil
 
 ## 4. Nutrição
 - ✅ Meta calórica pela TMB, atividade e objetivo
@@ -95,12 +97,11 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 
 ## Ordem dos próximos passos
 
-1. **Treino:** Exercícios avulsos (caminhada, bicicleta, natação) com as calorias do relógio somando na meta do dia
-2. **Nutrição:** Nutrição v2: copiar de ontem, planos de dieta e leitor de código de barras
-3. **Metas e hábitos:** Central de metas com previsão de chegada
-4. **Corpo e medidas:** Fotos de evolução e medidas por região
-5. **Metas e hábitos:** Painel do dia: treino, água, calorias, proteína e sono num cartão
-6. **Hidratação:** Lembretes de água, hábitos e conquistas
+1. **Nutrição:** Nutrição v2: copiar de ontem, planos de dieta e leitor de código de barras
+2. **Metas e hábitos:** Central de metas com previsão de chegada
+3. **Corpo e medidas:** Fotos de evolução e medidas por região
+4. **Metas e hábitos:** Painel do dia: treino, água, calorias, proteína e sono num cartão
+5. **Hidratação:** Lembretes de água, hábitos e conquistas
 
 ## Referências de outros apps
 
@@ -129,3 +130,6 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 17/10/2026 | Animação de recorde no treino: medalha, balão e confetes |
 | 17/10/2026 | Som do recorde igual ao do Hevy e tempos da animação ajustados |
 | 17/10/2026 | Objetivos e metas: déficit/superávit, macros e o que falta hoje no Início |
+| 17/10/2026 | Meta do dia: exercício do relógio somado por inteiro; relógio como padrão; dias de treino por semana |
+| 17/10/2026 | Meus dados no Perfil, reset geral com restauração e assinatura |
+| 17/10/2026 | Aba Exercícios: exercícios avulsos com calorias, distância e frequência cardíaca |
