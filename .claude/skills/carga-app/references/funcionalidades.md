@@ -54,7 +54,7 @@
   - abas Todos, Favoritos, Meus alimentos e Minhas refeições;
   - seleção múltipla com botão fixo "Adicionar N item(ns)";
   - fora do modo de seleção, mostra só a ficha do alimento.
-- **Folha de porção:** quantidade em g (−/+, atalhos 50/100/150/200 g e "1 porção" para alimentos próprios), barra de macros em %, tabela nutricional completa e estrela de favorito.
+- **Folha de porção:** quantidade em g **digitável** (o toque seleciona o número inteiro, a tabela e as macros recalculam enquanto digita, Enter salva), mais −/+, atalhos 50/100/150/200 g e "1 porção" para alimentos próprios, barra de macros em %, tabela nutricional completa e estrela de favorito.
 - **Criar alimento:** valores da embalagem por porção; o app converte para 100 g.
 - **Nutrientes do dia:**
   - proteína, fibras, saturada, colesterol, sódio, potássio, cálcio, ferro, magnésio, zinco e vitaminas C e A;

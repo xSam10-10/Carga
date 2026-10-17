@@ -492,6 +492,7 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .fdock .btn[disabled]{opacity:.5}
 .fld{display:flex;flex-direction:column;gap:6px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pq .inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .pq{display:grid;grid-template-columns:44px 1fr auto 44px;align-items:center;gap:8px}.pq .inp{text-align:center;font:600 24px var(--display)}
 .ntab{width:100%;border-collapse:collapse;font-size:14px}.ntab td{padding:5px 0;border-bottom:1px solid var(--line)}.ntab td:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}.ntab tr:first-child td{font-weight:700;font-size:16px}.ntab tr.nsub td:first-child{padding-left:14px;color:var(--muted)}
 .nlist{display:flex;flex-direction:column;gap:18px}
@@ -2617,7 +2618,7 @@ VIEWS.refeicao=p=>{const w=p.w;if(!w)return bar('Refeição')+'<main class="page
  let h=bar('Registrar refeição',{right:`<button class="btn sm pri" data-a="mealOk">OK</button>`})+'<main class="page">';
  h+=`<div class="mhead"><select class="inp msel" id="m-type" data-f="n:mtype" aria-label="Refeição">${MEALS.map(([k,l])=>`<option value="${k}"${k===w.m?' selected':''}>${l}</option>`).join('')}</select><input class="inp mtime" id="m-time" type="time" value="${w.t}" data-f="n:mtime" aria-label="Hora"></div>`;
  h+=`<section class="card mtot"><b>Total: ${fmtInt(n[0])} kcal</b><span class="muted small">Carboidrato ${fmt(Math.round(n[3]*10)/10)} g · Gordura ${fmt(Math.round(n[2]*10)/10)} g · Proteína ${fmt(Math.round(n[1]*10)/10)} g</span></section>`;
- h+=`<h3 class="sh">Alimentos</h3><section class="card mlist">${w.it.map((it,i)=>`<div class="mline"><button class="mtap" data-a="${it.f==null?'quickEdit':'portion'}" data-i="${i}"><span class="nfx"><b>${esc(itemName(it))}</b><span class="muted small">${itemSub(it)}</span></span></button>${it.f==null?`<button class="ib" data-a="itemDel" data-i="${i}" aria-label="Remover">${I.x}</button>`:`<button class="ib" data-a="itemQ" data-i="${i}" data-k="-1" aria-label="Diminuir">−</button><button class="ib" data-a="itemQ" data-i="${i}" data-k="1" aria-label="Aumentar">${I.plus}</button>`}</div>`).join('')}
+ h+=`<h3 class="sh">Alimentos</h3>${w.it.some(x=>x.f!=null)?`<p class="muted small" style="margin:-6px 0 0">Toque no alimento para digitar a quantidade exata em gramas.</p>`:''}<section class="card mlist">${w.it.map((it,i)=>`<div class="mline"><button class="mtap" data-a="${it.f==null?'quickEdit':'portion'}" data-i="${i}"><span class="nfx"><b>${esc(itemName(it))}</b><span class="muted small">${itemSub(it)}</span></span></button>${it.f==null?`<button class="ib" data-a="itemDel" data-i="${i}" aria-label="Remover">${I.x}</button>`:`<button class="ib" data-a="itemQ" data-i="${i}" data-k="-1" aria-label="Diminuir">−</button><button class="ib" data-a="itemQ" data-i="${i}" data-k="1" aria-label="Aumentar">${I.plus}</button>`}</div>`).join('')}
  <button class="mi" data-a="addFood">${I.plus}Adicionar alimento</button><button class="mi" data-a="quickKcal">${I.flame}Adicionar calorias</button></section>`;
  h+=`<section class="card mlist">${w.it.length?`<button class="mi" data-a="saveTpl">${I.copy}Salvar como refeição pessoal</button>`:''}${w.orig?`<button class="mi dg" data-a="mealDel">${I.trash}Excluir esta refeição</button>`:''}</section>`;
  return h+'</main>'};
@@ -2646,12 +2647,18 @@ VIEWS.novoAlimento=p=>{p.f=p.f||{por:'100'};return bar('Criar alimento',{right:`
 /* ---- porção (folha) ---- */
 const NUT_ROWS=[[0,'Calorias','kcal'],[3,'Carboidrato','g'],[4,'  Fibras','g'],[1,'Proteína','g'],[2,'Gordura total','g'],[5,'  Saturada','g'],[6,'Colesterol','mg'],[7,'Sódio','mg'],[8,'Potássio','mg'],[9,'Cálcio','mg'],[10,'Ferro','mg'],[11,'Magnésio','mg'],[12,'Zinco','mg'],[13,'Vitamina C','mg'],[14,'Vitamina A','mcg']];
 function portionHTML(id,q,ctl=true){const f=food(id);if(!f)return'';const it={f:id,q},n=itemNut(it),fav=S.fav.includes(id);const kc=[n[3]*4,n[2]*9,n[1]*4],t=kc.reduce((a,b)=>a+b,0)||1;
- return`<div class="row"><span class="nfx"><b style="font-size:17px">${esc(f.name)}</b><span class="muted small">${fmtInt(n[0])} kcal em ${fmt(q)} g${f.own?'':' · TACO'}</span></span><button class="ib" data-a="favT" data-id="${id}" aria-label="${fav?'Tirar dos':'Pôr nos'} favoritos" aria-pressed="${fav}"><span class="${fav?'fstar':''}">${I.star}</span></button></div>
- ${ctl?`<div class="pq"><button class="ib" data-a="pStep" data-k="-1" aria-label="Menos">−</button><input class="inp" id="p-q" inputmode="decimal" value="${fmt(q)}" data-f="n:pq" aria-label="Quantidade em gramas"><span class="muted">g</span><button class="ib" data-a="pStep" data-k="1" aria-label="Mais">${I.plus}</button></div>
+ return`<div class="row"><span class="nfx"><b style="font-size:17px">${esc(f.name)}</b><span class="muted small" id="p-kc">${fmtInt(n[0])} kcal em ${fmt(q)} g${f.own?'':' · TACO'}</span></span><button class="ib" data-a="favT" data-id="${id}" aria-label="${fav?'Tirar dos':'Pôr nos'} favoritos" aria-pressed="${fav}"><span class="${fav?'fstar':''}">${I.star}</span></button></div>
+ ${ctl?`<label class="lab" for="p-q" style="margin-bottom:-4px">Quantidade · toque no número para digitar</label><div class="pq"><button class="ib" data-a="pStep" data-k="-1" aria-label="Menos">−</button><input class="inp" id="p-q" type="text" inputmode="decimal" enterkeyhint="done" value="${fmt(q)}" data-f="n:pq" aria-label="Quantidade em gramas, digite o valor"><span class="muted">g</span><button class="ib" data-a="pStep" data-k="1" aria-label="Mais">${I.plus}</button></div>
  <div class="chips">${[...(f.por&&f.por!==100?[[f.por,'1 porção']]:[]),[50,'50 g'],[100,'100 g'],[150,'150 g'],[200,'200 g']].map(([g,l])=>`<button class="chip" data-a="pSet" data-g="${g}">${l}</button>`).join('')}</div>`:''}
- <div class="mbar">${[3,2,1].map((i,k)=>`<i class="m${k}" style="flex:${Math.max(kc[[0,1,2][k]],.0001)}"></i>`).join('')}</div><div class="nmr"><span></span>${['Carb.','Gord.','Prot.'].map((l,k)=>`<b class="t${k}">${l} ${Math.round(kc[k]/t*100)}%</b>`).join('')}</div>
+ <div id="pdet">${portionDet(f,n)}</div>`}
+function portionDet(f,n){const kc=[n[3]*4,n[2]*9,n[1]*4],t=kc.reduce((a,b)=>a+b,0)||1;return`<div class="mbar">${[3,2,1].map((i,k)=>`<i class="m${k}" style="flex:${Math.max(kc[[0,1,2][k]],.0001)}"></i>`).join('')}</div><div class="nmr"><span></span>${['Carb.','Gord.','Prot.'].map((l,k)=>`<b class="t${k}">${l} ${Math.round(kc[k]/t*100)}%</b>`).join('')}</div>
  <table class="ntab">${NUT_ROWS.map(([i,l,u])=>`<tr class="${l.startsWith('  ')?'nsub':''}"><td>${l.trim()}</td><td>${f.v[i]==null?'–':fmt(Math.round(n[i]*10)/10)+' '+u}</td></tr>`).join('')}</table>
  <p class="muted small" style="margin:0">${f.own?'Alimento criado por você.':'Fonte: TACO 4ª edição (NEPA/UNICAMP). "–" = sem dado na tabela.'}</p>`}
+/* Campo de gramas: o toque seleciona o número inteiro, então basta digitar a quantidade nova */
+let pqSel=false;document.addEventListener('focusin',e=>{if(e.target.id==='p-q'){pqSel=true;setTimeout(()=>{try{e.target.select()}catch(x){}},0)}});
+document.addEventListener('pointerup',e=>{if(e.target.id==='p-q'&&pqSel){pqSel=false;e.preventDefault();try{e.target.select()}catch(x){}}});
+document.addEventListener('mouseup',e=>{if(e.target.id==='p-q')e.preventDefault()});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='p-q'){e.preventDefault();A.pSave()}});
 function portionSheet(i){const w=top_().p.w,it=w.it[i];UI.pi={i,q:num(it.q)||100};sheet(`<div class="form" id="psheet">${portionHTML(it.f,UI.pi.q)}</div><div class="ask-b"><button class="btn sec" data-a="itemDel" data-i="${i}">Remover</button><button class="btn pri" data-a="pSave">Salvar</button></div>`)}
 const pRefresh=()=>{const w=top_().p.w,it=w.it[UI.pi.i];const el=$('#psheet');if(el){const a=document.activeElement&&document.activeElement.id==='p-q';el.innerHTML=portionHTML(it.f,UI.pi.q);if(a){const x=$('#p-q');x.focus();x.setSelectionRange(x.value.length,x.value.length)}}};
 
@@ -2723,7 +2730,7 @@ function nInput(f,t,v){const p=top_().p;
  if(f==='fcat'){p.cat=v;const el=$('#fl');if(el)el.innerHTML=foodList(p);return}
  if(f==='mtype'){p.w.m=v;return}
  if(f==='mtime'){if(/^\d\d:\d\d$/.test(v))p.w.t=v;return}
- if(f==='pq'){const n=num(v);if(n!=null&&n>=0){UI.pi.q=n;const w=p.w,it=w.it[UI.pi.i];const s=$('#psheet .row .muted.small');if(s){const f2=food(it.f);s.textContent=`${fmtInt(itemNut({f:it.f,q:n})[0])} kcal em ${fmt(n)} g${f2&&f2.own?'':' · TACO'}`}}return}
+ if(f==='pq'){const n=num(v);if(n!=null&&n>=0&&n<=5000){UI.pi.q=n;const it=p.w.it[UI.pi.i],f2=food(it.f),nn=itemNut({f:it.f,q:n});const h=$('#p-kc');if(h)h.textContent=`${fmtInt(nn[0])} kcal em ${fmt(n)} g${f2&&f2.own?'':' · TACO'}`;const d=$('#pdet');if(d&&f2)d.innerHTML=portionDet(f2,nn)}return}
  if(f==='nf'){p.f[t.dataset.k]=v;return}
  if(f==='nm'){const c=S.profile.nutri=S.profile.nutri||{};c[t.dataset.k]=num(v);save();const s=$('#nm-sum');if(s)s.textContent=nmSum();return}}
 
