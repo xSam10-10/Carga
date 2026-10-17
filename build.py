@@ -22,4 +22,6 @@ head = '''<!doctype html>
 (dist / 'index.html').write_text(head + app + '\n</body>\n</html>\n', encoding='utf-8')
 for f in ['manifest.webmanifest', 'sw.js', 'icon.svg', 'icon-192.png', 'icon-512.png']:
     shutil.copy(root / f, dist / f)
+if (root/'img').exists():
+    shutil.copytree(root/'img', dist/'img', dirs_exist_ok=True)
 print('ok', (dist / 'index.html').stat().st_size, 'bytes')

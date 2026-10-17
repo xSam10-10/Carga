@@ -1,0 +1,465 @@
+# nome | músculo | secundários | equipamento | tipo | imagem (free-exercise-db) | família
+# tipos: wr = peso e reps · bw = peso corporal (+kg opcional) · as = assistido (−kg) · t = duração · dt = distância e duração
+# --- Peito
+Supino Reto (Barra)|Peito|Tríceps,Ombros|Barra|wr|Barbell_Bench_Press_-_Medium_Grip|supino
+Supino Reto (Halter)|Peito|Tríceps,Ombros|Halter|wr|Dumbbell_Bench_Press|supino
+Supino Reto (Smith)|Peito|Tríceps,Ombros|Smith|wr|Smith_Machine_Bench_Press|supino
+Supino Reto (Cabo)|Peito|Tríceps,Ombros|Cabo|wr|Cable_Chest_Press|supino
+Supino Aberto (Barra)|Peito|Ombros|Barra|wr|Wide-Grip_Barbell_Bench_Press|supino
+Supino (Elástico)|Peito|Tríceps,Ombros|Elástico|wr|Bench_Press_-_With_Bands|supino
+Supino Inclinado (Barra)|Peito|Ombros,Tríceps|Barra|wr|Barbell_Incline_Bench_Press_-_Medium_Grip|supinoinc
+Supino Inclinado (Halter)|Peito|Ombros,Tríceps|Halter|wr|Incline_Dumbbell_Press|supinoinc
+Supino Inclinado (Smith)|Peito|Ombros,Tríceps|Smith|wr|Smith_Machine_Incline_Bench_Press|supinoinc
+Supino Inclinado (Máquina)|Peito|Ombros,Tríceps|Máquina|wr|Leverage_Incline_Chest_Press|supinoinc
+Supino Declinado (Barra)|Peito|Tríceps|Barra|wr|Decline_Barbell_Bench_Press|supinodec
+Supino Declinado (Halter)|Peito|Tríceps|Halter|wr|Decline_Dumbbell_Bench_Press|supinodec
+Supino Declinado (Máquina)|Peito|Tríceps|Máquina|wr|Leverage_Decline_Chest_Press|supinodec
+Supino Declinado (Smith)|Peito|Tríceps|Smith|wr|Smith_Machine_Decline_Press|supinodec
+Supino Sentado (Máquina)|Peito|Tríceps,Ombros|Máquina|wr|Machine_Bench_Press|supinomaq
+Supino Iso-Lateral (Máquina)|Peito|Tríceps,Ombros|Máquina|wr|Leverage_Chest_Press|supinomaq
+Supino Hexagonal (Halter)|Peito|Tríceps|Halter|wr|Close-Grip_Dumbbell_Press|supino
+Supino Squeeze (Halter)|Peito|Tríceps|Halter|wr|Dumbbell_Bench_Press_with_Neutral_Grip|supino
+Supino com Pés Elevados (Barra)|Peito|Tríceps,Ombros|Barra|wr|Barbell_Bench_Press_-_Medium_Grip|supino
+Supino no Chão (Barra)|Peito|Tríceps|Barra|wr|Floor_Press|supinochao
+Supino no Chão (Halter)|Peito|Tríceps|Halter|wr|Dumbbell_Floor_Press|supinochao
+Crucifixo (Máquina)|Peito||Máquina|wr|Butterfly|peckdeck
+Voador (Pec Deck)|Peito||Máquina|wr|Butterfly|peckdeck
+Crucifixo (Halter)|Peito||Halter|wr|Dumbbell_Flyes|crucifixo
+Crucifixo Inclinado (Halter)|Peito|Ombros|Halter|wr|Incline_Dumbbell_Flyes|crucifixo
+Crucifixo Declinado (Halter)|Peito||Halter|wr|Decline_Dumbbell_Flyes|crucifixo
+Crucifixo (Elástico)|Peito||Elástico|wr|Cross_Over_-_With_Bands|crucifixo
+Crucifixo (TRX)|Peito|Ombros|Fita de suspensão|bw|Bodyweight_Flyes|crucifixo
+Crucifixo Sentado (Cabo)|Peito||Cabo|wr|Flat_Bench_Cable_Flyes|crossover
+Crossover (Cabo)|Peito||Cabo|wr|Cable_Crossover|crossover
+Crossover Unilateral (Cabo)|Peito||Cabo|wr|Single-Arm_Cable_Crossover|crossover
+Crossover Baixo (Cabo)|Peito|Ombros|Cabo|wr|Low_Cable_Crossover|crossoverbaixo
+Flexão de Braço|Peito|Tríceps,Ombros|Peso corporal|bw|Pushups|flexao
+Flexão (Com Peso)|Peito|Tríceps,Ombros|Anilha|wr|Pushups|flexao
+Flexão com Apoio dos Joelhos|Peito|Tríceps,Ombros|Peso corporal|bw|Pushups|flexao
+Flexão Inclinada|Peito|Tríceps,Ombros|Peso corporal|bw|Incline_Push-Up|flexao
+Flexão Declinada|Peito|Tríceps,Ombros|Peso corporal|bw|Decline_Push-Up|flexao
+Flexão Batendo Palmas|Peito|Tríceps,Ombros|Peso corporal|bw|Plyo_Push-up|flexao
+Flexão com Um Braço|Peito|Tríceps,Ombros,Abdômen|Peso corporal|bw|Single-Arm_Push-Up|flexao
+Flexão com Pegada Fechada|Peito|Tríceps|Peso corporal|bw|Push-Ups_-_Close_Triceps_Position|flexao
+Flexão nas Argolas|Peito|Tríceps,Ombros|Fita de suspensão|bw|Suspended_Push-Up|flexao
+Paralelas (Peito)|Peito|Tríceps,Ombros|Peso corporal|bw|Dips_-_Chest_Version|paralelas
+Peito na Paralela com Peso|Peito|Tríceps,Ombros|Anilha|wr|Dips_-_Chest_Version|paralelas
+Peito na Paralela Assistida (Máquina)|Peito|Tríceps|Máquina|as|Dip_Machine|paralelas
+Mergulho nas Argolas|Peito|Tríceps,Ombros|Fita de suspensão|bw|Ring_Dips|paralelas
+Pullover (Halter)|Peito|Dorsais|Halter|wr|Straight-Arm_Dumbbell_Pullover|pullover
+Compressão de Anilha (Svend Press)|Peito|Ombros|Anilha|wr|Svend_Press|svend
+Press com Anilha|Peito|Ombros|Anilha|wr|Svend_Press|svend
+Volta ao Mundo|Peito|Ombros|Halter|wr|Around_The_Worlds|crucifixo
+# --- Costas
+Puxada Alta (Cabo)|Dorsais|Bíceps,Costas superiores|Cabo|wr|Wide-Grip_Lat_Pulldown|puxada
+Puxada Alta Pegada Fechada (Cabo)|Dorsais|Bíceps|Cabo|wr|Close-Grip_Front_Lat_Pulldown|puxada
+Puxada Alta Supinada (Cabo)|Dorsais|Bíceps|Cabo|wr|Underhand_Cable_Pulldowns|puxada
+Puxada Unilateral (Cabo)|Dorsais|Bíceps|Cabo|wr|One_Arm_Lat_Pulldown|puxada
+Puxada Alta (Máquina)|Dorsais|Bíceps|Máquina|wr|Full_Range-Of-Motion_Lat_Pulldown|puxada
+Puxada Alta (Elástico)|Dorsais|Bíceps|Elástico|wr|Wide-Grip_Lat_Pulldown|puxada
+Puxada Ajoelhada (Elástico)|Dorsais|Bíceps|Elástico|wr|Kneeling_High_Pulley_Row|puxada
+Puxada com Triângulo (Cabo)|Dorsais|Bíceps|Cabo|wr|V-Bar_Pulldown|puxada
+Barra Fixa|Dorsais|Bíceps,Costas superiores|Peso corporal|bw|Pullups|barrafixa
+Barra Fixa Supinada|Dorsais|Bíceps|Peso corporal|bw|Chin-Up|barrafixa
+Barra Fixa Assistida (Máquina)|Dorsais|Bíceps|Máquina|as|Band_Assisted_Pull-Up|barrafixa
+Barra Fixa (Elástico)|Dorsais|Bíceps|Elástico|as|Band_Assisted_Pull-Up|barrafixa
+Barra Fixa (Com Peso)|Dorsais|Bíceps,Costas superiores|Anilha|wr|Weighted_Pull_Ups|barrafixa
+Barra Fixa Supinada Assistida|Dorsais|Bíceps|Máquina|as|Band_Assisted_Pull-Up|barrafixa
+Barra Fixa Supinada com Peso|Dorsais|Bíceps|Anilha|wr|Chin-Up|barrafixa
+Barra Fixa com Pegada Aberta|Dorsais|Costas superiores|Peso corporal|bw|Wide-Grip_Rear_Pull-Up|barrafixa
+Barra Fixa Negativa|Dorsais|Bíceps|Peso corporal|bw|Pullups|barrafixa
+Barra Fixa com Kipping|Dorsais|Bíceps|Peso corporal|bw|Pullups|barrafixa
+Barra Fixa ao Esterno (Gironda)|Dorsais|Bíceps,Costas superiores|Peso corporal|bw|Gironda_Sternum_Chins|barrafixa
+Barra Fixa nas Argolas|Dorsais|Bíceps|Fita de suspensão|bw|Pullups|barrafixa
+Puxada Escapular|Costas superiores|Dorsais|Peso corporal|bw|Scapular_Pull-Up|barrafixa
+Pendurado na Barra|Antebraços|Dorsais|Peso corporal|t|One_Handed_Hang|barrafixa
+Remada Sentada com Pegada em V (Cabo)|Costas superiores|Dorsais,Bíceps|Cabo|wr|Seated_Cable_Rows|remadasentada
+Remada Sentada Pegada Aberta (Cabo)|Costas superiores|Dorsais,Ombros|Cabo|wr|Elevated_Cable_Rows|remadasentada
+Remada Sentada com Barra (Cabo)|Costas superiores|Dorsais,Bíceps|Cabo|wr|Seated_Cable_Rows|remadasentada
+Remada Unilateral (Cabo)|Costas superiores|Dorsais,Bíceps|Cabo|wr|Seated_One-arm_Cable_Pulley_Rows|remadasentada
+Remada Curvada (Barra)|Costas superiores|Dorsais,Bíceps,Lombar|Barra|wr|Bent_Over_Barbell_Row|remadacurvada
+Remada Curvada (Halter)|Costas superiores|Dorsais,Bíceps|Halter|wr|Bent_Over_Two-Dumbbell_Row|remadacurvada
+Remada Curvada (Smith)|Costas superiores|Dorsais,Bíceps|Smith|wr|Smith_Machine_Bent_Over_Row|remadacurvada
+Remada Curvada (Elástico)|Costas superiores|Dorsais,Bíceps|Elástico|wr|Bent_Over_Two-Dumbbell_Row|remadacurvada
+Remada Curvada Supinada (Barra)|Costas superiores|Dorsais,Bíceps|Barra|wr|Reverse_Grip_Bent-Over_Rows|remadacurvada
+Remada Pendlay (Barra)|Costas superiores|Dorsais,Lombar|Barra|wr|Bent_Over_Barbell_Row|remadacurvada
+Remada Unilateral (Halter)|Dorsais|Costas superiores,Bíceps|Halter|wr|One-Arm_Dumbbell_Row|remadaunilateral
+Remada Meadows (Barra)|Dorsais|Costas superiores,Bíceps|Barra|wr|One-Arm_Long_Bar_Row|remadaunilateral
+Remada Gorila (Kettlebell)|Costas superiores|Dorsais|Kettlebell|wr|Alternating_Kettlebell_Row|remadacurvada
+Remada Renegada (Halter)|Costas superiores|Abdômen,Dorsais|Halter|wr|Alternating_Renegade_Row|remadaunilateral
+Remada Inclinada com Apoio no Peito (Halter)|Costas superiores|Dorsais,Bíceps|Halter|wr|Dumbbell_Incline_Row|remadacurvada
+Remada Seal (Barra)|Costas superiores|Dorsais|Barra|wr|Lying_Cambered_Barbell_Row|remadacurvada
+Remada Seal (Halter)|Costas superiores|Dorsais|Halter|wr|Dumbbell_Incline_Row|remadacurvada
+Remada Iso-Lateral (Máquina)|Costas superiores|Dorsais,Bíceps|Máquina|wr|Leverage_Iso_Row|remadamaq
+Remada Alta Iso-Lateral (Máquina)|Dorsais|Costas superiores,Bíceps|Máquina|wr|Leverage_High_Row|remadamaq
+Remada Baixa (Máquina)|Costas superiores|Dorsais,Bíceps|Máquina|wr|Leverage_Iso_Row|remadamaq
+Remada Cavalinho (Barra T)|Costas superiores|Dorsais,Bíceps|Barra|wr|T-Bar_Row_with_Handle|cavalinho
+Remada na Barra T com Apoio no Peito|Costas superiores|Dorsais,Bíceps|Máquina|wr|Lying_T-Bar_Row|cavalinho
+Remada Cavalinho (Landmine)|Costas superiores|Dorsais,Bíceps|Barra|wr|Bent_Over_Two-Arm_Long_Bar_Row|cavalinho
+Remada Invertida|Costas superiores|Dorsais,Bíceps|Peso corporal|bw|Inverted_Row|remadainvertida
+Remada Baixa (Suspensão)|Costas superiores|Dorsais,Bíceps|Fita de suspensão|bw|Suspended_Row|remadainvertida
+Pulldown Braços Estendidos (Cabo)|Dorsais||Cabo|wr|Straight-Arm_Pulldown|retaestendida
+Puxada com Corda e Braços Estendidos (Cabo)|Dorsais||Cabo|wr|Rope_Straight-Arm_Pulldown|retaestendida
+Pullover (Máquina)|Dorsais|Peito|Máquina|wr||pullover
+Crucifixo Inverso (Máquina)|Costas superiores|Ombros|Máquina|wr|Reverse_Machine_Flyes|crucinv
+Crucifixo Inverso (Halter)|Costas superiores|Ombros|Halter|wr|Seated_Bent-Over_Rear_Delt_Raise|crucinv
+Face Pull (Cabo)|Ombros|Costas superiores,Trapézio|Cabo|wr|Face_Pull|facepull
+Levantamento Terra (Barra)|Lombar|Glúteos,Posteriores de coxa,Costas superiores,Trapézio|Barra|wr|Barbell_Deadlift|terra
+Levantamento Terra (Halter)|Glúteos|Posteriores de coxa,Lombar|Halter|wr|Stiff-Legged_Dumbbell_Deadlift|terra
+Levantamento Terra (Smith)|Glúteos|Posteriores de coxa,Lombar|Smith|wr|Smith_Machine_Stiff-Legged_Deadlift|terra
+Levantamento Terra (Barra Hexagonal)|Glúteos|Quadríceps,Lombar,Trapézio|Barra|wr|Trap_Bar_Deadlift|terra
+Levantamento Terra (Elástico)|Glúteos|Posteriores de coxa,Lombar|Elástico|wr|Deadlift_with_Bands|terra
+Levantamento Terra Sumô|Glúteos|Adutores,Quadríceps,Lombar|Barra|wr|Sumo_Deadlift|terra
+Levantamento Terra com Puxada Alta (Barra)|Corpo inteiro|Trapézio,Glúteos|Barra|wr|Kettlebell_Sumo_High_Pull|terra
+Rack Pull|Costas superiores|Lombar,Glúteos,Trapézio|Barra|wr|Rack_Pulls|rackpull
+Hiperextensão Lombar|Lombar|Glúteos,Posteriores de coxa|Peso corporal|bw|Hyperextensions_Back_Extensions|hiperext
+Extensão Lombar (Hiperextensão com Peso)|Lombar|Glúteos,Posteriores de coxa|Anilha|wr|Hyperextensions_Back_Extensions|hiperext
+Extensão Lombar (Máquina)|Lombar|Glúteos|Máquina|wr|Lower_Back_Curl|hiperext
+Super-Homem|Lombar|Glúteos|Peso corporal|bw|Superman|superman
+Encolhimento (Halter)|Trapézio||Halter|wr|Dumbbell_Shrug|encolhimento
+Encolhimento (Barra)|Trapézio||Barra|wr|Barbell_Shrug|encolhimento
+Encolhimento (Cabo)|Trapézio||Cabo|wr|Cable_Shrugs|encolhimento
+Encolhimento (Máquina)|Trapézio||Máquina|wr|Leverage_Shrug|encolhimento
+Encolhimento (Smith)|Trapézio||Smith|wr|Smith_Machine_Behind_the_Back_Shrug|encolhimento
+Encolhimento com Salto|Trapézio|Corpo inteiro|Barra|wr|Clean_Shrug|encolhimento
+# --- Ombros
+Desenvolvimento (Halter)|Ombros|Tríceps|Halter|wr|Dumbbell_Shoulder_Press|desenv
+Desenvolvimento (Barra)|Ombros|Tríceps|Barra|wr|Barbell_Shoulder_Press|desenv
+Desenvolvimento (Máquina)|Ombros|Tríceps|Máquina|wr|Machine_Shoulder_Military_Press|desenv
+Desenvolvimento (Smith)|Ombros|Tríceps|Smith|wr|Smith_Machine_Overhead_Shoulder_Press|desenv
+Desenvolvimento (Cabo)|Ombros|Tríceps|Cabo|wr|Cable_Shoulder_Press|desenv
+Desenvolvimento Militar em Pé (Barra)|Ombros|Tríceps,Abdômen|Barra|wr|Standing_Military_Press|desenv
+Desenvolvimento de Ombros Sentado (Barra)|Ombros|Tríceps|Barra|wr|Seated_Barbell_Military_Press|desenv
+Desenvolvimento de Ombros Sentado (Halter)|Ombros|Tríceps|Halter|wr|Seated_Dumbbell_Press|desenv
+Desenvolvimento de Ombros (Máquina de Anilhas)|Ombros|Tríceps|Máquina|wr|Leverage_Shoulder_Press|desenv
+Desenvolvimento de Ombros (Kettlebell)|Ombros|Tríceps|Kettlebell|wr|Two-Arm_Kettlebell_Military_Press|desenv
+Desenvolvimento Unilateral na Landmine (Barra)|Ombros|Peito,Tríceps|Barra|wr|Landmine_Linear_Jammer|desenv
+Desenvolvimento Arnold (Halter)|Ombros|Tríceps|Halter|wr|Arnold_Dumbbell_Press|arnold
+Push Press (Barra)|Ombros|Tríceps,Quadríceps|Barra|wr|Push_Press|pushpress
+Elevação Lateral (Halter)|Ombros||Halter|wr|Side_Lateral_Raise|elevlat
+Elevação Lateral (Cabo)|Ombros||Cabo|wr|Standing_Low-Pulley_Deltoid_Raise|elevlat
+Elevação Lateral (Máquina)|Ombros||Máquina|wr||elevlat
+Elevação Lateral (Elástico)|Ombros||Elástico|wr|Lateral_Raise_-_With_Bands|elevlat
+Elevação Lateral Sentado (Halter)|Ombros||Halter|wr|Seated_Side_Lateral_Raise|elevlat
+Elevação Lateral Unilateral (Cabo)|Ombros||Cabo|wr|Standing_Low-Pulley_Deltoid_Raise|elevlat
+Elevação Lateral Inclinada (Halter)|Ombros||Halter|wr|One-Arm_Incline_Lateral_Raise|elevlat
+Elevação Frontal (Halter)|Ombros||Halter|wr|Front_Dumbbell_Raise|elevfront
+Elevação Frontal (Anilha)|Ombros||Anilha|wr|Front_Plate_Raise|elevfront
+Elevação Frontal (Barra)|Ombros||Barra|wr|Standing_Front_Barbell_Raise_Over_Head|elevfront
+Elevação Frontal (Cabo)|Ombros||Cabo|wr|Front_Cable_Raise|elevfront
+Elevação Frontal (Elástico)|Ombros||Elástico|wr|Front_Cable_Raise|elevfront
+Elevação de Anilha Acima da Cabeça|Ombros||Anilha|wr|Front_Plate_Raise|elevfront
+Elevação Y em Pé (Cabo)|Ombros|Costas superiores|Cabo|wr|Cable_Seated_Lateral_Raise|yraise
+Elevação em Y com Apoio no Peito (Halter)|Ombros|Costas superiores|Halter|wr|Dumbbell_Incline_Shoulder_Raise|yraise
+Crucifixo Invertido com Apoio (Halter)|Ombros|Costas superiores|Halter|wr|Lying_Rear_Delt_Raise|crucinv
+Crucifixo Invertido (Cabo)|Ombros|Costas superiores|Cabo|wr|Cable_Rear_Delt_Fly|crucinv
+Crucifixo Invertido Unilateral (Cabo)|Ombros|Costas superiores|Cabo|wr|Bent_Over_Low-Pulley_Side_Lateral|crucinv
+Pull Apart (Elástico)|Ombros|Costas superiores|Elástico|wr|Band_Pull_Apart|pullapart
+Remada Alta (Barra)|Ombros|Trapézio|Barra|wr|Upright_Barbell_Row|remadaalta
+Remada Alta (Halter)|Ombros|Trapézio|Halter|wr|Standing_Dumbbell_Upright_Row|remadaalta
+Remada Alta (Cabo)|Ombros|Trapézio|Cabo|wr|Upright_Cable_Row|remadaalta
+Flexão em Parada de Mão|Ombros|Tríceps|Peso corporal|bw|Handstand_Push-Ups|paradamao
+Flexão Pike|Ombros|Tríceps|Peso corporal|bw|Pushups|flexao
+Flexão com Toque no Ombro|Ombros|Abdômen,Peito|Peso corporal|bw|Push_Up_to_Side_Plank|flexao
+Ao Redor do Mundo com Kettlebell|Ombros|Abdômen|Kettlebell|wr|Kettlebell_Figure_8|halo
+Halo com Kettlebell|Ombros|Abdômen|Kettlebell|wr|Kettlebell_Halo|halo
+Rotação Externa (Cabo)|Ombros||Cabo|wr|External_Rotation_with_Cable|mobilidade
+# --- Bíceps e antebraços
+Rosca Direta (Barra)|Bíceps|Antebraços|Barra|wr|Barbell_Curl|rosca
+Rosca Direta (Barra W)|Bíceps|Antebraços|Barra|wr|EZ-Bar_Curl|rosca
+Rosca Direta (Halter)|Bíceps|Antebraços|Halter|wr|Dumbbell_Bicep_Curl|rosca
+Rosca Alternada (Halter)|Bíceps|Antebraços|Halter|wr|Dumbbell_Alternate_Bicep_Curl|rosca
+Rosca Direta (Cabo)|Bíceps|Antebraços|Cabo|wr|Standing_Biceps_Cable_Curl|rosca
+Rosca Direta (Máquina)|Bíceps||Máquina|wr|Machine_Bicep_Curl|rosca
+Rosca Direta (TRX)|Bíceps||Fita de suspensão|bw||rosca
+Rosca Direta (Elástico)|Bíceps||Elástico|wr|Close-Grip_EZ-Bar_Curl_with_Band|rosca
+Rosca com Kettlebell|Bíceps|Antebraços|Kettlebell|wr|Dumbbell_Bicep_Curl|rosca
+Rosca com Anilha|Bíceps|Antebraços|Anilha|wr|Reverse_Plate_Curls|rosca
+Rosca Unilateral (Cabo)|Bíceps||Cabo|wr|Standing_One-Arm_Cable_Curl|rosca
+Rosca com Corda (Cabo)|Bíceps|Antebraços|Cabo|wr|Cable_Hammer_Curls_-_Rope_Attachment|martelo
+Rosca 21|Bíceps|Antebraços|Barra|wr|Barbell_Curl|rosca21
+Rosca Martelo (Halter)|Bíceps|Antebraços|Halter|wr|Hammer_Curls|martelo
+Rosca Martelo (Cabo)|Bíceps|Antebraços|Cabo|wr|Cable_Hammer_Curls_-_Rope_Attachment|martelo
+Rosca Martelo (Elástico)|Bíceps|Antebraços|Elástico|wr|Hammer_Curls|martelo
+Rosca Martelo Cruzada|Bíceps|Antebraços|Halter|wr|Cross_Body_Hammer_Curl|martelo
+Rosca Pinwheel (Halter)|Bíceps|Antebraços|Halter|wr|Cross_Body_Hammer_Curl|martelo
+Rosca Martelo no Banco Inclinado (Halter)|Bíceps|Antebraços|Halter|wr|Incline_Hammer_Curls|martelo
+Rosca Scott (Máquina)|Bíceps||Máquina|wr|Machine_Preacher_Curls|scott
+Rosca Scott (Barra W)|Bíceps||Barra|wr|Preacher_Curl|scott
+Rosca Scott (Halter)|Bíceps||Halter|wr|One_Arm_Dumbbell_Preacher_Curl|scott
+Rosca Scott (Cabo)|Bíceps||Cabo|wr|Cable_Preacher_Curl|scott
+Rosca Concentrada (Halter)|Bíceps||Halter|wr|Concentration_Curls|concentrada
+Rosca Inclinada (Halter)|Bíceps||Halter|wr|Incline_Dumbbell_Curl|roscainc
+Rosca Bayesian (Cabo)|Bíceps||Cabo|wr|Standing_One-Arm_Cable_Curl|bayesian
+Rosca por Trás do Corpo (Cabo)|Bíceps||Cabo|wr|Standing_One-Arm_Cable_Curl|bayesian
+Rosca Acima da Cabeça (Cabo)|Bíceps||Cabo|wr|Overhead_Cable_Curl|rosca
+Rosca Spider (Barra)|Bíceps||Barra|wr|Spider_Curl|spider
+Rosca Spider (Halter)|Bíceps||Halter|wr|Dumbbell_Prone_Incline_Curl|spider
+Rosca Arrasto|Bíceps|Antebraços|Barra|wr|Drag_Curl|arrasto
+Rosca Zottman (Halter)|Bíceps|Antebraços|Halter|wr|Zottman_Curl|zottman
+Rosca Inversa (Barra)|Antebraços|Bíceps|Barra|wr|Reverse_Barbell_Curl|roscainv
+Rosca Invertida (Cabo)|Antebraços|Bíceps|Cabo|wr|Reverse_Cable_Curl|roscainv
+Rosca Invertida (Halter)|Antebraços|Bíceps|Halter|wr|Standing_Dumbbell_Reverse_Curl|roscainv
+Rosca de Punho (Barra)|Antebraços||Barra|wr|Seated_Palm-Up_Barbell_Wrist_Curl|punho
+Rosca de Punho Sentado (Halter)|Antebraços||Halter|wr|Seated_Dumbbell_Palms-Up_Wrist_Curl|punho
+Rosca de Punho por Trás do Corpo (Barra)|Antebraços||Barra|wr|Standing_Palms-Up_Barbell_Behind_The_Back_Wrist_Curl|punho
+Rosca de Punho Inversa (Halter)|Antebraços||Halter|wr|Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench|punhoext
+Extensão de Punho Sentado (Barra)|Antebraços||Barra|wr|Seated_Palms-Down_Barbell_Wrist_Curl|punhoext
+Rolo de Antebraço|Antebraços||Outro|wr|Wrist_Roller|rolo
+# --- Tríceps
+Tríceps Pulley (Cabo)|Tríceps||Cabo|wr|Triceps_Pushdown|pulley
+Tríceps Corda (Cabo)|Tríceps||Cabo|wr|Triceps_Pushdown_-_Rope_Attachment|pulley
+Tríceps na Polia com Pegada Inversa|Tríceps||Cabo|wr|Reverse_Grip_Triceps_Pushdown|pulley
+Tríceps na Polia Unilateral (Cabo)|Tríceps||Cabo|wr|Cable_One_Arm_Tricep_Extension|pulley
+Tríceps Pulley com Triângulo (Cabo)|Tríceps||Cabo|wr|Triceps_Pushdown_-_V-Bar_Attachment|pulley
+Tríceps Testa (Barra)|Tríceps||Barra|wr|EZ-Bar_Skullcrusher|testa
+Tríceps Testa (Halter)|Tríceps||Halter|wr|Lying_Dumbbell_Tricep_Extension|testa
+Tríceps Testa na Polia (Cabo)|Tríceps||Cabo|wr|Cable_Lying_Triceps_Extension|testa
+Tríceps Francês (Halter)|Tríceps||Halter|wr|Standing_Dumbbell_Triceps_Extension|frances
+Extensão de Tríceps Unilateral (Halter)|Tríceps||Halter|wr|Dumbbell_One-Arm_Triceps_Extension|frances
+Extensão de Tríceps (Barra)|Tríceps||Barra|wr|Standing_Overhead_Barbell_Triceps_Extension|frances
+Extensão de Tríceps (Suspensão)|Tríceps||Fita de suspensão|bw|Body_Tricep_Press|frances
+Tríceps Overhead (Cabo)|Tríceps||Cabo|wr|Triceps_Overhead_Extension_with_Rope|frances
+Tríceps Coice (Halter)|Tríceps||Halter|wr|Tricep_Dumbbell_Kickback|coice
+Tríceps Coice (Cabo)|Tríceps||Cabo|wr|Tricep_Dumbbell_Kickback|coice
+Tríceps (Máquina)|Tríceps||Máquina|wr|Machine_Triceps_Extension|tricmaq
+Mergulho Sentado (Máquina)|Tríceps|Peito|Máquina|wr|Dip_Machine|tricmaq
+Paralelas (Tríceps)|Tríceps|Peito,Ombros|Peso corporal|bw|Dips_-_Triceps_Version|paralelastri
+Tríceps na Paralela (Com Peso)|Tríceps|Peito,Ombros|Anilha|wr|Dips_-_Triceps_Version|paralelastri
+Tríceps na Paralela (Assistido)|Tríceps|Peito|Máquina|as|Dip_Machine|paralelastri
+Tríceps no Banco|Tríceps|Peito,Ombros|Peso corporal|bw|Bench_Dips|banco
+Tríceps no Banco (Com Peso)|Tríceps|Peito,Ombros|Anilha|wr|Weighted_Bench_Dip|banco
+Flexão Diamante|Tríceps|Peito|Peso corporal|bw|Push-Ups_-_Close_Triceps_Position|flexao
+Supino Fechado (Barra)|Tríceps|Peito,Ombros|Barra|wr|Close-Grip_Barbell_Bench_Press|supinofechado
+Supino Fechado (Smith)|Tríceps|Peito|Smith|wr|Smith_Machine_Close-Grip_Bench_Press|supinofechado
+JM Press (Barra)|Tríceps|Peito|Barra|wr|JM_Press|jmpress
+Press de Tríceps com Cotovelos Abertos (Halter)|Tríceps||Halter|wr|Tate_Press|tate
+# --- Abdômen
+Abdominal Crunch|Abdômen||Peso corporal|bw|Crunches|crunch
+Abdominal (com Peso)|Abdômen||Anilha|wr|Weighted_Crunches|crunch
+Abdominal (Máquina)|Abdômen||Máquina|wr|Ab_Crunch_Machine|crunchmaq
+Abdominal na Polia (Cabo)|Abdômen||Cabo|wr|Cable_Crunch|abpolia
+Abdominal Tradicional|Abdômen||Peso corporal|bw|Sit-Up|situp
+Abdominal Tradicional (Com Peso)|Abdômen||Anilha|wr|Weighted_Sit-Ups_-_With_Bands|situp
+Abdominal Declinado|Abdômen||Peso corporal|bw|Decline_Crunch|declinado
+Abdominal Declinado (com Peso)|Abdômen||Anilha|wr|Decline_Crunch|declinado
+Abdominal Infra|Abdômen||Peso corporal|bw|Reverse_Crunch|infra
+Abdominal Oblíquo|Abdômen||Peso corporal|bw|Oblique_Crunches_-_On_The_Floor|obliquo
+Abdominal Bicicleta|Abdômen||Peso corporal|bw|Cross-Body_Crunch|bicicleta
+Abdominal Bicicleta com Pernas Elevadas|Abdômen||Peso corporal|bw|Cross-Body_Crunch|bicicleta
+Cotovelo ao Joelho|Abdômen||Peso corporal|bw|Elbow_to_Knee|bicicleta
+Abdominal Canivete|Abdômen||Peso corporal|bw|Jackknife_Sit-Up|canivete
+Canivete (Suspensão)|Abdômen||Fita de suspensão|bw|Suspended_Reverse_Crunch|canivete
+Abdominal Toque no Calcanhar|Abdômen||Peso corporal|bw|Alternate_Heel_Touchers|calcanhar
+Abdominal Toque nos Pés|Abdômen||Peso corporal|bw|Toe_Touchers|toquepes
+Abdominal Tesoura|Abdômen||Peso corporal|bw|Scissor_Kick|tesoura
+Chutes Alternados|Abdômen||Peso corporal|bw|Flutter_Kicks|tesoura
+Elevação de Pernas Suspenso|Abdômen||Peso corporal|bw|Hanging_Leg_Raise|elevsusp
+Elevação de Joelhos na Barra Fixa|Abdômen||Peso corporal|bw|Hanging_Leg_Raise|elevsusp
+Pés na Barra|Abdômen|Dorsais|Peso corporal|bw|Hanging_Pike|elevsusp
+Elevação de Joelhos nas Barras Paralelas|Abdômen||Peso corporal|bw|Knee_Hip_Raise_On_Parallel_Bars|elevparalelas
+Elevação de Pernas nas Barras Paralelas|Abdômen||Peso corporal|bw|Knee_Hip_Raise_On_Parallel_Bars|elevparalelas
+Elevação de Joelhos (Deitado)|Abdômen||Peso corporal|bw|Flat_Bench_Leg_Pull-In|elevdeitado
+Elevação de Pernas (Deitado)|Abdômen||Peso corporal|bw|Flat_Bench_Lying_Leg_Raise|elevdeitado
+Prancha|Abdômen||Peso corporal|t|Plank|prancha
+Prancha Lateral|Abdômen||Peso corporal|t|Side_Bridge|pranchalat
+Prancha Invertida|Abdômen|Glúteos|Peso corporal|t||pranchainv
+Hollow Rock|Abdômen||Peso corporal|t||hollow
+Sustentação em L|Abdômen||Peso corporal|t||lsit
+Russian Twist|Abdômen||Peso corporal|bw|Russian_Twist|giro
+Giro Russo (Com Peso)|Abdômen||Anilha|wr|Russian_Twist|giro
+Roda Abdominal|Abdômen|Ombros|Peso corporal|bw|Ab_Roller|roda
+Dead Bug|Abdômen||Peso corporal|bw|Dead_Bug|deadbug
+Pallof Press (Cabo)|Abdômen||Cabo|wr|Pallof_Press|pallof
+Torção no Cabo (Baixo para Cima)|Abdômen|Ombros|Cabo|wr|Standing_Cable_Lift|lenhador
+Torção no Cabo (Cima para Baixo)|Abdômen|Ombros|Cabo|wr|Standing_Cable_Wood_Chop|lenhador
+Flexão Lateral|Abdômen||Peso corporal|bw|Dumbbell_Side_Bend|flexlateral
+Flexão Lateral (Halter)|Abdômen||Halter|wr|Dumbbell_Side_Bend|flexlateral
+Rotação de Tronco|Abdômen||Máquina|wr|Torso_Rotation|rotacao
+Landmine 180 (Barra)|Abdômen|Ombros|Barra|wr|Landmine_180s|landmine180
+Bandeira do Dragão|Abdômen||Peso corporal|bw||elevdeitado
+Homem-Aranha|Abdômen||Peso corporal|bw|Spider_Crawl|escalador
+Mountain Climber|Corpo inteiro|Abdômen|Peso corporal|bw|Mountain_Climbers|escalador
+# --- Pernas: quadríceps
+Agachamento Livre (Barra)|Quadríceps|Glúteos,Posteriores de coxa,Lombar|Barra|wr|Barbell_Squat|agachamento
+Agachamento (Smith)|Quadríceps|Glúteos,Posteriores de coxa|Smith|wr|Smith_Machine_Squat|agachamento
+Agachamento (Halter)|Quadríceps|Glúteos|Halter|wr|Dumbbell_Squat|agachamento
+Agachamento (Peso Corporal)|Quadríceps|Glúteos|Peso corporal|bw|Bodyweight_Squat|agachamento
+Agachamento (Elástico)|Quadríceps|Glúteos|Elástico|wr|Squats_-_With_Bands|agachamento
+Agachamento (Máquina)|Quadríceps|Glúteos|Máquina|wr|Lying_Machine_Squat|hack
+Agachamento (TRX)|Quadríceps|Glúteos|Fita de suspensão|bw|Bodyweight_Squat|agachamento
+Agachamento com Pausa (Barra)|Quadríceps|Glúteos|Barra|wr|Barbell_Squat|agachamento
+Agachamento Profundo|Quadríceps|Glúteos|Barra|wr|Barbell_Full_Squat|agachamento
+Agachamento na Caixa (Barra)|Quadríceps|Glúteos|Barra|wr|Box_Squat|agachamento
+Agachamento Acima da Cabeça (Barra)|Corpo inteiro|Quadríceps,Ombros|Barra|wr|Overhead_Squat|agachamento
+Agachamento Zercher|Quadríceps|Glúteos,Abdômen|Barra|wr|Zercher_Squats|agachamento
+Agachamento com Cinturão (Máquina)|Quadríceps|Glúteos|Máquina|wr||agachamento
+Agachamento Pêndulo (Máquina)|Quadríceps|Glúteos|Máquina|wr||hack
+Agachamento Frontal (Barra)|Quadríceps|Glúteos,Abdômen|Barra|wr|Front_Barbell_Squat|agachfront
+Agachamento Goblet (Halter)|Quadríceps|Glúteos|Halter|wr|Goblet_Squat|goblet
+Agachamento Goblet com Kettlebell|Quadríceps|Glúteos|Kettlebell|wr|Goblet_Squat|goblet
+Agachamento Hack (Máquina)|Quadríceps|Glúteos|Máquina|wr|Hack_Squat|hack
+Agachamento Hack (Barra)|Quadríceps|Glúteos|Barra|wr|Barbell_Hack_Squat|hack
+Agachamento Búlgaro (Halter)|Quadríceps|Glúteos,Posteriores de coxa|Halter|wr|Split_Squat_with_Dumbbells|bulgaro
+Agachamento Búlgaro (Barra)|Quadríceps|Glúteos,Posteriores de coxa|Barra|wr|Split_Squats|bulgaro
+Agachamento Búlgaro (Smith)|Quadríceps|Glúteos|Smith|wr|Smith_Single-Leg_Split_Squat|bulgaro
+Agachamento Afundo (Halter)|Quadríceps|Glúteos|Halter|wr|Split_Squat_with_Dumbbells|bulgaro
+Agachamento Sumô (Barra)|Quadríceps|Adutores,Glúteos|Barra|wr|Wide_Stance_Barbell_Squat|sumo
+Agachamento Sumô (Halter)|Quadríceps|Adutores,Glúteos|Halter|wr|Plie_Dumbbell_Squat|sumo
+Agachamento Sumô (Kettlebell)|Quadríceps|Adutores,Glúteos|Kettlebell|wr|Plie_Dumbbell_Squat|sumo
+Agachamento Sumô|Quadríceps|Adutores,Glúteos|Peso corporal|bw|Plie_Dumbbell_Squat|sumo
+Agachamento Sissy (Com Peso)|Quadríceps||Anilha|wr|Weighted_Sissy_Squat|sissy
+Agachamento Pistol|Quadríceps|Glúteos|Peso corporal|bw|Kettlebell_Pistol_Squat|pistol
+Agachamento Pistola Assistido|Quadríceps|Glúteos|Peso corporal|bw|Smith_Machine_Pistol_Squat|pistol
+Agachamento Lateral|Quadríceps|Adutores,Glúteos|Peso corporal|bw|Barbell_Side_Split_Squat|afundolat
+Agachamento Isométrico na Parede|Quadríceps||Peso corporal|t||isometrico
+Agachamento com Salto|Quadríceps|Glúteos,Panturrilhas|Peso corporal|bw|Freehand_Jump_Squat|salto
+Leg Press 45° (Máquina)|Quadríceps|Glúteos,Posteriores de coxa|Máquina|wr|Leg_Press|legpress
+Leg Press Horizontal (Máquina)|Quadríceps|Glúteos|Máquina|wr|Narrow_Stance_Leg_Press|legpress
+Leg Press Unilateral (Máquina)|Quadríceps|Glúteos|Máquina|wr|Leg_Press|legpress
+Cadeira Extensora (Máquina)|Quadríceps||Máquina|wr|Leg_Extensions|extensora
+Cadeira Extensora Unilateral (Máquina)|Quadríceps||Máquina|wr|Single-Leg_Leg_Extension|extensora
+Afundo (Halter)|Quadríceps|Glúteos,Posteriores de coxa|Halter|wr|Dumbbell_Lunges|afundo
+Afundo (Barra)|Quadríceps|Glúteos,Posteriores de coxa|Barra|wr|Barbell_Lunge|afundo
+Afundo|Quadríceps|Glúteos|Peso corporal|bw|Bodyweight_Walking_Lunge|afundo
+Afundo Acima da Cabeça (Halter)|Quadríceps|Glúteos,Ombros|Halter|wr|Dumbbell_Lunges|afundo
+Afundo com Salto|Quadríceps|Glúteos|Peso corporal|bw|Split_Jump|salto
+Afundo Lateral|Quadríceps|Adutores,Glúteos|Peso corporal|bw|Barbell_Side_Split_Squat|afundolat
+Afundo Reverso|Quadríceps|Glúteos|Peso corporal|bw|Dumbbell_Rear_Lunge|afundoreverso
+Afundo Reverso (Barra)|Quadríceps|Glúteos|Barra|wr|Elevated_Back_Lunge|afundoreverso
+Afundo Reverso (Halter)|Quadríceps|Glúteos|Halter|wr|Dumbbell_Rear_Lunge|afundoreverso
+Afundo em Reverência (Halter)|Quadríceps|Glúteos,Abdutores|Halter|wr|Crossover_Reverse_Lunge|afundoreverso
+Passada (Halter)|Quadríceps|Glúteos|Halter|wr|Dumbbell_Lunges|passada
+Passada Caminhando|Quadríceps|Glúteos|Peso corporal|bw|Bodyweight_Walking_Lunge|passada
+Passada Caminhando (Barra)|Quadríceps|Glúteos|Barra|wr|Barbell_Walking_Lunge|passada
+Passada Caminhando (Saco de Areia)|Quadríceps|Glúteos|Outro|wr|Bodyweight_Walking_Lunge|passada
+Step Up|Quadríceps|Glúteos|Peso corporal|bw|Step-up_with_Knee_Raise|stepup
+Step Up (Halter)|Quadríceps|Glúteos|Halter|wr|Dumbbell_Step_Ups|stepup
+Step Up (Barra)|Quadríceps|Glúteos|Barra|wr|Barbell_Step_Ups|stepup
+Salto na Caixa|Quadríceps|Glúteos,Panturrilhas|Peso corporal|bw|Front_Box_Jump|salto
+Salto Lateral na Caixa|Quadríceps|Glúteos|Peso corporal|bw|Lateral_Box_Jump|salto
+Salto de Sapo|Quadríceps|Glúteos|Peso corporal|bw|Frog_Hops|salto
+# --- Pernas: posteriores e glúteos
+Mesa Flexora (Máquina)|Posteriores de coxa||Máquina|wr|Lying_Leg_Curls|flexora
+Cadeira Flexora (Máquina)|Posteriores de coxa||Máquina|wr|Seated_Leg_Curl|flexora
+Flexora Unilateral (Máquina)|Posteriores de coxa||Máquina|wr|Standing_Leg_Curl|flexora
+Flexora em Pé (Máquina)|Posteriores de coxa||Máquina|wr|Standing_Leg_Curl|flexora
+Flexora com Bola|Posteriores de coxa|Glúteos|Outro|bw|Ball_Leg_Curl|flexora
+Stiff (Barra)|Posteriores de coxa|Glúteos,Lombar|Barra|wr|Stiff-Legged_Barbell_Deadlift|stiff
+Stiff (Halter)|Posteriores de coxa|Glúteos,Lombar|Halter|wr|Stiff-Legged_Dumbbell_Deadlift|stiff
+Levantamento Terra Romeno (Barra)|Posteriores de coxa|Glúteos,Lombar|Barra|wr|Romanian_Deadlift|stiff
+Levantamento Terra Romeno (Halter)|Posteriores de coxa|Glúteos,Lombar|Halter|wr|Stiff-Legged_Dumbbell_Deadlift|stiff
+Levantamento Terra Romeno (Smith)|Posteriores de coxa|Glúteos,Lombar|Smith|wr|Smith_Machine_Stiff-Legged_Deadlift|stiff
+Levantamento Terra Romeno Unilateral (Halter)|Posteriores de coxa|Glúteos|Halter|wr|Kettlebell_One-Legged_Deadlift|stiff
+Levantamento Terra Romeno Unilateral (Barra)|Posteriores de coxa|Glúteos|Barra|wr|Kettlebell_One-Legged_Deadlift|stiff
+Good Morning (Barra)|Posteriores de coxa|Glúteos,Lombar|Barra|wr|Good_Morning|goodmorning
+Flexão Nórdica|Posteriores de coxa|Glúteos|Peso corporal|bw|Natural_Glute_Ham_Raise|nordica
+Glute Ham Raise|Posteriores de coxa|Glúteos|Máquina|bw|Glute_Ham_Raise|glutehamraise
+Elevação Pélvica (Barra)|Glúteos|Posteriores de coxa|Barra|wr|Barbell_Hip_Thrust|hipthrust
+Elevação Pélvica (Máquina)|Glúteos|Posteriores de coxa|Máquina|wr||hipthrust
+Elevação Pélvica (Halter)|Glúteos|Posteriores de coxa|Halter|wr|Barbell_Hip_Thrust|hipthrust
+Elevação Pélvica (Smith)|Glúteos|Posteriores de coxa|Smith|wr|Smith_Machine_Hip_Raise|hipthrust
+Elevação Pélvica|Glúteos|Posteriores de coxa|Peso corporal|bw|Barbell_Hip_Thrust|hipthrust
+Elevação de Quadril Unilateral|Glúteos|Posteriores de coxa|Peso corporal|bw|Single_Leg_Glute_Bridge|ponte
+Elevação Pélvica no Solo|Glúteos|Posteriores de coxa|Peso corporal|bw|Butt_Lift_Bridge|ponte
+Elevação Pélvica Unilateral no Solo|Glúteos|Posteriores de coxa|Peso corporal|bw|Single_Leg_Glute_Bridge|ponte
+Ponte de Glúteos (Barra)|Glúteos|Posteriores de coxa|Barra|wr|Barbell_Glute_Bridge|ponte
+Frog Pump (Halter)|Glúteos||Halter|wr|Butt_Lift_Bridge|ponte
+Glúteo na Polia (Cabo)|Glúteos||Cabo|wr|One-Legged_Cable_Kickback|coicegluteo
+Glúteo 4 Apoios (Máquina)|Glúteos|Posteriores de coxa|Máquina|wr|Glute_Kickback|coicegluteo
+Coice de Glúteo no Solo|Glúteos||Peso corporal|bw|Glute_Kickback|coicegluteo
+Pull Through na Polia|Glúteos|Posteriores de coxa|Cabo|wr|Pull_Through|stiff
+Hiperextensão Reversa|Glúteos|Posteriores de coxa,Lombar|Máquina|wr|Reverse_Hyperextension|hiperext
+Bird Dog|Glúteos|Lombar,Abdômen|Peso corporal|bw||deadbug
+Concha|Glúteos|Abdutores|Peso corporal|bw||coicegluteo
+Hidrante|Glúteos|Abdutores|Peso corporal|bw|Hip_Circles_prone|coicegluteo
+Caminhada Lateral (Elástico)|Glúteos|Abdutores|Elástico|bw|Monster_Walk|caminhadalat
+Elevação Lateral de Perna|Abdutores|Glúteos|Peso corporal|bw|Side_Leg_Raises|coicegluteo
+Kettlebell Swing|Glúteos|Posteriores de coxa,Lombar|Kettlebell|wr|One-Arm_Kettlebell_Swings|swing
+Cadeira Abdutora (Máquina)|Abdutores|Glúteos|Máquina|wr|Thigh_Abductor|abdutora
+Abdução de Quadril (Cabo)|Abdutores|Glúteos|Cabo|wr||coicegluteo
+Cadeira Adutora (Máquina)|Adutores||Máquina|wr|Thigh_Adductor|adutora
+Adução de Quadril (Cabo)|Adutores||Cabo|wr|Cable_Hip_Adduction|adutora
+# --- Panturrilhas
+Panturrilha em Pé (Máquina)|Panturrilhas||Máquina|wr|Standing_Calf_Raises|panturrilha
+Panturrilha em Pé (Barra)|Panturrilhas||Barra|wr|Standing_Barbell_Calf_Raise|panturrilha
+Panturrilha em Pé (Halter)|Panturrilhas||Halter|wr|Standing_Dumbbell_Calf_Raise|panturrilha
+Panturrilha em Pé|Panturrilhas||Peso corporal|bw|Standing_Calf_Raises|panturrilha
+Panturrilha em Pé Unilateral|Panturrilhas||Halter|wr|Calf_Raise_On_A_Dumbbell|panturrilha
+Panturrilha (Smith)|Panturrilhas||Smith|wr|Smith_Machine_Calf_Raise|panturrilha
+Panturrilha Burrinho|Panturrilhas||Máquina|wr|Donkey_Calf_Raises|panturrilha
+Panturrilha Sentado (Máquina)|Panturrilhas||Máquina|wr|Seated_Calf_Raise|panturrilhasent
+Panturrilha Sentado (Halter)|Panturrilhas||Halter|wr|Dumbbell_Seated_One-Leg_Calf_Raise|panturrilhasent
+Panturrilha no Leg Press (Máquina)|Panturrilhas||Máquina|wr|Calf_Press_On_The_Leg_Press_Machine|panturrilha
+Extensão de Panturrilha (Máquina)|Panturrilhas||Máquina|wr|Calf_Press|panturrilha
+# --- Pescoço
+Flexão de Pescoço Deitado|Pescoço||Peso corporal|bw|Lying_Face_Up_Plate_Neck_Resistance|pescoco
+Flexão de Pescoço Deitado (Com Peso)|Pescoço||Anilha|wr|Lying_Face_Up_Plate_Neck_Resistance|pescoco
+Extensão de Pescoço Deitado|Pescoço||Peso corporal|bw|Lying_Face_Down_Plate_Neck_Resistance|pescoco
+Extensão de Pescoço Deitado (Com Peso)|Pescoço||Anilha|wr|Lying_Face_Down_Plate_Neck_Resistance|pescoco
+Isometria de Pescoço|Pescoço||Peso corporal|t|Isometric_Neck_Exercise_-_Front_And_Back|pescoco_iso
+# --- Corpo inteiro e levantamentos olímpicos
+Burpee|Corpo inteiro||Peso corporal|bw||burpee
+Burpee com Salto à Distância|Corpo inteiro||Peso corporal|bw|Standing_Long_Jump|burpee
+Burpee Sobre a Barra|Corpo inteiro||Peso corporal|bw||burpee
+Polichinelo|Corpo inteiro|Cardio|Peso corporal|bw|Star_Jump|polichinelo
+Joelhos Altos|Corpo inteiro|Cardio|Peso corporal|t|Fast_Skipping|cardio
+Caminhada do Urso|Corpo inteiro|Ombros,Abdômen|Peso corporal|dt|Bear_Crawl_Sled_Drags|urso
+Caminhada do Fazendeiro|Corpo inteiro|Antebraços,Trapézio|Halter|wr|Farmers_Walk|fazendeiro
+Caminhada de Mala (Halter)|Corpo inteiro|Abdômen,Antebraços|Halter|wr|Farmers_Walk|fazendeiro
+Arremesso de Bola Medicinal|Corpo inteiro|Abdômen,Ombros|Outro|wr|Overhead_Slam|bolamed
+Wall Ball|Corpo inteiro|Quadríceps,Ombros|Outro|wr|Medicine_Ball_Chest_Pass|thruster
+Clean|Corpo inteiro|Quadríceps,Trapézio|Barra|wr|Clean|clean
+Clean and Jerk|Corpo inteiro|Ombros,Quadríceps|Barra|wr|Clean_and_Jerk|clean
+Clean and Press|Corpo inteiro|Ombros,Quadríceps|Barra|wr|Clean_and_Press|clean
+Clean Pull|Corpo inteiro|Trapézio,Glúteos|Barra|wr|Clean_Pull|clean
+Hang Clean|Corpo inteiro|Trapézio,Quadríceps|Barra|wr|Hang_Clean|clean
+Hang Snatch|Corpo inteiro|Ombros,Trapézio|Barra|wr|Hang_Snatch|arranco
+Snatch (Barra)|Corpo inteiro|Ombros,Quadríceps|Barra|wr|Snatch|arranco
+Snatch (Halter)|Corpo inteiro|Ombros|Halter|wr|One-Arm_Kettlebell_Snatch|arranco
+Split Jerk|Corpo inteiro|Ombros,Tríceps|Barra|wr|Split_Jerk|pushpress
+Thruster (Barra)|Corpo inteiro|Quadríceps,Ombros|Barra|wr|Kettlebell_Thruster|thruster
+Thruster (Kettlebell)|Corpo inteiro|Quadríceps,Ombros|Kettlebell|wr|Kettlebell_Thruster|thruster
+Agachamento e Desenvolvimento (Landmine)|Corpo inteiro|Quadríceps,Ombros|Barra|wr|Landmine_Linear_Jammer|thruster
+Clean com Kettlebell|Corpo inteiro|Glúteos,Ombros|Kettlebell|wr|One-Arm_Kettlebell_Clean|clean
+Arranco com Kettlebell|Corpo inteiro|Ombros,Glúteos|Kettlebell|wr|One-Arm_Kettlebell_Snatch|arranco
+Swing com Kettlebell|Corpo inteiro|Glúteos,Posteriores de coxa|Kettlebell|wr|One-Arm_Kettlebell_Swings|swing
+Levantamento Turco com Kettlebell|Corpo inteiro|Ombros,Abdômen|Kettlebell|wr|Kettlebell_Turkish_Get-Up_Squat_style|turco
+Puxada Alta com Kettlebell|Corpo inteiro|Trapézio,Ombros|Kettlebell|wr|Kettlebell_Sumo_High_Pull|remadaalta
+Muscle Up|Corpo inteiro|Dorsais,Tríceps,Peito|Peso corporal|bw|Muscle_Up|muscleup
+Parada de Mão|Corpo inteiro|Ombros|Peso corporal|t||paradamao
+Sustentação do Front Lever|Corpo inteiro|Dorsais,Abdômen|Peso corporal|t||frontlever
+Elevação de Front Lever|Corpo inteiro|Dorsais,Abdômen|Peso corporal|bw||frontlever
+Empurrar o Trenó|Corpo inteiro|Quadríceps,Glúteos|Outro|wr|Sled_Push|treno
+Puxada de Trenó|Corpo inteiro|Posteriores de coxa,Glúteos|Outro|wr|Sled_Drag_-_Harness|treno
+Postura do Cachorro Olhando para Baixo|Corpo inteiro||Peso corporal|t||mobilidade
+Alongamento|Outro||Peso corporal|t||mobilidade
+Aquecimento|Corpo inteiro||Peso corporal|t||mobilidade
+Yoga|Corpo inteiro||Peso corporal|t||mobilidade
+Pilates|Corpo inteiro|Abdômen|Peso corporal|t||mobilidade
+# --- Cardio
+Esteira|Cardio||Máquina|dt|Running_Treadmill|cardio
+Caminhada|Cardio||Peso corporal|dt|Walking_Treadmill|cardio
+Corrida|Cardio||Peso corporal|dt|Running_Treadmill|cardio
+Trilha|Cardio||Peso corporal|dt|Trail_Running_Walking|cardio
+Sprints|Cardio||Peso corporal|dt|Wind_Sprints|cardio
+Bicicleta Ergométrica|Cardio||Máquina|dt|Bicycling_Stationary|cardio
+Spinning|Cardio||Máquina|dt|Bicycling_Stationary|cardio
+Ciclismo|Cardio||Outro|dt|Bicycling|cardio
+Bicicleta Horizontal|Cardio||Máquina|dt|Recumbent_Bike|cardio
+Air Bike|Cardio||Máquina|dt||cardio
+Elíptico|Cardio||Máquina|dt|Elliptical_Trainer|cardio
+Escada (Máquina)|Cardio|Glúteos,Quadríceps|Máquina|t|Stairmaster|cardio
+Simulador de Escadas (Degraus)|Cardio|Glúteos,Quadríceps|Máquina|t|Step_Mill|cardio
+Máquina de Remo|Cardio|Costas superiores|Máquina|dt|Rowing_Stationary|cardio
+Ski Erg|Cardio|Dorsais|Máquina|dt||cardio
+Pular Corda|Cardio|Panturrilhas|Outro|t|Rope_Jumping|cardio
+Corda Naval|Cardio|Ombros|Outro|t|Battling_Ropes|cordanaval
+Boxe|Cardio|Ombros|Outro|t|Heavy_Bag_Thrust|cardio
+Aeróbica|Cardio||Peso corporal|t||cardio
+HIIT|Cardio||Peso corporal|t||cardio
+Natação|Cardio|Corpo inteiro|Outro|dt||cardio
+Patinação|Cardio||Outro|dt|Skating|cardio
+Esqui|Cardio||Outro|dt||cardio
+Snowboard|Cardio||Outro|t||cardio
+Escalada|Cardio|Antebraços,Dorsais|Outro|t|Rope_Climb|cardio
