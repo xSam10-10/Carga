@@ -1368,20 +1368,16 @@ VIEWS.inicio=()=>{
  const ws=[...S.workouts].sort((a,b)=>b.start-a.start);const wk=weekStart(Date.now());const thisW=ws.filter(w=>w.start>=wk);
  const dur=thisW.reduce((a,w)=>a+(w.end-w.start),0),vol=thisW.reduce((a,w)=>a+wStats(w).vol,0);
  const days=[...Array(7)].map((_,i)=>addDays(wk,i));const today=sod(Date.now());
- let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button><button class="ib" data-a="go" data-v="perfis" aria-label="Trocar perfil (${esc(S.profile.name)})"><span class="ava xs">${avaIn(S.profile)}</span></button></header><main class="page">
+ let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button><button class="ib" data-a="go" data-v="perfis" aria-label="Trocar perfil (${esc(S.profile.name)})"><span class="ava xs">${avaIn(S.profile)}</span></button></header><main class="page">`;
+ if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
+ h+=`<h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="metas">${I.flame}Metas</button><button class="tile" data-a="go" data-v="resumo">${I.cal}Resumo</button><button class="tile" data-a="go" data-v="conquistas">${I.trophy}Conquistas</button><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button></div>`;
+ h+=homeHealth()+homeNutri()+homeDay();
+ h+=`
  <section class="card" style="display:flex;flex-direction:column;gap:14px"><div class="row"><span class="lab spacer">Esta semana</span><span class="tag amb">${I.flame.replace('class="i"','class="i" style="width:14px;height:14px;vertical-align:-2px"')} ${streakWeeks()} sem. seguidas</span></div>
  <div class="stat3"><div><span class="lab">Treinos</span><b>${thisW.length}</b></div><div><span class="lab">Tempo</span><b>${fmtDur(dur)}</b></div><div><span class="lab">Volume</span><b>${fmtInt(vol)}<small style="font-size:14px"> kg</small></b></div></div>
  <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<div class="dchip${has?' has':''}${d===today?' today':''}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></div>`}).join('')}</div></section>`;
  h+=homeActivity();
- if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
- h=h.replace('<section class="card" style="display:flex;flex-direction:column;gap:14px"><div class="row"><span class="lab spacer">Esta semana',homeNutri()+homeDay()+'<section class="card" style="display:flex;flex-direction:column;gap:14px"><div class="row"><span class="lab spacer">Esta semana');
- h+=`<h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="metas">${I.flame}Metas</button><button class="tile" data-a="go" data-v="resumo">${I.cal}Resumo</button><button class="tile" data-a="go" data-v="conquistas">${I.trophy}Conquistas</button><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button></div>`;
- h+=homeAtiv();
- h+=homeHealth();
  if(backupDue()){const n=S.workouts.length-(S.profile.lastBackupN||0);h+=`<section class="alert"><b>Backup pendente</b><span>${n>0?`${n} treino(s) novo(s) desde o último backup.`:'Você ainda não fez backup.'} Se os dados do navegador forem apagados, o histórico se perde.</span><div class="row"><button class="btn pri sm" data-a="backupSheet">Fazer backup</button><button class="btn ghost sm" data-a="snoozeBackup">Lembrar depois</button></div></section>`}
- h+=`<h2 class="h">Seus treinos</h2>`;
- if(!ws.length)h+=`<div class="emptybox">${I.dumbbell}<b>Nenhum treino registrado ainda</b><span>Comece uma rotina na aba Treino. Se você já usava outro app, importe o histórico em Configurações.</span><div class="row" style="flex-wrap:wrap;justify-content:center"><button class="btn pri sm" data-a="tab" data-t="treino">Ir para Treino</button><button class="btn sec sm" data-a="goPf" data-v="config">Importar histórico</button></div></div>`;
- else{h+=ws.slice(0,10).map(homeCard).join('');if(ws.length>10)h+=`<button class="btn sec wide" data-a="tab" data-t="perfil">Ver todos os ${ws.length} treinos no Perfil</button>`}
  return h+'</main>'};
 
 /* ---------- TREINO ---------- */
@@ -1389,6 +1385,10 @@ VIEWS.treino=()=>{
  const col=S.profile.collapsed||{};
  const groups=[{id:'',name:'Minhas rotinas'},...S.folders];
  let h=`<header class="top"><h1 class="big">Treino</h1><button class="ib" data-a="go" data-v="exercicios" aria-label="Exercícios">${I.search}</button></header><main class="page">`;
+ const ws=[...S.workouts].sort((a,b)=>b.start-a.start);
+ h+=`<h2 class="h" style="margin-top:0">Seus treinos</h2>`;
+ if(!ws.length)h+=`<div class="emptybox">${I.dumbbell}<b>Nenhum treino registrado ainda</b><span>Comece uma rotina abaixo ou um treino vazio. Se você já usava outro app, importe o histórico em Configurações.</span><div class="row" style="flex-wrap:wrap;justify-content:center"><button class="btn sec sm" data-a="goPf" data-v="config">Importar histórico</button></div></div>`;
+ else{h+=ws.slice(0,10).map(homeCard).join('');if(ws.length>10)h+=`<button class="btn sec wide" data-a="tab" data-t="perfil">Ver todos os ${ws.length} treinos no Perfil</button>`}
  h+=S.active?`<button class="tile" data-a="resume" style="background:var(--accent);color:var(--accent-ink)">${I.play}<span class="spacer">Retomar treino em andamento</span><span class="num" data-clock>${clock(Date.now()-S.active.start)}</span></button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`:`<button class="tile" data-a="startEmpty">${I.plus}Iniciar treino vazio</button>`;
  h+=`<div class="row" style="margin-top:6px"><h2 class="h spacer" style="margin:0">Rotinas</h2><button class="ib" data-a="newFolder" aria-label="Nova pasta">${I.folder}</button></div><div class="grid2"><button class="tile" data-a="newRoutine">${I.clip}Nova rotina</button><button class="tile" data-a="go" data-v="explorar">${I.search}Explorar</button></div>`;
  for(const g of groups){const rs=S.routines.filter(r=>(r.folderId||'')===g.id);const closed=!!col[g.id||'_'];

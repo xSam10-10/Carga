@@ -96,5 +96,6 @@ Cada cor tem uma variante para tema claro e outra para tema escuro: `[cor, cor s
 
 ## Organização das telas (18/10/2026)
 - Barra de abas: Início · Treino · Exercícios · Nutrição · Água · Perfil.
-- Início, de cima para baixo: Meta de hoje → Painel do dia → Esta semana → Atividade diária → Painel de atalhos (Metas, Resumo, Conquistas, Estatísticas, Catálogo, Evolução, Calendário, Saúde) → Exercício (favoritos) → Resumo de saúde → treinos recentes.
+- Início, de cima para baixo (ordem definida pelo usuário): Painel de atalhos (Metas, Resumo, Conquistas, Estatísticas, Catálogo, Evolução, Calendário, Saúde) → Seu resumo de saúde → Meta de hoje → Painel do dia → Esta semana → Atividade diária. O bloco Exercício não fica no Início (está na aba Exercícios). Treino em andamento: Retomar/Descartar no topo.
+- Aba Treino: primeiro bloco é **Seus treinos** (últimos 10 + "Ver todos" no Perfil), depois Iniciar treino vazio / Retomar e Rotinas.
 
