@@ -490,6 +490,41 @@
    "Gráficos e relatórios",
    "sugestão",
    "Correlações: proteína × carga no treino"
+  ],
+  [
+   "Nutrição",
+   "sugestão",
+   "Gasto adaptativo (estilo MacroFactor): recalcular o gasto real pela tendência do peso × calorias registradas"
+  ],
+  [
+   "Corpo e medidas",
+   "sugestão",
+   "Peso de tendência (média ponderada) para filtrar as oscilações diárias"
+  ],
+  [
+   "Treino",
+   "sugestão",
+   "Calculadora de aquecimento automática (% da carga de trabalho, estilo Hevy)"
+  ],
+  [
+   "Treino",
+   "sugestão",
+   "Treino sugerido do dia pela recuperação muscular (estilo Fitbod)"
+  ],
+  [
+   "Metas e hábitos",
+   "sugestão",
+   "Acompanhamento do ciclo menstrual (perfil feminino) com fases e previsão"
+  ],
+  [
+   "Nutrição",
+   "sugestão",
+   "Cronômetro de jejum intermitente"
+  ],
+  [
+   "Metas e hábitos",
+   "sugestão",
+   "Lembretes de suplementos e medicamentos (estilo Samsung Health)"
   ]
  ],
  "proximos": [

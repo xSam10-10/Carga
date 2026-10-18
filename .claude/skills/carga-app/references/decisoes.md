@@ -53,3 +53,8 @@ Ordem combinada: (1) data "De" maiúsculo na aba Exercícios; (2) revisão didá
 Achados da varredura: Treino com 10 cartões empurra Rotinas; cartões com "Séries 0"; Nutrição usa "faixa 2.404–2.657" e ordem Carbo/Gordura/Proteína; histórico de Água com "meta 0 ml" antes do 1º registro; Perfil repete a lista de treinos e mostra tema/cores na tela principal.
 Funcionalidades ainda não feitas: RPE/RIR, sugestão de carga, periodização/deload, bi-set nas rotinas, outras bebidas e dias quentes na água, bioimpedância e % de gordura com histórico próprio, medidas por região no mapa, suplementos, PDF para nutricionista/médico (a partir do Relatório mensal), correlações, foto do prato.
 Dependem de decisão: sincronização entre celulares (servidor), Health Connect (app nativo). "Passos" saiu do roadmap: o usuário não terá esse dado.
+
+## Pesquisa de mercado (18/10/2026)
+Apps comparados: Hevy, Strong, Fitbod, Jefit (treino); MacroFactor, Cronometer, MyFitnessPal, Lose It (nutrição); Samsung Health e Apple Saúde.
+O Carga já cobre: rotinas, cronômetro de descanso, séries de aquecimento (tipo), 1RM e histórico por exercício, recordes, recuperação muscular, sequência de semanas, calculadora de anilhas, código de barras, micronutrientes, planos de dieta, fotos e medidas.
+Lacunas encontradas (guardadas no roadmap): gasto adaptativo pela tendência do peso (MacroFactor), peso de tendência, calculadora automática de aquecimento e supersets (Hevy), treino sugerido pela recuperação + sugestão de carga com RIR (Fitbod), ciclo menstrual (Samsung/Apple — útil para a Carol), jejum intermitente, lembretes de suplementos/medicamentos (Samsung). Fora do escopo por regra (offline, sem servidor): feed social, integração com relógio/Health Connect.
