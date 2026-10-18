@@ -7,18 +7,18 @@
 
 Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada para implementar aos poucos.
 
-## Visão geral (progresso geral: 91%)
+## Visão geral (progresso geral: 92%)
 
 | Módulo | Status | Progresso | Resumo |
 |---|---|---|---|
 | 1. Treino | ✅ | 98% | Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios, mapa corporal e aba Exercícios (avulsos com calorias do relógio). |
 | 2. Hidratação | ✅ | 92% | Meta por peso e sexo, copos rápidos, avatar animado, gráficos e lembretes de água. |
 | 3. Corpo e medidas | ✅ | 85% | Meus dados, Evolução do corpo com comparações e fotos de evolução lado a lado. |
-| 4. Nutrição | ✅ | 90% | Diário, TACO, macros e micros, metas, tendências, copiar de ontem, planos de dieta, código de barras, receitas, porção por calorias e produtos de marca. |
-| 5. Metas e hábitos | ✅ | 85% | Objetivo com meta calórica, Central de metas com previsão, Painel do dia, sono e conquistas pessoais. |
+| 4. Nutrição | ✅ | 94% | Diário, TACO, macros e micros, metas, planos, código de barras, receitas compartilhadas, banco de alimentos, gramas/calorias ligados e produtos de marca. |
+| 5. Metas e hábitos | ✅ | 88% | Objetivo com meta calórica, Central de metas com previsão, Painel do dia, sono e conquistas pessoais. |
 | 6. Gráficos e relatórios | ✅ | 90% | Todos os gráficos com períodos, Evolução do corpo, Resumo de saúde da semana e do mês, volume semanal e recuperação muscular. |
 | 7. Identidade e plataforma | ✅ | 95% | Logo, abertura, senha, 6 temas, 15 cores, perfis separados, pictogramas próprios, Painel no Início e formulários concentrados no Perfil. |
-| 8. Publicação | ✅ | 90% | Site no ar em xsam10-10.github.io/Carga com atualização automática no celular; falta reinstalar para trocar o ícone da abertura. |
+| 8. Publicação | ✅ | 95% | Site no ar com atualização automática forçada pela versão publicada; falta reinstalar para trocar o ícone da abertura. |
 
 ## 1. Treino
 - ✅ Rotinas, pastas, modelos prontos e treino vazio
@@ -70,6 +70,9 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Receitas: combinar alimentos num prato só, com peso pronto e porções
 - ✅ Porção por calorias: digitar kcal e o app calcula os gramas
 - ✅ Produtos de marca embutidos para os dois perfis (whey DUX e Black Skull)
+- ✅ Gramas e calorias editáveis em cada alimento da refeição e da receita, ligados por proporção
+- ✅ Banco de alimentos: listar, criar, editar e excluir (ocultar) alimentos
+- ✅ Receitas compartilhadas entre os perfis do celular e envio por código para o outro celular
 
 ## 5. Metas e hábitos
 - ✅ Meta de água e sequência de semanas treinadas
@@ -82,6 +85,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - 🟡 Hábitos diários: sono (pronto), passos e suplementos
 - ✅ Painel do dia num único cartão
 - ✅ Painel do dia: macros, consumidas x gastas com déficit/superávit e meta, água, treino e exercício
+- ✅ Atividade diária: anéis de calorias gastas, em treino e em exercícios, metas estimadas e gasto basal
 
 ## 6. Gráficos e relatórios
 - ✅ Períodos de 7 dias, mês, ano e desde o início em todos os gráficos
@@ -102,12 +106,14 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Painel de atalhos no Início e todo preenchimento concentrado no Perfil
 - ✅ Assinatura discreta "by Samuel Costa" e versão visível em Configurações
 - ✅ Datas digitadas só com números (DD/MM/AAAA) e calendário opcional (exceto nascimento)
+- 💡 Sincronização automática entre os celulares (exige servidor; aguardando decisão)
 
 ## 8. Publicação
 - ✅ Site no ar pelo GitHub Pages, publicado a cada envio
 - ⬜ App instalado nos dois celulares pelo Pages
 - ✅ Atualização automática do app instalado (sem reinstalar)
 - ⬜ Reinstalar nos celulares para trocar o ícone da abertura (sem quadrado verde)
+- ✅ Atualização forçada pela versão publicada (version.json) e botão "Verificar e atualizar o app"
 
 ## Ordem dos próximos passos
 
@@ -157,3 +163,8 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 18/10/2026 | Datas com máscara DD/MM/AAAA e calendário opcional |
 | 18/10/2026 | Encerrar treino vazio e descartar treino em andamento |
 | 18/10/2026 | Receitas na Nutrição, porção por calorias e whey DUX e Black Skull embutidos |
+| 18/10/2026 | Atividade diária no Início (calorias gastas, treino, exercícios e gasto basal) |
+| 18/10/2026 | Gramas e calorias editáveis nas refeições e receitas |
+| 18/10/2026 | Banco de alimentos |
+| 18/10/2026 | Atualização automática forçada (v59) |
+| 18/10/2026 | Receitas compartilhadas e envio por código (v60) |

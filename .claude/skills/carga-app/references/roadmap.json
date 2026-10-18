@@ -22,13 +22,13 @@
   {
    "ordem": 4,
    "modulo": "Nutrição",
-   "progresso": 0.9,
-   "resumo": "Diário, TACO, macros e micros, metas, tendências, copiar de ontem, planos de dieta, código de barras, receitas, porção por calorias e produtos de marca."
+   "progresso": 0.94,
+   "resumo": "Diário, TACO, macros e micros, metas, planos, código de barras, receitas compartilhadas, banco de alimentos, gramas/calorias ligados e produtos de marca."
   },
   {
    "ordem": 5,
    "modulo": "Metas e hábitos",
-   "progresso": 0.85,
+   "progresso": 0.88,
    "resumo": "Objetivo com meta calórica, Central de metas com previsão, Painel do dia, sono e conquistas pessoais."
   },
   {
@@ -46,8 +46,8 @@
   {
    "ordem": 8,
    "modulo": "Publicação",
-   "progresso": 0.9,
-   "resumo": "Site no ar em xsam10-10.github.io/Carga com atualização automática no celular; falta reinstalar para trocar o ícone da abertura."
+   "progresso": 0.95,
+   "resumo": "Site no ar com atualização automática forçada pela versão publicada; falta reinstalar para trocar o ícone da abertura."
   }
  ],
  "itens": [
@@ -267,6 +267,21 @@
    "Produtos de marca embutidos para os dois perfis (whey DUX e Black Skull)"
   ],
   [
+   "Nutrição",
+   "pronto",
+   "Gramas e calorias editáveis em cada alimento da refeição e da receita, ligados por proporção"
+  ],
+  [
+   "Nutrição",
+   "pronto",
+   "Banco de alimentos: listar, criar, editar e excluir (ocultar) alimentos"
+  ],
+  [
+   "Nutrição",
+   "pronto",
+   "Receitas compartilhadas entre os perfis do celular e envio por código para o outro celular"
+  ],
+  [
    "Metas e hábitos",
    "pronto",
    "Meta de água e sequência de semanas treinadas"
@@ -315,6 +330,11 @@
    "Metas e hábitos",
    "pronto",
    "Painel do dia: macros, consumidas x gastas com déficit/superávit e meta, água, treino e exercício"
+  ],
+  [
+   "Metas e hábitos",
+   "pronto",
+   "Atividade diária: anéis de calorias gastas, em treino e em exercícios, metas estimadas e gasto basal"
   ],
   [
    "Gráficos e relatórios",
@@ -397,6 +417,11 @@
    "Datas digitadas só com números (DD/MM/AAAA) e calendário opcional (exceto nascimento)"
   ],
   [
+   "Identidade e plataforma",
+   "sugestão",
+   "Sincronização automática entre os celulares (exige servidor; aguardando decisão)"
+  ],
+  [
    "Publicação",
    "pronto",
    "Site no ar pelo GitHub Pages, publicado a cada envio"
@@ -415,6 +440,11 @@
    "Publicação",
    "a fazer",
    "Reinstalar nos celulares para trocar o ícone da abertura (sem quadrado verde)"
+  ],
+  [
+   "Publicação",
+   "pronto",
+   "Atualização forçada pela versão publicada (version.json) e botão \"Verificar e atualizar o app\""
   ]
  ],
  "proximos": [
@@ -568,6 +598,26 @@
   [
    "2026-10-18",
    "Receitas na Nutrição, porção por calorias e whey DUX e Black Skull embutidos"
+  ],
+  [
+   "2026-10-18",
+   "Atividade diária no Início (calorias gastas, treino, exercícios e gasto basal)"
+  ],
+  [
+   "2026-10-18",
+   "Gramas e calorias editáveis nas refeições e receitas"
+  ],
+  [
+   "2026-10-18",
+   "Banco de alimentos"
+  ],
+  [
+   "2026-10-18",
+   "Atualização automática forçada (v59)"
+  ],
+  [
+   "2026-10-18",
+   "Receitas compartilhadas e envio por código (v60)"
   ]
  ]
 }
