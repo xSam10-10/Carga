@@ -93,7 +93,7 @@
   ],
   [
    "Treino",
-   "sugestão",
+   "pronto",
    "Periodização em blocos (força, hipertrofia, deload)"
   ],
   [
@@ -108,13 +108,8 @@
   ],
   [
    "Treino",
-   "sugestão",
+   "pronto",
    "RPE e RIR por série"
-  ],
-  [
-   "Treino",
-   "sugestão",
-   "Animações próprias para exercícios sem foto"
   ],
   [
    "Treino",
@@ -147,16 +142,6 @@
    "Lembretes ao longo do dia"
   ],
   [
-   "Hidratação",
-   "sugestão",
-   "Ajuste da meta em dias quentes"
-  ],
-  [
-   "Hidratação",
-   "sugestão",
-   "Outras bebidas com fator de hidratação"
-  ],
-  [
    "Corpo e medidas",
    "pronto",
    "Peso e medidas com gráfico"
@@ -168,23 +153,8 @@
   ],
   [
    "Corpo e medidas",
-   "parcial",
-   "% de gordura com histórico próprio"
-  ],
-  [
-   "Corpo e medidas",
    "pronto",
    "Fotos de evolução lado a lado"
-  ],
-  [
-   "Corpo e medidas",
-   "sugestão",
-   "Medidas por região no mapa corporal"
-  ],
-  [
-   "Corpo e medidas",
-   "sugestão",
-   "Bioimpedância manual"
   ],
   [
    "Corpo e medidas",
@@ -235,11 +205,6 @@
    "Nutrição",
    "pronto",
    "Ciclo de carboidrato ligado aos dias de treino"
-  ],
-  [
-   "Nutrição",
-   "sugestão",
-   "Foto do prato com estimativa assistida"
   ],
   [
    "Nutrição",
@@ -318,7 +283,7 @@
   ],
   [
    "Metas e hábitos",
-   "sugestão",
+   "pronto",
    "Suplementos (creatina, whey) com marcação diária"
   ],
   [
@@ -355,11 +320,6 @@
    "Gráficos e relatórios",
    "pronto",
    "Painel Saúde da semana e do mês"
-  ],
-  [
-   "Gráficos e relatórios",
-   "sugestão",
-   "Relatório em PDF para nutricionista ou médico"
   ],
   [
    "Identidade e plataforma",
@@ -448,106 +408,46 @@
   ],
   [
    "Identidade e plataforma",
-   "sugestão",
+   "pronto",
    "Revisão didática da aba Nutrição: \"faixa\" em linguagem simples, semáforo do Início, macros na ordem Proteína/Carbo/Gordura"
   ],
   [
    "Treino",
-   "sugestão",
+   "pronto",
    "Revisão didática da aba Treino: Seus treinos com 3 últimos + \"Ver todos\"; esconder \"Séries 0\" em treinos só com calorias"
   ],
   [
    "Hidratação",
-   "sugestão",
+   "pronto",
    "Gráfico do histórico começando no primeiro dia com registro (sem \"meta 0 ml\")"
   ],
   [
    "Identidade e plataforma",
-   "sugestão",
+   "pronto",
    "Revisão didática do Perfil: sem a lista de treinos repetida; tema e cores dentro de Configurações"
   ],
   [
    "Treino",
-   "sugestão",
+   "pronto",
    "Sugestão de carga pela última vez que fez o exercício"
   ],
   [
    "Treino",
-   "sugestão",
+   "pronto",
    "Bi-set/superset nas rotinas"
   ],
   [
    "Metas e hábitos",
-   "sugestão",
+   "pronto",
    "Suplementos (creatina, whey) com marcação diária"
   ],
   [
    "Identidade e plataforma",
-   "a fazer",
+   "pronto",
    "Corrigir data \"Qui., 15 De Out.\" na aba Exercícios (De maiúsculo)"
-  ],
-  [
-   "Gráficos e relatórios",
-   "sugestão",
-   "Correlações: proteína × carga no treino"
-  ],
-  [
-   "Nutrição",
-   "sugestão",
-   "Gasto adaptativo (estilo MacroFactor): recalcular o gasto real pela tendência do peso × calorias registradas"
-  ],
-  [
-   "Corpo e medidas",
-   "sugestão",
-   "Peso de tendência (média ponderada) para filtrar as oscilações diárias"
-  ],
-  [
-   "Treino",
-   "sugestão",
-   "Calculadora de aquecimento automática (% da carga de trabalho, estilo Hevy)"
-  ],
-  [
-   "Treino",
-   "sugestão",
-   "Treino sugerido do dia pela recuperação muscular (estilo Fitbod)"
-  ],
-  [
-   "Metas e hábitos",
-   "sugestão",
-   "Acompanhamento do ciclo menstrual (perfil feminino) com fases e previsão"
-  ],
-  [
-   "Nutrição",
-   "sugestão",
-   "Cronômetro de jejum intermitente"
-  ],
-  [
-   "Metas e hábitos",
-   "sugestão",
-   "Lembretes de suplementos e medicamentos (estilo Samsung Health)"
   ]
  ],
  "proximos": [
-  [
-   "Identidade e plataforma",
-   "Corrigir a data com \"De\" maiúsculo na aba Exercícios"
-  ],
-  [
-   "Nutrição",
-   "Revisão didática da aba Nutrição"
-  ],
-  [
-   "Treino",
-   "Revisão didática das abas Treino e Perfil"
-  ],
-  [
-   "Treino",
-   "Sugestão de carga + RPE/RIR por série"
-  ],
-  [
-   "Metas e hábitos",
-   "Suplementos com marcação diária"
-  ],
   [
    "Publicação",
    "Reinstalar o app nos dois celulares (ícone da abertura)"
