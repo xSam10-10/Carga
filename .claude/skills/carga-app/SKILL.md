@@ -50,7 +50,7 @@ O que já existe e o que falta está em `references/roadmap.md`. Lá também est
 
 - Página única: `app.html` (HTML + CSS + JS). `python3 build.py` gera `dist/index.html` e copia manifesto, service worker, ícones e `img/`.
 - Estado global `S`, com configurações do perfil em `S.profile`. Cada tela é uma função em `VIEWS.<nome>` que devolve HTML. As ações usam `data-a="..."` e são tratadas no objeto `A`.
-- Abas (6): Início (com o Painel de atalhos), Treino, Nutrição, Exercícios, Água e Perfil (Meus dados, Configurações).
+- Abas (6), nesta ordem: Início, Treino, Exercícios, Nutrição, Água e Perfil (Exercícios ao lado de Treino, pedido do usuário).
 - Versão atual visível no rodapé de Configurações (`APP_V`, vem do `CACHE` do `sw.js`). Desde a v59 o app compara com `version.json` publicado ao abrir/voltar e se recarrega sozinho (`checkUpdate`/`hardReload`); botão manual "Verificar e atualizar o app" em Configurações. Detalhes em `references/publicacao-github.md`.
 - Dados por perfil em `carga.v1.<id>`; dados do aparelho compartilhados entre perfis em `carga.shared` (receitas).
 - Prévia publicada como Artifact: https://claude.ai/artifact/VtiM8zsMVrkBCHTSnkvoJ6. Republique com o mesmo `file_path`. Quando as imagens mudarem, passe `files` com `img/...`.
