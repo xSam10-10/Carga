@@ -1341,6 +1341,7 @@ VIEWS.inicio=()=>{
  <div class="stat3"><div><span class="lab">Treinos</span><b>${thisW.length}</b></div><div><span class="lab">Tempo</span><b>${fmtDur(dur)}</b></div><div><span class="lab">Volume</span><b>${fmtInt(vol)}<small style="font-size:14px"> kg</small></b></div></div>
  <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<div class="dchip${has?' has':''}${d===today?' today':''}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></div>`}).join('')}</div></section>`;
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button>`;
+ h+=`<h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button><button class="tile" data-a="go" data-v="dados">${I.idcard}Meus dados</button></div>`;
  h+=homeNutri();
  h+=homeAtiv();
  h+=homeHealth();
@@ -1469,7 +1470,7 @@ VIEWS.perfil=()=>{
  ${barChart(vals,sparseLabels(bk),fy)}
  <p class="muted small" style="margin:-6px 0 0">Total nos ${PER_TXT[PO.p]}: <b style="color:var(--fg)">${m==='dur'?fmtDur(tot*36e5):m==='vol'?fmtInt(tot)+' kg':fmtInt(tot)+' reps'}</b> · ${GL[PO.g].toLowerCase()}</p>
  <div class="chips">${[['dur','Duração'],['vol','Volume'],['reps','Repetições']].map(([k,l])=>`<button class="chip${m===k?' on':''}" data-a="pm" data-k="${k}">${l}</button>`).join('')}</div>
- <h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button><button class="tile" data-a="go" data-v="dados">${I.idcard}Meus dados</button></div>
+
  <h3 class="sh">Tema</h3>${themePicker()}
  <h3 class="sh">Cor de destaque</h3>${accentPicker()}
  <h3 class="sh">Treinos</h3>`;
