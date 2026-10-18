@@ -457,6 +457,10 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .at-head,.at-hero{display:flex;align-items:center;gap:14px;width:100%;text-align:left;color:var(--fg)}.at-head .nfx,.at-hero .nfx{display:flex;flex-direction:column;gap:3px;min-width:0}.at-head b,.at-hero b{font:700 22px/1.1 var(--display)}
 .at-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.at-grid>div{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:4px}.at-grid b{font:700 26px/1 var(--display);font-variant-numeric:tabular-nums}.at-grid b small{font-size:14px;color:var(--muted);font-weight:600}
 .at-req{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-left:4px}.at-kcal{font:700 24px var(--display)}.inp.bad{border-color:var(--danger);box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 20%,transparent)}
+.ev-chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px}.ev-chips .chip{flex:none}
+.ev-now{display:flex;flex-direction:column;gap:2px}.ev-now b{font:700 40px/1 var(--display);font-variant-numeric:tabular-nums}
+.ev-tab{padding:2px 14px}.ev-tab>div{display:grid;grid-template-columns:1fr auto auto;align-items:baseline;gap:4px 12px;padding:11px 0;border-bottom:1px solid var(--line)}.ev-tab>div:last-child{border-bottom:0}.ev-tab span:first-child{color:var(--muted);font-size:14px}.ev-tab b{font:700 18px var(--display);font-variant-numeric:tabular-nums}.ev-tab em{grid-column:1/-1;font-style:normal;font-size:12.5px;color:var(--muted)}
+.ev-d{font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}.ev-d.up{color:var(--accent)}.ev-d.down{color:var(--coral,var(--amber))}
 .mydata{display:flex;align-items:center;gap:12px;width:100%;text-align:left;color:var(--fg);font:inherit}.mydata .nfx{display:flex;flex-direction:column;gap:4px;min-width:0}.mydata b{font-size:16px}.mydata .nbar{height:6px;margin-top:2px}
 .md-ic{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--accent-soft);color:var(--accent);flex:none}.md-ic svg{width:22px;height:22px}
 .byline{margin:-4px 0 8px;text-align:center;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.55}
@@ -1465,7 +1469,7 @@ VIEWS.perfil=()=>{
  ${barChart(vals,sparseLabels(bk),fy)}
  <p class="muted small" style="margin:-6px 0 0">Total nos ${PER_TXT[PO.p]}: <b style="color:var(--fg)">${m==='dur'?fmtDur(tot*36e5):m==='vol'?fmtInt(tot)+' kg':fmtInt(tot)+' reps'}</b> · ${GL[PO.g].toLowerCase()}</p>
  <div class="chips">${[['dur','Duração'],['vol','Volume'],['reps','Repetições']].map(([k,l])=>`<button class="chip${m===k?' on':''}" data-a="pm" data-k="${k}">${l}</button>`).join('')}</div>
- <h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Medidas</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button><button class="tile" data-a="go" data-v="dados">${I.idcard}Meus dados</button></div>
+ <h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button><button class="tile" data-a="go" data-v="dados">${I.idcard}Meus dados</button></div>
  <h3 class="sh">Tema</h3>${themePicker()}
  <h3 class="sh">Cor de destaque</h3>${accentPicker()}
  <h3 class="sh">Treinos</h3>`;
@@ -1525,6 +1529,7 @@ VIEWS.estatisticas=()=>{
  const topEx=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,UI.topN||8);
  return bar('Estatísticas')+`<main class="page">
  <button class="tile" data-a="go" data-v="relatorio">${I.cal}<span class="spacer">Relatório mensal</span>${I.chev}</button>
+ ${evoCard()}
  <h2 class="h">${sel!=null?'Mapa corporal de '+dShort(sel):'Mapa corporal dos últimos 7 dias'}</h2>
  <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<button class="dchip${has?' has':''}${d===today?' today':''}${sel===d?' sel':''}" data-a="statDay" data-d="${d}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></button>`}).join('')}</div>
  ${bodyMap(c7)}
@@ -1581,14 +1586,43 @@ VIEWS.calendario=p=>{const now=new Date();const m=new Date(now.getFullYear(),now
 
 /* ---------- MEDIDAS ---------- */
 const MF=[['weight','Peso','kg'],['fat','Gordura corporal','%'],['waist','Cintura','cm'],['chest','Peito','cm'],['arm','Braço','cm'],['thigh','Coxa','cm'],['hip','Quadril','cm'],['calf','Panturrilha','cm']];
-VIEWS.medidas=p=>{const f=p.f||'weight';const fd=MF.find(z=>z[0]===f);const ms=[...S.measures].sort((a,b)=>a.date-b.date);const MP=perOf('med'),[mA]=perRange(MP.p);const pts=ms.filter(m=>num(m[f])!=null&&m.date>=mA).map(m=>({x:m.date,y:num(m[f])}));
- const latest={};for(const m of ms)for(const[k]of MF)if(num(m[k])!=null)latest[k]=num(m[k]);
- let h=bar('Medidas',{right:`<button class="tb" data-a="newMeasure">Registrar</button>`})+'<main class="page">';
- if(!ms.length)return h+`<div class="emptybox">${I.body}<b>Nenhuma medida registrada</b><span>Acompanhe peso, gordura e circunferências ao longo do tempo.</span><button class="btn pri sm" data-a="newMeasure">Registrar medidas</button></div></main>`;
- h+=`<div class="kv">${MF.filter(([k])=>latest[k]!=null).map(([k,l,u])=>`<div><span class="lab">${l}</span><b>${fmt(latest[k])}</b> <span class="muted small">${u}</span></div>`).join('')}</div>
- <div class="chips">${MF.map(([k,l])=>`<button class="chip${f===k?' on':''}" data-a="mField" data-k="${k}">${l}</button>`).join('')}</div>${perCtl('med',{gran:false})}${lineChart(pts,v=>fmt(v)+' '+fd[2])}
- <h3 class="sh">Registros</h3><div class="card" style="padding:4px 14px">${[...ms].reverse().map(m=>`<button class="mrow" data-a="editMeasure" data-id="${m.id}"><span class="date">${new Date(m.date).toLocaleDateString('pt-BR')}</span><span class="small">${MF.filter(([k])=>num(m[k])!=null).map(([k,l,u])=>`${l} <b>${fmt(m[k])}</b>${u==='%'?'%':''}`).join(' · ')}</span></button>`).join('')}</div>`;
+/* ---------- EVOLUÇÃO DO CORPO: histórico de tudo o que é preenchido e muda com o tempo ----------
+   Fontes: S.measures (peso, gordura, circunferências) e S.hLog (altura, gravada a cada alteração em Meus dados).
+   Derivados por data: IMC, massa magra, massa gorda, cintura/altura e taxa basal. */
+const hLog=()=>{S.hLog=S.hLog||[];if(!S.hLog.length&&num(S.profile.height)){const f=[...S.measures].sort((a,b)=>a.date-b.date)[0];S.hLog.push({t:f?f.date:sod(Date.now()),v:num(S.profile.height)})}return S.hLog};
+function heightAt(t){const l=hLog().filter(h=>num(h.v)).sort((a,b)=>a.t-b.t);let v=null;for(const h of l){if(h.t<=t)v=num(h.v);else break}return v??(l[0]?num(l[0].v):num(S.profile.height))}
+function logHeight(v){const d=sod(Date.now()),l=hLog(),e=l.find(h=>h.t===d);e?e.v=v:l.push({t:d,v})}
+// [chave, nome, unidade, casas, como calcular a partir de um registro de medidas (m) | null = série própria]
+const EVO=[['weight','Peso','kg',1],['imc','IMC','',1,(m,h)=>num(m.weight)&&h?m.weight/((h/100)**2):null],['fat','Gordura corporal','%',1],['lean','Massa magra','kg',1,m=>num(m.weight)&&num(m.fat)!=null?m.weight*(1-m.fat/100):null],['fatkg','Massa gorda','kg',1,m=>num(m.weight)&&num(m.fat)!=null?m.weight*m.fat/100:null],
+ ['waist','Cintura','cm',1],['whr','Cintura/altura','',2,(m,h)=>num(m.waist)&&h?m.waist/h:null],['chest','Peito','cm',1],['arm','Braço','cm',1],['thigh','Coxa','cm',1],['hip','Quadril','cm',1],['calf','Panturrilha','cm',1],
+ ['height','Altura','cm',0,null],['tmb','Taxa basal','kcal',0,(m,h,t)=>{const p=S.profile;if(!num(m.weight)||!h||!p.birth||!p.sex)return null;const a=ageOf(p.birth)-Math.floor((Date.now()-t)/(365.25*DAY));return mifflin(m.weight,h,a,p.sex)}]];
+function evoSeries(k){const d=EVO.find(z=>z[0]===k);if(k==='height')return hLog().filter(h=>num(h.v)).map(h=>({x:h.t,y:num(h.v)})).sort((a,b)=>a.x-b.x);
+ return[...S.measures].sort((a,b)=>a.date-b.date).map(m=>{const y=d[4]?d[4](m,heightAt(m.date),m.date):num(m[k]);return y==null||!isFinite(y)?null:{x:m.date,y}}).filter(Boolean)}
+const evoFmt=(d,v)=>v==null?'—':(d[3]?fmt(Math.round(v*10**d[3])/10**d[3]):fmtInt(v))+(d[2]?(d[2]==='%'?'%':' '+d[2]):'');
+const evoAt=(s,t)=>{let v=null;for(const p of s){if(p.x<=t)v=p;else break}return v};
+function evoDelta(d,a,b){if(a==null||b==null)return'';const x=b-a,r=d[3]?Math.round(x*10**d[3])/10**d[3]:Math.round(x);if(!r)return'<span class="ev-d">=</span>';return`<span class="ev-d ${r>0?'up':'down'}">${r>0?'▲ +':'▼ −'}${d[3]?fmt(Math.abs(r)):fmtInt(Math.abs(r))}${d[2]&&d[2]!=='%'?' '+d[2]:d[2]==='%'?' p.p.':''}</span>`}
+VIEWS.medidas=p=>{const all=EVO.filter(d=>evoSeries(d[0]).length);const f=all.some(d=>d[0]===p.f)?p.f:(all[0]||EVO[0])[0];const d=EVO.find(z=>z[0]===f);const s=evoSeries(f);
+ let h=bar('Evolução do corpo',{right:`<button class="tb" data-a="newMeasure">Registrar</button>`})+'<main class="page">';
+ if(!S.measures.length&&!hLog().length)return h+`<div class="emptybox">${I.body}<b>Nenhum registro ainda</b><span>Registre peso e medidas para acompanhar a evolução semana a semana, mês a mês e ano contra ano. A altura e o peso de Meus dados também entram aqui.</span><button class="btn pri sm" data-a="newMeasure">Registrar medidas</button></div></main>`;
+ const MP=perOf('med'),bk=buckets(MP.p,MP.g),[pa]=perRange(MP.p),first=s[0]?s[0].x:Date.now();
+ const pts=MP.g==='dia'?s.filter(z=>z.x>=pa):bk.map(([a,z])=>{const l=s.filter(q=>q.x>=a&&q.x<z);return l.length?{x:a,y:l.reduce((t,q)=>t+q.y,0)/l.length}:null}).filter(Boolean);
+ const last=s[s.length-1],now=Date.now();
+ const cmp=[['Há 1 semana',addDays(sod(now),-7)],['Há 1 mês',addDays(sod(now),-30)],['Há 3 meses',addDays(sod(now),-91)],['Há 6 meses',addDays(sod(now),-182)],['Há 1 ano (ano contra ano)',addDays(sod(now),-365)]].map(([l,t])=>[l,evoAt(s,t)]).filter(([,v])=>v&&v!==last);
+ if(s[0]&&s[0]!==last)cmp.push([`Primeiro registro (${new Date(s[0].x).toLocaleDateString('pt-BR')})`,s[0]]);
+ // mês a mês: média de cada mês dos últimos 12 com registro
+ const mm={};for(const q of s){const dt=new Date(q.x),k=dt.getFullYear()*12+dt.getMonth();(mm[k]=mm[k]||[]).push(q.y)}const mk=Object.keys(mm).map(Number).sort((a,b)=>b-a).slice(0,12);
+ h+=`<div class="chips ev-chips">${all.map(([k,l])=>`<button class="chip${f===k?' on':''}" data-a="mField" data-k="${k}">${l}</button>`).join('')}</div>
+ <section class="card ev-now"><span class="lab">${d[1]} atual</span><b>${evoFmt(d,last&&last.y)}</b><span class="muted small">${last?'em '+new Date(last.x).toLocaleDateString('pt-BR'):''}${f==='imc'?' · '+(last?imcClass(last.y):''):''}</span></section>
+ ${perCtl('med')}${pts.length>=2?lineChart(pts,v=>evoFmt(d,v).replace(/ (kg|cm|kcal)$/,'')):`<p class="empty small">${s.length?'Registre mais vezes neste período para ver a linha da evolução.':'Sem registros desta medida.'}</p>`}
+ <p class="muted small" style="margin:-6px 0 0">${MP.g==='dia'?'Cada ponto é um registro.':MP.g==='semana'?'Cada ponto é a média da semana.':'Cada ponto é a média do mês.'}${pts.length>=2?` No período: ${evoDelta(d,pts[0].y,pts[pts.length-1].y)}`:''}</p>`;
+ if(cmp.length)h+=`<h3 class="sh">Comparar com</h3><div class="card ev-tab">${cmp.map(([l,v])=>`<div><span>${l}</span><b>${evoFmt(d,v.y)}</b>${evoDelta(d,v.y,last.y)}</div>`).join('')}</div><p class="muted small" style="margin:-4px 0 0">A seta mostra quanto mudou de lá até o valor atual.</p>`;
+ if(mk.length>1)h+=`<h3 class="sh">Mês a mês</h3><div class="card ev-tab">${mk.map((k,i)=>{const avg=mm[k].reduce((a,b)=>a+b,0)/mm[k].length,pk=mm[k-1],py=mm[k-12];return`<div><span>${MES[k%12]} ${Math.floor(k/12)}</span><b>${evoFmt(d,avg)}</b>${pk?evoDelta(d,pk.reduce((a,b)=>a+b,0)/pk.length,avg):'<span class="ev-d">—</span>'}${py?`<em>vs ${MES[k%12]} ${Math.floor(k/12)-1}: ${evoDelta(d,py.reduce((a,b)=>a+b,0)/py.length,avg)}</em>`:''}</div>`}).join('')}</div><p class="muted small" style="margin:-4px 0 0">Média de cada mês e a variação em relação ao mês anterior${mk.some(k=>mm[k-12])?' e ao mesmo mês do ano anterior':''}.</p>`;
+ const ms=[...S.measures].sort((a,b)=>b.date-a.date);
+ if(ms.length)h+=`<h3 class="sh">Registros</h3><div class="card" style="padding:4px 14px">${ms.map(m=>`<button class="mrow" data-a="editMeasure" data-id="${m.id}"><span class="date">${new Date(m.date).toLocaleDateString('pt-BR')}</span><span class="small">${MF.filter(([k])=>num(m[k])!=null).map(([k,l,u])=>`${l} <b>${fmt(m[k])}</b>${u==='%'?'%':''}`).join(' · ')}</span></button>`).join('')}</div>`;
  return h+'</main>'};
+const imcClass=v=>v<18.5?'abaixo do peso':v<25?'peso saudável':v<30?'sobrepeso':v<35?'obesidade grau I':v<40?'obesidade grau II':'obesidade grau III';
+function evoCard(){const s=evoSeries('weight'),last=s[s.length-1];if(!last)return`<button class="tile" data-a="go" data-v="medidas">${I.body}<span class="spacer">Evolução do corpo<br><span class="muted small" style="font-weight:400">Registre peso e medidas para comparar</span></span>${I.chev}</button>`;const d=EVO[0],m1=evoAt(s,addDays(sod(Date.now()),-30));
+ return`<button class="tile" data-a="go" data-v="medidas" style="padding:12px 16px">${I.body}<span class="spacer">Evolução do corpo<br><span class="muted small" style="font-weight:400">Peso ${evoFmt(d,last.y)}${m1&&m1!==last?' · 30 dias: '+evoDelta(d,m1.y,last.y):''}</span></span>${I.chev}</button>`}
 VIEWS.medidaForm=p=>{const m=p.m;return bar(p.isNew?'Nova medida':'Editar medida',{left:`<button class="tb" data-a="back">Cancelar</button>`,right:`<button class="btn sm pri" data-a="saveMeasure">Salvar</button>`})+`<main class="page"><div class="form"><label class="fld"><span>Data</span><input class="inp" type="date" id="m-date" data-f="mDate" value="${toDateInput(m.date)}"></label><div class="row2">${MF.map(([k,l,u])=>`<label class="fld"><span>${l} (${u})</span><input class="inp" id="m-${k}" inputmode="decimal" data-f="mVal" data-k="${k}" value="${esc(m[k]??'')}"></label>`).join('')}</div></div>${p.isNew?'':`<button class="btn ghost danger wide" data-a="delMeasure">Excluir registro</button>`}</main>`};
 
 /* ---------- CONFIGURAÇÕES ---------- */
@@ -1745,7 +1779,7 @@ VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=auto
  <p class="muted small" style="margin:-4px 0 0">${w?`Último registro: ${fmt(w.v)} kg em ${new Date(w.date).toLocaleDateString('pt-BR')}. `:''}Ao alterar, o peso de hoje é gravado em Medidas.</p></section>
  <h3 class="sh">Medidas</h3>
  <section class="card form">${(()=>{const L={};for(const m of [...S.measures].sort((a,b)=>a.date-b.date))for(const[k]of MF)if(k!=='weight'&&num(m[k])!=null)L[k]=num(m[k]);const ks=MF.filter(([k])=>L[k]!=null);return ks.length?`<div class="kv">${ks.map(([k,l,u])=>`<div><span class="lab">${l}</span><b>${fmt(L[k])}</b> <span class="muted small">${u}</span></div>`).join('')}</div>`:'<p class="muted small" style="margin:0">Gordura corporal e circunferências (cintura, peito, braço, coxa, quadril, panturrilha). Opcional, mas a cintura entra no indicador cintura/altura.</p>'})()}
- <div class="chips"><button class="btn sm pri" data-a="newMeasure">${I.plus||''} Registrar medidas</button>${S.measures.length?'<button class="btn sm sec" data-a="go" data-v="medidas">Ver histórico</button>':''}</div></section>
+ <div class="chips"><button class="btn sm pri" data-a="newMeasure">${I.plus||''} Registrar medidas</button><button class="btn sm sec" data-a="go" data-v="medidas">Ver evolução</button></div></section>
  <h3 class="sh">Treino e objetivo</h3>
  <section class="card form"><div class="fld"><span>Dias de treino por semana</span><div class="chips daysel">${[0,1,2,3,4,5,6,7,8].map(n=>`<button class="chip${trainDays()===n?' on':''}" data-a="pdDays" data-k="${n}">${n===8?'7+':n}</button>`).join('')}</div></div>
  <p class="muted small" style="margin:0">${trainDays()===8?'Mais de 7: dois treinos por dia ou trabalho físico pesado':`${trainDays()} ${trainDays()===1?'dia':'dias'} por semana`} → <b>${actOf()[1]}</b> (fator ${String(actOf()[2]).replace('.',',')} sobre a taxa basal). Nas últimas 4 semanas você treinou ${fmt(perWeek4())} vezes por semana. Mude sempre que a sua rotina mudar.</p>
@@ -2070,7 +2104,7 @@ document.addEventListener('input',e=>{const t=e.target,f=t.dataset.f;if(!f)retur
  if(f==='nxName'){p.f.name=v;return} if(f==='nxMu'){p.f.muscle=v;return} if(f==='nxEq'){p.f.equipment=v;return}
  if(f==='mDate'){const d=v.split('-');if(d.length===3)p.m.date=new Date(+d[0],d[1]-1,+d[2]).getTime();return}
  if(f==='mVal'){p.m[t.dataset.k]=v;return}
- if(f==='pd'){const k=t.dataset.k;S.profile[k]=k==='height'?(num(v)&&num(v)>=100&&num(v)<=250?num(v):S.profile[k]):v;save();return}
+ if(f==='pd'){const k=t.dataset.k;S.profile[k]=k==='height'?(num(v)&&num(v)>=100&&num(v)<=250?num(v):S.profile[k]):v;if(k==='height'&&num(v)>=100&&num(v)<=250)logHeight(num(v));save();return}
  if(f==='pdWeight'){const n=num(v);if(n&&n>=20&&n<=400){const d=sod(Date.now());let m=S.measures.find(x=>x.date===d);if(!m){m={id:uid(),date:d};S.measures.push(m)}m.weight=n;save()}return}
  if(f==='pname'){S.profile.name=v;const r=REGS.list.find(x=>x.id===REGS.current);if(r&&v.trim()){r.name=v.trim();saveReg()}save();return}
  if(f==='pf'){S.profile[t.dataset.k]=t.checked;save();if(t.dataset.k==='wake'&&!t.checked)unwake();if(t.dataset.k==='notify'&&t.checked)askNotify(t);return}

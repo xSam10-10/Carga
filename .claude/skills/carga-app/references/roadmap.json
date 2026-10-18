@@ -16,8 +16,8 @@
   {
    "ordem": 3,
    "modulo": "Corpo e medidas",
-   "progresso": 0.65,
-   "resumo": "Peso, medidas, IMC, TMB e indicadores; faltam fotos de evolução e medidas por região."
+   "progresso": 0.75,
+   "resumo": "Meus dados no Perfil e Evolução do corpo: peso, IMC, gordura, massas, circunferências, altura e taxa basal com gráfico e comparações; faltam fotos de evolução."
   },
   {
    "ordem": 4,
@@ -180,6 +180,11 @@
    "Corpo e medidas",
    "pronto",
    "Meus dados: todos os lançamentos pessoais concentrados no Perfil"
+  ],
+  [
+   "Corpo e medidas",
+   "pronto",
+   "Evolução do corpo: gráfico por semana/mês, comparação com 1 semana, 1 mês, 1 ano e mês a mês ano contra ano"
   ],
   [
    "Nutrição",
@@ -458,6 +463,14 @@
   [
    "2026-10-17",
    "Aba Exercícios: exercícios avulsos com calorias, distância e frequência cardíaca"
+  ],
+  [
+   "2026-10-18",
+   "Atualização automática do app instalado, figuras femininas da Carol, filtros hiper-realistas e ilustrados"
+  ],
+  [
+   "2026-10-18",
+   "Evolução do corpo com histórico e comparações de todas as medidas"
   ]
  ]
 }

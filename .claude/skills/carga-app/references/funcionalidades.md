@@ -123,3 +123,9 @@
 - Tela da aba: resumo de hoje, favoritos (todos; o atalho do Início mostra até 12 + "Mais"), gráfico de calorias por período (`perCtl('ativ')`) e registros por dia, incluindo os treinos de musculação. Detalhe `ativDet` com ritmo/velocidade calculados. Atalho "Exercício" no Início (`homeAtiv`).
 - Frequência cardíaca aqui é só informação opcional pedida pelo usuário; não entra em nenhum cálculo (regra 6 continua).
 
+
+## Evolução do corpo (view `medidas`, título "Evolução do corpo") — 18/10/2026
+- Regra do usuário: tudo o que é preenchido e pode mudar precisa de histórico com gráfico e comparação (semana a semana, mês a mês, desde o início, ano contra ano).
+- Séries (`EVO`, `evoSeries`): peso, IMC, gordura corporal, massa magra, massa gorda, cintura, cintura/altura, peito, braço, coxa, quadril, panturrilha, altura e taxa basal. Os derivados usam a altura da data (`heightAt`); a altura tem histórico próprio em `S.hLog`, gravado a cada alteração em Meus dados (`logHeight`). O peso de Meus dados grava em `S.measures`.
+- Tela: chips de medida, valor atual, gráfico com `perCtl('med')` (registros, média por semana ou por mês), "Comparar com" (1 semana, 1 mês, 3 e 6 meses, 1 ano, primeiro registro), "Mês a mês" (média do mês, variação vs mês anterior e vs mesmo mês do ano anterior) e lista de registros.
+- Acesso: tile "Evolução" no Perfil, cartão `evoCard()` em Estatísticas, "Ver evolução" em Meus dados.

@@ -7,13 +7,13 @@
 
 Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada para implementar aos poucos.
 
-## Visão geral (progresso geral: 76%)
+## Visão geral (progresso geral: 77%)
 
 | Módulo | Status | Progresso | Resumo |
 |---|---|---|---|
 | 1. Treino | ✅ | 95% | Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios, mapa corporal e aba Exercícios (avulsos com calorias do relógio). |
 | 2. Hidratação | ✅ | 85% | Meta por peso e sexo, copos rápidos, avatar animado, sequência e gráficos. |
-| 3. Corpo e medidas | 🟡 | 65% | Peso, medidas, IMC, TMB e indicadores; faltam fotos de evolução e medidas por região. |
+| 3. Corpo e medidas | 🟡 | 75% | Meus dados no Perfil e Evolução do corpo: peso, IMC, gordura, massas, circunferências, altura e taxa basal com gráfico e comparações; faltam fotos de evolução. |
 | 4. Nutrição | 🟡 | 68% | Aba Nutrição no modelo do Samsung Health: diário com 6 refeições, TACO (591 alimentos), macros e micronutrientes, metas e tendências. Faltam planos de dieta e código de barras. |
 | 5. Metas e hábitos | 🟡 | 45% | Objetivo (perder, manter, ganhar peso, ganhar massa) com meta calórica e de macros por dia e o quanto falta no Início. Falta a central de metas com prazo e previsão. |
 | 6. Gráficos e relatórios | 🟡 | 72% | Períodos de 7 dias a desde o início em todos os gráficos; faltam os de nutrição e o painel da semana. |
@@ -51,6 +51,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - 💡 Medidas por região no mapa corporal
 - 💡 Bioimpedância manual
 - ✅ Meus dados: todos os lançamentos pessoais concentrados no Perfil
+- ✅ Evolução do corpo: gráfico por semana/mês, comparação com 1 semana, 1 mês, 1 ano e mês a mês ano contra ano
 
 ## 4. Nutrição
 - ✅ Meta calórica pela TMB, atividade e objetivo
@@ -133,3 +134,5 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 17/10/2026 | Meta do dia: exercício do relógio somado por inteiro; relógio como padrão; dias de treino por semana |
 | 17/10/2026 | Meus dados no Perfil, reset geral com restauração e assinatura |
 | 17/10/2026 | Aba Exercícios: exercícios avulsos com calorias, distância e frequência cardíaca |
+| 18/10/2026 | Atualização automática do app instalado, figuras femininas da Carol, filtros hiper-realistas e ilustrados |
+| 18/10/2026 | Evolução do corpo com histórico e comparações de todas as medidas |
