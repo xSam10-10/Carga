@@ -47,3 +47,9 @@ Registre aqui toda decisão nova, com data, para não voltar a discutir o que j�
 | 18/10/2026 | Painel de atalhos no Início; formulários só na aba Perfil | Pedido do usuário |
 | 18/10/2026 | Evolução do corpo com histórico e comparações (inclui altura com histórico `S.hLog`) | Pedido do usuário: comparar semana a semana, mês a mês, ano contra ano |
 
+
+## Revisão geral de 18/10/2026 (sugestões guardadas para retomar)
+Ordem combinada: (1) data "De" maiúsculo na aba Exercícios; (2) revisão didática da Nutrição; (3) Treino e Perfil; (4) sugestão de carga + RPE/RIR; (5) suplementos.
+Achados da varredura: Treino com 10 cartões empurra Rotinas; cartões com "Séries 0"; Nutrição usa "faixa 2.404–2.657" e ordem Carbo/Gordura/Proteína; histórico de Água com "meta 0 ml" antes do 1º registro; Perfil repete a lista de treinos e mostra tema/cores na tela principal.
+Funcionalidades ainda não feitas: RPE/RIR, sugestão de carga, periodização/deload, bi-set nas rotinas, outras bebidas e dias quentes na água, bioimpedância e % de gordura com histórico próprio, medidas por região no mapa, suplementos, PDF para nutricionista/médico (a partir do Relatório mensal), correlações, foto do prato.
+Dependem de decisão: sincronização entre celulares (servidor), Health Connect (app nativo). "Passos" saiu do roadmap: o usuário não terá esse dado.

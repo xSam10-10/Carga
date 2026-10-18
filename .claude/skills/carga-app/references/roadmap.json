@@ -319,7 +319,7 @@
   [
    "Metas e hábitos",
    "parcial",
-   "Hábitos diários: sono (pronto), passos e suplementos"
+   "Hábitos diários: sono (pronto) e suplementos"
   ],
   [
    "Metas e hábitos",
@@ -450,28 +450,72 @@
    "Publicação",
    "pronto",
    "Atualização forçada pela versão publicada (version.json) e botão \"Verificar e atualizar o app\""
+  ],
+  [
+   "Identidade e plataforma",
+   "sugestão",
+   "Revisão didática da aba Nutrição: \"faixa\" em linguagem simples, semáforo do Início, macros na ordem Proteína/Carbo/Gordura"
+  ],
+  [
+   "Treino",
+   "sugestão",
+   "Revisão didática da aba Treino: Seus treinos com 3 últimos + \"Ver todos\"; esconder \"Séries 0\" em treinos só com calorias"
+  ],
+  [
+   "Hidratação",
+   "sugestão",
+   "Gráfico do histórico começando no primeiro dia com registro (sem \"meta 0 ml\")"
+  ],
+  [
+   "Identidade e plataforma",
+   "sugestão",
+   "Revisão didática do Perfil: sem a lista de treinos repetida; tema e cores dentro de Configurações"
+  ],
+  [
+   "Treino",
+   "sugestão",
+   "Sugestão de carga pela última vez que fez o exercício"
+  ],
+  [
+   "Treino",
+   "sugestão",
+   "Bi-set/superset nas rotinas"
+  ],
+  [
+   "Metas e hábitos",
+   "sugestão",
+   "Suplementos (creatina, whey) com marcação diária"
+  ],
+  [
+   "Identidade e plataforma",
+   "a fazer",
+   "Corrigir data \"Qui., 15 De Out.\" na aba Exercícios (De maiúsculo)"
   ]
  ],
  "proximos": [
   [
-   "Publicação",
-   "Reinstalar o app nos dois celulares (ícone da abertura); se o quadrado verde continuar, trocar o ícone da tela inicial"
+   "Identidade e plataforma",
+   "Corrigir a data com \"De\" maiúsculo na aba Exercícios"
+  ],
+  [
+   "Nutrição",
+   "Revisão didática da aba Nutrição"
   ],
   [
    "Treino",
-   "Periodização em blocos e RPE/RIR por série"
+   "Revisão didática das abas Treino e Perfil"
   ],
   [
-   "Corpo e medidas",
-   "Medidas por região no mapa corporal e bioimpedância manual"
+   "Treino",
+   "Sugestão de carga + RPE/RIR por série"
   ],
   [
-   "Gráficos e relatórios",
-   "Relatório em PDF para nutricionista ou médico"
+   "Metas e hábitos",
+   "Suplementos com marcação diária"
   ],
   [
-   "Hidratação",
-   "Outras bebidas com fator de hidratação e ajuste em dias quentes"
+   "Publicação",
+   "Reinstalar o app nos dois celulares (ícone da abertura)"
   ]
  ],
  "referencias": [

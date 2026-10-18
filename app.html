@@ -571,6 +571,10 @@ html.sp-on{background:#000}
 .glist{display:flex;flex-direction:column;gap:4px;font-size:14px}.glist>div{display:flex;align-items:center;gap:8px}.glist>div>i{width:10px;height:10px;border-radius:3px;flex:none}.glist span{flex:1;color:var(--muted)}.glist b{font-variant-numeric:tabular-nums}.glist .gtot{border-top:1px solid var(--line);padding-top:6px;margin-top:2px}.glist .gtot span{color:var(--fg);font-weight:600}
 .cs{display:flex;flex-direction:column;gap:6px}.cs p{margin:0}.cs-h{margin-top:8px}.cs-r{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:2px 0}.cs-r b{font-variant-numeric:tabular-nums}.cs-r.tot{border-top:1px solid var(--line);padding-top:6px;font-weight:700}
 .fage{font-style:normal;font-size:12px;color:var(--muted);min-height:15px}.row2{align-items:start}
+.lead{display:flex;flex-direction:column;gap:10px}.lead>p{margin:0;font-size:16px;line-height:1.4}
+.lg{display:flex;flex-direction:column}.lg-r{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);text-align:left;color:var(--fg);font-size:14px}.lg-r:first-child{border-top:0}
+.lg-r i{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:700;color:#fff}.lg-r.z-ok i{background:#2E9E5B;border-color:#2E9E5B}.lg-r.z-warn i{border-color:var(--amber)}.lg-r.z-bad i{border-color:var(--danger)}
+.lg-r span{flex:1;min-width:0}.lg-r b{font-weight:600;font-variant-numeric:tabular-nums;text-align:right}.lg-r.z-ok b{color:#2E9E5B}.lg-r.z-warn b{color:var(--amber)}.lg-r.z-bad b{color:var(--danger)}
 #gate{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch}.gate-c{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding:calc(env(safe-area-inset-top,0px) + 20px) 16px calc(env(safe-area-inset-bottom,0px) + 24px)}.gate-c .gerr{color:var(--danger);font-weight:600;margin:0}body.gated{overflow:hidden}
 #splash{position:fixed;inset:0;z-index:9999;background:#000;display:grid;place-items:center;transition:opacity .24s ease-out}
 #splash.out{opacity:0;pointer-events:none}
@@ -3449,12 +3453,30 @@ Object.assign(A,{actDay:d=>{UI.actDay=+d.d;rerender()}});
 function zKcal(v,P){return v>=P.lo&&v<=P.hi?'ok':v>P.hi?(v<=P.kcal*1.15?'warn':'bad'):'go'}
 function zMacro(v,g,min){if(!g)return'go';const r=v/g;return min?(r>=.95?'ok':'go'):r<.9?'go':r<=1.1?'ok':r<=1.25?'warn':'bad'}
 const sgn=v=>(v>0?'+':v<0?'−':'')+fmtInt(Math.abs(v));
-function homeLead(){nS();const now=Date.now(),n=dayNut(dkey(now)),P=nutriPlan(now),v=Math.round(n[0]),pr=Math.round(n[1]),fp=Math.max(0,P.gP-pr),z=zKcal(v,P);
+function homeLeadTxt(){nS();const now=Date.now(),n=dayNut(dkey(now)),P=nutriPlan(now),v=Math.round(n[0]),pr=Math.round(n[1]),fp=Math.max(0,P.gP-pr),z=zKcal(v,P);
  let t;if(!v)t=`Hoje sua meta é <b>${fmtInt(P.kcal)} kcal</b>, com <b>${fmtInt(P.gP)} g de proteína</b>. Comece registrando a primeira refeição.`;
  else if(z==='go')t=`Faltam <b>${fmtInt(P.kcal-v)} kcal</b>${fp?` e <b>${fmtInt(fp)} g de proteína</b>`:''} para a meta de hoje.${fp?'':' A proteína já foi batida ✓'}`;
  else if(z==='ok')t=`Você está <b>dentro da meta</b> de hoje ✓${fp?` Faltam <b>${fmtInt(fp)} g de proteína</b>.`:''}`;
  else t=`Você passou <b>${fmtInt(v-P.kcal)} kcal</b> da meta de hoje.${fp?` Ainda faltam ${fmtInt(fp)} g de proteína.`:''}`;
- return`<p class="lead z-${!v?'go':z}">${t}</p>`}
+ return[t,!v?'go':z]}
+/* Metas de hoje: frase-resumo + todas as metas do dia num só quadro (comer, proteína, água, treino, ativas, sono)
+   e as metas de longo prazo cadastradas em Meus dados → Metas (peso, gordura, cintura). */
+function homeLead(){nS();const now=Date.now(),t0=sod(now),k=dkey(now),n=dayNut(k),P=nutriPlan(now),v=Math.round(n[0]),[txt,z0]=homeLeadTxt(),g=goalsOf(),p=S.profile;
+ const wt=waterOn(k),wg=waterGoal(now).ml,a=actDay(t0),ag=actGoals(t0),sl=sleepOn(k),sg=num(p.sleepGoal)||8;
+ const wk=weekStart(now),cnt=S.workouts.filter(w=>w.start>=wk).length+(S.extra||[]).filter(x=>x.t>=wk).length,wpw=num(g.wpw)>0?num(g.wpw):Math.min(7,p.days||0);
+ const today=S.workouts.filter(w=>w.start>=t0),todayX=(S.extra||[]).filter(x=>x.t>=t0),left=Math.max(0,wpw-cnt),dl=7-Math.round((t0-wk)/DAY);
+ const zk=zKcal(v,P),zp=zMacro(n[1],P.gP,1);
+ const rows=[
+  ['Calorias',`${fmtInt(v)} / ${fmtInt(P.kcal)} kcal`,zk==='ok'?'ok':zk==='go'?'go':zk,'data-a="tab" data-t="dieta"'],
+  ['Proteína',`${fmtInt(n[1])} / ${fmtInt(P.gP)} g`,zp,'data-a="tab" data-t="dieta"'],
+  ['Água',`${fmt(wt/1000)} / ${fmt(wg/1000)} L`,wt>=wg?'ok':'go','data-a="tab" data-t="agua"'],
+  ['Treino de hoje',today.length?esc(today.map(w=>w.name).join(' + ')):cnt>=wpw&&wpw?'semana já batida':'ainda não'+(todayX.length?` · fez ${esc(todayX[0].name.toLowerCase())}`:''),today.length||(cnt>=wpw&&wpw)?'ok':'go','data-a="tab" data-t="treino"'],
+  ...(wpw?[['Treinos da semana',`${cnt} de ${wpw}${left?` · faltam ${left} em ${dl} dia${dl>1?'s':''}`:''}`,cnt>=wpw?'ok':left>dl?'bad':'go','data-a="go" data-v="metas"']]:[]),
+  ['Calorias ativas',`${fmtInt(a.total)} / ${fmtInt(ag.total)} kcal`,a.total>=ag.total?'ok':'go','data-a="tab" data-t="ativ"'],
+  ['Sono',sl?`${fmt(sl)} / ${fmt(sg)} h`:'registrar a última noite',sl?(sl>=sg-.25?'ok':'go'):'go','data-a="sleepLog"']];
+ const lp=[['weight','Peso'],['fat','Gordura'],['waist','Cintura']].filter(([kk])=>num(g[kk])>0).map(([kk,l])=>{const f=goalForecast(kk,num(g[kk]));if(!f)return null;const d=f.d;return[`${l} → ${evoFmt(d,f.target)}`,f.pct>=1?'alcançada ✓':`${evoFmt(d,f.last.y)} · faltam ${evoFmt(d,Math.abs(f.target-f.last.y))}`,f.pct>=1?'ok':'go','data-a="go" data-v="metas"']}).filter(Boolean);
+ const done=rows.filter(r=>r[2]==='ok').length,row=r=>`<button class="lg-r z-${r[2]}" ${r[3]}><i>${r[2]==='ok'?'✓':''}</i><span>${r[0]}</span><b>${r[1]}</b></button>`;
+ return`<section class="card lead z-${z0}"><p>${txt}</p><div class="row"><span class="lab nfx">Metas de hoje</span><span class="muted small">${done} de ${rows.length} batidas</span></div><div class="lg">${rows.map(row).join('')}</div>${lp.length?`<span class="lab" style="margin-top:4px">Metas de longo prazo</span><div class="lg">${lp.map(row).join('')}</div>`:''}</section>`}
 function homeMyDay(){nS();const now=Date.now(),k=dkey(now),n=dayNut(k),P=nutriPlan(now),E=P.E,v=Math.round(n[0]),left=P.kcal-v,pc=Math.min(100,v/P.kcal*100),z=zKcal(v,P);
  const gl=(GOALS.find(g=>g[0]===goalOf())||GOALS[1])[1],wg=waterGoal(now).ml,wt=waterOn(k),sl=sleepOn(k);
  const noKcal=E.mode==='relogio'?S.workouts.filter(w=>w.start>=sod(now)&&!(num(w.kcal)>0)):[];
