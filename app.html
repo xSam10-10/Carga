@@ -1794,7 +1794,7 @@ VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=auto
  <h3 class="sh">Corpo</h3>
  <section class="card form">
  <div class="fld"><span>Sexo</span><div class="chips">${[['m','Masculino'],['f','Feminino']].map(([k,l])=>`<button class="chip${p.sex===k?' on':''}" data-a="pdSex" data-k="${k}">${l}</button>`).join('')}</div></div>
- <div class="row2"><label class="fld"><span>Data de nascimento${age?` · ${age} anos`:''}</span><input class="inp" type="date" id="pd-birth" data-f="pd" data-k="birth" value="${esc(p.birth||'')}"></label>
+ <div class="row2"><label class="fld"><span>Data de nascimento${age?` · ${age} anos`:''}</span><input class="inp" type="text" id="pd-birth" inputmode="numeric" autocomplete="bday" maxlength="10" placeholder="DD/MM/AAAA" data-f="pdBirth" value="${p.birth?p.birth.split('-').reverse().join('/'):''}"></label>
  <label class="fld"><span>Altura (cm)</span><input class="inp" id="pd-height" inputmode="numeric" data-f="pd" data-k="height" value="${esc(p.height||'')}" placeholder="Ex.: 178"></label></div>
  <label class="fld"><span>Peso atual (kg)</span><input class="inp" id="pd-weight" inputmode="decimal" data-f="pdWeight" value="${w?String(w.v).replace('.',','):''}" placeholder="Ex.: 80,5"></label>
  <p class="muted small" style="margin:-4px 0 0">${w?`Último registro: ${fmt(w.v)} kg em ${new Date(w.date).toLocaleDateString('pt-BR')}. `:''}Ao alterar, o peso de hoje é gravado em Medidas.</p></section>
@@ -2128,6 +2128,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheetOpen())closeSh
 document.addEventListener('input',e=>{const t=e.target,f=t.dataset.f;if(!f)return;const p=top_().p;const v=t.value;
  if(f.startsWith('n:')){nInput(f.slice(2),t,v);return}
  if(f.startsWith('a:')){aInput(f.slice(2),t,v);return}
+ // data de nascimento digitada só com números: a máscara põe as barras (DD/MM/AAAA) e grava em ISO quando a data é válida
+ if(f==='pdBirth'){const d=v.replace(/\D/g,'').slice(0,8),m=d.length>4?d.slice(0,2)+'/'+d.slice(2,4)+'/'+d.slice(4):d.length>2?d.slice(0,2)+'/'+d.slice(2):d;if(t.value!==m){t.value=m;t.setSelectionRange(m.length,m.length)}if(d.length===8){const dd=+d.slice(0,2),mm=+d.slice(2,4),yy=+d.slice(4),dt=new Date(yy,mm-1,dd);const ok=dt.getFullYear()===yy&&dt.getMonth()===mm-1&&dt.getDate()===dd&&yy>=1900&&dt<=new Date();t.classList.toggle('bad',!ok);if(ok){S.profile.birth=`${yy}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`;save();const l=t.closest('label');const sp=l&&l.querySelector('span');if(sp)sp.textContent='Data de nascimento · '+ageOf(S.profile.birth)+' anos'}else toast('Data inválida. Use DD/MM/AAAA.')}else t.classList.remove('bad');return}
  if(f.startsWith('fp:')){UI['fp'+f.slice(3)]=v;fotoCompare();return}
  if(f==='goal'){const g=S.profile.goals=S.profile.goals||{},n=num(v),k=t.dataset.k;if(k==='sleep'){S.profile.sleepGoal=n>0&&n<=14?n:null}else{g[k]=n>0?n:null;if(!g.since)g.since=Date.now()}save();return}
  if(f==='wr'){S.profile.wr=Object.assign(wrCfg(),{[t.dataset.k]:v});save();return}
