@@ -4,7 +4,7 @@
   {
    "ordem": 1,
    "modulo": "Treino",
-   "progresso": 0.97,
+   "progresso": 0.98,
    "resumo": "Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios, mapa corporal e aba Exercícios (avulsos com calorias do relógio)."
   },
   {
@@ -22,8 +22,8 @@
   {
    "ordem": 4,
    "modulo": "Nutrição",
-   "progresso": 0.86,
-   "resumo": "Diário com 6 refeições, TACO, macros e micros, metas, tendências, copiar de ontem, planos de dieta e leitor de código de barras."
+   "progresso": 0.9,
+   "resumo": "Diário, TACO, macros e micros, metas, tendências, copiar de ontem, planos de dieta, código de barras, receitas, porção por calorias e produtos de marca."
   },
   {
    "ordem": 5,
@@ -125,6 +125,11 @@
    "Treino",
    "sugestão",
    "Integração com Health Connect (exige app Android nativo; aguardando decisão)"
+  ],
+  [
+   "Treino",
+   "pronto",
+   "Encerrar treino vazio sem salvar e descartar treino em andamento pela aba Treino"
   ],
   [
    "Hidratação",
@@ -247,6 +252,21 @@
    "Tendências de calorias e macronutrientes por período"
   ],
   [
+   "Nutrição",
+   "pronto",
+   "Receitas: combinar alimentos num prato só, com peso pronto e porções"
+  ],
+  [
+   "Nutrição",
+   "pronto",
+   "Porção por calorias: digitar kcal e o app calcula os gramas"
+  ],
+  [
+   "Nutrição",
+   "pronto",
+   "Produtos de marca embutidos para os dois perfis (whey DUX e Black Skull)"
+  ],
+  [
    "Metas e hábitos",
    "pronto",
    "Meta de água e sequência de semanas treinadas"
@@ -290,6 +310,11 @@
    "Metas e hábitos",
    "pronto",
    "Painel do dia num único cartão"
+  ],
+  [
+   "Metas e hábitos",
+   "pronto",
+   "Painel do dia: macros, consumidas x gastas com déficit/superávit e meta, água, treino e exercício"
   ],
   [
    "Gráficos e relatórios",
@@ -365,6 +390,11 @@
    "Identidade e plataforma",
    "pronto",
    "Assinatura discreta \"by Samuel Costa\" e versão visível em Configurações"
+  ],
+  [
+   "Identidade e plataforma",
+   "pronto",
+   "Datas digitadas só com números (DD/MM/AAAA) e calendário opcional (exceto nascimento)"
   ],
   [
    "Publicação",
@@ -522,6 +552,22 @@
   [
    "2026-10-18",
    "Resumo de saúde (semana/mês), volume semanal por músculo, recuperação muscular, ciclo de carboidrato e conquistas"
+  ],
+  [
+   "2026-10-18",
+   "Painel do dia reorganizado (macros, calorias consumidas/gastas e déficit/superávit, água, treino, exercício)"
+  ],
+  [
+   "2026-10-18",
+   "Datas com máscara DD/MM/AAAA e calendário opcional"
+  ],
+  [
+   "2026-10-18",
+   "Encerrar treino vazio e descartar treino em andamento"
+  ],
+  [
+   "2026-10-18",
+   "Receitas na Nutrição, porção por calorias e whey DUX e Black Skull embutidos"
   ]
  ]
 }

@@ -7,14 +7,14 @@
 
 Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada para implementar aos poucos.
 
-## Visão geral (progresso geral: 90%)
+## Visão geral (progresso geral: 91%)
 
 | Módulo | Status | Progresso | Resumo |
 |---|---|---|---|
-| 1. Treino | ✅ | 97% | Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios, mapa corporal e aba Exercícios (avulsos com calorias do relógio). |
+| 1. Treino | ✅ | 98% | Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios, mapa corporal e aba Exercícios (avulsos com calorias do relógio). |
 | 2. Hidratação | ✅ | 92% | Meta por peso e sexo, copos rápidos, avatar animado, gráficos e lembretes de água. |
 | 3. Corpo e medidas | ✅ | 85% | Meus dados, Evolução do corpo com comparações e fotos de evolução lado a lado. |
-| 4. Nutrição | ✅ | 86% | Diário com 6 refeições, TACO, macros e micros, metas, tendências, copiar de ontem, planos de dieta e leitor de código de barras. |
+| 4. Nutrição | ✅ | 90% | Diário, TACO, macros e micros, metas, tendências, copiar de ontem, planos de dieta, código de barras, receitas, porção por calorias e produtos de marca. |
 | 5. Metas e hábitos | ✅ | 85% | Objetivo com meta calórica, Central de metas com previsão, Painel do dia, sono e conquistas pessoais. |
 | 6. Gráficos e relatórios | ✅ | 90% | Todos os gráficos com períodos, Evolução do corpo, Resumo de saúde da semana e do mês, volume semanal e recuperação muscular. |
 | 7. Identidade e plataforma | ✅ | 95% | Logo, abertura, senha, 6 temas, 15 cores, perfis separados, pictogramas próprios, Painel no Início e formulários concentrados no Perfil. |
@@ -36,6 +36,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - 💡 Animações próprias para exercícios sem foto
 - ✅ Aba Exercícios: 53 exercícios avulsos (caminhada, corrida, bicicleta, natação…), favoritos, criar exercício, calorias obrigatórias e distância/FC opcionais
 - 💡 Integração com Health Connect (exige app Android nativo; aguardando decisão)
+- ✅ Encerrar treino vazio sem salvar e descartar treino em andamento pela aba Treino
 
 ## 2. Hidratação
 - ✅ Meta por peso, sexo e treino do dia
@@ -66,6 +67,9 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - 💡 Foto do prato com estimativa assistida
 - ✅ Alimentos próprios, refeições pessoais salvas e calorias rápidas
 - ✅ Tendências de calorias e macronutrientes por período
+- ✅ Receitas: combinar alimentos num prato só, com peso pronto e porções
+- ✅ Porção por calorias: digitar kcal e o app calcula os gramas
+- ✅ Produtos de marca embutidos para os dois perfis (whey DUX e Black Skull)
 
 ## 5. Metas e hábitos
 - ✅ Meta de água e sequência de semanas treinadas
@@ -77,6 +81,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Conquistas pessoais (sem rede social)
 - 🟡 Hábitos diários: sono (pronto), passos e suplementos
 - ✅ Painel do dia num único cartão
+- ✅ Painel do dia: macros, consumidas x gastas com déficit/superávit e meta, água, treino e exercício
 
 ## 6. Gráficos e relatórios
 - ✅ Períodos de 7 dias, mês, ano e desde o início em todos os gráficos
@@ -96,6 +101,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Filtros de músculo com corpo hiper-realista e ilustrações de equipamento
 - ✅ Painel de atalhos no Início e todo preenchimento concentrado no Perfil
 - ✅ Assinatura discreta "by Samuel Costa" e versão visível em Configurações
+- ✅ Datas digitadas só com números (DD/MM/AAAA) e calendário opcional (exceto nascimento)
 
 ## 8. Publicação
 - ✅ Site no ar pelo GitHub Pages, publicado a cada envio
@@ -147,3 +153,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 18/10/2026 | Painel no Início e formulários só no Perfil |
 | 18/10/2026 | Nutrição v2 (copiar de ontem, planos de dieta, código de barras), Central de metas, fotos de evolução, Painel do dia e lembretes de água |
 | 18/10/2026 | Resumo de saúde (semana/mês), volume semanal por músculo, recuperação muscular, ciclo de carboidrato e conquistas |
+| 18/10/2026 | Painel do dia reorganizado (macros, calorias consumidas/gastas e déficit/superávit, água, treino, exercício) |
+| 18/10/2026 | Datas com máscara DD/MM/AAAA e calendário opcional |
+| 18/10/2026 | Encerrar treino vazio e descartar treino em andamento |
+| 18/10/2026 | Receitas na Nutrição, porção por calorias e whey DUX e Black Skull embutidos |

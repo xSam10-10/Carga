@@ -34,6 +34,9 @@ O que já existe e o que falta está em `references/roadmap.md`. Lá também est
 12. **A meta do dia é: meta base (rotina × objetivo) + exercício do relógio por inteiro − consumido.** Modo "Pelo relógio" é o padrão; os dias de treino por semana são escolhidos no perfil e só mexem nas calorias no modo "Pelo nível".
 13. **Tudo o que muda com o tempo tem histórico e comparação** (Evolução do corpo: semana a semana, mês a mês, desde o início e ano contra ano).
 14. **Assinatura discreta** "by Samuel Costa" no rodapé de Configurações. Não remover.
+15. **Datas:** todo campo de data é digitado só com números (máscara DD/MM/AAAA, classe `.dmask`); os demais também têm botão de calendário, mas a **data de nascimento é só digitação**.
+16. **Produtos de marca** que o usuário mandar por foto da tabela nutricional entram no código (`BRAND` em `app.html`, valores da porção) para valer nos dois perfis; nunca invente valores — se a foto for ambígua (ex.: tabela de outro produto no anúncio), registre e avise para conferir.
+17. **Painel do dia** tem layout fixo definido pelo usuário: Proteína/Carboidratos/Gordura; Consumidas/Gastas/Déficit-Superávit (com a meta do objetivo); Água/Treino/Exercício.
 
 ## Como o usuário trabalha
 
