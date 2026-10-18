@@ -498,6 +498,7 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .ah-mini{width:38px;height:38px}.ah-empty{display:block;width:38px;height:38px}.ah-hero{display:grid;place-items:center}.ah-big{width:min(62vw,230px);height:min(62vw,230px)}
 .ah-boxes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.ah-box{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border:1px solid var(--line);border-radius:14px;color:var(--fg);text-align:center}.ah-box span{font-size:12px;font-weight:600}.ah-box.st span{color:#5E9E2B}.ah-box b{font-size:23px}.ah-box.tm span{color:#2E93CF}.ah-box.kc span{color:#8338E0}.ah-box b{font:700 26px/1.1 var(--display);font-variant-numeric:tabular-nums}.ah-box b small{font-size:13px;color:var(--muted)}.ah-box em{font-style:normal;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:3px;width:80%}
 .ah-tot{display:flex;align-items:baseline;gap:8px;font-size:14px}.ah-tot span{color:var(--muted)}.ah-tot i{flex:1;border-bottom:2px dotted var(--line)}.ah-tot b{font-variant-numeric:tabular-nums}
+.upd-bar{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:60;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--fg);color:var(--bg);box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:14px}.upd-bar span{flex:1}
 .mydata{display:flex;align-items:center;gap:12px;width:100%;text-align:left;color:var(--fg);font:inherit}.mydata .nfx{display:flex;flex-direction:column;gap:4px;min-width:0}.mydata b{font-size:16px}.mydata .nbar{height:6px;margin-top:2px}
 .md-ic{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--accent-soft);color:var(--accent);flex:none}.md-ic svg{width:22px;height:22px}
 .byline{margin:-4px 0 8px;text-align:center;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.55}
@@ -1167,7 +1168,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v58'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v59'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1700,6 +1701,7 @@ VIEWS.config=()=>{const pr=S.profile;const sw=(k,l,d)=>`<label class="switch"><s
  ${preResetData()?`<div class="fld"><span>Dados de antes do reset</span><p class="muted small" style="margin:0">Em 17/10/2026 todos os perfis foram zerados para começar do zero. Os dados antigos deste perfil (${preResetData().workouts?.length||0} treinos) continuam guardados neste aparelho e podem voltar.</p><button class="btn sec" data-a="preResetRestore">Restaurar dados de antes do reset</button></div>`:''}
  <button class="btn ghost danger" data-a="wipe">Apagar os dados deste perfil</button></section>
  <h3 class="sh">Instalar no celular</h3><section class="card"><p style="margin:0">No Chrome do Android, abra o menu ⋮ e toque em <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>. O Carga abre em tela cheia e funciona sem internet.</p></section>
+ <button class="btn sec" data-a="appCheck">${I.downl} Verificar e atualizar o app</button><p class="muted small" style="text-align:center;margin:-4px 0 0">O app também se atualiza sozinho ao abrir e ao voltar para a tela.</p>
  <p class="muted small" style="text-align:center">Carga${/^v\d/.test(APP_V)?' '+APP_V:''} · ${S.workouts.length} treinos · ${S.exercises.length} exercícios personalizados</p><p class="byline">by Samuel Costa</p></main>`};
 function preResetData(){try{return JSON.parse(localStorage.getItem('carga.old.'+pkey(REGS.current))||'null')}catch(e){return null}}
 
@@ -3421,10 +3423,26 @@ async function lockHash(pin){const k=await crypto.subtle.importKey('raw',new Tex
 render();
 if(S.active){wake();schedRest()}
 autoSnapshot();
-// Atualização automática: procura versão nova ao abrir e sempre que o app volta para a tela; quando a nova assume, recarrega (se não houver treino ou folha aberta)
-if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)&&window.self===window.top){const had=!!navigator.serviceWorker.controller;let upd=false;
- navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{const chk=()=>r.update().catch(()=>{});document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});setInterval(chk,30*6e4)}).catch(()=>{});
- navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!had||upd)return;upd=true;const busy=S.active||sheetOpen()||['ativForm','medidaForm','novoEx','novoAlimento','refeicao'].includes(top_().v);if(!busy){persist();location.reload()}else toast('Nova versão do Carga instalada. Ela entra na próxima vez que você abrir o app.')})}
+// Atualização automática (v59): ao abrir, ao voltar para a tela e a cada 15 min o app lê version.json direto do GitHub Pages (sem cache).
+// Se a versão publicada for diferente da que está rodando, recarrega já com a nova: limpa os caches do service worker e reabre.
+// Dados (localStorage e IndexedDB) não são tocados. Se houver formulário ou folha aberta, mostra uma faixa "Atualizar agora" em vez de recarregar sozinho.
+const UPD={busy:false,banner:false};
+const updBusy=()=>sheetOpen()||['ativForm','medidaForm','novoEx','novoAlimento','refeicao','receita','medLista'].includes(top_().v)||!!(document.activeElement&&/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName));
+async function hardReload(){try{persist()}catch(e){}try{toast('Atualizando o Carga…')}catch(e){}
+ try{if(window.caches){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)))}}catch(e){}
+ try{if(navigator.serviceWorker){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()))}}catch(e){}
+ const u=new URL(location.href);u.searchParams.set('v',Date.now());location.replace(u.toString())}
+async function checkUpdate(manual){if(!/^v\d/.test(APP_V)||!/^https?:$/.test(location.protocol)){if(manual)hardReload();return}
+ try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();
+  if(j.v&&j.v!==APP_V){let tried=null;try{tried=sessionStorage.getItem('carga.updTried')}catch(e){}if(manual||(!updBusy()&&tried!==j.v)){try{sessionStorage.setItem('carga.updTried',j.v)}catch(e){}hardReload()}else showUpdBanner(j.v)}else if(manual)toast('Você já está na versão mais recente ('+APP_V+').')}
+ catch(e){if(manual)toast('Sem conexão para verificar agora. Tente de novo com internet.')}}
+function showUpdBanner(v){if(UPD.banner)return;UPD.banner=true;const b=document.createElement('div');b.className='upd-bar';b.innerHTML=`<span>Nova versão do Carga (${v}) disponível.</span><button class="btn sm pri" data-a="appUpdate">Atualizar agora</button>`;document.body.appendChild(b)}
+A.appUpdate=()=>hardReload();A.appCheck=()=>checkUpdate(true);
+if(/^https?:$/.test(location.protocol)&&window.self===window.top){
+ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).catch(()=>{});
+ // limpa o ?v= deixado pela recarga forçada
+ if(location.search.includes('v=')){try{const u=new URL(location.href);u.searchParams.delete('v');history.replaceState(history.state,'',u.toString())}catch(e){}}
+ setTimeout(()=>checkUpdate(false),1500);document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate(false)});addEventListener('pageshow',e=>{if(e.persisted)checkUpdate(false)});setInterval(()=>{if(!document.hidden)checkUpdate(false)},15*6e4)}
 })();
 </script>
 

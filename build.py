@@ -26,4 +26,5 @@ for f in ['manifest.webmanifest', 'sw.js', 'icon.svg', 'icon-192.png', 'icon-512
     shutil.copy(root / f, dist / f)
 if (root/'img').exists():
     shutil.copytree(root/'img', dist/'img', dirs_exist_ok=True)
+(dist / 'version.json').write_text('{"v":"%s"}' % ver, encoding='utf-8')
 print('ok', (dist / 'index.html').stat().st_size, 'bytes')

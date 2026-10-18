@@ -44,3 +44,10 @@
 ## Instalação no celular e ícone da abertura (18/10/2026)
 - O Android guarda os ícones do momento da instalação. Para pegar ícones novos (ex.: abertura só com o símbolo, sem o quadrado verde), é preciso **desinstalar e instalar de novo** pelo Chrome (fazer backup antes).
 - Se no Android 12+ o quadrado verde continuar mesmo depois de reinstalar, é a tela de abertura do sistema usando o ícone da tela inicial (maskable). Solução proposta e ainda não aplicada: ícone da tela inicial com fundo preto e símbolo verde. Só fazer se o usuário confirmar.
+
+## Atualização forçada pela versão publicada (v59, 18/10/2026)
+- `build.py` grava `dist/version.json` (`{"v":"vNN"}`, do `CACHE` do `sw.js`).
+- O app (`checkUpdate`) lê `version.json?t=…` com `cache:'no-store'` 1,5 s depois de abrir, sempre que volta para a tela (`visibilitychange`, `pageshow`) e a cada 15 min. Se a versão publicada ≠ `APP_V`, faz `hardReload()`: apaga os caches do service worker, desregistra o SW e reabre a URL com `?v=` (a página nova vem da rede; dados em localStorage/IndexedDB ficam intactos). O `?v=` é limpo da barra depois.
+- Proteções: só uma recarga automática por versão na sessão (`sessionStorage['carga.updTried']`, evita loop se o Pages demorar a entregar a página nova); com folha, formulário ou campo em edição (`updBusy`), mostra a faixa fixa "Nova versão… Atualizar agora" (`.upd-bar`) em vez de recarregar.
+- Configurações tem o botão **"Verificar e atualizar o app"** (`appCheck`): força a atualização ou avisa que já está na mais recente.
+- Versões antigas (antes da v59) chegam até a v59 pelo mecanismo anterior (controllerchange); a partir dela vale este.
