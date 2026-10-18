@@ -1176,7 +1176,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v67'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v68'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1241,7 +1241,7 @@ function recentIds(n=8){const out=[];for(const w of [...S.workouts].sort((a,b)=>
 function streakWeeks(){const weeks=new Set(S.workouts.map(w=>weekStart(w.start)));let wk=weekStart(Date.now());if(!weeks.has(wk))wk=addDays(wk,-7);let n=0;while(weeks.has(wk)){n++;wk=addDays(wk,-7)}return n}
 
 /* ---------- navegação ---------- */
-let stack=[{v:!REGS.current?'perfis':S.workouts.length?'inicio':'treino',p:{}}];
+let stack=[{v:!REGS.current?'perfis':'inicio',p:{}}];
 let useHist=true;
 const UI={pm:'dur',feedN:12,statDay:null,statRange:30};
 function go(v,p={}){stack[stack.length-1].y=scrollY;stack.push({v,p});try{history.pushState({n:stack.length},'')}catch(e){useHist=false}render();scrollTo(0,0)}
@@ -1950,7 +1950,7 @@ VIEWS.perfis=()=>{const first=!REGS.current;
  const rows=REGS.list.map(pr=>{const d=readProfile(pr.id);const ws=d&&d.workouts||[];const last=ws.length?Math.max(...ws.map(w=>w.start)):0;const cur=pr.id===REGS.current;
   const ac=accentOf(d&&d.profile&&d.profile.accent)[2];return`<div class="pcard${cur?' cur':''}"><button class="pmain" data-a="useProfile" data-id="${pr.id}"><span class="ava sm" style="background:${ac[0]};color:${ac[2]}">${avaIn({name:pr.name,photo:d&&d.profile&&d.profile.photo})}</span><span class="exrow-t"><b>${esc(pr.name)}</b><span class="sub">${ws.length} treino(s)${last?' · último em '+dShort(last):''}${cur?' <i class="tag">Em uso</i>':''}</span></span>${cur?'':`<span class="chev">${I.chev}</span>`}</button>${first?'':`<button class="ib" data-a="profMenu" data-id="${pr.id}" aria-label="Opções do perfil ${esc(pr.name)}">${I.dots}</button>`}</div>`}).join('');
  return(first?`<header class="top"><h1 class="big">Carga</h1></header>`:bar('Perfis'))+`<main class="page">${first?`<h2 class="h" style="font-size:28px">Quem vai treinar neste celular?</h2><p class="muted" style="margin:0">Cada perfil tem seus próprios treinos, rotinas, cargas, recordes, medidas e gráficos. Dá para trocar depois em Perfil → Trocar perfil.</p>`:`<p class="muted" style="margin:0">Cada perfil guarda os próprios dados. Trocar de perfil não mistura nada: o app passa a mostrar só o histórico de quem foi escolhido.</p>`}<div class="list">${rows}</div><button class="btn sec" data-a="addProfile">${I.plus} Adicionar perfil</button></main>`};
-function switchProfile(id){if(id===REGS.current){back();return}persist();clearTimeout(restTO);closeNotifs();unwake();REGS.current=id;saveReg();S=load(id);persist();UI.statDay=null;UI.feedN=12;stack=[{v:S.workouts.length?'inicio':'treino',p:{}}];try{history.replaceState({n:1},'')}catch(e){}applyAccent();render();scrollTo(0,0);toast('Perfil em uso: '+S.profile.name);autoSnapshot();if(S.active){wake();schedRest()}}
+function switchProfile(id){if(id===REGS.current){back();return}persist();clearTimeout(restTO);closeNotifs();unwake();REGS.current=id;saveReg();S=load(id);persist();UI.statDay=null;UI.feedN=12;stack=[{v:'inicio',p:{}}];try{history.replaceState({n:1},'')}catch(e){}applyAccent();render();scrollTo(0,0);toast('Perfil em uso: '+S.profile.name);autoSnapshot();if(S.active){wake();schedRest()}}
 
 /* ---------- importação / exportação ---------- */
 function parseCSV(t){const rows=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}else if(c==='"')q=true;else if(c===','){row.push(f);f=''}else if(c==='\n'){row.push(f);rows.push(row);row=[];f=''}else if(c!=='\r')f+=c}if(f||row.length){row.push(f);rows.push(row)}return rows}
