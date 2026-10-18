@@ -492,6 +492,7 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .dwrap{position:relative;display:block}.dwrap .dmask{padding-right:46px}.dcal{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:grid;place-items:center;border-radius:10px;color:var(--muted)}.dcal:active{background:var(--surface-2)}.dhid{position:absolute;right:0;bottom:0;width:1px;height:1px;opacity:0;pointer-events:none;border:0;padding:0}
 #rc-sum .kv{grid-template-columns:1fr}#rc-sum .kv>div{display:flex;flex-direction:column;gap:2px}#rc-sum .kv b{font:700 24px/1.1 var(--display)}
 .rc-it .mtap{text-align:left;justify-content:flex-start;display:block;min-width:0}.rc-it{display:flex;flex-direction:column;gap:6px;padding:10px 0;border-bottom:1px solid var(--line)}.rc-q{display:grid;grid-template-columns:1fr 1fr;gap:8px}.rc-q label{display:flex;align-items:center;gap:6px}.rc-q .inp{text-align:center;font:600 18px var(--display);padding:8px}.rc-q span{color:var(--muted);font-size:13px}
+.bk-l{padding:2px 14px}.bk-r{display:flex;align-items:center;gap:4px;padding:9px 0;border-bottom:1px solid var(--line)}.bk-r:last-child{border-bottom:0}.bk-r .nfx{display:flex;flex-direction:column;gap:2px;min-width:0}.bk-r b{font-size:14.5px}.bk-t{font-style:normal;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding:2px 6px;border-radius:6px;background:var(--surface-2);flex:none}
 .rcrow{display:flex;align-items:center;gap:4px}.rcrow>.frow{flex:1;min-width:0}.pkc{margin-top:2px}.pkc-r{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.pkc-r .inp{text-align:center;font:600 20px var(--display)}
 .ah{display:flex;flex-direction:column;gap:12px}.ah-week{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}.ah-week button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0;border-radius:12px;color:var(--muted);font-size:12px;font-weight:700}.ah-week button.on{background:var(--accent-soft)}.ah-week .td{color:var(--accent)}.ah-week button:disabled{opacity:.45}
 .ah-mini{width:38px;height:38px}.ah-empty{display:block;width:38px;height:38px}.ah-hero{display:grid;place-items:center}.ah-big{width:min(62vw,230px);height:min(62vw,230px)}
@@ -1166,7 +1167,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v57'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v58'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1243,7 +1244,7 @@ const top_=()=>stack[stack.length-1];
 function cur(){const t=top_();return t.p.live||t.v==='finish'?S.active:t.p.s}
 
 const VIEWS={};
-const NAV_VIEWS=new Set(['relatorio','inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados','dieta','dietaTend','nutrientes','metasNutri','medLista','planos','metas','fotosGer','resumo','conquistas','ativ','ativPick','ativDet']);
+const NAV_VIEWS=new Set(['relatorio','inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados','dieta','dietaTend','nutrientes','metasNutri','medLista','banco','planos','metas','fotosGer','resumo','conquistas','ativ','ativPick','ativDet']);
 function render(keep){const t=top_();const y=scrollY;const V=VIEWS[t.v]||VIEWS.treino;$('#app').innerHTML=V(t.p);chrome();if(keep)scrollTo(0,y);if(V.after)V.after(t.p)}
 const rerender=()=>render(true);
 function chrome(){
@@ -2854,7 +2855,7 @@ VIEWS.dieta=()=>{nS();const d=nDay(),k=dkey(d),P=nutriPlan(d),n=dayNut(k),ms=mea
  h+=kcalCard(n,P);
  h+=`<button class="card ninfo" data-a="go" data-v="nutrientes"><div class="row"><b class="spacer">Macronutrientes</b><span class="muted small">Ver nutrientes</span>${I.chev}</div>${macroBoxes(n,P)}${macroBar(n,P)}</button>`;
  h+=`<h3 class="sh">Registrar refeição</h3><section class="card mlist">${MEALS.map(([mk,ml])=>{const m=ms.find(x=>x.m===mk);const kc=m?Math.round(sumNut(m.it)[0]):0;return`<div class="mline"><button class="mtap" data-a="mealOpen" data-m="${mk}"><span class="mk">${fmtInt(kc)}<small>kcal</small></span><span class="nfx"><b>${ml}${m?` <em class="muted small">${m.t}</em>`:''}</b>${m&&m.it.length?`<span class="muted small clamp2">${esc(m.it.map(itemName).join(', '))}</span>`:''}</span></button><button class="ib" data-a="mealOpen" data-m="${mk}" data-add="1" aria-label="Adicionar em ${ml}">${I.plus}</button></div>`}).join('')}</section>`;
- h+=`<div class="chips"><button class="chip" data-a="nCopyDay">${I.copy} Copiar do dia anterior</button><button class="chip" data-a="go" data-v="planos">${I.food} Planos de dieta</button><button class="chip" data-a="bcScan">${I.barcode} Código de barras</button></div>`;
+ h+=`<div class="chips"><button class="chip" data-a="nCopyDay">${I.copy} Copiar do dia anterior</button><button class="chip" data-a="go" data-v="planos">${I.food} Planos de dieta</button><button class="chip" data-a="bcScan">${I.barcode} Código de barras</button><button class="chip" data-a="go" data-v="banco">${I.note} Banco de alimentos</button></div>`;
  h+=nMini(d,P);
  if(!bodyData().ok&&!P.manual)h+=`<p class="muted small" style="margin:0">A meta de ${fmtInt(P.kcal)} kcal é provisória. Preencha sexo, nascimento, altura e peso em <button class="linkb" data-a="goPf" data-v="dados">Meus dados</button> para calcular a sua.</p>`;
  return h+'</main>'};
@@ -2873,12 +2874,12 @@ VIEWS.refeicao=p=>{const w=p.w;if(!w)return bar('Refeição')+'<main class="page
 /* ---- seletor de alimentos ---- */
 const FT=[['todos','Todos'],['fav','Favoritos'],['rec','Receitas'],['meus','Meus alimentos'],['ref','Refeições']];
 function foodList(p){const q=norm(p.q||''),sel=p.sel||[];const row=f=>{const on=sel.includes(f.id);const v0=f.v[0]||0;return`<button class="frow${on?' on':''}" data-a="fPick" data-id="${f.id}"><span class="fck">${on?I.check:''}</span><span class="nfx"><b>${esc(f.name)}</b><span class="muted small">${fmtInt(f.por&&f.por!==100?v0*f.por/100:v0)} kcal, ${f.por&&f.por!==100?`1 porção (${fmt(f.por)} g)`:'100 g'}${f.own?' · meu':''}</span></span>${S.fav.includes(f.id)?`<span class="fstar">${I.star}</span>`:''}</button>`};
- if(p.tab==='rec'){const rs=S.foods.filter(x=>x.recipe&&(!q||norm(x.name).includes(q))).map(x=>food(x.id));return`<button class="mi" data-a="rcNew">${I.plus}Criar receita</button>`+(rs.length?rs.map(f=>`<div class="rcrow">${row(f)}<button class="ib" data-a="rcEdit" data-id="${f.id}" aria-label="Editar receita">${I.edit}</button></div>`).join(''):`<p class="empty">Nenhuma receita ainda. Crie uma juntando alimentos (ex.: bolo, panqueca, marmita da semana). Depois ela entra na dieta como um alimento só: é só ajustar os gramas ou as calorias.</p>`)}
+ if(p.tab==='rec'){const rs=S.foods.filter(x=>x.recipe&&!(S.foodHidden||[]).includes(x.id)&&(!q||norm(x.name).includes(q))).map(x=>food(x.id));return`<button class="mi" data-a="rcNew">${I.plus}Criar receita</button>`+(rs.length?rs.map(f=>`<div class="rcrow">${row(f)}<button class="ib" data-a="rcEdit" data-id="${f.id}" aria-label="Editar receita">${I.edit}</button></div>`).join(''):`<p class="empty">Nenhuma receita ainda. Crie uma juntando alimentos (ex.: bolo, panqueca, marmita da semana). Depois ela entra na dieta como um alimento só: é só ajustar os gramas ou as calorias.</p>`)}
  if(p.tab==='ref'){const ts=S.mealTpl.filter(t=>!q||norm(t.name).includes(q));return ts.length?ts.map(t=>{const on=sel.includes('r:'+t.id);return`<button class="frow${on?' on':''}" data-a="fPick" data-id="r:${t.id}"><span class="fck">${on?I.check:''}</span><span class="nfx"><b>${esc(t.name)}</b><span class="muted small">${fmtInt(sumNut(t.it)[0])} kcal · ${esc(t.it.map(itemName).join(', '))}</span></span></button>`}).join(''):`<p class="empty">Nenhuma refeição salva. No editor de refeição, use "Salvar como refeição pessoal".</p>`}
  let fs=p.tab==='fav'?S.fav.map(food).filter(Boolean):p.tab==='meus'?[...S.foods.map(x=>food(x.id)),...brandRows()]:[...S.foods.map(x=>food(x.id)),...brandRows(),...tacoRows()];
  if(p.tab==='todos'&&p.cat!=null&&p.cat!=='')fs=fs.filter(f=>f.cat===+p.cat);
  if(q){const ws=q.split(/\s+/).filter(Boolean);fs=fs.filter(f=>ws.every(w=>f.norm.includes(w))).sort((a,b)=>(b.norm.startsWith(q)?1:0)-(a.norm.startsWith(q)?1:0))}
- fs=fs.filter(Boolean);const empty=p.tab==='fav'?'Toque na estrela de um alimento para guardá-lo aqui.':p.tab==='meus'?'Você ainda não criou alimentos.':'Nenhum alimento encontrado. Tente outra palavra ou crie o seu.';
+ const hid=new Set(S.foodHidden||[]);fs=fs.filter(f=>f&&!hid.has(f.id));const empty=p.tab==='fav'?'Toque na estrela de um alimento para guardá-lo aqui.':p.tab==='meus'?'Você ainda não criou alimentos.':'Nenhum alimento encontrado. Tente outra palavra ou crie o seu.';
  return(p.tab==='meus'?`<button class="mi" data-a="go" data-v="novoAlimento">${I.plus}Criar alimento</button>`:'')+(fs.length?fs.slice(0,250).map(row).join('')+(fs.length>250?`<p class="muted small" style="text-align:center">Mostrando 250 de ${fs.length}. Refine a busca.</p>`:''):`<p class="empty">${empty}</p>`)}
 VIEWS.alimentos=p=>{p.tab=p.tab||'todos';p.sel=p.sel||[];
  let h=bar(p.pick?'Adicionar alimento':'Alimentos',{right:`<button class="ib" data-a="bcScan" aria-label="Ler código de barras">${I.barcode}</button>`})+`<main class="page" style="padding-bottom:96px"><input class="inp" id="f-q" type="search" placeholder="Buscar alimento (ex.: arroz, frango, banana)" value="${esc(p.q||'')}" data-f="n:fq" autocomplete="off">
@@ -2890,7 +2891,29 @@ VIEWS.alimentos=p=>{p.tab=p.tab||'todos';p.sel=p.sel||[];
 
 /* ---- criar alimento ---- */
 const NF=[['name','Nome','text'],['por','Tamanho da porção (g)','num'],['kcal','Calorias (kcal)','num'],['carb','Carboidrato (g)','num'],['prot','Proteína (g)','num'],['gord','Gordura (g)','num'],['fib','Fibras (g)','num'],['na','Sódio (mg)','num']];
-VIEWS.novoAlimento=p=>{p.f=p.f||{por:'100'};return bar('Criar alimento',{right:`<button class="btn sm pri" data-a="saveFood">Salvar</button>`})+`<main class="page"><p class="muted small" style="margin:0">Use os valores da tabela nutricional da embalagem para uma porção. O app converte para 100 g.</p><section class="card form">${NF.map(([k,l,t])=>`<label class="fld"><span class="lab">${l}</span><input class="inp" id="nf-${k}" ${t==='num'?'inputmode="decimal"':''} value="${esc(p.f[k]||'')}" data-f="n:nf" data-k="${k}"></label>`).join('')}</section></main>`};
+VIEWS.novoAlimento=p=>{p.f=p.f||{por:'100'};return bar(p.edit?'Editar alimento':'Criar alimento',{right:`<button class="btn sm pri" data-a="saveFood">Salvar</button>`})+`<main class="page"><p class="muted small" style="margin:0">Use os valores da tabela nutricional da embalagem para uma porção. O app converte para 100 g.</p><section class="card form">${NF.map(([k,l,t])=>`<label class="fld"><span class="lab">${l}</span><input class="inp" id="nf-${k}" ${t==='num'?'inputmode="decimal"':''} value="${esc(p.f[k]||'')}" data-f="n:nf" data-k="${k}"></label>`).join('')}</section></main>`};
+
+/* ---- banco de alimentos: listar, criar, editar e excluir antes de usar em refeições e receitas ----
+   Excluir = ocultar (S.foodHidden): some da busca e das listas, mas as refeições já registradas mantêm os valores. Dá para restaurar. */
+const BF=[['todos','Todos'],['meus','Meus'],['rec','Receitas'],['marca','Marcas'],['taco','TACO'],['ocultos','Excluídos']];
+function bancoList(p){const q=norm(p.q||''),k=p.k||'todos',hid=new Set(S.foodHidden||[]);nS();
+ let fs=k==='taco'?tacoRows():k==='marca'?brandRows():k==='meus'?S.foods.filter(x=>!x.recipe).map(x=>food(x.id)):k==='rec'?S.foods.filter(x=>x.recipe).map(x=>food(x.id)):[...S.foods.map(x=>food(x.id)),...brandRows(),...tacoRows()];
+ fs=fs.filter(Boolean).filter(f=>k==='ocultos'?hid.has(f.id):!hid.has(f.id));
+ if(q){const ws=q.split(/\s+/).filter(Boolean);fs=fs.filter(f=>ws.every(w=>f.norm.includes(w)))}
+ const src=f=>f.recipe?'receita':f.own?'meu':f.brand?'marca':'TACO';
+ return`<p class="muted small" style="margin:0">${fs.length} alimento(s)${fs.length>300?' · mostrando 300, refine a busca':''}</p><section class="card bk-l">${fs.slice(0,300).map(f=>`<div class="bk-r"><span class="nfx"><b>${esc(f.name)}</b><span class="muted small">${fmtInt(f.v[0]||0)} kcal/100 g · P ${fmt(Math.round((f.v[1]||0)*10)/10)} · C ${fmt(Math.round((f.v[3]||0)*10)/10)} · G ${fmt(Math.round((f.v[2]||0)*10)/10)} g${f.por&&f.por!==100?` · porção ${fmt(f.por)} g`:''}</span></span><em class="bk-t">${src(f)}</em>${k==='ocultos'?`<button class="btn sm sec" data-a="bkRestore" data-id="${f.id}">Restaurar</button>`:`${f.own?`<button class="ib" data-a="${f.recipe?'rcEdit':'bkEdit'}" data-id="${f.id}" aria-label="Editar">${I.edit}</button>`:''}<button class="ib" data-a="bkDel" data-id="${f.id}" aria-label="Excluir">${I.trash}</button>`}</div>`).join('')||'<p class="empty">Nenhum alimento aqui.</p>'}</section>`}
+VIEWS.banco=p=>{const k=p.k||'todos';return bar('Banco de alimentos',{right:`<button class="tb" data-a="bkNew">Criar</button>`})+`<main class="page"><input class="inp" id="bk-q" type="search" placeholder="Buscar no banco de alimentos" value="${esc(p.q||'')}" data-f="n:bkq" autocomplete="off">
+ <div class="chips at-cats">${BF.map(([kk,l])=>`<button class="chip${k===kk?' on':''}" data-a="bkK" data-k="${kk}">${l}${kk==='ocultos'&&(S.foodHidden||[]).length?` (${S.foodHidden.length})`:''}</button>`).join('')}</div>
+ <div class="chips"><button class="chip" data-a="bkNew">${I.plus} Novo alimento</button><button class="chip" data-a="rcNew">${I.plus} Nova receita</button><button class="chip" data-a="bcScan">${I.barcode} Código de barras</button></div>
+ <div id="bk-list" style="display:flex;flex-direction:column;gap:8px">${bancoList(p)}</div>
+ <p class="muted small" style="margin:0">Excluir tira o alimento da busca e das listas de escolha; refeições já registradas continuam com os valores. Os excluídos ficam em "Excluídos" e podem ser restaurados.</p></main>`};
+Object.assign(A,{
+ bkK:d=>{top_().p.k=d.k;rerender()},
+ bkNew:()=>go('novoAlimento',{}),
+ bkEdit:d=>{const u=nS().foods.find(x=>x.id===d.id);if(!u)return;const por=u.por||100,g=i=>u.v[i]==null?'':String(Math.round(u.v[i]*por)/100).replace('.',',');go('novoAlimento',{edit:u.id,f:{name:u.name,por:String(por),kcal:g(0),carb:g(3),prot:g(1),gord:g(2),fib:g(4),na:g(7)}})},
+ bkDel:d=>{const f=food(d.id);ask('Excluir este alimento?',`"${f?f.name:''}" sai da busca e das listas. Refeições já registradas mantêm os valores. Você pode restaurar em "Excluídos".`,'Excluir',true).then(ok=>{closeSheet();if(!ok)return;S.foodHidden=[...new Set([...(S.foodHidden||[]),d.id])];S.fav=(S.fav||[]).filter(x=>x!==d.id);save();rerender();toast('Alimento excluído')})},
+ bkRestore:d=>{S.foodHidden=(S.foodHidden||[]).filter(x=>x!==d.id);save();rerender();toast('Alimento restaurado')}
+});
 
 /* ---- receitas: alimentos combinados que entram na dieta como um alimento só (por 100 g) ---- */
 const rcMac=it=>{const n=itemNut(it);return`P ${fmt(Math.round(n[1]*10)/10)} g · C ${fmt(Math.round(n[3]*10)/10)} g · G ${fmt(Math.round(n[2]*10)/10)} g`};
@@ -2978,7 +3001,7 @@ function nmSum(){const c=S.profile.nutri||{},s=(num(c.pC)||0)+(num(c.pG)||0)+(nu
 Object.assign(A,{
  nDay:d=>{UI.nDay=Math.min(sod(Date.now()),addDays(nDay(),+d.k));rerender()},
  nToday:()=>{UI.nDay=null;rerender()},
- nMenu:()=>menu('Nutrição',[{label:'Planos de dieta',icon:I.food,f:()=>go('planos')},{label:'Copiar refeições do dia anterior',icon:I.copy,f:()=>A.nCopyDay()},{label:'Salvar este dia como plano',icon:I.note,f:()=>A.nSaveDayPlan()},{label:'Ler código de barras',icon:I.barcode,f:()=>bcOpen()},{label:'Meus alimentos e favoritos',icon:I.note,f:()=>go('alimentos',{tab:'meus'})},{label:'Tendências',icon:I.chart,f:()=>go('dietaTend')}]),
+ nMenu:()=>menu('Nutrição',[{label:'Banco de alimentos',icon:I.note,f:()=>go('banco')},{label:'Planos de dieta',icon:I.food,f:()=>go('planos')},{label:'Copiar refeições do dia anterior',icon:I.copy,f:()=>A.nCopyDay()},{label:'Salvar este dia como plano',icon:I.note,f:()=>A.nSaveDayPlan()},{label:'Ler código de barras',icon:I.barcode,f:()=>bcOpen()},{label:'Meus alimentos e favoritos',icon:I.note,f:()=>go('alimentos',{tab:'meus'})},{label:'Tendências',icon:I.chart,f:()=>go('dietaTend')}]),
  mealOpen:d=>{const w=mealWork(nDay(),d.m);go('refeicao',{w});if(d.add&&!w.it.length)setTimeout(()=>A.addFood(),50)},
  addFood:()=>{go('alimentos',{pick:true,tab:nS().fav.length?'fav':'todos'})},
  fTab:d=>{const p=top_().p;p.tab=d.k;rerender()},
@@ -2997,7 +3020,7 @@ Object.assign(A,{
  mealDel:()=>{const w=top_().p.w;ask('Excluir esta refeição?','Os alimentos registrados nela serão apagados.','Excluir',true).then(ok=>{if(!ok)return;closeSheet();S.meals=S.meals.filter(m=>m.id!==w.id);save();back();toast('Refeição excluída')})},
  mealOk:()=>{const w=top_().p.w;nS();S.meals=S.meals.filter(m=>m.id!==w.id);if(w.it.length){const same=S.meals.find(m=>m.d===w.d&&m.m===w.m);if(same){same.it.push(...w.it);same.t=w.t}else S.meals.push({id:w.id,d:w.d,m:w.m,t:w.t,it:w.it})}save();back();toast(w.it.length?'Refeição salva':'Refeição vazia removida')},
  saveFood:()=>{const f=top_().p.f||{};const name=(f.name||'').trim();const por=num(f.por)||100;const kcal=num(f.kcal);if(!name){toast('Dê um nome ao alimento.');return}if(kcal==null){toast('Informe as calorias da porção.');return}const k=100/por,g=x=>num(x)==null?null:Math.round(num(x)*k*100)/100;
-  const v=NK.map(()=>null);v[0]=g(kcal);v[1]=g(f.prot)??0;v[2]=g(f.gord)??0;v[3]=g(f.carb)??0;v[4]=g(f.fib);v[7]=g(f.na);const nid='u'+uid();nS().foods.push({id:nid,name,por,v,...(f.code?{code:f.code}:{})});if(f.code){S.barcodes=S.barcodes||{};S.barcodes[f.code]=nid};save();toast('Alimento criado');back()},
+  const v=NK.map(()=>null);v[0]=g(kcal);v[1]=g(f.prot)??0;v[2]=g(f.gord)??0;v[3]=g(f.carb)??0;v[4]=g(f.fib);v[7]=g(f.na);const ed=top_().p.edit&&nS().foods.find(x=>x.id===top_().p.edit);if(ed){Object.assign(ed,{name,por,v});save();toast('Alimento atualizado');back();return}const nid='u'+uid();nS().foods.push({id:nid,name,por,v,...(f.code?{code:f.code}:{})});if(f.code){S.barcodes=S.barcodes||{};S.barcodes[f.code]=nid};save();toast('Alimento criado');back()},
  nMet:d=>{UI.nMet=d.k;rerender()},
  nMode:d=>{const c=S.profile.nutri=S.profile.nutri||{};if(d.k==='manual'&&c.mode!=='manual'){const P=nutriPlan();Object.assign(c,{kcal:P.kcal,pC:P.pC,pG:P.pG,pP:P.pP})}c.mode=d.k;save();rerender()}
 });
@@ -3007,6 +3030,7 @@ function nInput(f,t,v){const p=top_().p;
  if(f==='mtype'){p.w.m=v;return}
  if(f==='mtime'){if(/^\d\d:\d\d$/.test(v))p.w.t=v;return}
  if(f==='pkc'){const k=num(v),it=p.w.it[UI.pi.i],f2=food(it.f);if(!f2||!(f2.v[0]>0)||!(k>0))return;const g=Math.round(k/f2.v[0]*1000)/10;UI.pi.q=g;const nn=itemNut({f:it.f,q:g}),qi=$('#p-q');if(qi)qi.value=rcNum(g);const h=$('#p-kc');if(h)h.textContent=`${fmtInt(nn[0])} kcal em ${fmt(g)} g${f2.own||f2.brand?'':' · TACO'}`;const d=$('#pdet');if(d)d.innerHTML=portionDet(f2,nn);return}
+ if(f==='bkq'){p.q=v;const el=$('#bk-list');if(el)el.innerHTML=bancoList(p);return}
  if(f==='rci'){const r=p.w,i=+t.dataset.i,it=r&&r.it[i];if(!it)return;const fo=food(it.f),n=num(v);if(n==null||n<0)return;if(t.dataset.k==='g'){it.q=n;const k=$('#rci-k-'+i);if(k)k.value=rcNum(itemNut(it)[0],0)}else{if(!fo||!(fo.v[0]>0))return;it.q=Math.round(n/fo.v[0]*1000)/10;const g=$('#rci-g-'+i);if(g)g.value=rcNum(it.q)}const m=$('#rci-m-'+i);if(m)m.textContent=rcMac(it);const mt=$('#m-tot');if(mt)mt.innerHTML=mealTot(r);const el=$('#rc-sum');if(el&&p.r)el.innerHTML=rcSum(r);const c=$('#rc-cooked');if(c)c.placeholder=fmtInt(rcGrams(r))||'opcional';return}
  if(f==='rc'){const r=p.r;if(!r)return;r[t.dataset.k]=v;const el=$('#rc-sum');if(el)el.innerHTML=rcSum(r);return}
  if(f==='pq'){const n=num(v);if(n!=null&&n>=0&&n<=5000){UI.pi.q=n;const it=p.w.it[UI.pi.i],f2=food(it.f),nn=itemNut({f:it.f,q:n});const h=$('#p-kc');if(h)h.textContent=`${fmtInt(nn[0])} kcal em ${fmt(n)} g${f2&&(f2.own||f2.brand)?'':' · TACO'}`;const d=$('#pdet');if(d&&f2)d.innerHTML=portionDet(f2,nn);const kk=$('#p-kcal');if(kk&&document.activeElement!==kk)kk.value=String(Math.round(nn[0]))}return}
