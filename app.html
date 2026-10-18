@@ -1385,10 +1385,7 @@ VIEWS.inicio=()=>{
  h+=homeLead();
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
  h+=homeMyDay()+homeSpend();
- h+=`
- <section class="card" style="display:flex;flex-direction:column;gap:14px"><div class="row"><span class="lab spacer">Minha semana</span><span class="tag amb">${I.flame.replace('class="i"','class="i" style="width:14px;height:14px;vertical-align:-2px"')} ${streakWeeks()} sem. seguidas</span></div>
- <div class="stat3"><div><span class="lab">Treinos</span><b>${thisW.length}</b></div><div><span class="lab">Tempo</span><b>${fmtDur(dur)}</b></div><div><span class="lab">Volume</span><b>${fmtInt(vol)}<small style="font-size:14px"> kg</small></b></div></div>
- <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<div class="dchip${has?' has':''}${d===today?' today':''}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></div>`}).join('')}</div></section>`;
+ h+=homeWeek();
  h+=homeBody();
  h+=`<h3 class="sh">Explorar</h3><div class="grid2"><button class="tile" data-a="go" data-v="metas">${I.flame}Metas</button><button class="tile" data-a="go" data-v="resumo">${I.cal}Resumo</button><button class="tile" data-a="go" data-v="conquistas">${I.trophy}Conquistas</button><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button></div>`;
  if(backupDue()){const n=S.workouts.length-(S.profile.lastBackupN||0);h+=`<section class="alert"><b>Backup pendente</b><span>${n>0?`${n} treino(s) novo(s) desde o último backup.`:'Você ainda não fez backup.'} Se os dados do navegador forem apagados, o histórico se perde.</span><div class="row"><button class="btn pri sm" data-a="backupSheet">Fazer backup</button><button class="btn ghost sm" data-a="snoozeBackup">Lembrar depois</button></div></section>`}
@@ -3477,6 +3474,35 @@ function homeLead(){nS();const now=Date.now(),t0=sod(now),k=dkey(now),n=dayNut(k
  const lp=[['weight','Peso'],['fat','Gordura'],['waist','Cintura']].filter(([kk])=>num(g[kk])>0).map(([kk,l])=>{const f=goalForecast(kk,num(g[kk]));if(!f)return null;const d=f.d;return[`${l} → ${evoFmt(d,f.target)}`,f.pct>=1?'alcançada ✓':`${evoFmt(d,f.last.y)} · faltam ${evoFmt(d,Math.abs(f.target-f.last.y))}`,f.pct>=1?'ok':'go','data-a="go" data-v="metas"']}).filter(Boolean);
  const done=rows.filter(r=>r[2]==='ok').length,row=r=>`<button class="lg-r z-${r[2]}" ${r[3]}><i>${r[2]==='ok'?'✓':''}</i><span>${r[0]}</span><b>${r[1]}</b></button>`;
  return`<section class="card lead z-${z0}"><p>${txt}</p><div class="row"><span class="lab nfx">Metas de hoje</span><span class="muted small">${done} de ${rows.length} batidas</span></div><div class="lg">${rows.map(row).join('')}</div>${lp.length?`<span class="lab" style="margin-top:4px">Metas de longo prazo</span><div class="lg">${lp.map(row).join('')}</div>`:''}</section>`}
+/* Minha semana: metas consolidadas da semana (domingo até hoje). Dias de nutrição/água contam só dias fechados
+   (até ontem) ou hoje se já bateu, para o dia em andamento não contar como falha. Saldo da semana só com dias fechados com registro. */
+function homeWeek(){nS();const now=Date.now(),t0=sod(now),wk=weekStart(now),g=goalsOf(),p=S.profile,days=[...Array(7)].map((_,i)=>addDays(wk,i)),past=days.filter(d=>d<t0);
+ const ws=S.workouts.filter(w=>w.start>=wk),xs=(S.extra||[]).filter(x=>x.t>=wk),cnt=ws.length+xs.length,wpw=num(g.wpw)>0?num(g.wpw):Math.min(7,p.days||0),dl=7-past.length,left=Math.max(0,wpw-cnt);
+ const dur=ws.reduce((a,w)=>a+(w.end-w.start),0)+xs.reduce((a,x)=>a+(num(x.dur)||0)*6e4,0),vol=ws.reduce((a,w)=>a+wStats(w).vol,0);
+ const hit=f=>{let h=0,n=0;for(const d of days.filter(d=>d<=t0)){const r=f(d);if(d<t0||r)n++;if(r)h++}return[h,n]};
+ const kc=hit(d=>{const v=dayNut(dkey(d))[0],P=nutriPlan(d);return v>=P.lo&&v<=P.hi}),pr=hit(d=>dayNut(dkey(d))[1]>=nutriPlan(d).gP*.95),wa=hit(d=>{const v=waterOn(dkey(d));return v>0&&v>=waterGoal(d).ml});
+ let aSum=0,aGoal=0;for(const d of days){aGoal+=actGoals(d).total;if(d<=t0)aSum+=actDay(d).total}
+ const sl=days.filter(d=>d<=t0).map(d=>sleepOn(dkey(d))).filter(Boolean),sg=num(p.sleepGoal)||8,slAvg=sl.length?sl.reduce((a,b)=>a+b,0)/sl.length:0;
+ let bal=0,tgt=0,nb=0;for(const d of past){const v=dayNut(dkey(d))[0],E=energyPlan(d);if(v>0&&E.ok){bal+=v-E.gasto;tgt+=E.adj;nb++}}
+ const zz=(h,n)=>!n?'go':h>=n?'ok':h>=n-1?'go':'warn',st=(h,n)=>`${h} de ${n} dia${n>1?'s':''}`;
+ const balZ=!nb?'go':Math.abs(bal-tgt)<=Math.max(300,Math.abs(tgt)*.5)?'ok':(tgt>=0?bal<tgt:bal>tgt)?'warn':'bad';
+ const s=evoSeries('weight'),last=s[s.length-1],ref=last&&evoAt(s,wk-1),dw=last&&ref&&ref!==last?Math.round((last.y-ref.y)*10)/10:null,gk=goalOf();
+ const wz=dw==null?'go':(gk==='perder'?dw<0:gk==='manter'?Math.abs(dw)<=.5:dw>0)?'ok':'warn';
+ const rows=[
+  ...(wpw?[['Treinos',`${cnt} de ${wpw}${left?` · faltam ${left} em ${dl} dia${dl>1?'s':''}`:''}`,cnt>=wpw?'ok':left>dl?'bad':'go','data-a="go" data-v="metas"']]:[]),
+  ['Calorias na meta',kc[1]?st(kc[0],kc[1]):'sem dias fechados',zz(...kc),'data-a="tab" data-t="dieta"'],
+  ['Proteína na meta',pr[1]?st(pr[0],pr[1]):'sem dias fechados',zz(...pr),'data-a="tab" data-t="dieta"'],
+  ['Água na meta',wa[1]?st(wa[0],wa[1]):'sem dias fechados',zz(...wa),'data-a="tab" data-t="agua"'],
+  ['Calorias ativas',`${fmtInt(aSum)} / ${fmtInt(aGoal)} kcal`,aSum>=aGoal?'ok':'go','data-a="tab" data-t="ativ"'],
+  ['Sono (média)',sl.length?`${fmt(Math.round(slAvg*10)/10)} / ${fmt(sg)} h`:'sem registros',sl.length?(slAvg>=sg-.25?'ok':'go'):'go','data-a="sleepLog"'],
+  ['Saldo da semana',nb?`${sgn(Math.round(bal))} kcal · alvo ${sgn(Math.round(tgt))}`:'aparece com dias fechados',balZ,'data-a="calcSheet"'],
+  ['Peso na semana',dw!=null?`${dw>0?'+':dw<0?'−':''}${fmt(Math.abs(dw))} kg (${fmt(last.y)} kg)`:last?`${fmt(last.y)} kg · registre de novo`:'sem registro',wz,'data-a="go" data-v="medidas"']];
+ const done=rows.filter(r=>r[2]==='ok').length,row=r=>`<button class="lg-r z-${r[2]}" ${r[3]}><i>${r[2]==='ok'?'✓':''}</i><span>${r[0]}</span><b>${r[1]}</b></button>`;
+ return`<section class="card form"><div class="row"><span class="lab spacer">Minha semana</span><span class="tag amb">${I.flame.replace('class="i"','class="i" style="width:14px;height:14px;vertical-align:-2px"')} ${streakWeeks()} sem. seguidas</span></div>
+ <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1))||(S.extra||[]).some(x=>x.t>=d&&x.t<addDays(d,1));return`<div class="dchip${has?' has':''}${d===t0?' today':''}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></div>`}).join('')}</div>
+ <div class="stat3"><div><span class="lab">Sessões</span><b>${cnt}</b></div><div><span class="lab">Tempo</span><b>${fmtDur(dur)}</b></div><div><span class="lab">Volume</span><b>${fmtInt(vol)}<small style="font-size:14px"> kg</small></b></div></div>
+ <div class="row"><span class="lab nfx">Metas da semana</span><span class="muted small">${done} de ${rows.length} em dia</span></div><div class="lg">${rows.map(row).join('')}</div>
+ ${nb?`<p class="muted small" style="margin:0">Saldo = comido − gasto nos ${nb} dia${nb>1?'s':''} fechados com registro (${sgn(Math.round(bal))} kcal ≈ ${bal<0?'−':'+'}${Math.abs(bal)<7700?fmtInt(Math.round(Math.abs(bal)/7.7/10)*10)+' g':fmt(Math.round(Math.abs(bal)/770)/10)+' kg'} de peso).</p>`:''}</section>`}
 function homeMyDay(){nS();const now=Date.now(),k=dkey(now),n=dayNut(k),P=nutriPlan(now),E=P.E,v=Math.round(n[0]),left=P.kcal-v,pc=Math.min(100,v/P.kcal*100),z=zKcal(v,P);
  const gl=(GOALS.find(g=>g[0]===goalOf())||GOALS[1])[1],wg=waterGoal(now).ml,wt=waterOn(k),sl=sleepOn(k);
  const noKcal=E.mode==='relogio'?S.workouts.filter(w=>w.start>=sod(now)&&!(num(w.kcal)>0)):[];
