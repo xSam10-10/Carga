@@ -1949,7 +1949,7 @@ async function listSnaps(){try{const db=await idb();return await new Promise((re
 async function snapshot(reason){try{if(!REGS.current||(!S.workouts.length&&!S.routines.length))return;const db=await idb();await new Promise((res,rej)=>{const tx=db.transaction('snaps','readwrite');tx.objectStore('snaps').put({ts:Date.now(),pid:REGS.current,reason,n:S.workouts.length,data:backupText()});tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});const old=(await listSnaps()).slice(7);if(old.length){const tx=db.transaction('snaps','readwrite');old.forEach(z=>tx.objectStore('snaps').delete(z.ts))}}catch(e){}}
 async function autoSnapshot(){const l=await listSnaps();if(S.workouts.length&&(!l.length||Date.now()-l[0].ts>DAY))snapshot('Cópia diária')}
 VIEWS.config.after=async()=>{const el=$('#snaps');if(!el)return;const l=await listSnaps();el.innerHTML=l.length?l.map(z=>`<div class="mrow"><span><b class="small">${new Date(z.ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</b><br><span class="muted small">${esc(z.reason)} · ${z.n} treinos</span></span><button class="btn sm sec" data-a="snapRestore" data-ts="${z.ts}">Restaurar</button></div>`).join(''):'<p class="muted small">Nenhuma cópia ainda. A primeira é feita quando houver treinos salvos.</p>'};
-const backupText=()=>JSON.stringify(Object.assign({},S,{active:null,app:'carga',perfil:S.profile.name,exportedAt:new Date().toISOString()}));
+const backupText=()=>JSON.stringify(Object.assign({},S,{active:null,sharedRecipes:shRec(),app:'carga',perfil:S.profile.name,exportedAt:new Date().toISOString()}));
 function download(name,text,type){try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);return true}catch(e){return false}}
 const csvq=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
 const MEN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -2797,13 +2797,23 @@ const MEALS=[['cafe','Café da manhã','07:30'],['lanche1','Lanche da manhã','1
 const mealName=k=>(MEALS.find(m=>m[0]===k)||MEALS[0])[1];
 let TACO_ROWS=null;
 const tacoRows=()=>TACO_ROWS||(TACO_ROWS=TACO.split('\n').map((l,i)=>{const c=l.split('|');return{id:'t'+i,name:c[0],cat:+c[1],v:c.slice(2).map(x=>x===''?null:+x),norm:norm(c[0])}}));
-const nS=()=>{S.meals=S.meals||[];S.foods=S.foods||[];S.fav=S.fav||[];S.mealTpl=S.mealTpl||[];return S};
+// Receitas ficam num espaço do aparelho compartilhado por todos os perfis (localStorage 'carga.shared'), não dentro do perfil.
+let SHD=null;
+const shd=()=>{if(!SHD){try{SHD=JSON.parse(localStorage.getItem('carga.shared')||'null')}catch(e){}SHD=SHD||{};SHD.recipes=SHD.recipes||[]}return SHD};
+const shRec=()=>shd().recipes;
+const shSave=()=>{try{localStorage.setItem('carga.shared',JSON.stringify(shd()))}catch(e){}};
+const nS=()=>{S.meals=S.meals||[];S.foods=S.foods||[];S.fav=S.fav||[];S.mealTpl=S.mealTpl||[];
+ // migração: receitas antigas que estavam dentro do perfil passam para o espaço compartilhado
+ // backup restaurado traz as receitas compartilhadas em S.sharedRecipes
+ if(Array.isArray(S.sharedRecipes)){const r=shRec();for(const x of S.sharedRecipes)if(!r.some(y=>y.id===x.id))r.push(x);delete S.sharedRecipes;shSave();save()}
+ if(S.foods.some(x=>x.recipe)){const r=shRec();for(const x of S.foods.filter(x=>x.recipe))if(!r.some(y=>y.id===x.id))r.push(x);S.foods=S.foods.filter(x=>!x.recipe);shSave();save()}
+ return S};
 // Produtos de marca cadastrados a partir da tabela nutricional da embalagem: [id, nome, porção (g), valores da porção {kcal,carb,prot,gord,sat,fib,na,acucar}]
 const BRAND=[['x-dux-wpc','Whey Protein Concentrado · DUX',30,{kcal:123,carb:5.9,prot:20,gord:2.1,sat:1.3,fib:0,na:116}],
  ['x-bsk-whey','Whey Protein Concentrado · Black Skull',30,{kcal:115,carb:2.5,prot:25,gord:.6,sat:0,fib:0,na:65}]];
 let BRAND_ROWS=null;
 const brandRows=()=>BRAND_ROWS||(BRAND_ROWS=BRAND.map(([id,name,por,o])=>{const k=100/por,v=NK.map(()=>null),put=(i,x)=>{if(x!=null)v[i]=Math.round(x*k*100)/100};put(0,o.kcal);put(1,o.prot);put(2,o.gord);put(3,o.carb);put(4,o.fib);put(5,o.sat);put(7,o.na);return{id,name,por,v,brand:true,cat:-1,norm:norm(name+' whey suplemento proteina')}}));
-function food(id){if(!id)return null;if(id[0]==='t')return tacoRows()[+id.slice(1)]||null;if(id[0]==='x')return brandRows().find(x=>x.id===id)||null;const u=nS().foods.find(x=>x.id===id);return u?{id:u.id,name:u.name,v:u.v,por:u.por,own:true,recipe:!!u.recipe,ing:u.ing,norm:norm(u.name)}:null}
+function food(id){if(!id)return null;if(id[0]==='t')return tacoRows()[+id.slice(1)]||null;if(id[0]==='x')return brandRows().find(x=>x.id===id)||null;const u=nS().foods.find(x=>x.id===id)||shRec().find(x=>x.id===id);return u?{id:u.id,name:u.name,v:u.v,por:u.por,own:true,recipe:!!u.recipe,ing:u.ing,norm:norm(u.name)}:null}
 // nutrientes de um item (vetor na mesma ordem de NK); itens de "calorias rápidas" só têm kcal
 function itemNut(it){if(it.f==null){const o=NK.map(()=>0);o[0]=num(it.kcal)||0;return o}const f=food(it.f);if(!f)return NK.map(()=>0);const k=(num(it.q)||0)/100;return f.v.map(x=>(x||0)*k)}
 const sumNut=items=>items.reduce((a,it)=>{const n=itemNut(it);return a.map((x,i)=>x+n[i])},NK.map(()=>0));
@@ -2862,9 +2872,9 @@ VIEWS.refeicao=p=>{const w=p.w;if(!w)return bar('Refeição')+'<main class="page
 /* ---- seletor de alimentos ---- */
 const FT=[['todos','Todos'],['fav','Favoritos'],['rec','Receitas'],['meus','Meus alimentos'],['ref','Refeições']];
 function foodList(p){const q=norm(p.q||''),sel=p.sel||[];const row=f=>{const on=sel.includes(f.id);const v0=f.v[0]||0;return`<button class="frow${on?' on':''}" data-a="fPick" data-id="${f.id}"><span class="fck">${on?I.check:''}</span><span class="nfx"><b>${esc(f.name)}</b><span class="muted small">${fmtInt(f.por&&f.por!==100?v0*f.por/100:v0)} kcal, ${f.por&&f.por!==100?`1 porção (${fmt(f.por)} g)`:'100 g'}${f.own?' · meu':''}</span></span>${S.fav.includes(f.id)?`<span class="fstar">${I.star}</span>`:''}</button>`};
- if(p.tab==='rec'){const rs=S.foods.filter(x=>x.recipe&&!(S.foodHidden||[]).includes(x.id)&&(!q||norm(x.name).includes(q))).map(x=>food(x.id));return`<button class="mi" data-a="rcNew">${I.plus}Criar receita</button>`+(rs.length?rs.map(f=>`<div class="rcrow">${row(f)}<button class="ib" data-a="rcEdit" data-id="${f.id}" aria-label="Editar receita">${I.edit}</button></div>`).join(''):`<p class="empty">Nenhuma receita ainda. Crie uma juntando alimentos (ex.: bolo, panqueca, marmita da semana). Depois ela entra na dieta como um alimento só: é só ajustar os gramas ou as calorias.</p>`)}
+ if(p.tab==='rec'){const rs=shRec().filter(x=>x.recipe&&!(S.foodHidden||[]).includes(x.id)&&(!q||norm(x.name).includes(q))).map(x=>food(x.id));return`<button class="mi" data-a="rcNew">${I.plus}Criar receita</button>`+(rs.length?rs.map(f=>`<div class="rcrow">${row(f)}<button class="ib" data-a="rcEdit" data-id="${f.id}" aria-label="Editar receita">${I.edit}</button></div>`).join(''):`<p class="empty">Nenhuma receita ainda. Crie uma juntando alimentos (ex.: bolo, panqueca, marmita da semana). Depois ela entra na dieta como um alimento só: é só ajustar os gramas ou as calorias.</p>`)}
  if(p.tab==='ref'){const ts=S.mealTpl.filter(t=>!q||norm(t.name).includes(q));return ts.length?ts.map(t=>{const on=sel.includes('r:'+t.id);return`<button class="frow${on?' on':''}" data-a="fPick" data-id="r:${t.id}"><span class="fck">${on?I.check:''}</span><span class="nfx"><b>${esc(t.name)}</b><span class="muted small">${fmtInt(sumNut(t.it)[0])} kcal · ${esc(t.it.map(itemName).join(', '))}</span></span></button>`}).join(''):`<p class="empty">Nenhuma refeição salva. No editor de refeição, use "Salvar como refeição pessoal".</p>`}
- let fs=p.tab==='fav'?S.fav.map(food).filter(Boolean):p.tab==='meus'?[...S.foods.map(x=>food(x.id)),...brandRows()]:[...S.foods.map(x=>food(x.id)),...brandRows(),...tacoRows()];
+ let fs=p.tab==='fav'?S.fav.map(food).filter(Boolean):p.tab==='meus'?[...S.foods,...shRec()].map(x=>food(x.id)).concat(brandRows()):[...[...S.foods,...shRec()].map(x=>food(x.id)),...brandRows(),...tacoRows()];
  if(p.tab==='todos'&&p.cat!=null&&p.cat!=='')fs=fs.filter(f=>f.cat===+p.cat);
  if(q){const ws=q.split(/\s+/).filter(Boolean);fs=fs.filter(f=>ws.every(w=>f.norm.includes(w))).sort((a,b)=>(b.norm.startsWith(q)?1:0)-(a.norm.startsWith(q)?1:0))}
  const hid=new Set(S.foodHidden||[]);fs=fs.filter(f=>f&&!hid.has(f.id));const empty=p.tab==='fav'?'Toque na estrela de um alimento para guardá-lo aqui.':p.tab==='meus'?'Você ainda não criou alimentos.':'Nenhum alimento encontrado. Tente outra palavra ou crie o seu.';
@@ -2885,14 +2895,14 @@ VIEWS.novoAlimento=p=>{p.f=p.f||{por:'100'};return bar(p.edit?'Editar alimento':
    Excluir = ocultar (S.foodHidden): some da busca e das listas, mas as refeições já registradas mantêm os valores. Dá para restaurar. */
 const BF=[['todos','Todos'],['meus','Meus'],['rec','Receitas'],['marca','Marcas'],['taco','TACO'],['ocultos','Excluídos']];
 function bancoList(p){const q=norm(p.q||''),k=p.k||'todos',hid=new Set(S.foodHidden||[]);nS();
- let fs=k==='taco'?tacoRows():k==='marca'?brandRows():k==='meus'?S.foods.filter(x=>!x.recipe).map(x=>food(x.id)):k==='rec'?S.foods.filter(x=>x.recipe).map(x=>food(x.id)):[...S.foods.map(x=>food(x.id)),...brandRows(),...tacoRows()];
+ let fs=k==='taco'?tacoRows():k==='marca'?brandRows():k==='meus'?S.foods.filter(x=>!x.recipe).map(x=>food(x.id)):k==='rec'?shRec().map(x=>food(x.id)):[...[...S.foods,...shRec()].map(x=>food(x.id)),...brandRows(),...tacoRows()];
  fs=fs.filter(Boolean).filter(f=>k==='ocultos'?hid.has(f.id):!hid.has(f.id));
  if(q){const ws=q.split(/\s+/).filter(Boolean);fs=fs.filter(f=>ws.every(w=>f.norm.includes(w)))}
  const src=f=>f.recipe?'receita':f.own?'meu':f.brand?'marca':'TACO';
  return`<p class="muted small" style="margin:0">${fs.length} alimento(s)${fs.length>300?' · mostrando 300, refine a busca':''}</p><section class="card bk-l">${fs.slice(0,300).map(f=>`<div class="bk-r"><span class="nfx"><b>${esc(f.name)}</b><span class="muted small">${fmtInt(f.v[0]||0)} kcal/100 g · P ${fmt(Math.round((f.v[1]||0)*10)/10)} · C ${fmt(Math.round((f.v[3]||0)*10)/10)} · G ${fmt(Math.round((f.v[2]||0)*10)/10)} g${f.por&&f.por!==100?` · porção ${fmt(f.por)} g`:''}</span></span><em class="bk-t">${src(f)}</em>${k==='ocultos'?`<button class="btn sm sec" data-a="bkRestore" data-id="${f.id}">Restaurar</button>`:`${f.own?`<button class="ib" data-a="${f.recipe?'rcEdit':'bkEdit'}" data-id="${f.id}" aria-label="Editar">${I.edit}</button>`:''}<button class="ib" data-a="bkDel" data-id="${f.id}" aria-label="Excluir">${I.trash}</button>`}</div>`).join('')||'<p class="empty">Nenhum alimento aqui.</p>'}</section>`}
 VIEWS.banco=p=>{const k=p.k||'todos';return bar('Banco de alimentos',{right:`<button class="tb" data-a="bkNew">Criar</button>`})+`<main class="page"><input class="inp" id="bk-q" type="search" placeholder="Buscar no banco de alimentos" value="${esc(p.q||'')}" data-f="n:bkq" autocomplete="off">
  <div class="chips at-cats">${BF.map(([kk,l])=>`<button class="chip${k===kk?' on':''}" data-a="bkK" data-k="${kk}">${l}${kk==='ocultos'&&(S.foodHidden||[]).length?` (${S.foodHidden.length})`:''}</button>`).join('')}</div>
- <div class="chips"><button class="chip" data-a="bkNew">${I.plus} Novo alimento</button><button class="chip" data-a="rcNew">${I.plus} Nova receita</button><button class="chip" data-a="bcScan">${I.barcode} Código de barras</button></div>
+ <div class="chips"><button class="chip" data-a="bkNew">${I.plus} Novo alimento</button><button class="chip" data-a="rcNew">${I.plus} Nova receita</button><button class="chip" data-a="bcScan">${I.barcode} Código de barras</button><button class="chip" data-a="recSend">${I.upload} Enviar receitas</button><button class="chip" data-a="recRecv">${I.downl} Receber receitas</button></div>
  <div id="bk-list" style="display:flex;flex-direction:column;gap:8px">${bancoList(p)}</div>
  <p class="muted small" style="margin:0">Excluir tira o alimento da busca e das listas de escolha; refeições já registradas continuam com os valores. Os excluídos ficam em "Excluídos" e podem ser restaurados.</p></main>`};
 Object.assign(A,{
@@ -2901,6 +2911,18 @@ Object.assign(A,{
  bkEdit:d=>{const u=nS().foods.find(x=>x.id===d.id);if(!u)return;const por=u.por||100,g=i=>u.v[i]==null?'':String(Math.round(u.v[i]*por)/100).replace('.',',');go('novoAlimento',{edit:u.id,f:{name:u.name,por:String(por),kcal:g(0),carb:g(3),prot:g(1),gord:g(2),fib:g(4),na:g(7)}})},
  bkDel:d=>{const f=food(d.id);ask('Excluir este alimento?',`"${f?f.name:''}" sai da busca e das listas. Refeições já registradas mantêm os valores. Você pode restaurar em "Excluídos".`,'Excluir',true).then(ok=>{closeSheet();if(!ok)return;S.foodHidden=[...new Set([...(S.foodHidden||[]),d.id])];S.fav=(S.fav||[]).filter(x=>x!==d.id);save();rerender();toast('Alimento excluído')})},
  bkRestore:d=>{S.foodHidden=(S.foodHidden||[]).filter(x=>x!==d.id);save();rerender();toast('Alimento restaurado')}
+});
+
+/* ---- transferir receitas entre celulares (sem servidor): gera um código de texto para copiar e colar no outro aparelho ---- */
+function recExportCode(){const rs=shRec();const own=new Set();for(const r of rs)for(const it of r.ing||[])if(it.f&&it.f[0]==='u'&&!rs.some(x=>x.id===it.f))own.add(it.f);
+ const foods=[...own].map(id=>[...S.foods].find(x=>x.id===id)).filter(Boolean);return'CARGA1:'+btoa(unescape(encodeURIComponent(JSON.stringify({recipes:rs,foods}))))}
+function recImport(code){const m=String(code||'').trim().match(/CARGA1:([A-Za-z0-9+/=]+)/);if(!m)return null;let o;try{o=JSON.parse(decodeURIComponent(escape(atob(m[1]))))}catch(e){return null}
+ let nr=0,nu=0;const rs=shRec();for(const r of o.recipes||[]){const i=rs.findIndex(x=>x.id===r.id);if(i<0){rs.push(r);nr++}else{rs[i]=r;nu++}}shSave();
+ nS();for(const f of o.foods||[])if(!S.foods.some(x=>x.id===f.id))S.foods.push(f);save();return{nr,nu}}
+Object.assign(A,{
+ recSend:()=>{if(!shRec().length){toast('Ainda não há receitas para enviar.');return}const c=recExportCode();sheet(`<h3>Enviar receitas para o outro celular</h3><p>Copie o código abaixo e mande para o outro celular do jeito que preferir (mensagem para você mesmo, e-mail, bloco de notas). No outro celular: Nutrição → Banco de alimentos → "Receber receitas" e cole o código.</p><textarea class="inp" id="rec-code" rows="4" readonly>${c}</textarea><div class="ask-b"><button class="btn sec" data-a="closeSheet">Fechar</button><button class="btn pri" data-a="recCopy">Copiar código</button></div>`)},
+ recCopy:async()=>{const t=$('#rec-code');try{await navigator.clipboard.writeText(t.value);toast('Código copiado')}catch(e){t.select();try{document.execCommand('copy');toast('Código copiado')}catch(x){toast('Selecione o texto e copie')}}},
+ recRecv:()=>{askText('Cole o código das receitas','','CARGA1:…').then(v=>{closeSheet();if(v==null||!String(v).trim())return;const r=recImport(v);if(!r){toast('Código inválido. Copie o código inteiro de novo.');return}rerender();toast(`${r.nr} receita(s) nova(s)${r.nu?`, ${r.nu} atualizada(s)`:''}`)});const x=$('#ask-in');if(x)x.removeAttribute('maxlength')}
 });
 
 /* ---- receitas: alimentos combinados que entram na dieta como um alimento só (por 100 g) ---- */
@@ -2921,12 +2943,12 @@ VIEWS.receita=p=>{const r=p.r;p.w=r;return bar(r.id?'Editar receita':'Nova recei
  ${r.id?`<button class="btn ghost danger wide" data-a="rcDel">Excluir receita</button>`:''}</main>`};
 Object.assign(A,{
  rcNew:()=>go('receita',{r:{name:'',it:[],cooked:'',serv:'1'}}),
- rcEdit:d=>{const u=S.foods.find(x=>x.id===d.id);if(u)go('receita',{r:{id:u.id,name:u.name,it:(u.ing||[]).map(x=>({...x})),cooked:u.cooked||'',serv:String(u.serv||1)}})},
+ rcEdit:d=>{const u=shRec().find(x=>x.id===d.id);if(u)go('receita',{r:{id:u.id,name:u.name,it:(u.ing||[]).map(x=>({...x})),cooked:u.cooked||'',serv:String(u.serv||1)}})},
  rcSave:()=>{const r=top_().p.r;['name','cooked','serv'].forEach(k=>{const el=$('#rc-'+k);if(el)r[k]=el.value});const name=(r.name||'').trim();if(!name){toast('Dê um nome à receita.');$('#rc-name').focus();return}if(!r.it.length){toast('Adicione pelo menos um ingrediente.');return}
   const tot=sumNut(r.it),raw=rcGrams(r),W=num(r.cooked)>0?num(r.cooked):raw;if(!(W>0)){toast('Informe as quantidades dos ingredientes.');return}const sv=Math.max(1,Math.round(num(r.serv)||1));
   const o={name,por:Math.round(W/sv),v:tot.map(x=>Math.round(x*100/W*100)/100),recipe:true,ing:r.it.map(x=>({f:x.f,q:num(x.q)||0})),cooked:num(r.cooked)>0?num(r.cooked):null,serv:sv};nS();
-  const u=r.id&&S.foods.find(x=>x.id===r.id);if(u)Object.assign(u,o);else{r.id='u'+uid();S.foods.push({id:r.id,...o})}save();toast(u?'Receita atualizada':'Receita criada: já aparece na busca de alimentos');back()},
- rcDel:()=>{const r=top_().p.r;ask('Excluir esta receita?','Refeições já registradas com ela continuam com os valores, mas ela some da lista.','Excluir',true).then(ok=>{closeSheet();if(!ok)return;S.foods=S.foods.filter(x=>x.id!==r.id);S.fav=S.fav.filter(x=>x!==r.id);save();back();toast('Receita excluída')})}
+  const u=r.id&&shRec().find(x=>x.id===r.id);if(u)Object.assign(u,o);else{r.id='u'+uid();shRec().push({id:r.id,by:S.profile.name,...o})}shSave();save();toast(u?'Receita atualizada':'Receita criada: já aparece na busca de alimentos');back()},
+ rcDel:()=>{const r=top_().p.r;ask('Excluir esta receita?','Ela é compartilhada: some da lista dos dois perfis deste celular.','Excluir',true).then(ok=>{closeSheet();if(!ok)return;shd().recipes=shRec().filter(x=>x.id!==r.id);shSave();S.fav=S.fav.filter(x=>x!==r.id);save();back();toast('Receita excluída')})}
 });
 
 /* ---- porção (folha) ---- */
