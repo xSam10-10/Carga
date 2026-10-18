@@ -1181,7 +1181,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v71'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v72'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1396,10 +1396,9 @@ VIEWS.inicio=()=>{
  const dur=thisW.reduce((a,w)=>a+(w.end-w.start),0),vol=thisW.reduce((a,w)=>a+wStats(w).vol,0);
  const days=[...Array(7)].map((_,i)=>addDays(wk,i));const today=sod(Date.now());
  let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button><button class="ib" data-a="go" data-v="perfis" aria-label="Trocar perfil (${esc(S.profile.name)})"><span class="ava xs">${avaIn(S.profile)}</span></button></header><main class="page">`;
- h+=homeLead();
+ h+=homeLead()+homeWeek();
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
  h+=homeMyDay()+homeSpend();
- h+=homeWeek();
  h+=homeBody();
  h+=`<h3 class="sh">Explorar</h3><div class="grid2"><button class="tile" data-a="go" data-v="metas">${I.flame}Metas</button><button class="tile" data-a="go" data-v="resumo">${I.cal}Resumo</button><button class="tile" data-a="go" data-v="conquistas">${I.trophy}Conquistas</button><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button></div>`;
  if(backupDue()){const n=S.workouts.length-(S.profile.lastBackupN||0);h+=`<section class="alert"><b>Backup pendente</b><span>${n>0?`${n} treino(s) novo(s) desde o último backup.`:'Você ainda não fez backup.'} Se os dados do navegador forem apagados, o histórico se perde.</span><div class="row"><button class="btn pri sm" data-a="backupSheet">Fazer backup</button><button class="btn ghost sm" data-a="snoozeBackup">Lembrar depois</button></div></section>`}
