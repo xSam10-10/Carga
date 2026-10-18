@@ -120,6 +120,6 @@
 - Catálogo `AEX` (53 itens em 8 categorias `ACAT`; unidade de distância km, m ou nenhuma) + criados pelo usuário em `S.exCustom`; favoritos em `profile.exFav` (padrão caminhada, corrida, bicicleta, natação).
 - Registro `ativForm`: **calorias obrigatórias** (não salva sem); duração, distância (só nos que têm unidade), frequência cardíaca média e notas são opcionais. Salvo em `S.extra` `{id,t,ex,name,kcal,dur,dist(km),hr,notes}`; natação digita metros e guarda km.
 - `exKcalOn` soma `S.extra` na meta do dia (exercício entra por inteiro); a meta de água soma +500 ml por hora também desses exercícios.
-- Tela da aba: resumo de hoje, favoritos, gráfico de calorias por período (`perCtl('ativ')`) e registros por dia, incluindo os treinos de musculação. Detalhe `ativDet` com ritmo/velocidade calculados. Atalho "Exercício" no Início (`homeAtiv`).
+- Tela da aba: resumo de hoje, favoritos (todos; o atalho do Início mostra até 12 + "Mais"), gráfico de calorias por período (`perCtl('ativ')`) e registros por dia, incluindo os treinos de musculação. Detalhe `ativDet` com ritmo/velocidade calculados. Atalho "Exercício" no Início (`homeAtiv`).
 - Frequência cardíaca aqui é só informação opcional pedida pelo usuário; não entra em nenhum cálculo (regra 6 continua).
 
