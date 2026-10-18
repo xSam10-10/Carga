@@ -1161,7 +1161,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v51'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v52'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -2802,7 +2802,8 @@ let TACO_ROWS=null;
 const tacoRows=()=>TACO_ROWS||(TACO_ROWS=TACO.split('\n').map((l,i)=>{const c=l.split('|');return{id:'t'+i,name:c[0],cat:+c[1],v:c.slice(2).map(x=>x===''?null:+x),norm:norm(c[0])}}));
 const nS=()=>{S.meals=S.meals||[];S.foods=S.foods||[];S.fav=S.fav||[];S.mealTpl=S.mealTpl||[];return S};
 // Produtos de marca cadastrados a partir da tabela nutricional da embalagem: [id, nome, porção (g), valores da porção {kcal,carb,prot,gord,sat,fib,na,acucar}]
-const BRAND=[['x-dux-wpc','Whey Protein Concentrado · DUX',30,{kcal:123,carb:5.9,prot:20,gord:2.1,sat:1.3,fib:0,na:116}]];
+const BRAND=[['x-dux-wpc','Whey Protein Concentrado · DUX',30,{kcal:123,carb:5.9,prot:20,gord:2.1,sat:1.3,fib:0,na:116}],
+ ['x-bsk-whey','Whey Protein Concentrado · Black Skull',30,{kcal:115,carb:2.5,prot:25,gord:.6,sat:0,fib:0,na:65}]];
 let BRAND_ROWS=null;
 const brandRows=()=>BRAND_ROWS||(BRAND_ROWS=BRAND.map(([id,name,por,o])=>{const k=100/por,v=NK.map(()=>null),put=(i,x)=>{if(x!=null)v[i]=Math.round(x*k*100)/100};put(0,o.kcal);put(1,o.prot);put(2,o.gord);put(3,o.carb);put(4,o.fib);put(5,o.sat);put(7,o.na);return{id,name,por,v,brand:true,cat:-1,norm:norm(name+' whey suplemento proteina')}}));
 function food(id){if(!id)return null;if(id[0]==='t')return tacoRows()[+id.slice(1)]||null;if(id[0]==='x')return brandRows().find(x=>x.id===id)||null;const u=nS().foods.find(x=>x.id===id);return u?{id:u.id,name:u.name,v:u.v,por:u.por,own:true,recipe:!!u.recipe,ing:u.ing,norm:norm(u.name)}:null}
