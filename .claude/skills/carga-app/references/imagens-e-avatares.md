@@ -84,3 +84,8 @@ A base cinza é **idêntica** entre as artes; a única diferença é ruído de c
 ## Ferramentas no ambiente
 
 Python com PIL, numpy e opencv-python-headless (`pip install opencv-python-headless`) e fontTools (`pip install fonttools`). As fontes Inter estão em `/usr/share/fonts/opentype/inter/`. O Chromium do Playwright está em `/opt/pw-browsers`.
+
+## Correções de 18/10/2026
+- `visSex()`: sexo só para as imagens (mapa corporal, avatar de água, miniaturas). Se o perfil ainda não tem sexo preenchido, o perfil `carol` (ou nome "Carol") usa as figuras femininas. Os cálculos continuam exigindo o sexo preenchido.
+- Filtro "Grupo muscular" (catálogo de musculação): miniaturas agora usam o corpo hiper-realista (`realBody({[m]:1}, lado)`, classe `.micon.real`), frente ou costas conforme o músculo.
+- Filtro "Equipamento": ilustrações próprias coloridas num círculo branco (`EQ_ART`/`eqArt`, estilo dos filtros do Hevy); "Peso corporal" mostra a figura hiper-realista do sexo do perfil.
