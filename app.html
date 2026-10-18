@@ -462,7 +462,8 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .ev-tab{padding:2px 14px}.ev-tab>div{display:grid;grid-template-columns:1fr auto auto;align-items:baseline;gap:4px 12px;padding:11px 0;border-bottom:1px solid var(--line)}.ev-tab>div:last-child{border-bottom:0}.ev-tab span:first-child{color:var(--muted);font-size:14px}.ev-tab b{font:700 18px var(--display);font-variant-numeric:tabular-nums}.ev-tab em{grid-column:1/-1;font-style:normal;font-size:12.5px;color:var(--muted)}
 .ev-d{font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}.ev-d.up{color:var(--accent)}.ev-d.down{color:var(--coral,var(--amber))}
 .pd-g{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.pd-t{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 2px;border-radius:12px;color:var(--fg);text-align:center}.pd-t:active{background:var(--surface-2)}.pd-t b{font:700 18px/1.1 var(--display);margin-top:4px;font-variant-numeric:tabular-nums}.pd-t span{font-size:12px;font-weight:600}.pd-t em{font-style:normal;font-size:11px;color:var(--muted)}
-.pd-ring{width:44px;height:44px}.pd-ring circle{fill:none;stroke-width:5}.pd-ring .bg{stroke:var(--surface-2)}.pd-ring .fg{stroke:var(--accent);stroke-linecap:round}.pd-ring.p .fg{stroke:var(--amber)}.pd-ring.w .fg{stroke:#3B9DE8}.pd-ring.t .fg{stroke:var(--violet)}.pd-ring.x .fg{stroke:var(--coral,#E5735A)}.pd-ring.s .fg{stroke:#7C83D9}
+.pd-ring{width:44px;height:44px}.pd-ring circle{fill:none;stroke-width:5}.pd-ring .bg{stroke:var(--surface-2)}.pd-ring .fg{stroke:var(--accent);stroke-linecap:round}.pd-ring.p .fg{stroke:var(--amber)}.pd-ring.c .fg{stroke:var(--violet)}.pd-ring.g .fg{stroke:var(--coral,#E5735A)}.pd-ring.w .fg{stroke:#3B9DE8}.pd-ring.t .fg{stroke:var(--accent)}.pd-ring.x .fg{stroke:#E9A21B}.pd-ring.e .fg{stroke:#2FA89A}.pd-ring.b .fg{stroke:var(--accent)}.pd-ring.off .fg{stroke:var(--danger)}
+.pd-sleep{display:block;width:100%;margin-top:6px;padding:8px;border-radius:10px;background:var(--surface-2);font-size:13px;color:var(--muted)}.pd-sleep b{color:var(--fg)}
 .pl-meal{display:flex;flex-direction:column;gap:6px}.pl-it{display:flex;justify-content:space-between;gap:10px;font-size:14px;border-top:1px solid var(--line);padding-top:6px}.pl-it span{min-width:0}.pl-it b{white-space:nowrap}
 .bc-cam{position:relative;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:4/3}.bc-cam video{width:100%;height:100%;object-fit:cover}.bc-cam i{position:absolute;left:12%;right:12%;top:46%;height:2px;background:var(--accent);box-shadow:0 0 8px var(--accent)}.bc-row{display:grid;grid-template-columns:1fr auto;gap:8px}
 .fp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fp-grid figure,.fp-cmp figure{margin:0;display:flex;flex-direction:column;gap:4px}.fp-grid img,.fp-cmp img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:12px;background:var(--surface-2)}.fp-grid figcaption{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--muted)}.fp-cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fp-cmp figcaption{font-size:12.5px;color:var(--muted);text-align:center}
@@ -3143,17 +3144,23 @@ VIEWS.metas=()=>{const g=goalsOf(),P=nutriPlan(),today=sod(Date.now());let h=bar
 /* ===================== PAINEL DO DIA (Início) e SONO ===================== */
 const ringSVG=(pct,cls='')=>{const r=17,c=2*Math.PI*r;return`<svg class="pd-ring ${cls}" viewBox="0 0 42 42" aria-hidden="true"><circle cx="21" cy="21" r="${r}" class="bg"/><circle cx="21" cy="21" r="${r}" class="fg" stroke-dasharray="${(c*Math.max(0,Math.min(1,pct))).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 21 21)"/></svg>`};
 const sleepOn=k=>num((S.sleep||{})[k]);
-function homeDay(){nS();const now=Date.now(),t0=sod(now),k=dkey(now),P=nutriPlan(now),n=dayNut(k),wg=waterGoal(now).ml,wt=waterOn(k);
- const ws=S.workouts.filter(w=>w.start>=t0),wmin=ws.reduce((a,w)=>a+(w.end-w.start),0)/6e4,ex=exKcalOn(now),sl=sleepOn(k),slG=num(S.profile.sleepGoal)||8;
+function homeDay(){nS();const now=Date.now(),t0=sod(now),k=dkey(now),P=nutriPlan(now),E=P.E||energyPlan(now),n=dayNut(k),wg=waterGoal(now).ml,wt=waterOn(k);
+ const ws=S.workouts.filter(w=>w.start>=t0),wmin=ws.reduce((a,w)=>a+(w.end-w.start),0)/6e4,ex=exKcalOn(now),sl=sleepOn(k);
  const tile=(act,pct,val,lab,sub,cls='')=>`<button class="pd-t" ${act}>${ringSVG(pct,cls)}<b>${val}</b><span>${lab}</span><em>${sub}</em></button>`;
+ const mac=(i,g,lab,cls)=>tile('data-a="tab" data-t="dieta"',n[i]/Math.max(1,g),fmtInt(n[i])+' g',lab,`meta ${fmtInt(g)} g`,cls);
+ // saldo do dia = consumido − gasto (rotina + exercício); a meta é o déficit/superávit do objetivo
+ const gasto=E.ok?Math.round(E.gasto):null,bal=gasto!=null?Math.round(n[0]-gasto):null,tgt=E.ok?Math.round(E.adj):0,sg=v=>(v>0?'+':v<0?'−':'')+fmtInt(Math.abs(v));
+ const balPct=bal==null?0:tgt?(Math.sign(bal)===Math.sign(tgt)?Math.min(1,bal/tgt):0):Math.max(0,1-Math.abs(bal)/200);
+ const balLab=bal==null?'Saldo':bal<0?'Déficit':bal>0?'Superávit':'Equilíbrio',balSub=!E.ok?'preencha Meus dados':tgt?`meta ${sg(tgt)} (${tgt<0?'déficit':'superávit'})`:'meta 0 (manter)';
  return`<section class="card pd"><div class="row"><span class="lab nfx">Painel do dia</span><span class="muted small">${new Date(now).toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'short'})}</span></div><div class="pd-g">
- ${tile('data-a="tab" data-t="dieta"',n[0]/P.kcal,fmtInt(n[0]),'Calorias',`de ${fmtInt(P.kcal)}`)}
- ${tile('data-a="tab" data-t="dieta"',n[1]/Math.max(1,P.gP),fmtInt(n[1])+'g','Proteína',`de ${fmtInt(P.gP)} g`,'p')}
- ${tile('data-a="tab" data-t="agua"',wt/wg,fmt(wt/1000)+'L','Água',`de ${fmt(wg/1000)} L`,'w')}
+ ${mac(1,P.gP,'Proteína','p')}${mac(3,P.gC,'Carboidratos','c')}${mac(2,P.gG,'Gordura','g')}
+ ${tile('data-a="tab" data-t="dieta"',n[0]/P.kcal,fmtInt(n[0]),'Consumidas',`meta ${fmtInt(P.kcal)} kcal`)}
+ ${tile('data-a="goPf" data-v="dados"',gasto?1:0,gasto!=null?fmtInt(gasto):'—','Gastas',E.ok?(E.mode==='relogio'?`inclui ${fmtInt(ex)} de treino`:'pelo nível de atividade'):'preencha Meus dados','x')}
+ ${tile('data-a="go" data-v="metas"',balPct,bal!=null?sg(bal):'—',balLab,balSub,bal!=null&&tgt&&Math.sign(bal)!==Math.sign(tgt)?'off':'b')}
+ ${tile('data-a="tab" data-t="agua"',wt/wg,fmt(wt/1000)+' L','Água',`meta ${fmt(wg/1000)} L`,'w')}
  ${tile('data-a="tab" data-t="treino"',ws.length?1:0,ws.length?fmtDur(wmin*6e4):'—','Treino',ws.length?(ws.length>1?ws.length+' treinos':'feito'):'ainda não','t')}
- ${tile('data-a="tab" data-t="ativ"',Math.min(1,ex/400),fmtInt(ex),'Exercício','kcal do relógio','x')}
- ${tile('data-a="sleepLog"',sl/slG,sl?fmt(sl)+'h':'—','Sono',sl?`meta ${fmt(slG)} h`:'tocar p/ registrar','s')}
- </div></section>`}
+ ${tile('data-a="tab" data-t="ativ"',Math.min(1,ex/400),fmtInt(ex),'Exercício','kcal do relógio','e')}
+ </div><button class="pd-sleep" data-a="sleepLog">${sl?`Sono da última noite: <b>${fmt(sl)} h</b> · alterar`:'Registrar o sono da última noite'}</button></section>`}
 
 /* ===================== LEMBRETES DE ÁGUA ===================== */
 // Funcionam com o app aberto ou em segundo plano recente (o navegador não permite agendar avisos com o app fechado sem servidor).
