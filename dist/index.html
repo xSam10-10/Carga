@@ -1161,7 +1161,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v50'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v51'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -2801,7 +2801,11 @@ const mealName=k=>(MEALS.find(m=>m[0]===k)||MEALS[0])[1];
 let TACO_ROWS=null;
 const tacoRows=()=>TACO_ROWS||(TACO_ROWS=TACO.split('\n').map((l,i)=>{const c=l.split('|');return{id:'t'+i,name:c[0],cat:+c[1],v:c.slice(2).map(x=>x===''?null:+x),norm:norm(c[0])}}));
 const nS=()=>{S.meals=S.meals||[];S.foods=S.foods||[];S.fav=S.fav||[];S.mealTpl=S.mealTpl||[];return S};
-function food(id){if(!id)return null;if(id[0]==='t')return tacoRows()[+id.slice(1)]||null;const u=nS().foods.find(x=>x.id===id);return u?{id:u.id,name:u.name,v:u.v,por:u.por,own:true,recipe:!!u.recipe,ing:u.ing,norm:norm(u.name)}:null}
+// Produtos de marca cadastrados a partir da tabela nutricional da embalagem: [id, nome, porção (g), valores da porção {kcal,carb,prot,gord,sat,fib,na,acucar}]
+const BRAND=[['x-dux-wpc','Whey Protein Concentrado · DUX',30,{kcal:123,carb:5.9,prot:20,gord:2.1,sat:1.3,fib:0,na:116}]];
+let BRAND_ROWS=null;
+const brandRows=()=>BRAND_ROWS||(BRAND_ROWS=BRAND.map(([id,name,por,o])=>{const k=100/por,v=NK.map(()=>null),put=(i,x)=>{if(x!=null)v[i]=Math.round(x*k*100)/100};put(0,o.kcal);put(1,o.prot);put(2,o.gord);put(3,o.carb);put(4,o.fib);put(5,o.sat);put(7,o.na);return{id,name,por,v,brand:true,cat:-1,norm:norm(name+' whey suplemento proteina')}}));
+function food(id){if(!id)return null;if(id[0]==='t')return tacoRows()[+id.slice(1)]||null;if(id[0]==='x')return brandRows().find(x=>x.id===id)||null;const u=nS().foods.find(x=>x.id===id);return u?{id:u.id,name:u.name,v:u.v,por:u.por,own:true,recipe:!!u.recipe,ing:u.ing,norm:norm(u.name)}:null}
 // nutrientes de um item (vetor na mesma ordem de NK); itens de "calorias rápidas" só têm kcal
 function itemNut(it){if(it.f==null){const o=NK.map(()=>0);o[0]=num(it.kcal)||0;return o}const f=food(it.f);if(!f)return NK.map(()=>0);const k=(num(it.q)||0)/100;return f.v.map(x=>(x||0)*k)}
 const sumNut=items=>items.reduce((a,it)=>{const n=itemNut(it);return a.map((x,i)=>x+n[i])},NK.map(()=>0));
@@ -2862,7 +2866,7 @@ const FT=[['todos','Todos'],['fav','Favoritos'],['rec','Receitas'],['meus','Meus
 function foodList(p){const q=norm(p.q||''),sel=p.sel||[];const row=f=>{const on=sel.includes(f.id);const v0=f.v[0]||0;return`<button class="frow${on?' on':''}" data-a="fPick" data-id="${f.id}"><span class="fck">${on?I.check:''}</span><span class="nfx"><b>${esc(f.name)}</b><span class="muted small">${fmtInt(f.por&&f.por!==100?v0*f.por/100:v0)} kcal, ${f.por&&f.por!==100?`1 porção (${fmt(f.por)} g)`:'100 g'}${f.own?' · meu':''}</span></span>${S.fav.includes(f.id)?`<span class="fstar">${I.star}</span>`:''}</button>`};
  if(p.tab==='rec'){const rs=S.foods.filter(x=>x.recipe&&(!q||norm(x.name).includes(q))).map(x=>food(x.id));return`<button class="mi" data-a="rcNew">${I.plus}Criar receita</button>`+(rs.length?rs.map(f=>`<div class="rcrow">${row(f)}<button class="ib" data-a="rcEdit" data-id="${f.id}" aria-label="Editar receita">${I.edit}</button></div>`).join(''):`<p class="empty">Nenhuma receita ainda. Crie uma juntando alimentos (ex.: bolo, panqueca, marmita da semana). Depois ela entra na dieta como um alimento só: é só ajustar os gramas ou as calorias.</p>`)}
  if(p.tab==='ref'){const ts=S.mealTpl.filter(t=>!q||norm(t.name).includes(q));return ts.length?ts.map(t=>{const on=sel.includes('r:'+t.id);return`<button class="frow${on?' on':''}" data-a="fPick" data-id="r:${t.id}"><span class="fck">${on?I.check:''}</span><span class="nfx"><b>${esc(t.name)}</b><span class="muted small">${fmtInt(sumNut(t.it)[0])} kcal · ${esc(t.it.map(itemName).join(', '))}</span></span></button>`}).join(''):`<p class="empty">Nenhuma refeição salva. No editor de refeição, use "Salvar como refeição pessoal".</p>`}
- let fs=p.tab==='fav'?S.fav.map(food).filter(Boolean):p.tab==='meus'?S.foods.map(x=>food(x.id)):[...S.foods.map(x=>food(x.id)),...tacoRows()];
+ let fs=p.tab==='fav'?S.fav.map(food).filter(Boolean):p.tab==='meus'?[...S.foods.map(x=>food(x.id)),...brandRows()]:[...S.foods.map(x=>food(x.id)),...brandRows(),...tacoRows()];
  if(p.tab==='todos'&&p.cat!=null&&p.cat!=='')fs=fs.filter(f=>f.cat===+p.cat);
  if(q){const ws=q.split(/\s+/).filter(Boolean);fs=fs.filter(f=>ws.every(w=>f.norm.includes(w))).sort((a,b)=>(b.norm.startsWith(q)?1:0)-(a.norm.startsWith(q)?1:0))}
  fs=fs.filter(Boolean);const empty=p.tab==='fav'?'Toque na estrela de um alimento para guardá-lo aqui.':p.tab==='meus'?'Você ainda não criou alimentos.':'Nenhum alimento encontrado. Tente outra palavra ou crie o seu.';
@@ -2902,13 +2906,13 @@ Object.assign(A,{
 /* ---- porção (folha) ---- */
 const NUT_ROWS=[[0,'Calorias','kcal'],[3,'Carboidrato','g'],[4,'  Fibras','g'],[1,'Proteína','g'],[2,'Gordura total','g'],[5,'  Saturada','g'],[6,'Colesterol','mg'],[7,'Sódio','mg'],[8,'Potássio','mg'],[9,'Cálcio','mg'],[10,'Ferro','mg'],[11,'Magnésio','mg'],[12,'Zinco','mg'],[13,'Vitamina C','mg'],[14,'Vitamina A','mcg']];
 function portionHTML(id,q,ctl=true){const f=food(id);if(!f)return'';const it={f:id,q},n=itemNut(it),fav=S.fav.includes(id);const kc=[n[3]*4,n[2]*9,n[1]*4],t=kc.reduce((a,b)=>a+b,0)||1;
- return`<div class="row"><span class="nfx"><b style="font-size:17px">${esc(f.name)}</b><span class="muted small" id="p-kc">${fmtInt(n[0])} kcal em ${fmt(q)} g${f.own?'':' · TACO'}</span></span><button class="ib" data-a="favT" data-id="${id}" aria-label="${fav?'Tirar dos':'Pôr nos'} favoritos" aria-pressed="${fav}"><span class="${fav?'fstar':''}">${I.star}</span></button></div>
+ return`<div class="row"><span class="nfx"><b style="font-size:17px">${esc(f.name)}</b><span class="muted small" id="p-kc">${fmtInt(n[0])} kcal em ${fmt(q)} g${f.own||f.brand?'':' · TACO'}</span></span><button class="ib" data-a="favT" data-id="${id}" aria-label="${fav?'Tirar dos':'Pôr nos'} favoritos" aria-pressed="${fav}"><span class="${fav?'fstar':''}">${I.star}</span></button></div>
  ${ctl?`<label class="lab" for="p-q" style="margin-bottom:-4px">Quantidade · toque no número para digitar</label><div class="pq"><button class="ib" data-a="pStep" data-k="-1" aria-label="Menos">−</button><input class="inp" id="p-q" type="text" inputmode="decimal" enterkeyhint="done" value="${fmt(q)}" data-f="n:pq" aria-label="Quantidade em gramas, digite o valor"><span class="muted">g</span><button class="ib" data-a="pStep" data-k="1" aria-label="Mais">${I.plus}</button></div>
  <div class="chips">${[...(f.por&&f.por!==100?[[f.por,'1 porção']]:[]),[50,'50 g'],[100,'100 g'],[150,'150 g'],[200,'200 g']].map(([g,l])=>`<button class="chip" data-a="pSet" data-g="${g}">${l}</button>`).join('')}</div>${f.v[0]>0?`<label class="fld pkc"><span class="lab">Ou digite as calorias</span><span class="pkc-r"><input class="inp" id="p-kcal" type="text" inputmode="numeric" enterkeyhint="done" placeholder="${fmtInt(n[0])}" data-f="n:pkc" aria-label="Calorias da porção"><span class="muted">kcal</span></span></label>`:''}`:''}
  <div id="pdet">${portionDet(f,n)}</div>`}
 function portionDet(f,n){const kc=[n[3]*4,n[2]*9,n[1]*4],t=kc.reduce((a,b)=>a+b,0)||1;return`<div class="mbar">${[3,2,1].map((i,k)=>`<i class="m${k}" style="flex:${Math.max(kc[[0,1,2][k]],.0001)}"></i>`).join('')}</div><div class="nmr"><span></span>${['Carb.','Gord.','Prot.'].map((l,k)=>`<b class="t${k}">${l} ${Math.round(kc[k]/t*100)}%</b>`).join('')}</div>
  <table class="ntab">${NUT_ROWS.map(([i,l,u])=>`<tr class="${l.startsWith('  ')?'nsub':''}"><td>${l.trim()}</td><td>${f.v[i]==null?'–':fmt(Math.round(n[i]*10)/10)+' '+u}</td></tr>`).join('')}</table>
- <p class="muted small" style="margin:0">${f.recipe?'Receita: '+esc((f.ing||[]).map(itemName).join(', ')):f.own?'Alimento criado por você.':'Fonte: TACO 4ª edição (NEPA/UNICAMP). "–" = sem dado na tabela.'}</p>`}
+ <p class="muted small" style="margin:0">${f.brand?'Tabela nutricional da embalagem (porção de '+fmt(f.por)+' g).':f.recipe?'Receita: '+esc((f.ing||[]).map(itemName).join(', ')):f.own?'Alimento criado por você.':'Fonte: TACO 4ª edição (NEPA/UNICAMP). "–" = sem dado na tabela.'}</p>`}
 /* Campo de gramas: o toque seleciona o número inteiro, então basta digitar a quantidade nova */
 let pqSel=false;document.addEventListener('focusin',e=>{if(e.target.id==='p-q'){pqSel=true;setTimeout(()=>{try{e.target.select()}catch(x){}},0)}});
 document.addEventListener('pointerup',e=>{if(e.target.id==='p-q'&&pqSel){pqSel=false;e.preventDefault();try{e.target.select()}catch(x){}}});
@@ -2985,9 +2989,9 @@ function nInput(f,t,v){const p=top_().p;
  if(f==='fcat'){p.cat=v;const el=$('#fl');if(el)el.innerHTML=foodList(p);return}
  if(f==='mtype'){p.w.m=v;return}
  if(f==='mtime'){if(/^\d\d:\d\d$/.test(v))p.w.t=v;return}
- if(f==='pkc'){const k=num(v),it=p.w.it[UI.pi.i],f2=food(it.f);if(!f2||!(f2.v[0]>0)||!(k>0))return;const g=Math.round(k/f2.v[0]*1000)/10;UI.pi.q=g;const nn=itemNut({f:it.f,q:g}),qi=$('#p-q');if(qi)qi.value=fmt(g);const h=$('#p-kc');if(h)h.textContent=`${fmtInt(nn[0])} kcal em ${fmt(g)} g${f2.own?'':' · TACO'}`;const d=$('#pdet');if(d)d.innerHTML=portionDet(f2,nn);return}
+ if(f==='pkc'){const k=num(v),it=p.w.it[UI.pi.i],f2=food(it.f);if(!f2||!(f2.v[0]>0)||!(k>0))return;const g=Math.round(k/f2.v[0]*1000)/10;UI.pi.q=g;const nn=itemNut({f:it.f,q:g}),qi=$('#p-q');if(qi)qi.value=fmt(g);const h=$('#p-kc');if(h)h.textContent=`${fmtInt(nn[0])} kcal em ${fmt(g)} g${f2.own||f2.brand?'':' · TACO'}`;const d=$('#pdet');if(d)d.innerHTML=portionDet(f2,nn);return}
  if(f==='rc'){const r=p.r;if(!r)return;r[t.dataset.k]=v;const el=$('#rc-sum');if(el)el.innerHTML=rcSum(r);return}
- if(f==='pq'){const n=num(v);if(n!=null&&n>=0&&n<=5000){UI.pi.q=n;const it=p.w.it[UI.pi.i],f2=food(it.f),nn=itemNut({f:it.f,q:n});const h=$('#p-kc');if(h)h.textContent=`${fmtInt(nn[0])} kcal em ${fmt(n)} g${f2&&f2.own?'':' · TACO'}`;const d=$('#pdet');if(d&&f2)d.innerHTML=portionDet(f2,nn)}return}
+ if(f==='pq'){const n=num(v);if(n!=null&&n>=0&&n<=5000){UI.pi.q=n;const it=p.w.it[UI.pi.i],f2=food(it.f),nn=itemNut({f:it.f,q:n});const h=$('#p-kc');if(h)h.textContent=`${fmtInt(nn[0])} kcal em ${fmt(n)} g${f2&&(f2.own||f2.brand)?'':' · TACO'}`;const d=$('#pdet');if(d&&f2)d.innerHTML=portionDet(f2,nn)}return}
  if(f==='nf'){p.f[t.dataset.k]=v;return}
  if(f==='nm'){const c=S.profile.nutri=S.profile.nutri||{};c[t.dataset.k]=num(v);save();const s=$('#nm-sum');if(s)s.textContent=nmSum();return}}
 
