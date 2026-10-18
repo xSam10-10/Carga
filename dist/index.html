@@ -477,7 +477,6 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .ev-d{font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}.ev-d.up{color:var(--accent)}.ev-d.down{color:var(--coral,var(--amber))}
 .pd-g{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.pd-t{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 2px;border-radius:12px;color:var(--fg);text-align:center}.pd-t:active{background:var(--surface-2)}.pd-t b{font:700 18px/1.1 var(--display);margin-top:4px;font-variant-numeric:tabular-nums}.pd-t span{font-size:12px;font-weight:600}.pd-t em{font-style:normal;font-size:11px;color:var(--muted)}
 .pd-ring{width:44px;height:44px}.pd-ring circle{fill:none;stroke-width:5}.pd-ring .bg{stroke:var(--surface-2)}.pd-ring .fg{stroke:var(--accent);stroke-linecap:round}.pd-ring.p .fg{stroke:var(--amber)}.pd-ring.c .fg{stroke:var(--violet)}.pd-ring.g .fg{stroke:var(--coral,#E5735A)}.pd-ring.w .fg{stroke:#3B9DE8}.pd-ring.t .fg{stroke:var(--accent)}.pd-ring.x .fg{stroke:#E9A21B}.pd-ring.e .fg{stroke:#2FA89A}.pd-ring.b .fg{stroke:var(--accent)}.pd-ring.off .fg{stroke:var(--danger)}
-.pd-sleep{display:block;width:100%;margin-top:6px;padding:8px;border-radius:10px;background:var(--surface-2);font-size:13px;color:var(--muted)}.pd-sleep b{color:var(--fg)}
 .pl-meal{display:flex;flex-direction:column;gap:6px}.pl-it{display:flex;justify-content:space-between;gap:10px;font-size:14px;border-top:1px solid var(--line);padding-top:6px}.pl-it span{min-width:0}.pl-it b{white-space:nowrap}
 .bc-cam{position:relative;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:4/3}.bc-cam video{width:100%;height:100%;object-fit:cover}.bc-cam i{position:absolute;left:12%;right:12%;top:46%;height:2px;background:var(--accent);box-shadow:0 0 8px var(--accent)}.bc-row{display:grid;grid-template-columns:1fr auto;gap:8px}
 .fp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fp-grid figure,.fp-cmp figure{margin:0;display:flex;flex-direction:column;gap:4px}.fp-grid img,.fp-cmp img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:12px;background:var(--surface-2)}.fp-grid figcaption{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--muted)}.fp-cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fp-cmp figcaption{font-size:12.5px;color:var(--muted);text-align:center}
@@ -1181,7 +1180,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v72'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v73'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1854,8 +1853,8 @@ VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=auto
  <p class="muted small" style="margin:0">${energyMode()==='relogio'?'<b>Pelo relógio</b>: gasto do dia = taxa basal × 1,2 (rotina sem treino) + as calorias ativas dos treinos registradas no dia. É o cálculo mais próximo do real; registre sempre as calorias do relógio no fim do treino. Aqui os dias de treino por semana não mudam as calorias (o exercício já entra pelo valor real do relógio); eles definem a meta de proteína.':'<b>Pelo nível de atividade</b>: gasto do dia = taxa basal × fator dos dias de treino por semana, uma média que já inclui os treinos. A meta é a mesma todos os dias.'}${(p.energyMode||'relogio')==='auto'?' No automático, o app usa o relógio quando há treinos com calorias registradas nas últimas 4 semanas.':''}</p>
  ${(()=>{const E=energyPlan();return E.ok?`<div class="mplan"><div><span>Taxa basal</span><b>${fmtInt(E.tmb)}</b></div><div><span>Gasto hoje</span><b>${fmtInt(E.gasto)}</b></div><div><span>${E.adj>=0?'Ajuste':'Déficit'}</span><b>${E.adj>0?'+':E.adj<0?'−':''}${fmtInt(Math.abs(E.adj))}</b></div><div class="on"><span>Meta</span><b>${fmtInt(E.meta)}</b></div></div><p class="muted small" style="margin:0">kcal por dia. Proteína ${fmtInt(E.prot)} g · Carboidrato ${fmtInt(E.carb)} g · Gordura ${fmtInt(E.fat)} g.</p>`:''})()}</section>
  <h3 class="sh">Metas</h3>
- <section class="card form">${(()=>{const g=S.profile.goals||{},fi=(k,l,ph)=>`<label class="fld"><span>${l}</span><input class="inp" id="g-${k}" inputmode="decimal" data-f="goal" data-k="${k}" value="${g[k]!=null?String(g[k]).replace('.',','):''}" placeholder="${ph}"></label>`;return`<p class="muted small" style="margin:0">Acompanhe o progresso e a previsão de chegada na Central de metas (Início → Painel → Metas). Deixe em branco o que não quiser acompanhar.</p><div class="row2">${fi('weight','Peso alvo (kg)','Ex.: 75')}${fi('fat','Gordura alvo (%)','Ex.: 15')}</div><div class="row2">${fi('waist','Cintura alvo (cm)','Ex.: 85')}${fi('prot','Proteína por dia (g)',nutriPlan().auto?'Plano: '+fmtInt(nutriPlan().gP):'Ex.: 140')}</div><div class="fld"><span>Treinos por semana</span><div class="chips">${[2,3,4,5,6,7].map(n=>`<button class="chip${g.wpw===n?' on':''}" data-a="gWpw" data-k="${n}">${n}</button>`).join('')}</div></div><div class="row2">${(()=>{const ag=actGoals(),o=S.profile.actGoals||{},fa=(k,l)=>`<label class="fld"><span>${l}</span><input class="inp" inputmode="numeric" data-f="actg" data-k="${k}" value="${num(o[k])>0?o[k]:''}" placeholder="Auto: ${fmtInt(ag.auto[k])}"></label>`;return fa('treino','Calorias em treino (kcal/dia)')+fa('ex','Calorias em exercícios (kcal/dia)')})()}</div><p class="muted small" style="margin:-4px 0 0">Em branco, o app estima pela sua taxa basal e pelos dias de treino por semana. A meta de calorias gastas é a soma das duas.</p>
- <label class="fld"><span>Horas de sono por noite</span><input class="inp" id="g-sleep" inputmode="decimal" data-f="goal" data-k="sleep" value="${S.profile.sleepGoal?String(S.profile.sleepGoal).replace('.',','):''}" placeholder="8"></label>`})()}</section>
+ <section class="card form">${(()=>{const g=S.profile.goals||{},fi=(k,l,ph)=>`<label class="fld"><span>${l}</span><input class="inp" id="g-${k}" inputmode="decimal" data-f="goal" data-k="${k}" value="${g[k]!=null?String(g[k]).replace('.',','):''}" placeholder="${ph}"></label>`;return`<p class="muted small" style="margin:0">Acompanhe o progresso e a previsão de chegada na Central de metas (Início → Explorar → Metas). Deixe em branco o que não quiser acompanhar.</p><div class="row2">${fi('weight','Peso alvo (kg)','Ex.: 75')}${fi('fat','Gordura alvo (%)','Ex.: 15')}</div><div class="row2">${fi('waist','Cintura alvo (cm)','Ex.: 85')}${fi('prot','Proteína por dia (g)',nutriPlan().auto?'Plano: '+fmtInt(nutriPlan().gP):'Ex.: 140')}</div><div class="fld"><span>Treinos por semana</span><div class="chips">${[2,3,4,5,6,7].map(n=>`<button class="chip${g.wpw===n?' on':''}" data-a="gWpw" data-k="${n}">${n}</button>`).join('')}</div></div><div class="row2">${(()=>{const ag=actGoals(),o=S.profile.actGoals||{},fa=(k,l)=>`<label class="fld"><span>${l}</span><input class="inp" inputmode="numeric" data-f="actg" data-k="${k}" value="${num(o[k])>0?o[k]:''}" placeholder="Auto: ${fmtInt(ag.auto[k])}"></label>`;return fa('treino','Calorias em treino (kcal/dia)')+fa('ex','Calorias em exercícios (kcal/dia)')})()}</div><p class="muted small" style="margin:-4px 0 0">Em branco, o app estima pela sua taxa basal e pelos dias de treino por semana. A meta de calorias gastas é a soma das duas.</p>
+`})()}</section>
  <h3 class="sh">Nutrição</h3>
  <section class="card form"><label class="switch"><span><b>Ciclo de carboidrato</b><br><span class="muted small">Em dia com treino (musculação ou exercício avulso), +15% de carboidrato; em dia de descanso, −20%. A gordura compensa e as calorias do dia continuam as mesmas. Vale para a meta automática.</span></span><input type="checkbox" data-a="ccToggle" ${S.profile.carbCycle?'checked':''}></label></section>
  <section class="card form">${(()=>{const P=nutriPlan(),man=(p.nutri||{}).mode==='manual';return`<div class="row"><span class="nfx"><b>Meta de nutrição: ${man?'personalizada':'automática'}</b><br><span class="muted small">${fmtInt(P.kcal)} kcal por dia${man?', definida por você':', pelo objetivo e pelos dados acima'}</span></span><button class="btn sm sec" data-a="goPf" data-v="metasNutri">Ajustar</button></div>`})()}</section>
@@ -2197,7 +2196,7 @@ document.addEventListener('input',e=>{const t=e.target,f=t.dataset.f;if(!f)retur
  // data de nascimento digitada só com números: a máscara põe as barras (DD/MM/AAAA) e grava em ISO quando a data é válida
  if(f==='pdBirth'){const iso=isoOf(t.value);if(iso){S.profile.birth=iso;save();const l=t.closest('label');const fa=l&&l.querySelector('.fage');if(fa)fa.textContent=ageOf(iso)+' anos'}return}
  if(f.startsWith('fp:')){UI['fp'+f.slice(3)]=v;fotoCompare();return}
- if(f==='goal'){const g=S.profile.goals=S.profile.goals||{},n=num(v),k=t.dataset.k;if(k==='sleep'){S.profile.sleepGoal=n>0&&n<=14?n:null}else{g[k]=n>0?n:null;if(!g.since)g.since=Date.now()}save();return}
+ if(f==='goal'){const g=S.profile.goals=S.profile.goals||{},n=num(v),k=t.dataset.k;{g[k]=n>0?n:null;if(!g.since)g.since=Date.now()}save();return}
  if(f==='actg'){const n=Math.round(num(v)),o=Object.assign({},S.profile.actGoals||{});if(n>0)o[t.dataset.k]=n;else delete o[t.dataset.k];S.profile.actGoals=o;save();return}
  if(f==='wr'){S.profile.wr=Object.assign(wrCfg(),{[t.dataset.k]:v});save();return}
  if(f==='q'){p.q=v;$('#exlist').innerHTML=exListHTML(p,top_().v==='picker');return}
@@ -3292,11 +3291,10 @@ VIEWS.metas=()=>{const g=goalsOf(),P=nutriPlan(),today=sod(Date.now());let h=bar
  if(has)h+=`<button class="btn sec" data-a="goPf" data-v="dados">${I.edit} Ajustar metas</button>`;
  return h+'</main>'};
 
-/* ===================== PAINEL DO DIA (Início) e SONO ===================== */
+/* ===================== PAINEL DO DIA (Início) ===================== */
 const ringSVG=(pct,cls='')=>{const r=17,c=2*Math.PI*r;return`<svg class="pd-ring ${cls}" viewBox="0 0 42 42" aria-hidden="true"><circle cx="21" cy="21" r="${r}" class="bg"/><circle cx="21" cy="21" r="${r}" class="fg" stroke-dasharray="${(c*Math.max(0,Math.min(1,pct))).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 21 21)"/></svg>`};
-const sleepOn=k=>num((S.sleep||{})[k]);
 function homeDay(){nS();const now=Date.now(),t0=sod(now),k=dkey(now),P=nutriPlan(now),E=P.E||energyPlan(now),n=dayNut(k),wg=waterGoal(now).ml,wt=waterOn(k);
- const ws=S.workouts.filter(w=>w.start>=t0),wmin=ws.reduce((a,w)=>a+(w.end-w.start),0)/6e4,ex=exKcalOn(now),sl=sleepOn(k);
+ const ws=S.workouts.filter(w=>w.start>=t0),wmin=ws.reduce((a,w)=>a+(w.end-w.start),0)/6e4,ex=exKcalOn(now);
  const tile=(act,pct,val,lab,sub,cls='')=>`<button class="pd-t" ${act}>${ringSVG(pct,cls)}<b>${val}</b><span>${lab}</span><em>${sub}</em></button>`;
  const mac=(i,g,lab,cls)=>tile('data-a="tab" data-t="dieta"',n[i]/Math.max(1,g),fmtInt(n[i])+' g',lab,`meta ${fmtInt(g)} g`,cls);
  // saldo do dia = consumido − gasto (rotina + exercício); a meta é o déficit/superávit do objetivo
@@ -3311,7 +3309,7 @@ function homeDay(){nS();const now=Date.now(),t0=sod(now),k=dkey(now),P=nutriPlan
  ${tile('data-a="tab" data-t="agua"',wt/wg,fmt(wt/1000)+' L','Água',`meta ${fmt(wg/1000)} L`,'w')}
  ${tile('data-a="tab" data-t="treino"',ws.length?1:0,ws.length?fmtDur(wmin*6e4):'—','Treino',ws.length?(ws.length>1?ws.length+' treinos':'feito'):'ainda não','t')}
  ${tile('data-a="tab" data-t="ativ"',Math.min(1,ex/400),fmtInt(ex),'Exercício','kcal do relógio','e')}
- </div><button class="pd-sleep" data-a="sleepLog">${sl?`Sono da última noite: <b>${fmt(sl)} h</b> · alterar`:'Registrar o sono da última noite'}</button></section>`}
+ </div></section>`}
 
 /* ===================== LEMBRETES DE ÁGUA ===================== */
 // Funcionam com o app aberto ou em segundo plano recente (o navegador não permite agendar avisos com o app fechado sem servidor).
@@ -3341,7 +3339,6 @@ Object.assign(A,{
  fpPoseNew:d=>{UI.fpNew.pose=d.k;document.querySelectorAll('#fp-pose .chip').forEach(b=>b.classList.toggle('on',b.dataset.k===d.k))},
  fpPose:d=>{UI.fpPose=d.k;UI.fpA=UI.fpB=null;fotoCompare()},
  fpDel:d=>{ask('Excluir esta foto?','Ela será apagada deste aparelho.','Excluir',true).then(async ok=>{closeSheet();if(!ok)return;await fotoDel(d.id);rerender();toast('Foto excluída')})},
- sleepLog:()=>{const k=dkey(Date.now());askText('Horas de sono na última noite',sleepOn(k)?String(sleepOn(k)).replace('.',','):'','Ex.: 7,5').then(v=>{closeSheet();if(v===null||v===undefined)return;const n=num(v);S.sleep=S.sleep||{};if(n>0&&n<=16)S.sleep[k]=Math.round(n*10)/10;else if(!String(v).trim())delete S.sleep[k];else{toast('Digite as horas, por exemplo 7,5.');return}save();rerender()});const x=$('#ask-in');if(x)x.inputMode='decimal'},
  wrToggle:async()=>{const c=wrCfg();c.on=!c.on;if(c.on&&'Notification' in window&&Notification.permission==='default'){try{await Notification.requestPermission()}catch(e){}}S.profile.wr=c;save();rerender();toast(c.on?('Notification' in window&&Notification.permission==='granted'?'Lembretes de água ligados':'Lembretes ligados (só dentro do app: as notificações estão bloqueadas)'):'Lembretes de água desligados')},
  wrEvery:d=>{S.profile.wr=Object.assign(wrCfg(),{every:+d.k});save();rerender()},
  gWpw:d=>{const g=S.profile.goals=S.profile.goals||{};g.wpw=g.wpw===+d.k?null:+d.k;save();rerender()}
@@ -3377,12 +3374,12 @@ function carbCycle(carb,fat,refW,d){if(!S.profile.carbCycle)return[carb,fat,null
 function rangeOf(k,off){const now=new Date();if(k==='semana'){const a=addDays(weekStart(Date.now()),7*off);return[a,addDays(a,7)]}const a=new Date(now.getFullYear(),now.getMonth()+off,1).getTime();return[a,new Date(now.getFullYear(),now.getMonth()+off+1,1).getTime()]}
 function periodStats(a,z){const end=Math.min(z,addDays(sod(Date.now()),1)),days=[];for(let d=a;d<end;d=addDays(d,1))days.push(d);
  const ws=S.workouts.filter(w=>w.start>=a&&w.start<z),xs=(S.extra||[]).filter(x=>x.t>=a&&x.t<z);
- const nd=days.map(d=>dayNut(dkey(d))).filter(n=>n[0]>0),wt=days.map(d=>waterOn(dkey(d))),sl=days.map(d=>sleepOn(dkey(d))).filter(Boolean);
+ const nd=days.map(d=>dayNut(dkey(d))).filter(n=>n[0]>0),wt=days.map(d=>waterOn(dkey(d)));
  const ws_=evoSeries('weight'),w0=evoAt(ws_,a-1)||ws_.find(p=>p.x>=a),w1=evoAt(ws_,end-1);
  return{n:ws.length+xs.length,nw:ws.length,nx:xs.length,min:ws.reduce((t,w)=>t+(w.end-w.start)/6e4,0)+xs.reduce((t,x)=>t+(num(x.dur)||0),0),vol:ws.reduce((t,w)=>t+wStats(w).vol,0),kex:ws.reduce((t,w)=>t+(num(w.kcal)||0),0)+xs.reduce((t,x)=>t+(num(x.kcal)||0),0),
   prs:ws.reduce((t,w)=>t+(w.prs?w.prs.length:0),0),kcal:nd.length?nd.reduce((t,n)=>t+n[0],0)/nd.length:null,prot:nd.length?nd.reduce((t,n)=>t+n[1],0)/nd.length:null,nDays:nd.length,
   inRange:days.filter(d=>{const n=dayNut(dkey(d))[0],P=nutriPlan(d);return n>0&&n>=P.lo&&n<=P.hi}).length,water:days.length?wt.reduce((t,v)=>t+v,0)/days.length:0,waterHit:days.filter(d=>waterOn(dkey(d))>=waterGoal(d).ml).length,
-  sleep:sl.length?sl.reduce((t,v)=>t+v,0)/sl.length:null,wDelta:w0&&w1&&w1.x>=a?w1.y-w0.y:null,wNow:w1?w1.y:null,nd:days.length}}
+  wDelta:w0&&w1&&w1.x>=a?w1.y-w0.y:null,wNow:w1?w1.y:null,nd:days.length}}
 VIEWS.resumo=p=>{const k=p.k||'semana',off=p.off||0,[a,z]=rangeOf(k,off),[pa,pz]=rangeOf(k,off-1),s=periodStats(a,z),el=Math.min(z,addDays(sod(Date.now()),1))-a,q=periodStats(pa,off===0?Math.min(pz,pa+el):pz);
  const lab=k==='semana'?`${dShort(a)} a ${dShort(addDays(z,-1))}`:(t=>t[0].toUpperCase()+t.slice(1))(new Date(a).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}));
  const dl=(x,y,dec=0,u='')=>{if(x==null||y==null)return'';const r=Math.round((x-y)*10**dec)/10**dec;return r?`<em class="${r>0?'up':'down'}">${r>0?'▲ +':'▼ −'}${dec?fmt(Math.abs(r)):fmtInt(Math.abs(r))}${u}</em>`:'<em>=</em>'};
@@ -3392,13 +3389,13 @@ VIEWS.resumo=p=>{const k=p.k||'semana',off=p.off||0,[a,z]=rangeOf(k,off),[pa,pz]
  <p class="muted small" style="margin:0">As setas comparam com ${k==='semana'?'a semana':'o mês'} anterior${off===0?', nos mesmos dias até hoje (o período ainda está em andamento)':''}.</p>
  <h3 class="sh">Treino</h3><section class="rs-g">${box('Sessões',s.n,dl(s.n,q.n),`${s.nw} musculação · ${s.nx} avulsos`)}${box('Tempo',fmtDur(s.min*6e4),dl(s.min/60,q.min/60,1,' h'))}${box('Volume',fmtInt(s.vol)+' kg',dl(s.vol,q.vol,0,' kg'))}${box('Calorias de exercício',fmtInt(s.kex),dl(s.kex,q.kex))}${box('Recordes',s.prs,dl(s.prs,q.prs))}</section>
  <h3 class="sh">Alimentação</h3><section class="rs-g">${box('Calorias por dia',s.kcal!=null?fmtInt(s.kcal):'—',dl(s.kcal,q.kcal),s.nDays?`média de ${s.nDays} dia(s) registrados`:'sem registros')}${box('Proteína por dia',s.prot!=null?fmtInt(s.prot)+' g':'—',dl(s.prot,q.prot,0,' g'))}${box('Dias na faixa da meta',`${s.inRange}/${s.nd}`,dl(s.inRange,q.inRange))}</section>
- <h3 class="sh">Água, sono e corpo</h3><section class="rs-g">${box('Água por dia',fmt(s.water/1000)+' L',dl(s.water/1000,q.water/1000,1,' L'),`meta batida em ${s.waterHit} de ${s.nd} dias`)}${box('Sono por noite',s.sleep!=null?fmt(s.sleep)+' h':'—',dl(s.sleep,q.sleep,1,' h'))}${box('Peso',s.wNow!=null?fmt(s.wNow)+' kg':'—',s.wDelta!=null?`<em class="${s.wDelta>0?'up':s.wDelta<0?'down':''}">${s.wDelta>0?'▲ +':s.wDelta<0?'▼ −':''}${fmt(Math.abs(Math.round(s.wDelta*10)/10))} kg no período</em>`:'')}</section></main>`};
+ <h3 class="sh">Água e corpo</h3><section class="rs-g">${box('Água por dia',fmt(s.water/1000)+' L',dl(s.water/1000,q.water/1000,1,' L'),`meta batida em ${s.waterHit} de ${s.nd} dias`)}${box('Peso',s.wNow!=null?fmt(s.wNow)+' kg':'—',s.wDelta!=null?`<em class="${s.wDelta>0?'up':s.wDelta<0?'down':''}">${s.wDelta>0?'▲ +':s.wDelta<0?'▼ −':''}${fmt(Math.abs(Math.round(s.wDelta*10)/10))} kg no período</em>`:'')}</section></main>`};
 
 /* ===================== CONQUISTAS PESSOAIS (sem rede social) ===================== */
 function maxStreak(){const wk=[...new Set(S.workouts.map(w=>weekStart(w.start)))].sort((a,b)=>a-b);let best=0,cur=0,prev=null;for(const w of wk){cur=prev!=null&&Math.round((w-prev)/(7*DAY))===1?cur+1:1;best=Math.max(best,cur);prev=w}return best}
 function dayStreak(test){let best=0,cur=0;const first=firstTs();if(first==null)return 0;for(let d=sod(first);d<=sod(Date.now());d=addDays(d,1)){if(test(d)){cur++;best=Math.max(best,cur)}else cur=0}return best}
 function achList(){nS();const W=S.workouts,X=S.extra||[],vol=W.reduce((t,w)=>t+wStats(w).vol,0)/1000,prs=W.reduce((t,w)=>t+(w.prs?w.prs.length:0),0),dist=X.reduce((t,x)=>t+(num(x.dist)||0),0),
- mealDays=new Set(S.meals.filter(m=>m.it.length).map(m=>m.d)).size,waterHit=Object.keys(S.water||{}).filter(k=>{const[y,m,d]=k.split('-').map(Number);const t=new Date(y,m-1,d).getTime();return waterOn(k)>=waterGoal(t).ml}).length,sleepN=Object.keys(S.sleep||{}).length,st=maxStreak(),wStr=dayStreak(d=>waterOn(dkey(d))>=waterGoal(d).ml),g=goalsOf(),wl=evoSeries('weight').slice(-1)[0];
+ mealDays=new Set(S.meals.filter(m=>m.it.length).map(m=>m.d)).size,waterHit=Object.keys(S.water||{}).filter(k=>{const[y,m,d]=k.split('-').map(Number);const t=new Date(y,m-1,d).getTime();return waterOn(k)>=waterGoal(t).ml}).length,st=maxStreak(),wStr=dayStreak(d=>waterOn(dkey(d))>=waterGoal(d).ml),g=goalsOf(),wl=evoSeries('weight').slice(-1)[0];
  const L=[];const tier=(id,name,desc,v,goals)=>goals.forEach((n,i)=>L.push({id:id+n,name:name(n),desc:desc(n),v,goal:n,lvl:i}));
  tier('tr',n=>n===1?'Primeiro treino':`${n} treinos`,n=>n===1?'Registre o primeiro treino de musculação.':`Complete ${n} treinos de musculação.`,W.length,[1,10,25,50,100,250]);
  tier('st',n=>`${n} semanas seguidas`,n=>`Treine pelo menos uma vez por semana durante ${n} semanas seguidas.`,st,[4,12,26,52]);
@@ -3409,7 +3406,6 @@ function achList(){nS();const W=S.workouts,X=S.extra||[],vol=W.reduce((t,w)=>t+w
  tier('ag',n=>`Água: ${n} dias`,n=>`Bata a meta de água em ${n} dias.`,waterHit,[7,30,100]);
  tier('ags',n=>`Água: ${n} dias seguidos`,n=>`Bata a meta de água ${n} dias seguidos.`,wStr,[7,30]);
  tier('nu',n=>`Diário: ${n} dias`,n=>`Registre refeições em ${n} dias.`,mealDays,[7,30,100]);
- tier('sl',n=>`Sono: ${n} noites`,n=>`Registre o sono de ${n} noites.`,sleepN,[7,30]);
  if(num(g.weight)>0&&wl){const st0=evoAt(evoSeries('weight'),g.since||0)||evoSeries('weight')[0],tot=Math.abs(g.weight-st0.y),done=Math.abs(wl.y-st0.y);L.push({id:'wgoal'+g.weight,name:'Meta de peso',desc:`Chegue a ${fmt(g.weight)} kg.`,v:Math.abs(wl.y-g.weight)<.3?1:(tot?Math.min(.99,done/tot):0),goal:1,lvl:3})}
  return L.map(a=>({...a,ok:a.v>=a.goal,pct:Math.min(1,a.v/a.goal)}))}
 const ACH_C=['#C98A4B','#9FA8B3','#E9A21B','#5BC0DE','#B36BE0','#E4573F'];
@@ -3456,7 +3452,7 @@ function homeActivity(){const wk=weekStart(Date.now()),today=sod(Date.now()),sel
  <p class="muted small" style="margin:0">${g.tmb?`O gasto basal é o que o corpo gasta em repouso, só para viver (taxa basal pela idade, peso, altura e sexo). `:'Preencha Meus dados para ver o gasto basal. '}As metas de treino e de exercícios são estimadas pela taxa basal e pelos dias de treino por semana; dá para mudar em Meus dados → Metas.</p></section>`}
 Object.assign(A,{actDay:d=>{UI.actDay=+d.d;rerender()}});
 /* ===================== INÍCIO EM CAPÍTULOS (v66) =====================
-   Frase-resumo → Meu dia (comer: meta, macros, saldo, água, sono) → Meu gasto (basal + rotina + treino + exercícios)
+   Frase-resumo → Meu dia (comer: meta, macros, saldo, água) → Meu gasto (basal + rotina + treino + exercícios)
    → Minha semana → Meu corpo → Explorar. Cada número aparece uma vez só, com o mesmo nome em todo o app:
    Meta (quanto comer), Gasto (total do dia), Ativas (treino + exercícios), Saldo (comido − gasto).
    Semáforo: 'go' em andamento, 'ok' dentro da meta, 'warn' um pouco acima, 'bad' bem acima. */
@@ -3469,10 +3465,10 @@ function homeLeadTxt(){nS();const now=Date.now(),n=dayNut(dkey(now)),P=nutriPlan
  else if(z==='ok')t=`Você está <b>dentro da meta</b> de hoje ✓${fp?` Faltam <b>${fmtInt(fp)} g de proteína</b>.`:''}`;
  else t=`Você passou <b>${fmtInt(v-P.kcal)} kcal</b> da meta de hoje.${fp?` Ainda faltam ${fmtInt(fp)} g de proteína.`:''}`;
  return[t,!v?'go':z]}
-/* Metas de hoje: frase-resumo + todas as metas do dia num só quadro (comer, proteína, água, treino, ativas, sono)
+/* Metas de hoje: frase-resumo + todas as metas do dia num só quadro (comer, proteína, água, treino, ativas)
    e as metas de longo prazo cadastradas em Meus dados → Metas (peso, gordura, cintura). */
 function homeLead(){nS();const now=Date.now(),t0=sod(now),k=dkey(now),n=dayNut(k),P=nutriPlan(now),v=Math.round(n[0]),[txt,z0]=homeLeadTxt(),g=goalsOf(),p=S.profile;
- const wt=waterOn(k),wg=waterGoal(now).ml,a=actDay(t0),ag=actGoals(t0),sl=sleepOn(k),sg=num(p.sleepGoal)||8;
+ const wt=waterOn(k),wg=waterGoal(now).ml,a=actDay(t0),ag=actGoals(t0);
  const wk=weekStart(now),cnt=S.workouts.filter(w=>w.start>=wk).length+(S.extra||[]).filter(x=>x.t>=wk).length,wpw=num(g.wpw)>0?num(g.wpw):Math.min(7,p.days||0);
  const today=S.workouts.filter(w=>w.start>=t0),todayX=(S.extra||[]).filter(x=>x.t>=t0),left=Math.max(0,wpw-cnt),dl=7-Math.round((t0-wk)/DAY);
  const zk=zKcal(v,P),zp=zMacro(n[1],P.gP,1);
@@ -3482,8 +3478,7 @@ function homeLead(){nS();const now=Date.now(),t0=sod(now),k=dkey(now),n=dayNut(k
   ['Água',`${fmt(wt/1000)} / ${fmt(wg/1000)} L`,wt>=wg?'ok':'go','data-a="tab" data-t="agua"'],
   ['Treino de hoje',today.length?esc(today.map(w=>w.name).join(' + ')):cnt>=wpw&&wpw?'semana já batida':'ainda não'+(todayX.length?` · fez ${esc(todayX[0].name.toLowerCase())}`:''),today.length||(cnt>=wpw&&wpw)?'ok':'go','data-a="tab" data-t="treino"'],
   ...(wpw?[['Treinos da semana',`${cnt} de ${wpw}${left?` · faltam ${left} em ${dl} dia${dl>1?'s':''}`:''}`,cnt>=wpw?'ok':left>dl?'bad':'go','data-a="go" data-v="metas"']]:[]),
-  ['Calorias ativas',`${fmtInt(a.total)} / ${fmtInt(ag.total)} kcal`,a.total>=ag.total?'ok':'go','data-a="tab" data-t="ativ"'],
-  ['Sono',sl?`${fmt(sl)} / ${fmt(sg)} h`:'registrar a última noite',sl?(sl>=sg-.25?'ok':'go'):'go','data-a="sleepLog"']];
+  ['Calorias ativas',`${fmtInt(a.total)} / ${fmtInt(ag.total)} kcal`,a.total>=ag.total?'ok':'go','data-a="tab" data-t="ativ"']];
  const lp=[['weight','Peso'],['fat','Gordura'],['waist','Cintura']].filter(([kk])=>num(g[kk])>0).map(([kk,l])=>{const f=goalForecast(kk,num(g[kk]));if(!f)return null;const d=f.d;return[`${l} → ${evoFmt(d,f.target)}`,f.pct>=1?'alcançada ✓':`${evoFmt(d,f.last.y)} · faltam ${evoFmt(d,Math.abs(f.target-f.last.y))}`,f.pct>=1?'ok':'go','data-a="go" data-v="metas"']}).filter(Boolean);
  const done=rows.filter(r=>r[2]==='ok').length,row=r=>`<button class="lg-r z-${r[2]}" ${r[3]}><i>${r[2]==='ok'?'✓':''}</i><span>${r[0]}</span><b>${r[1]}</b></button>`;
  return`<section class="card lead z-${z0}"><p>${txt}</p><div class="row"><span class="lab nfx">Metas de hoje</span><span class="muted small">${done} de ${rows.length} batidas</span></div><div class="lg">${rows.map(row).join('')}</div>${lp.length?`<span class="lab" style="margin-top:4px">Metas de longo prazo</span><div class="lg">${lp.map(row).join('')}</div>`:''}</section>`}
@@ -3495,7 +3490,6 @@ function homeWeek(){nS();const now=Date.now(),t0=sod(now),wk=weekStart(now),g=go
  const hit=f=>{let h=0,n=0;for(const d of days.filter(d=>d<=t0)){const r=f(d);if(d<t0||r)n++;if(r)h++}return[h,n]};
  const kc=hit(d=>{const v=dayNut(dkey(d))[0],P=nutriPlan(d);return v>=P.lo&&v<=P.hi}),pr=hit(d=>dayNut(dkey(d))[1]>=nutriPlan(d).gP*.95),wa=hit(d=>{const v=waterOn(dkey(d));return v>0&&v>=waterGoal(d).ml});
  let aSum=0,aGoal=0;for(const d of days){aGoal+=actGoals(d).total;if(d<=t0)aSum+=actDay(d).total}
- const sl=days.filter(d=>d<=t0).map(d=>sleepOn(dkey(d))).filter(Boolean),sg=num(p.sleepGoal)||8,slAvg=sl.length?sl.reduce((a,b)=>a+b,0)/sl.length:0;
  let bal=0,tgt=0,nb=0;for(const d of past){const v=dayNut(dkey(d))[0],E=energyPlan(d);if(v>0&&E.ok){bal+=v-E.gasto;tgt+=E.adj;nb++}}
  const zz=(h,n)=>!n?'go':h>=n?'ok':h>=n-1?'go':'warn',st=(h,n)=>`${h} de ${n} dia${n>1?'s':''}`;
  const balZ=!nb?'go':Math.abs(bal-tgt)<=Math.max(300,Math.abs(tgt)*.5)?'ok':(tgt>=0?bal<tgt:bal>tgt)?'warn':'bad';
@@ -3507,7 +3501,6 @@ function homeWeek(){nS();const now=Date.now(),t0=sod(now),wk=weekStart(now),g=go
   ['Proteína na meta',pr[1]?st(pr[0],pr[1]):'sem dias fechados',zz(...pr),'data-a="tab" data-t="dieta"'],
   ['Água na meta',wa[1]?st(wa[0],wa[1]):'sem dias fechados',zz(...wa),'data-a="tab" data-t="agua"'],
   ['Calorias ativas',`${fmtInt(aSum)} / ${fmtInt(aGoal)} kcal`,aSum>=aGoal?'ok':'go','data-a="tab" data-t="ativ"'],
-  ['Sono (média)',sl.length?`${fmt(Math.round(slAvg*10)/10)} / ${fmt(sg)} h`:'sem registros',sl.length?(slAvg>=sg-.25?'ok':'go'):'go','data-a="sleepLog"'],
   ['Saldo da semana',nb?`${sgn(Math.round(bal))} kcal · alvo ${sgn(Math.round(tgt))}`:'aparece com dias fechados',balZ,'data-a="calcSheet"'],
   ['Peso na semana',dw!=null?`${dw>0?'+':dw<0?'−':''}${fmt(Math.abs(dw))} kg (${fmt(last.y)} kg)`:last?`${fmt(last.y)} kg · registre de novo`:'sem registro',wz,'data-a="go" data-v="medidas"']];
  const done=rows.filter(r=>r[2]==='ok').length,row=r=>`<button class="lg-r z-${r[2]}" ${r[3]}><i>${r[2]==='ok'?'✓':''}</i><span>${r[0]}</span><b>${r[1]}</b></button>`;
@@ -3517,7 +3510,7 @@ function homeWeek(){nS();const now=Date.now(),t0=sod(now),wk=weekStart(now),g=go
  <div class="row"><span class="lab nfx">Metas da semana</span><span class="muted small">${done} de ${rows.length} em dia</span></div><div class="lg">${rows.map(row).join('')}</div>
  ${nb?`<p class="muted small" style="margin:0">Saldo = comido − gasto nos ${nb} dia${nb>1?'s':''} fechados com registro (${sgn(Math.round(bal))} kcal ≈ ${bal<0?'−':'+'}${Math.abs(bal)<7700?fmtInt(Math.round(Math.abs(bal)/7.7/10)*10)+' g':fmt(Math.round(Math.abs(bal)/770)/10)+' kg'} de peso).</p>`:''}</section>`}
 function homeMyDay(){nS();const now=Date.now(),k=dkey(now),n=dayNut(k),P=nutriPlan(now),E=P.E,v=Math.round(n[0]),left=P.kcal-v,pc=Math.min(100,v/P.kcal*100),z=zKcal(v,P);
- const gl=(GOALS.find(g=>g[0]===goalOf())||GOALS[1])[1],wg=waterGoal(now).ml,wt=waterOn(k),sl=sleepOn(k);
+ const gl=(GOALS.find(g=>g[0]===goalOf())||GOALS[1])[1],wg=waterGoal(now).ml,wt=waterOn(k);
  const noKcal=E.mode==='relogio'?S.workouts.filter(w=>w.start>=sod(now)&&!(num(w.kcal)>0)):[];
  const mb=(lab,cls,got,tgt,min)=>{const r=tgt?got/tgt:0,rest=Math.round(tgt-got),zz=zMacro(got,tgt,min);return`<div class="hm"><div class="row"><span class="${cls} hm-l">${lab}</span><span class="nfx"></span><b>${fmtInt(got)}</b><span class="muted small">/ ${fmtInt(tgt)} g</span></div><div class="hmb"><i class="${cls.replace('t','m')}" style="width:${Math.min(100,r*100).toFixed(1)}%"></i></div><span class="small zt z-${zz}">${rest>0?(zz==='ok'?'✓ Meta batida':`Faltam ${fmtInt(rest)} g`):rest<0?(zz==='ok'?`✓ Meta batida (${fmtInt(-rest)} g a mais)`:`${fmtInt(-rest)} g acima da meta`):'✓ Meta batida'}</span></div>`};
  const gasto=E.ok?Math.round(E.gasto):null,tgt=E.ok?Math.round(E.adj):0,bal=gasto!=null?v-gasto:null,tl=tgt<0?'déficit':tgt>0?'superávit':'equilíbrio';
@@ -3531,7 +3524,6 @@ function homeMyDay(){nS();const now=Date.now(),k=dkey(now),n=dayNut(k),P=nutriPl
  ${noKcal.length?`<button class="hrbox" data-a="kcalSaved" data-id="${noKcal[0].id}">${I.fire}<span class="spacer"><b>Treino de hoje sem calorias</b><span class="muted small">Informe as calorias do relógio para a meta ficar exata</span></span>${I.chev}</button>`:''}
  <div class="hms">${mb('Proteína','t2',n[1],P.gP,1)}${mb('Carboidrato','t0',n[3],P.gC)}${mb('Gordura','t1',n[2],P.gG)}</div>
  <div class="form" style="gap:8px"><div class="row"><span class="lab spacer">${I.drop.replace('class="i"','class="i" style="width:15px;height:15px;vertical-align:-3px;color:var(--accent)"')} Água</span><b class="num" style="font-size:17px">${fmt(wt/1000)} / ${fmt(wg/1000)} L</b></div><div class="bar1"><i style="width:${Math.min(100,wg?wt/wg*100:0).toFixed(0)}%"></i></div><div class="chips">${cupsOf().slice(0,3).map(ml=>`<button class="chip" data-a="addWater" data-ml="${ml}">+${fmtInt(ml)} ml</button>`).join('')}</div></div>
- <button class="pd-sleep" data-a="sleepLog">${sl?`Sono da última noite: <b>${fmt(sl)} h</b> · alterar`:'Registrar o sono da última noite'}</button>
  <div class="chips"><button class="chip" data-a="tab" data-t="dieta">Registrar refeição</button><button class="chip" data-a="calcSheet">Como calculamos?</button></div></section>`}
 function calcSheet(){const P=nutriPlan(),E=P.E;if(!E.ok){sheet('<h3>Como calculamos</h3><p>Preencha Meus dados para ver a conta.</p>');return}
  const r=(a,b,c='')=>`<div class="cs-r${c}"><span>${a}</span><b>${b}</b></div>`,rel=E.mode==='relogio',f=rel?'1,2':String(E.act[2]).replace('.',',');
