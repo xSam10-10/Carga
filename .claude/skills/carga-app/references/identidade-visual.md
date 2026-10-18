@@ -88,3 +88,8 @@ Cada cor tem uma variante para tema claro e outra para tema escuro: `[cor, cor s
 - Português do Brasil, frases curtas, sem jargão.
 - Sempre explique o que um número significa, por exemplo "IMC de 18,5 a 24,9 é…".
 - Citações de fonte nos cálculos de saúde (OMS, EFSA, NICE, ISSN, ACE) e o aviso de que não substituem um profissional.
+
+## Pictogramas dos exercícios avulsos (aba Exercícios)
+- Estilo dos ícones do Samsung Health (referência enviada pelo usuário em 18/10/2026): figuras de traço grosso (membros 2,5, tronco 3,3, pontas redondas) com cabeça cheia, numa cor só. **Desenho próprio**, não copiado.
+- Gerados por `tools/exicons.py` (49 pictogramas, um por exercício; esportes de raquete parecidos compartilham o de tênis). O script injeta `AIC` e `AIC_OF` (exercício → pictograma) em `app.html` entre `/*AIC-START*/` e `/*AIC-END*/` e grava a prancha `tools/exicons.html` para conferir.
+- Nas listas: só o pictograma na cor de destaque, sem círculo (como no Samsung). Nos favoritos: círculo `--accent-soft`. Musculação usa `--violet`.
