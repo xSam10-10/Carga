@@ -4,7 +4,7 @@
   {
    "ordem": 1,
    "modulo": "Treino",
-   "progresso": 0.95,
+   "progresso": 0.97,
    "resumo": "Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios, mapa corporal e aba Exercícios (avulsos com calorias do relógio)."
   },
   {
@@ -22,20 +22,20 @@
   {
    "ordem": 4,
    "modulo": "Nutrição",
-   "progresso": 0.82,
+   "progresso": 0.86,
    "resumo": "Diário com 6 refeições, TACO, macros e micros, metas, tendências, copiar de ontem, planos de dieta e leitor de código de barras."
   },
   {
    "ordem": 5,
    "modulo": "Metas e hábitos",
-   "progresso": 0.75,
-   "resumo": "Objetivo com meta calórica, Central de metas com previsão de chegada, Painel do dia e registro de sono."
+   "progresso": 0.85,
+   "resumo": "Objetivo com meta calórica, Central de metas com previsão, Painel do dia, sono e conquistas pessoais."
   },
   {
    "ordem": 6,
    "modulo": "Gráficos e relatórios",
-   "progresso": 0.8,
-   "resumo": "Períodos de 7 dias a desde o início em todos os gráficos, Evolução do corpo com comparações; falta o painel Saúde da semana."
+   "progresso": 0.9,
+   "resumo": "Todos os gráficos com períodos, Evolução do corpo, Resumo de saúde da semana e do mês, volume semanal e recuperação muscular."
   },
   {
    "ordem": 7,
@@ -98,12 +98,12 @@
   ],
   [
    "Treino",
-   "sugestão",
+   "pronto",
    "Volume semanal por grupo com faixa recomendada e alerta de grupo esquecido"
   ],
   [
    "Treino",
-   "sugestão",
+   "pronto",
    "Mapa de recuperação muscular"
   ],
   [
@@ -228,7 +228,7 @@
   ],
   [
    "Nutrição",
-   "sugestão",
+   "pronto",
    "Ciclo de carboidrato ligado aos dias de treino"
   ],
   [
@@ -278,7 +278,7 @@
   ],
   [
    "Metas e hábitos",
-   "sugestão",
+   "pronto",
    "Conquistas pessoais (sem rede social)"
   ],
   [
@@ -308,7 +308,7 @@
   ],
   [
    "Gráficos e relatórios",
-   "a fazer",
+   "pronto",
    "Painel Saúde da semana e do mês"
   ],
   [
@@ -393,20 +393,20 @@
    "Reinstalar o app nos dois celulares (ícone da abertura); se o quadrado verde continuar, trocar o ícone da tela inicial"
   ],
   [
-   "Gráficos e relatórios",
-   "Painel Saúde da semana e do mês"
-  ],
-  [
    "Treino",
-   "Volume semanal por grupo com faixa recomendada e mapa de recuperação"
+   "Periodização em blocos e RPE/RIR por série"
   ],
   [
-   "Nutrição",
-   "Ciclo de carboidrato ligado aos dias de treino"
+   "Corpo e medidas",
+   "Medidas por região no mapa corporal e bioimpedância manual"
   ],
   [
-   "Metas e hábitos",
-   "Conquistas pessoais e hábitos (passos, suplementos)"
+   "Gráficos e relatórios",
+   "Relatório em PDF para nutricionista ou médico"
+  ],
+  [
+   "Hidratação",
+   "Outras bebidas com fator de hidratação e ajuste em dias quentes"
   ]
  ],
  "referencias": [
@@ -518,6 +518,10 @@
   [
    "2026-10-18",
    "Nutrição v2 (copiar de ontem, planos de dieta, código de barras), Central de metas, fotos de evolução, Painel do dia e lembretes de água"
+  ],
+  [
+   "2026-10-18",
+   "Resumo de saúde (semana/mês), volume semanal por músculo, recuperação muscular, ciclo de carboidrato e conquistas"
   ]
  ]
 }

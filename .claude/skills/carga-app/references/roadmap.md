@@ -7,16 +7,16 @@
 
 Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada para implementar aos poucos.
 
-## Visão geral (progresso geral: 87%)
+## Visão geral (progresso geral: 90%)
 
 | Módulo | Status | Progresso | Resumo |
 |---|---|---|---|
-| 1. Treino | ✅ | 95% | Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios, mapa corporal e aba Exercícios (avulsos com calorias do relógio). |
+| 1. Treino | ✅ | 97% | Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios, mapa corporal e aba Exercícios (avulsos com calorias do relógio). |
 | 2. Hidratação | ✅ | 92% | Meta por peso e sexo, copos rápidos, avatar animado, gráficos e lembretes de água. |
 | 3. Corpo e medidas | ✅ | 85% | Meus dados, Evolução do corpo com comparações e fotos de evolução lado a lado. |
-| 4. Nutrição | 🟡 | 82% | Diário com 6 refeições, TACO, macros e micros, metas, tendências, copiar de ontem, planos de dieta e leitor de código de barras. |
-| 5. Metas e hábitos | 🟡 | 75% | Objetivo com meta calórica, Central de metas com previsão de chegada, Painel do dia e registro de sono. |
-| 6. Gráficos e relatórios | 🟡 | 80% | Períodos de 7 dias a desde o início em todos os gráficos, Evolução do corpo com comparações; falta o painel Saúde da semana. |
+| 4. Nutrição | ✅ | 86% | Diário com 6 refeições, TACO, macros e micros, metas, tendências, copiar de ontem, planos de dieta e leitor de código de barras. |
+| 5. Metas e hábitos | ✅ | 85% | Objetivo com meta calórica, Central de metas com previsão, Painel do dia, sono e conquistas pessoais. |
+| 6. Gráficos e relatórios | ✅ | 90% | Todos os gráficos com períodos, Evolução do corpo, Resumo de saúde da semana e do mês, volume semanal e recuperação muscular. |
 | 7. Identidade e plataforma | ✅ | 95% | Logo, abertura, senha, 6 temas, 15 cores, perfis separados, pictogramas próprios, Painel no Início e formulários concentrados no Perfil. |
 | 8. Publicação | ✅ | 90% | Site no ar em xsam10-10.github.io/Carga com atualização automática no celular; falta reinstalar para trocar o ícone da abertura. |
 
@@ -30,8 +30,8 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Calorias do treino registradas do relógio (pop-up no fim do treino)
 - ✅ Animação de recorde ao vivo: medalha, balão e confetes (estilo Hevy)
 - 💡 Periodização em blocos (força, hipertrofia, deload)
-- 💡 Volume semanal por grupo com faixa recomendada e alerta de grupo esquecido
-- 💡 Mapa de recuperação muscular
+- ✅ Volume semanal por grupo com faixa recomendada e alerta de grupo esquecido
+- ✅ Mapa de recuperação muscular
 - 💡 RPE e RIR por série
 - 💡 Animações próprias para exercícios sem foto
 - ✅ Aba Exercícios: 53 exercícios avulsos (caminhada, corrida, bicicleta, natação…), favoritos, criar exercício, calorias obrigatórias e distância/FC opcionais
@@ -62,7 +62,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Diário por refeição, favoritos e copiar de ontem
 - ✅ Planos de dieta por objetivo
 - ✅ Leitor de código de barras (Open Food Facts)
-- 💡 Ciclo de carboidrato ligado aos dias de treino
+- ✅ Ciclo de carboidrato ligado aos dias de treino
 - 💡 Foto do prato com estimativa assistida
 - ✅ Alimentos próprios, refeições pessoais salvas e calorias rápidas
 - ✅ Tendências de calorias e macronutrientes por período
@@ -74,7 +74,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Gasto do dia pelo relógio (calorias ativas) ou pelo nível de atividade
 - ✅ Central de metas: peso, gordura, carga-alvo, treinos por semana, proteína
 - ✅ Tendência e previsão de chegada à meta
-- 💡 Conquistas pessoais (sem rede social)
+- ✅ Conquistas pessoais (sem rede social)
 - 🟡 Hábitos diários: sono (pronto), passos e suplementos
 - ✅ Painel do dia num único cartão
 
@@ -82,7 +82,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Períodos de 7 dias, mês, ano e desde o início em todos os gráficos
 - ✅ Relatório mensal, calendário, radar e evolução por músculo
 - ✅ Gráficos de nutrição e aderência à meta
-- ⬜ Painel Saúde da semana e do mês
+- ✅ Painel Saúde da semana e do mês
 - 💡 Relatório em PDF para nutricionista ou médico
 - 💡 Correlações: proteína × carga, sono × desempenho
 
@@ -106,10 +106,10 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 ## Ordem dos próximos passos
 
 1. **Publicação:** Reinstalar o app nos dois celulares (ícone da abertura); se o quadrado verde continuar, trocar o ícone da tela inicial
-2. **Gráficos e relatórios:** Painel Saúde da semana e do mês
-3. **Treino:** Volume semanal por grupo com faixa recomendada e mapa de recuperação
-4. **Nutrição:** Ciclo de carboidrato ligado aos dias de treino
-5. **Metas e hábitos:** Conquistas pessoais e hábitos (passos, suplementos)
+2. **Treino:** Periodização em blocos e RPE/RIR por série
+3. **Corpo e medidas:** Medidas por região no mapa corporal e bioimpedância manual
+4. **Gráficos e relatórios:** Relatório em PDF para nutricionista ou médico
+5. **Hidratação:** Outras bebidas com fator de hidratação e ajuste em dias quentes
 
 ## Referências de outros apps
 
@@ -146,3 +146,4 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 18/10/2026 | Até 12 favoritos de exercício no Início |
 | 18/10/2026 | Painel no Início e formulários só no Perfil |
 | 18/10/2026 | Nutrição v2 (copiar de ontem, planos de dieta, código de barras), Central de metas, fotos de evolução, Painel do dia e lembretes de água |
+| 18/10/2026 | Resumo de saúde (semana/mês), volume semanal por músculo, recuperação muscular, ciclo de carboidrato e conquistas |
