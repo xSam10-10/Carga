@@ -7,15 +7,15 @@
 
 Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada para implementar aos poucos.
 
-## Visão geral (progresso geral: 79%)
+## Visão geral (progresso geral: 87%)
 
 | Módulo | Status | Progresso | Resumo |
 |---|---|---|---|
 | 1. Treino | ✅ | 95% | Rotinas, sessão ao vivo, recordes, catálogo de 465 exercícios, mapa corporal e aba Exercícios (avulsos com calorias do relógio). |
-| 2. Hidratação | ✅ | 85% | Meta por peso e sexo, copos rápidos, avatar animado, sequência e gráficos. |
-| 3. Corpo e medidas | 🟡 | 75% | Meus dados no Perfil e Evolução do corpo: peso, IMC, gordura, massas, circunferências, altura e taxa basal com gráfico e comparações; faltam fotos de evolução. |
-| 4. Nutrição | 🟡 | 68% | Aba Nutrição no modelo do Samsung Health: diário com 6 refeições, TACO (591 alimentos), macros e micronutrientes, metas e tendências. Faltam planos de dieta e código de barras. |
-| 5. Metas e hábitos | 🟡 | 45% | Objetivo (perder, manter, ganhar peso, ganhar massa) com meta calórica e de macros por dia e o quanto falta no Início. Falta a central de metas com prazo e previsão. |
+| 2. Hidratação | ✅ | 92% | Meta por peso e sexo, copos rápidos, avatar animado, gráficos e lembretes de água. |
+| 3. Corpo e medidas | ✅ | 85% | Meus dados, Evolução do corpo com comparações e fotos de evolução lado a lado. |
+| 4. Nutrição | 🟡 | 82% | Diário com 6 refeições, TACO, macros e micros, metas, tendências, copiar de ontem, planos de dieta e leitor de código de barras. |
+| 5. Metas e hábitos | 🟡 | 75% | Objetivo com meta calórica, Central de metas com previsão de chegada, Painel do dia e registro de sono. |
 | 6. Gráficos e relatórios | 🟡 | 80% | Períodos de 7 dias a desde o início em todos os gráficos, Evolução do corpo com comparações; falta o painel Saúde da semana. |
 | 7. Identidade e plataforma | ✅ | 95% | Logo, abertura, senha, 6 temas, 15 cores, perfis separados, pictogramas próprios, Painel no Início e formulários concentrados no Perfil. |
 | 8. Publicação | ✅ | 90% | Site no ar em xsam10-10.github.io/Carga com atualização automática no celular; falta reinstalar para trocar o ícone da abertura. |
@@ -40,7 +40,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 ## 2. Hidratação
 - ✅ Meta por peso, sexo e treino do dia
 - ✅ Copos rápidos, avatar animado, sequência e gráficos
-- 💡 Lembretes ao longo do dia
+- ✅ Lembretes ao longo do dia
 - 💡 Ajuste da meta em dias quentes
 - 💡 Outras bebidas com fator de hidratação
 
@@ -48,7 +48,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Peso e medidas com gráfico
 - ✅ IMC, TMB, gasto diário, cintura/altura, proteína sugerida
 - 🟡 % de gordura com histórico próprio
-- 💡 Fotos de evolução lado a lado
+- ✅ Fotos de evolução lado a lado
 - 💡 Medidas por região no mapa corporal
 - 💡 Bioimpedância manual
 - ✅ Meus dados: todos os lançamentos pessoais concentrados no Perfil
@@ -59,9 +59,9 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Macronutrientes com meta diária
 - ✅ Micronutrientes com metas por sexo e idade
 - ✅ Base de alimentos TACO em português
-- 🟡 Diário por refeição e favoritos (falta "copiar de ontem")
-- ⬜ Planos de dieta por objetivo
-- 💡 Leitor de código de barras (Open Food Facts)
+- ✅ Diário por refeição, favoritos e copiar de ontem
+- ✅ Planos de dieta por objetivo
+- ✅ Leitor de código de barras (Open Food Facts)
 - 💡 Ciclo de carboidrato ligado aos dias de treino
 - 💡 Foto do prato com estimativa assistida
 - ✅ Alimentos próprios, refeições pessoais salvas e calorias rápidas
@@ -72,11 +72,11 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Objetivo com déficit/superávit calculado por fontes científicas (4 objetivos)
 - ✅ Meta de hoje no Início: falta em kcal e por macronutriente
 - ✅ Gasto do dia pelo relógio (calorias ativas) ou pelo nível de atividade
-- ⬜ Central de metas: peso, gordura, carga-alvo, treinos por semana, proteína
-- ⬜ Tendência e previsão de chegada à meta
+- ✅ Central de metas: peso, gordura, carga-alvo, treinos por semana, proteína
+- ✅ Tendência e previsão de chegada à meta
 - 💡 Conquistas pessoais (sem rede social)
-- 💡 Hábitos diários: sono, passos, suplementos
-- 💡 Painel do dia num único cartão
+- 🟡 Hábitos diários: sono (pronto), passos e suplementos
+- ✅ Painel do dia num único cartão
 
 ## 6. Gráficos e relatórios
 - ✅ Períodos de 7 dias, mês, ano e desde o início em todos os gráficos
@@ -106,11 +106,10 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 ## Ordem dos próximos passos
 
 1. **Publicação:** Reinstalar o app nos dois celulares (ícone da abertura); se o quadrado verde continuar, trocar o ícone da tela inicial
-2. **Nutrição:** Nutrição v2: copiar de ontem, planos de dieta e leitor de código de barras
-3. **Metas e hábitos:** Central de metas com previsão de chegada
-4. **Corpo e medidas:** Fotos de evolução e medidas por região
-5. **Metas e hábitos:** Painel do dia: treino, água, calorias, proteína e sono num cartão
-6. **Hidratação:** Lembretes de água, hábitos e conquistas
+2. **Gráficos e relatórios:** Painel Saúde da semana e do mês
+3. **Treino:** Volume semanal por grupo com faixa recomendada e mapa de recuperação
+4. **Nutrição:** Ciclo de carboidrato ligado aos dias de treino
+5. **Metas e hábitos:** Conquistas pessoais e hábitos (passos, suplementos)
 
 ## Referências de outros apps
 
@@ -146,3 +145,4 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 18/10/2026 | Evolução do corpo com histórico e comparações de todas as medidas |
 | 18/10/2026 | Até 12 favoritos de exercício no Início |
 | 18/10/2026 | Painel no Início e formulários só no Perfil |
+| 18/10/2026 | Nutrição v2 (copiar de ontem, planos de dieta, código de barras), Central de metas, fotos de evolução, Painel do dia e lembretes de água |

@@ -10,26 +10,26 @@
   {
    "ordem": 2,
    "modulo": "Hidratação",
-   "progresso": 0.85,
-   "resumo": "Meta por peso e sexo, copos rápidos, avatar animado, sequência e gráficos."
+   "progresso": 0.92,
+   "resumo": "Meta por peso e sexo, copos rápidos, avatar animado, gráficos e lembretes de água."
   },
   {
    "ordem": 3,
    "modulo": "Corpo e medidas",
-   "progresso": 0.75,
-   "resumo": "Meus dados no Perfil e Evolução do corpo: peso, IMC, gordura, massas, circunferências, altura e taxa basal com gráfico e comparações; faltam fotos de evolução."
+   "progresso": 0.85,
+   "resumo": "Meus dados, Evolução do corpo com comparações e fotos de evolução lado a lado."
   },
   {
    "ordem": 4,
    "modulo": "Nutrição",
-   "progresso": 0.68,
-   "resumo": "Aba Nutrição no modelo do Samsung Health: diário com 6 refeições, TACO (591 alimentos), macros e micronutrientes, metas e tendências. Faltam planos de dieta e código de barras."
+   "progresso": 0.82,
+   "resumo": "Diário com 6 refeições, TACO, macros e micros, metas, tendências, copiar de ontem, planos de dieta e leitor de código de barras."
   },
   {
    "ordem": 5,
    "modulo": "Metas e hábitos",
-   "progresso": 0.45,
-   "resumo": "Objetivo (perder, manter, ganhar peso, ganhar massa) com meta calórica e de macros por dia e o quanto falta no Início. Falta a central de metas com prazo e previsão."
+   "progresso": 0.75,
+   "resumo": "Objetivo com meta calórica, Central de metas com previsão de chegada, Painel do dia e registro de sono."
   },
   {
    "ordem": 6,
@@ -138,7 +138,7 @@
   ],
   [
    "Hidratação",
-   "sugestão",
+   "pronto",
    "Lembretes ao longo do dia"
   ],
   [
@@ -168,7 +168,7 @@
   ],
   [
    "Corpo e medidas",
-   "sugestão",
+   "pronto",
    "Fotos de evolução lado a lado"
   ],
   [
@@ -213,17 +213,17 @@
   ],
   [
    "Nutrição",
-   "parcial",
-   "Diário por refeição e favoritos (falta \"copiar de ontem\")"
+   "pronto",
+   "Diário por refeição, favoritos e copiar de ontem"
   ],
   [
    "Nutrição",
-   "a fazer",
+   "pronto",
    "Planos de dieta por objetivo"
   ],
   [
    "Nutrição",
-   "sugestão",
+   "pronto",
    "Leitor de código de barras (Open Food Facts)"
   ],
   [
@@ -268,12 +268,12 @@
   ],
   [
    "Metas e hábitos",
-   "a fazer",
+   "pronto",
    "Central de metas: peso, gordura, carga-alvo, treinos por semana, proteína"
   ],
   [
    "Metas e hábitos",
-   "a fazer",
+   "pronto",
    "Tendência e previsão de chegada à meta"
   ],
   [
@@ -283,12 +283,12 @@
   ],
   [
    "Metas e hábitos",
-   "sugestão",
-   "Hábitos diários: sono, passos, suplementos"
+   "parcial",
+   "Hábitos diários: sono (pronto), passos e suplementos"
   ],
   [
    "Metas e hábitos",
-   "sugestão",
+   "pronto",
    "Painel do dia num único cartão"
   ],
   [
@@ -393,24 +393,20 @@
    "Reinstalar o app nos dois celulares (ícone da abertura); se o quadrado verde continuar, trocar o ícone da tela inicial"
   ],
   [
+   "Gráficos e relatórios",
+   "Painel Saúde da semana e do mês"
+  ],
+  [
+   "Treino",
+   "Volume semanal por grupo com faixa recomendada e mapa de recuperação"
+  ],
+  [
    "Nutrição",
-   "Nutrição v2: copiar de ontem, planos de dieta e leitor de código de barras"
+   "Ciclo de carboidrato ligado aos dias de treino"
   ],
   [
    "Metas e hábitos",
-   "Central de metas com previsão de chegada"
-  ],
-  [
-   "Corpo e medidas",
-   "Fotos de evolução e medidas por região"
-  ],
-  [
-   "Metas e hábitos",
-   "Painel do dia: treino, água, calorias, proteína e sono num cartão"
-  ],
-  [
-   "Hidratação",
-   "Lembretes de água, hábitos e conquistas"
+   "Conquistas pessoais e hábitos (passos, suplementos)"
   ]
  ],
  "referencias": [
@@ -518,6 +514,10 @@
   [
    "2026-10-18",
    "Painel no Início e formulários só no Perfil"
+  ],
+  [
+   "2026-10-18",
+   "Nutrição v2 (copiar de ontem, planos de dieta, código de barras), Central de metas, fotos de evolução, Painel do dia e lembretes de água"
   ]
  ]
 }

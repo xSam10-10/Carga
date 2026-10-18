@@ -461,6 +461,12 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .ev-now{display:flex;flex-direction:column;gap:2px}.ev-now b{font:700 40px/1 var(--display);font-variant-numeric:tabular-nums}
 .ev-tab{padding:2px 14px}.ev-tab>div{display:grid;grid-template-columns:1fr auto auto;align-items:baseline;gap:4px 12px;padding:11px 0;border-bottom:1px solid var(--line)}.ev-tab>div:last-child{border-bottom:0}.ev-tab span:first-child{color:var(--muted);font-size:14px}.ev-tab b{font:700 18px var(--display);font-variant-numeric:tabular-nums}.ev-tab em{grid-column:1/-1;font-style:normal;font-size:12.5px;color:var(--muted)}
 .ev-d{font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}.ev-d.up{color:var(--accent)}.ev-d.down{color:var(--coral,var(--amber))}
+.pd-g{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.pd-t{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 2px;border-radius:12px;color:var(--fg);text-align:center}.pd-t:active{background:var(--surface-2)}.pd-t b{font:700 18px/1.1 var(--display);margin-top:4px;font-variant-numeric:tabular-nums}.pd-t span{font-size:12px;font-weight:600}.pd-t em{font-style:normal;font-size:11px;color:var(--muted)}
+.pd-ring{width:44px;height:44px}.pd-ring circle{fill:none;stroke-width:5}.pd-ring .bg{stroke:var(--surface-2)}.pd-ring .fg{stroke:var(--accent);stroke-linecap:round}.pd-ring.p .fg{stroke:var(--amber)}.pd-ring.w .fg{stroke:#3B9DE8}.pd-ring.t .fg{stroke:var(--violet)}.pd-ring.x .fg{stroke:var(--coral,#E5735A)}.pd-ring.s .fg{stroke:#7C83D9}
+.pl-meal{display:flex;flex-direction:column;gap:6px}.pl-it{display:flex;justify-content:space-between;gap:10px;font-size:14px;border-top:1px solid var(--line);padding-top:6px}.pl-it span{min-width:0}.pl-it b{white-space:nowrap}
+.bc-cam{position:relative;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:4/3}.bc-cam video{width:100%;height:100%;object-fit:cover}.bc-cam i{position:absolute;left:12%;right:12%;top:46%;height:2px;background:var(--accent);box-shadow:0 0 8px var(--accent)}.bc-row{display:grid;grid-template-columns:1fr auto;gap:8px}
+.fp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fp-grid figure,.fp-cmp figure{margin:0;display:flex;flex-direction:column;gap:4px}.fp-grid img,.fp-cmp img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:12px;background:var(--surface-2)}.fp-grid figcaption{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--muted)}.fp-cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fp-cmp figcaption{font-size:12.5px;color:var(--muted);text-align:center}
+.g-bar{height:10px;border-radius:5px;background:var(--surface-2);overflow:hidden}.g-bar i{display:block;height:100%;background:var(--accent);border-radius:5px}.g-big{display:flex;align-items:baseline;gap:8px}.g-big b{font:700 34px/1 var(--display);font-variant-numeric:tabular-nums}.g-big span{color:var(--muted);font-size:13px}
 .mydata{display:flex;align-items:center;gap:12px;width:100%;text-align:left;color:var(--fg);font:inherit}.mydata .nfx{display:flex;flex-direction:column;gap:4px;min-width:0}.mydata b{font-size:16px}.mydata .nbar{height:6px;margin-top:2px}
 .md-ic{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--accent-soft);color:var(--accent);flex:none}.md-ic svg{width:22px;height:22px}
 .byline{margin:-4px 0 8px;text-align:center;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.55}
@@ -616,6 +622,7 @@ const I={
  down:ic('<path d="m6 9 6 6 6-6"/>'),
  back:ic('<path d="M19 12H5M11 18l-6-6 6-6"/>'),
  left:ic('<path d="m15 6-6 6 6 6"/>'),
+ barcode:ic('<path d="M3 6v12M6.5 6v12M9 6v12M12.5 6v12M16 6v12M18.5 6v12M21 6v12"/>'),
  dots:ic('<circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/>'),
  check:ic('<path d="m5 12.5 4.5 4.5L19 7"/>'),
  clock:ic('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M10 2h4"/>'),
@@ -1199,7 +1206,7 @@ const top_=()=>stack[stack.length-1];
 function cur(){const t=top_();return t.p.live||t.v==='finish'?S.active:t.p.s}
 
 const VIEWS={};
-const NAV_VIEWS=new Set(['relatorio','inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados','dieta','dietaTend','nutrientes','metasNutri','medLista','ativ','ativPick','ativDet']);
+const NAV_VIEWS=new Set(['relatorio','inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados','dieta','dietaTend','nutrientes','metasNutri','medLista','planos','metas','fotosGer','ativ','ativPick','ativDet']);
 function render(keep){const t=top_();const y=scrollY;const V=VIEWS[t.v]||VIEWS.treino;$('#app').innerHTML=V(t.p);chrome();if(keep)scrollTo(0,y);if(V.after)V.after(t.p)}
 const rerender=()=>render(true);
 function chrome(){
@@ -1341,7 +1348,8 @@ VIEWS.inicio=()=>{
  <div class="stat3"><div><span class="lab">Treinos</span><b>${thisW.length}</b></div><div><span class="lab">Tempo</span><b>${fmtDur(dur)}</b></div><div><span class="lab">Volume</span><b>${fmtInt(vol)}<small style="font-size:14px"> kg</small></b></div></div>
  <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<div class="dchip${has?' has':''}${d===today?' today':''}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></div>`}).join('')}</div></section>`;
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button>`;
- h+=`<h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button></div>`;
+ h=h.replace('<section class="card" style="display:flex;flex-direction:column;gap:14px"><div class="row"><span class="lab spacer">Esta semana',homeDay()+'<section class="card" style="display:flex;flex-direction:column;gap:14px"><div class="row"><span class="lab spacer">Esta semana');
+ h+=`<h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="metas">${I.flame}Metas</button><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button></div>`;
  h+=homeNutri();
  h+=homeAtiv();
  h+=homeHealth();
@@ -1618,9 +1626,11 @@ VIEWS.medidas=p=>{const all=EVO.filter(d=>evoSeries(d[0]).length);const f=all.so
  <p class="muted small" style="margin:-6px 0 0">${MP.g==='dia'?'Cada ponto é um registro.':MP.g==='semana'?'Cada ponto é a média da semana.':'Cada ponto é a média do mês.'}${pts.length>=2?` No período: ${evoDelta(d,pts[0].y,pts[pts.length-1].y)}`:''}</p>`;
  if(cmp.length)h+=`<h3 class="sh">Comparar com</h3><div class="card ev-tab">${cmp.map(([l,v])=>`<div><span>${l}</span><b>${evoFmt(d,v.y)}</b>${evoDelta(d,v.y,last.y)}</div>`).join('')}</div><p class="muted small" style="margin:-4px 0 0">A seta mostra quanto mudou de lá até o valor atual.</p>`;
  if(mk.length>1)h+=`<h3 class="sh">Mês a mês</h3><div class="card ev-tab">${mk.map((k,i)=>{const avg=mm[k].reduce((a,b)=>a+b,0)/mm[k].length,pk=mm[k-1],py=mm[k-12];return`<div><span>${MES[k%12]} ${Math.floor(k/12)}</span><b>${evoFmt(d,avg)}</b>${pk?evoDelta(d,pk.reduce((a,b)=>a+b,0)/pk.length,avg):'<span class="ev-d">—</span>'}${py?`<em>vs ${MES[k%12]} ${Math.floor(k/12)-1}: ${evoDelta(d,py.reduce((a,b)=>a+b,0)/py.length,avg)}</em>`:''}</div>`}).join('')}</div><p class="muted small" style="margin:-4px 0 0">Média de cada mês e a variação em relação ao mês anterior${mk.some(k=>mm[k-12])?' e ao mesmo mês do ano anterior':''}.</p>`;
+ h+=`<h3 class="sh">Fotos de evolução</h3><section class="card form" id="evo-fotos"><p class="muted small" style="margin:0">Carregando…</p></section>`;
  const ms=[...S.measures].sort((a,b)=>b.date-a.date);
  if(ms.length)h+=`<h3 class="sh">Registros</h3><div class="card" style="padding:4px 14px">${ms.map(m=>`<div class="mrow"><span class="date">${new Date(m.date).toLocaleDateString('pt-BR')}</span><span class="small">${MF.filter(([k])=>num(m[k])!=null).map(([k,l,u])=>`${l} <b>${fmt(m[k])}</b>${u==='%'?'%':''}`).join(' · ')}</span></div>`).join('')}</div><p class="muted small" style="margin:-4px 0 0">Para registrar ou corrigir, use Perfil → Meus dados → Medidas.</p>`;
  return h+'</main>'};
+VIEWS.medidas.after=()=>fotoCompare();
 const imcClass=v=>v<18.5?'abaixo do peso':v<25?'peso saudável':v<30?'sobrepeso':v<35?'obesidade grau I':v<40?'obesidade grau II':'obesidade grau III';
 function evoCard(){const s=evoSeries('weight'),last=s[s.length-1];if(!last)return`<button class="tile" data-a="go" data-v="medidas">${I.body}<span class="spacer">Evolução do corpo<br><span class="muted small" style="font-weight:400">Registre peso e medidas para comparar</span></span>${I.chev}</button>`;const d=EVO[0],m1=evoAt(s,addDays(sod(Date.now()),-30));
  return`<button class="tile" data-a="go" data-v="medidas" style="padding:12px 16px">${I.body}<span class="spacer">Evolução do corpo<br><span class="muted small" style="font-weight:400">Peso ${evoFmt(d,last.y)}${m1&&m1!==last?' · 30 dias: '+evoDelta(d,m1.y,last.y):''}</span></span>${I.chev}</button>`}
@@ -1779,6 +1789,8 @@ VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=auto
  <label class="fld"><span>Altura (cm)</span><input class="inp" id="pd-height" inputmode="numeric" data-f="pd" data-k="height" value="${esc(p.height||'')}" placeholder="Ex.: 178"></label></div>
  <label class="fld"><span>Peso atual (kg)</span><input class="inp" id="pd-weight" inputmode="decimal" data-f="pdWeight" value="${w?String(w.v).replace('.',','):''}" placeholder="Ex.: 80,5"></label>
  <p class="muted small" style="margin:-4px 0 0">${w?`Último registro: ${fmt(w.v)} kg em ${new Date(w.date).toLocaleDateString('pt-BR')}. `:''}Ao alterar, o peso de hoje é gravado em Medidas.</p></section>
+ <h3 class="sh">Fotos de evolução</h3>
+ <section class="card form"><p class="muted small" style="margin:0">Fotos de frente, de lado e de costas para comparar lado a lado na Evolução do corpo. Ficam só neste aparelho (não entram no backup).</p><div class="chips"><button class="btn sm pri" data-a="fpAdd">${I.camera} Adicionar foto</button><button class="btn sm sec" data-a="go" data-v="fotosGer">Ver e excluir</button></div></section>
  <h3 class="sh">Medidas</h3>
  <section class="card form">${(()=>{const L={};for(const m of [...S.measures].sort((a,b)=>a.date-b.date))for(const[k]of MF)if(k!=='weight'&&num(m[k])!=null)L[k]=num(m[k]);const ks=MF.filter(([k])=>L[k]!=null);return ks.length?`<div class="kv">${ks.map(([k,l,u])=>`<div><span class="lab">${l}</span><b>${fmt(L[k])}</b> <span class="muted small">${u}</span></div>`).join('')}</div>`:'<p class="muted small" style="margin:0">Gordura corporal e circunferências (cintura, peito, braço, coxa, quadril, panturrilha). Opcional, mas a cintura entra no indicador cintura/altura.</p>'})()}
  <div class="chips"><button class="btn sm pri" data-a="newMeasure">${I.plus||''} Registrar medidas</button>${S.measures.length?'<button class="btn sm sec" data-a="go" data-v="medLista">Editar registros</button>':''}</div></section>
@@ -1790,9 +1802,12 @@ VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=auto
  <div class="fld"><span>Como calcular o gasto de calorias</span><div class="chips">${[['auto','Automático'],['relogio','Pelo relógio'],['nivel','Pelo nível de atividade']].map(([k,l])=>`<button class="chip${(p.energyMode||'relogio')===k?' on':''}" data-a="pdEMode" data-k="${k}">${l}</button>`).join('')}</div></div>
  <p class="muted small" style="margin:0">${energyMode()==='relogio'?'<b>Pelo relógio</b>: gasto do dia = taxa basal × 1,2 (rotina sem treino) + as calorias ativas dos treinos registradas no dia. É o cálculo mais próximo do real; registre sempre as calorias do relógio no fim do treino. Aqui os dias de treino por semana não mudam as calorias (o exercício já entra pelo valor real do relógio); eles definem a meta de proteína.':'<b>Pelo nível de atividade</b>: gasto do dia = taxa basal × fator dos dias de treino por semana, uma média que já inclui os treinos. A meta é a mesma todos os dias.'}${(p.energyMode||'relogio')==='auto'?' No automático, o app usa o relógio quando há treinos com calorias registradas nas últimas 4 semanas.':''}</p>
  ${(()=>{const E=energyPlan();return E.ok?`<div class="mplan"><div><span>Taxa basal</span><b>${fmtInt(E.tmb)}</b></div><div><span>Gasto hoje</span><b>${fmtInt(E.gasto)}</b></div><div><span>${E.adj>=0?'Ajuste':'Déficit'}</span><b>${E.adj>0?'+':E.adj<0?'−':''}${fmtInt(Math.abs(E.adj))}</b></div><div class="on"><span>Meta</span><b>${fmtInt(E.meta)}</b></div></div><p class="muted small" style="margin:0">kcal por dia. Proteína ${fmtInt(E.prot)} g · Carboidrato ${fmtInt(E.carb)} g · Gordura ${fmtInt(E.fat)} g.</p>`:''})()}</section>
+ <h3 class="sh">Metas</h3>
+ <section class="card form">${(()=>{const g=S.profile.goals||{},fi=(k,l,ph)=>`<label class="fld"><span>${l}</span><input class="inp" id="g-${k}" inputmode="decimal" data-f="goal" data-k="${k}" value="${g[k]!=null?String(g[k]).replace('.',','):''}" placeholder="${ph}"></label>`;return`<p class="muted small" style="margin:0">Acompanhe o progresso e a previsão de chegada na Central de metas (Início → Painel → Metas). Deixe em branco o que não quiser acompanhar.</p><div class="row2">${fi('weight','Peso alvo (kg)','Ex.: 75')}${fi('fat','Gordura alvo (%)','Ex.: 15')}</div><div class="row2">${fi('waist','Cintura alvo (cm)','Ex.: 85')}${fi('prot','Proteína por dia (g)',nutriPlan().auto?'Plano: '+fmtInt(nutriPlan().gP):'Ex.: 140')}</div><div class="fld"><span>Treinos por semana</span><div class="chips">${[2,3,4,5,6,7].map(n=>`<button class="chip${g.wpw===n?' on':''}" data-a="gWpw" data-k="${n}">${n}</button>`).join('')}</div></div><label class="fld"><span>Horas de sono por noite</span><input class="inp" id="g-sleep" inputmode="decimal" data-f="goal" data-k="sleep" value="${S.profile.sleepGoal?String(S.profile.sleepGoal).replace('.',','):''}" placeholder="8"></label>`})()}</section>
  <h3 class="sh">Nutrição</h3>
  <section class="card form">${(()=>{const P=nutriPlan(),man=(p.nutri||{}).mode==='manual';return`<div class="row"><span class="nfx"><b>Meta de nutrição: ${man?'personalizada':'automática'}</b><br><span class="muted small">${fmtInt(P.kcal)} kcal por dia${man?', definida por você':', pelo objetivo e pelos dados acima'}</span></span><button class="btn sm sec" data-a="goPf" data-v="metasNutri">Ajustar</button></div>`})()}</section>
  <h3 class="sh">Água</h3>
+ <section class="card form">${(()=>{const c=wrCfg(),nx=wrNext();return`<label class="switch"><span><b>Lembretes de água</b><br><span class="muted small">Aviso a cada intervalo sem beber, dentro do horário, até bater a meta. Funciona com o app aberto ou em segundo plano recente.</span></span><input type="checkbox" data-a="wrToggle" ${c.on?'checked':''}></label>${c.on?`<div class="fld"><span>Intervalo</span><div class="chips">${[[60,'1 h'],[90,'1h30'],[120,'2 h'],[180,'3 h']].map(([k,l])=>`<button class="chip${c.every===k?' on':''}" data-a="wrEvery" data-k="${k}">${l}</button>`).join('')}</div></div><div class="row2"><label class="fld"><span>Das</span><input class="inp" type="time" data-f="wr" data-k="from" value="${c.from}"></label><label class="fld"><span>Até</span><input class="inp" type="time" data-f="wr" data-k="to" value="${c.to}"></label></div><p class="muted small" style="margin:0">${nx?'Próximo lembrete por volta das '+new Date(nx).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+'.':'Sem lembretes pendentes hoje.'}</p>`:''}`})()}</section>
  <section class="card form">${(()=>{const g=waterGoal();return`<div class="row"><span class="nfx"><b>Meta de água: ${fmt(g.ml/1000)} litros</b><br><span class="muted small">${esc(g.how)}</span></span><button class="btn sm sec" data-a="waterCfg">Ajustar</button></div>`})()}</section>
  <h3 class="sh">Perfil e aparência</h3>
  <section class="card form"><div class="row"><button class="ava sm" data-a="photoSheet" aria-label="Alterar foto do perfil">${avaIn(p)}</button><span class="nfx"><b>${esc(p.name)}</b><br><span class="muted small">Nome, foto, tema e cor de destaque</span></span><button class="btn sm sec" data-a="go" data-v="config">Ajustar</button></div></section>
@@ -1899,7 +1914,7 @@ const backupDue=()=>S.workouts.length>0&&S.workouts.length!==(S.profile.lastBack
 function markBackup(){S.profile.lastBackup=Date.now();S.profile.lastBackupN=S.workouts.length;save()}
 const bkName=ext=>`carga-${slug(S.profile.name)||'perfil'}-backup-${toDateInput(Date.now())}.${ext}`;
 function canShareFile(){try{return!!(navigator.canShare&&navigator.canShare({files:[new File(['x'],'x.txt',{type:'text/plain'})]}))}catch(e){return false}}
-function idb(){return new Promise((res,rej)=>{try{const r=indexedDB.open('carga',1);r.onupgradeneeded=()=>r.result.createObjectStore('snaps',{keyPath:'ts'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})}
+function idb(){return new Promise((res,rej)=>{try{const r=indexedDB.open('carga',2);r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains('snaps'))db.createObjectStore('snaps',{keyPath:'ts'});if(!db.objectStoreNames.contains('fotos'))db.createObjectStore('fotos',{keyPath:'id'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})}
 async function listSnaps(){try{const db=await idb();return await new Promise((res,rej)=>{const q=db.transaction('snaps').objectStore('snaps').getAll();q.onsuccess=()=>res(q.result.filter(z=>(z.pid||'samuel')===REGS.current).sort((a,b)=>b.ts-a.ts));q.onerror=()=>rej(q.error)})}catch(e){return[]}}
 async function snapshot(reason){try{if(!REGS.current||(!S.workouts.length&&!S.routines.length))return;const db=await idb();await new Promise((res,rej)=>{const tx=db.transaction('snaps','readwrite');tx.objectStore('snaps').put({ts:Date.now(),pid:REGS.current,reason,n:S.workouts.length,data:backupText()});tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});const old=(await listSnaps()).slice(7);if(old.length){const tx=db.transaction('snaps','readwrite');old.forEach(z=>tx.objectStore('snaps').delete(z.ts))}}catch(e){}}
 async function autoSnapshot(){const l=await listSnaps();if(S.workouts.length&&(!l.length||Date.now()-l[0].ts>DAY))snapshot('Cópia diária')}
@@ -2103,6 +2118,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheetOpen())closeSh
 document.addEventListener('input',e=>{const t=e.target,f=t.dataset.f;if(!f)return;const p=top_().p;const v=t.value;
  if(f.startsWith('n:')){nInput(f.slice(2),t,v);return}
  if(f.startsWith('a:')){aInput(f.slice(2),t,v);return}
+ if(f.startsWith('fp:')){UI['fp'+f.slice(3)]=v;fotoCompare();return}
+ if(f==='goal'){const g=S.profile.goals=S.profile.goals||{},n=num(v),k=t.dataset.k;if(k==='sleep'){S.profile.sleepGoal=n>0&&n<=14?n:null}else{g[k]=n>0?n:null;if(!g.since)g.since=Date.now()}save();return}
+ if(f==='wr'){S.profile.wr=Object.assign(wrCfg(),{[t.dataset.k]:v});save();return}
  if(f==='q'){p.q=v;$('#exlist').innerHTML=exListHTML(p,top_().v==='picker');return}
 
  if(f==='nxName'){p.f.name=v;return} if(f==='nxMu'){p.f.muscle=v;return} if(f==='nxEq'){p.f.equipment=v;return}
@@ -2121,7 +2139,7 @@ document.addEventListener('input',e=>{const t=e.target,f=t.dataset.f;if(!f)retur
  else if(f==='durMin'){const m=num(v);if(m!=null&&m>0)s.end=s.start+m*6e4}
  else if(f==='kg'||f==='reps'||f==='min'||f==='km'){s.exercises[+t.dataset.e].sets[+t.dataset.s][f]=v;updateLiveStats()}
  if(s.kind==='live')save()});
-document.addEventListener('change',async e=>{const t=e.target,k=t.dataset.file;if(!k||!t.files||!t.files[0])return;const file=t.files[0];if(k==='photo'){t.value='';try{S.profile.photo=await makePhoto(file);persist();closeSheet();rerender();toast('Foto do perfil atualizada')}catch(err){toast('Não foi possível abrir essa imagem. Tente outra foto.')}return}let text='';try{text=await file.text()}catch(err){toast('Não foi possível ler o arquivo.');return}t.value='';
+document.addEventListener('change',async e=>{const t=e.target,k=t.dataset.file;if(!k||!t.files||!t.files[0])return;const file=t.files[0];if(k==='evo'){t.value='';try{const img=await makeEvoPhoto(file);const dv=(($('#fp-date')||{}).value||toDateInput(Date.now())).split('-').map(Number);await fotoPut({id:uid(),pid:REGS.current,t:new Date(dv[0],dv[1]-1,dv[2],12).getTime(),pose:(UI.fpNew||{}).pose||'frente',img});closeSheet();rerender();toast('Foto salva')}catch(err){toast('Não foi possível salvar essa foto.')}return}if(k==='photo'){t.value='';try{S.profile.photo=await makePhoto(file);persist();closeSheet();rerender();toast('Foto do perfil atualizada')}catch(err){toast('Não foi possível abrir essa imagem. Tente outra foto.')}return}let text='';try{text=await file.text()}catch(err){toast('Não foi possível ler o arquivo.');return}t.value='';
  if(k==='hevy'){await snapshot('Antes de importar');try{const r=importHevy(text);importResult(r);rerender()}catch(err){toast(err.message||'Falha ao importar.')}}
  if(k==='restore')restoreFrom(text)});
 async function makePhoto(file){const url=URL.createObjectURL(file);try{const im=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=url});const sz=320,c=document.createElement('canvas');c.width=c.height=sz;const m=Math.min(im.naturalWidth,im.naturalHeight);c.getContext('2d').drawImage(im,(im.naturalWidth-m)/2,(im.naturalHeight-m)/2,m,m,0,0,sz,sz);return c.toDataURL('image/jpeg',.82)}finally{URL.revokeObjectURL(url)}}
@@ -2785,6 +2803,7 @@ VIEWS.dieta=()=>{nS();const d=nDay(),k=dkey(d),P=nutriPlan(d),n=dayNut(k),ms=mea
  h+=kcalCard(n,P);
  h+=`<button class="card ninfo" data-a="go" data-v="nutrientes"><div class="row"><b class="spacer">Macronutrientes</b><span class="muted small">Ver nutrientes</span>${I.chev}</div>${macroBoxes(n,P)}${macroBar(n,P)}</button>`;
  h+=`<h3 class="sh">Registrar refeição</h3><section class="card mlist">${MEALS.map(([mk,ml])=>{const m=ms.find(x=>x.m===mk);const kc=m?Math.round(sumNut(m.it)[0]):0;return`<div class="mline"><button class="mtap" data-a="mealOpen" data-m="${mk}"><span class="mk">${fmtInt(kc)}<small>kcal</small></span><span class="nfx"><b>${ml}${m?` <em class="muted small">${m.t}</em>`:''}</b>${m&&m.it.length?`<span class="muted small clamp2">${esc(m.it.map(itemName).join(', '))}</span>`:''}</span></button><button class="ib" data-a="mealOpen" data-m="${mk}" data-add="1" aria-label="Adicionar em ${ml}">${I.plus}</button></div>`}).join('')}</section>`;
+ h+=`<div class="chips"><button class="chip" data-a="nCopyDay">${I.copy} Copiar do dia anterior</button><button class="chip" data-a="go" data-v="planos">${I.food} Planos de dieta</button><button class="chip" data-a="bcScan">${I.barcode} Código de barras</button></div>`;
  h+=nMini(d,P);
  if(!bodyData().ok&&!P.manual)h+=`<p class="muted small" style="margin:0">A meta de ${fmtInt(P.kcal)} kcal é provisória. Preencha sexo, nascimento, altura e peso em <button class="linkb" data-a="goPf" data-v="dados">Meus dados</button> para calcular a sua.</p>`;
  return h+'</main>'};
@@ -2796,7 +2815,7 @@ VIEWS.refeicao=p=>{const w=p.w;if(!w)return bar('Refeição')+'<main class="page
  h+=`<div class="mhead"><select class="inp msel" id="m-type" data-f="n:mtype" aria-label="Refeição">${MEALS.map(([k,l])=>`<option value="${k}"${k===w.m?' selected':''}>${l}</option>`).join('')}</select><input class="inp mtime" id="m-time" type="time" value="${w.t}" data-f="n:mtime" aria-label="Hora"></div>`;
  h+=`<section class="card mtot"><b>Total: ${fmtInt(n[0])} kcal</b><span class="muted small">Carboidrato ${fmt(Math.round(n[3]*10)/10)} g · Gordura ${fmt(Math.round(n[2]*10)/10)} g · Proteína ${fmt(Math.round(n[1]*10)/10)} g</span></section>`;
  h+=`<h3 class="sh">Alimentos</h3>${w.it.some(x=>x.f!=null)?`<p class="muted small" style="margin:-6px 0 0">Toque no alimento para digitar a quantidade exata em gramas.</p>`:''}<section class="card mlist">${w.it.map((it,i)=>`<div class="mline"><button class="mtap" data-a="${it.f==null?'quickEdit':'portion'}" data-i="${i}"><span class="nfx"><b>${esc(itemName(it))}</b><span class="muted small">${itemSub(it)}</span></span></button>${it.f==null?`<button class="ib" data-a="itemDel" data-i="${i}" aria-label="Remover">${I.x}</button>`:`<button class="ib" data-a="itemQ" data-i="${i}" data-k="-1" aria-label="Diminuir">−</button><button class="ib" data-a="itemQ" data-i="${i}" data-k="1" aria-label="Aumentar">${I.plus}</button>`}</div>`).join('')}
- <button class="mi" data-a="addFood">${I.plus}Adicionar alimento</button><button class="mi" data-a="quickKcal">${I.flame}Adicionar calorias</button></section>`;
+ <button class="mi" data-a="addFood">${I.plus}Adicionar alimento</button><button class="mi" data-a="quickKcal">${I.flame}Adicionar calorias</button><button class="mi" data-a="nCopyMeal">${I.copy}Copiar de ontem</button><button class="mi" data-a="bcScan">${I.barcode}Ler código de barras</button></section>`;
  h+=`<section class="card mlist">${w.it.length?`<button class="mi" data-a="saveTpl">${I.copy}Salvar como refeição pessoal</button>`:''}${w.orig?`<button class="mi dg" data-a="mealDel">${I.trash}Excluir esta refeição</button>`:''}</section>`;
  return h+'</main>'};
 
@@ -2810,7 +2829,7 @@ function foodList(p){const q=norm(p.q||''),sel=p.sel||[];const row=f=>{const on=
  const empty=p.tab==='fav'?'Toque na estrela de um alimento para guardá-lo aqui.':p.tab==='meus'?'Você ainda não criou alimentos.':'Nenhum alimento encontrado. Tente outra palavra ou crie o seu.';
  return(p.tab==='meus'?`<button class="mi" data-a="go" data-v="novoAlimento">${I.plus}Criar alimento</button>`:'')+(fs.length?fs.slice(0,250).map(row).join('')+(fs.length>250?`<p class="muted small" style="text-align:center">Mostrando 250 de ${fs.length}. Refine a busca.</p>`:''):`<p class="empty">${empty}</p>`)}
 VIEWS.alimentos=p=>{p.tab=p.tab||'todos';p.sel=p.sel||[];
- let h=bar(p.pick?'Adicionar alimento':'Alimentos')+`<main class="page" style="padding-bottom:96px"><input class="inp" id="f-q" type="search" placeholder="Buscar alimento (ex.: arroz, frango, banana)" value="${esc(p.q||'')}" data-f="n:fq" autocomplete="off">
+ let h=bar(p.pick?'Adicionar alimento':'Alimentos',{right:`<button class="ib" data-a="bcScan" aria-label="Ler código de barras">${I.barcode}</button>`})+`<main class="page" style="padding-bottom:96px"><input class="inp" id="f-q" type="search" placeholder="Buscar alimento (ex.: arroz, frango, banana)" value="${esc(p.q||'')}" data-f="n:fq" autocomplete="off">
  <div class="seg ftabs">${FT.map(([k,l])=>`<button class="${p.tab===k?'on':''}" data-a="fTab" data-k="${k}">${l}</button>`).join('')}</div>`;
  if(p.tab==='todos')h+=`<select class="inp" id="f-cat" data-f="n:fcat" aria-label="Categoria"><option value="">Todas as categorias (TACO)</option>${TACO_CAT.map((c,i)=>`<option value="${i}"${String(p.cat)===String(i)?' selected':''}>${esc(c)}</option>`).join('')}</select>`;
  h+=`<section class="card flist" id="fl">${foodList(p)}</section></main>`;
@@ -2879,7 +2898,7 @@ function nmSum(){const c=S.profile.nutri||{},s=(num(c.pC)||0)+(num(c.pG)||0)+(nu
 Object.assign(A,{
  nDay:d=>{UI.nDay=Math.min(sod(Date.now()),addDays(nDay(),+d.k));rerender()},
  nToday:()=>{UI.nDay=null;rerender()},
- nMenu:()=>menu('Nutrição',[{label:'Meus alimentos e favoritos',icon:I.note,f:()=>go('alimentos',{tab:'meus'})},{label:'Tendências',icon:I.chart,f:()=>go('dietaTend')}]),
+ nMenu:()=>menu('Nutrição',[{label:'Planos de dieta',icon:I.food,f:()=>go('planos')},{label:'Copiar refeições do dia anterior',icon:I.copy,f:()=>A.nCopyDay()},{label:'Salvar este dia como plano',icon:I.note,f:()=>A.nSaveDayPlan()},{label:'Ler código de barras',icon:I.barcode,f:()=>bcOpen()},{label:'Meus alimentos e favoritos',icon:I.note,f:()=>go('alimentos',{tab:'meus'})},{label:'Tendências',icon:I.chart,f:()=>go('dietaTend')}]),
  mealOpen:d=>{const w=mealWork(nDay(),d.m);go('refeicao',{w});if(d.add&&!w.it.length)setTimeout(()=>A.addFood(),50)},
  addFood:()=>{go('alimentos',{pick:true,tab:nS().fav.length?'fav':'todos'})},
  fTab:d=>{const p=top_().p;p.tab=d.k;rerender()},
@@ -2898,7 +2917,7 @@ Object.assign(A,{
  mealDel:()=>{const w=top_().p.w;ask('Excluir esta refeição?','Os alimentos registrados nela serão apagados.','Excluir',true).then(ok=>{if(!ok)return;closeSheet();S.meals=S.meals.filter(m=>m.id!==w.id);save();back();toast('Refeição excluída')})},
  mealOk:()=>{const w=top_().p.w;nS();S.meals=S.meals.filter(m=>m.id!==w.id);if(w.it.length){const same=S.meals.find(m=>m.d===w.d&&m.m===w.m);if(same){same.it.push(...w.it);same.t=w.t}else S.meals.push({id:w.id,d:w.d,m:w.m,t:w.t,it:w.it})}save();back();toast(w.it.length?'Refeição salva':'Refeição vazia removida')},
  saveFood:()=>{const f=top_().p.f||{};const name=(f.name||'').trim();const por=num(f.por)||100;const kcal=num(f.kcal);if(!name){toast('Dê um nome ao alimento.');return}if(kcal==null){toast('Informe as calorias da porção.');return}const k=100/por,g=x=>num(x)==null?null:Math.round(num(x)*k*100)/100;
-  const v=NK.map(()=>null);v[0]=g(kcal);v[1]=g(f.prot)??0;v[2]=g(f.gord)??0;v[3]=g(f.carb)??0;v[4]=g(f.fib);v[7]=g(f.na);nS().foods.push({id:'u'+uid(),name,por,v});save();toast('Alimento criado');back()},
+  const v=NK.map(()=>null);v[0]=g(kcal);v[1]=g(f.prot)??0;v[2]=g(f.gord)??0;v[3]=g(f.carb)??0;v[4]=g(f.fib);v[7]=g(f.na);const nid='u'+uid();nS().foods.push({id:nid,name,por,v,...(f.code?{code:f.code}:{})});if(f.code){S.barcodes=S.barcodes||{};S.barcodes[f.code]=nid};save();toast('Alimento criado');back()},
  nMet:d=>{UI.nMet=d.k;rerender()},
  nMode:d=>{const c=S.profile.nutri=S.profile.nutri||{};if(d.k==='manual'&&c.mode!=='manual'){const P=nutriPlan();Object.assign(c,{kcal:P.kcal,pC:P.pC,pG:P.pG,pP:P.pP})}c.mode=d.k;save();rerender()}
 });
@@ -3004,6 +3023,161 @@ Object.assign(A,{
  aEdit:()=>{const e=S.extra.find(z=>z.id===top_().p.id);if(e)go('ativForm',{isNew:false,e:{...e}})},
  aDel:()=>{const id=top_().p.e.id;ask('Excluir este exercício?','As calorias dele saem da meta do dia.','Excluir',true).then(ok=>{closeSheet();if(!ok)return;S.extra=S.extra.filter(z=>z.id!==id);save();tab('ativ');toast('Exercício excluído')})},
  aMore:()=>{UI.atN=(UI.atN||20)+20;rerender()}
+});
+
+/* ===================== NUTRIÇÃO V2: copiar de ontem, planos de dieta, código de barras ===================== */
+function copyMeals(fromKey,toKey,mk){nS();let n=0;for(const m of mealsOn(fromKey)){if(mk&&m.m!==mk||!m.it.length)continue;const it=m.it.map(x=>({...x})),dst=S.meals.find(x=>x.d===toKey&&x.m===m.m);if(dst)dst.it.push(...it);else S.meals.push({id:uid(),d:toKey,m:m.m,t:m.t,it});n+=it.length}save();return n}
+const prevKey=k=>{const[y,m,d]=k.split('-').map(Number);return dkey(new Date(y,m-1,d-1).getTime())};
+// Planos sugeridos: por refeição, 3 variações [proteína, carboidrato | null, fixos [[alimento TACO, g]]]; porções calculadas para a meta do dia
+const PLAN_SH={cafe:.22,lanche1:.10,almoco:.30,lanche2:.12,jantar:.20,ceia:.06},PLAN_PSH={cafe:.18,lanche1:.06,almoco:.33,lanche2:.12,jantar:.27,ceia:.04};
+const PLAN_T={
+ cafe:[['Ovo, de galinha, inteiro, cozido/10minutos','Pão, trigo, francês',[['Mamão, Papaia, cru',120]]],['Queijo, minas, frescal','Pão, trigo, francês',[['Banana, prata, crua',80]]],['Iogurte, natural','Aveia, flocos, crua',[['Banana, prata, crua',80]]]],
+ lanche1:[['Iogurte, natural, desnatado',null,[['Maçã, Fuji, com casca, crua',130]]],['Iogurte, natural, desnatado',null,[['Banana, prata, crua',80]]],['Iogurte, natural, desnatado','Aveia, flocos, crua',[]]],
+ almoco:[['Frango, peito, sem pele, cozido','Arroz, tipo 1, cozido',[['Feijão, carioca, cozido',100],['Alface, crespa, crua',40],['Tomate, com semente, cru',60]]],['Frango, peito, sem pele, cozido','Batata, doce, cozida',[['Brócolis, cozido',80],['Alface, crespa, crua',40]]],['Merluza, filé, assado','Arroz, tipo 1, cozido',[['Feijão, carioca, cozido',100],['Cenoura, cozida',60]]]],
+ lanche2:[['Ovo, de galinha, inteiro, cozido/10minutos','Pão, trigo, francês',[]],['Iogurte, natural','Banana, prata, crua',[]],['Ovo, de galinha, clara, cozida/10minutos','Cuscuz, de milho, cozido com sal',[]]],
+ jantar:[['Carne, bovina, patinho, sem gordura, grelhado','Arroz, tipo 1, cozido',[['Feijão, carioca, cozido',80],['Brócolis, cozido',80]]],['Frango, peito, sem pele, cozido','Mandioca, cozida',[['Alface, crespa, crua',40],['Tomate, com semente, cru',60]]],['Abadejo, filé, congelado, grelhado','Batata, doce, cozida',[['Brócolis, cozido',80]]]],
+ ceia:[['Iogurte, natural, desnatado',null,[]],['Queijo, minas, frescal',null,[]],['Iogurte, natural',null,[['Castanha-do-Brasil, crua',10]]]]};
+const tfId=n=>{const r=tacoRows().find(x=>x.name===n);return r?r.id:null};
+const per100=(id,i)=>num((food(id)||{v:[]}).v[i])||0;
+function genPlan(v){const P=nutriPlan(),meals={};const r5=g=>Math.max(0,Math.round(g/5)*5);
+ for(const[mk,sh]of Object.entries(PLAN_SH)){const[pn,cn,fx]=PLAN_T[mk][v%3],pid=tfId(pn),cid=cn&&tfId(cn);const t={k:P.kcal*sh,p:P.gP*PLAN_PSH[mk],c:P.gC*sh,f:P.gG*sh};
+  const items=fx.map(([n,g])=>({f:tfId(n),q:g})).filter(x=>x.f);const sum=(i,l)=>l.reduce((a,x)=>a+per100(x.f,i)*x.q/100,0);
+  let pg=0,cg=0;
+  if(!cid){pg=Math.min(400,Math.max(0,(t.k-sum(0,items))/Math.max(1,per100(pid,0))*100))}
+  else for(let k=0;k<3;k++){pg=Math.min(400,Math.max(0,(t.p-sum(1,items)-cg*per100(cid,1)/100)/Math.max(.1,per100(pid,1))*100));cg=Math.min(500,Math.max(0,(t.c-sum(3,items)-pg*per100(pid,3)/100)/Math.max(.1,per100(cid,3))*100))}
+  // ajuste final: as porções variáveis encolhem ou crescem para a refeição fechar nas calorias previstas
+  // ajuste final: fecha as calorias da refeição mexendo primeiro no carboidrato e preservando a proteína
+  {const kp=per100(pid,0)/100,kc=cid?per100(cid,0)/100:0;let ex=pg*kp+cg*kc+sum(0,items)-t.k;if(cid&&kc){const ng=Math.max(30,Math.min(cg*1.6,cg-ex/kc));ex-=(cg-ng)*kc;cg=ng}if(Math.abs(ex)>t.k*.06&&kp){pg=Math.max(pg*.8,pg-ex/kp)}}
+  const it=[{f:pid,q:r5(pg)},...(cid?[{f:cid,q:r5(cg)}]:[]),...items].filter(x=>x.f&&x.q>0);
+  if(mk==='almoco'||mk==='jantar'){const fat=sum(2,it),oil=Math.min(10,Math.max(0,Math.min(t.f-fat,(t.k-sum(0,it))/9)));if(oil>=3)it.push({f:tfId('Azeite, de oliva, extra virgem'),q:Math.round(oil)})}
+  meals[mk]=it}
+ return{name:'Plano '+'ABC'[v%3],meals}}
+const planTot=pl=>sumNut(Object.values(pl.meals).flat());
+function applyPlan(pl,k,mode){nS();if(mode==='sub')S.meals=S.meals.filter(m=>m.d!==k);for(const[mk,it]of Object.entries(pl.meals)){if(!it.length)continue;const t=(MEALS.find(x=>x[0]===mk)||[])[2]||'12:00',dst=S.meals.find(x=>x.d===k&&x.m===mk);if(dst)dst.it.push(...it.map(x=>({...x})));else S.meals.push({id:uid(),d:k,m:mk,t,it:it.map(x=>({...x}))})}save()}
+VIEWS.planos=p=>{nS();S.plans=S.plans||[];const tab=p.tab||'sug',v=p.v||0,P=nutriPlan(),d=nDay();
+ let h=bar('Planos de dieta')+`<main class="page"><div class="seg"><button class="${tab==='sug'?'on':''}" data-a="plTab" data-k="sug">Sugeridos</button><button class="${tab==='meus'?'on':''}" data-a="plTab" data-k="meus">Meus planos (${S.plans.length})</button></div>`;
+ const show=pl=>{const n=planTot(pl);return`<section class="card form"><div class="row"><b class="nfx" style="font-size:17px">${esc(pl.name)}</b><span class="muted small">${fmtInt(n[0])} kcal</span></div><p class="muted small" style="margin:0">Proteína ${fmtInt(n[1])} g · Carboidrato ${fmtInt(n[3])} g · Gordura ${fmtInt(n[2])} g${tab==='sug'?` (meta: ${fmtInt(P.kcal)} kcal · P ${fmtInt(P.gP)} · C ${fmtInt(P.gC)} · G ${fmtInt(P.gG)})`:''}</p></section>
+  ${MEALS.filter(([mk])=>(pl.meals[mk]||[]).length).map(([mk,ml])=>{const it=pl.meals[mk],m=sumNut(it);return`<section class="card pl-meal"><div class="row"><b class="nfx">${ml}</b><span class="muted small">${fmtInt(m[0])} kcal</span></div>${it.map(x=>`<div class="pl-it"><span>${esc(itemName(x))}</span><b>${x.f?fmtInt(x.q)+' g':fmtInt(x.kcal)+' kcal'}</b></div>`).join('')}</section>`}).join('')}`};
+ if(tab==='sug'){const pl=genPlan(v);h+=`<p class="muted small" style="margin:0">Planos montados com alimentos da tabela TACO para a sua meta de hoje (${esc(GOAL_TXT[goalOf()]||'')}). As porções são calculadas para bater calorias e macronutrientes; ajuste à vontade depois de aplicar.</p><div class="chips">${[0,1,2].map(i=>`<button class="chip${v===i?' on':''}" data-a="plV" data-k="${i}">Plano ${'ABC'[i]}</button>`).join('')}</div>${show(pl)}
+  <div class="row2"><button class="btn pri" data-a="plApply">Usar em ${esc(dayLabel(d).toLowerCase())}</button><button class="btn sec" data-a="plSave">Salvar em meus planos</button></div>`}
+ else h+=S.plans.length?S.plans.map(pl=>`<section class="card form"><div class="row"><b class="nfx">${esc(pl.name)}</b><span class="muted small">${fmtInt(planTot(pl)[0])} kcal</span></div><div class="chips"><button class="chip" data-a="plOpen" data-id="${pl.id}">Ver</button><button class="chip" data-a="plApplyMine" data-id="${pl.id}">Usar em ${esc(dayLabel(d).toLowerCase())}</button><button class="chip" data-a="plDel" data-id="${pl.id}">Excluir</button></div></section>`).join(''):`<div class="emptybox">${I.food}<b>Nenhum plano salvo</b><span>Salve um plano sugerido ou, na Nutrição, use o menu ⋯ → "Salvar este dia como plano".</span></div>`;
+ if(p.open){const pl=S.plans.find(x=>x.id===p.open);if(pl)h+=`<h3 class="sh">${esc(pl.name)}</h3>${show(pl)}`}
+ return h+'</main>'};
+function planApplyAsk(pl){const d=nDay(),k=dkey(d);if(!mealsOn(k).some(m=>m.it.length)){applyPlan(pl,k,'add');tab('dieta');toast('Plano aplicado ao dia');return}
+ menu('Este dia já tem refeições',[{label:'Substituir as refeições do dia',icon:I.copy,f:()=>{applyPlan(pl,k,'sub');tab('dieta');toast('Plano aplicado ao dia')}},{label:'Somar às refeições do dia',icon:I.plus,f:()=>{applyPlan(pl,k,'add');tab('dieta');toast('Plano somado ao dia')}}])}
+// Código de barras: lê com a câmera (BarcodeDetector, funciona offline) ou digitando; o código fica ligado ao alimento.
+// Produto novo: busca no Open Food Facts quando houver internet; sem internet, abre o cadastro com o código já preenchido.
+let BC=null;
+function bcStop(){if(BC){BC.on=false;try{BC.stream&&BC.stream.getTracks().forEach(t=>t.stop())}catch(e){}BC=null}}
+async function bcOpen(){bcStop();sheet(`<h3>Código de barras</h3><div class="bc-cam" id="bc-cam"><video id="bc-v" playsinline muted></video><i></i></div><p class="muted small" id="bc-msg" style="margin:0">Aponte a câmera para o código de barras da embalagem.</p><div class="bc-row"><input class="inp" id="bc-in" inputmode="numeric" placeholder="Ou digite o número" maxlength="14"><button class="btn pri" data-a="bcGo">Buscar</button></div><button class="btn sec" data-a="bcCancel">Cancelar</button>`);
+ const msg=t=>{const m=$('#bc-msg');if(m)m.textContent=t};
+ if(!('BarcodeDetector' in window)||!navigator.mediaDevices){$('#bc-cam').hidden=true;msg('A leitura pela câmera não está disponível neste aparelho. Digite o número que fica embaixo do código.');return}
+ try{const det=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e','code_128']});const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});const v=$('#bc-v');if(!v){stream.getTracks().forEach(t=>t.stop());return}
+  BC={on:true,stream};v.srcObject=stream;await v.play();
+  const loop=async()=>{if(!BC||!BC.on||!document.contains(v)){bcStop();return}try{const r=await det.detect(v);if(r&&r[0]&&r[0].rawValue){const c=r[0].rawValue;bcStop();closeSheet();bcLookup(c);return}}catch(e){}setTimeout(loop,250)};loop()}
+ catch(e){$('#bc-cam').hidden=true;msg('Não foi possível usar a câmera (permissão negada?). Digite o número do código.')}}
+const OFFK=[[0,'energy-kcal_100g',1],[1,'proteins_100g',1],[2,'fat_100g',1],[3,'carbohydrates_100g',1],[4,'fiber_100g',1],[5,'saturated-fat_100g',1],[6,'cholesterol_100g',1000],[7,'sodium_100g',1000],[8,'potassium_100g',1000],[9,'calcium_100g',1000],[10,'iron_100g',1000],[11,'magnesium_100g',1000],[12,'zinc_100g',1000],[13,'vitamin-c_100g',1000],[14,'vitamin-a_100g',1e6]];
+function bcUse(id){const t=top_();if(t.v==='alimentos'&&t.p.pick){t.p.sel=t.p.sel||[];if(!t.p.sel.includes(id))t.p.sel.push(id);rerender();toast(`${food(id).name}: selecionado`)}else{UI.view={id,q:food(id)?.por||100};sheet(`<div class="form" id="vsheet">${portionHTML(id,UI.view.q,false)}</div>`)}}
+async function bcLookup(code){code=String(code||'').replace(/\D/g,'');if(code.length<6){toast('Código inválido.');return}nS();S.barcodes=S.barcodes||{};
+ const known=S.barcodes[code];if(known&&food(known)){bcUse(known);return}
+ const cad=why=>{go('novoAlimento',{f:{por:'100',code}});toast(why)};
+ if(!navigator.onLine){cad('Sem internet: cadastre o produto com a tabela da embalagem. Da próxima vez o código já é reconhecido.');return}
+ toast('Buscando o produto…');
+ try{const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),9000);const r=await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,product_name_pt,brands,nutriments,serving_quantity`,{signal:ctl.signal});clearTimeout(tm);const j=await r.json();const pr=j&&j.product,nu=pr&&pr.nutriments;
+  if(!pr||!nu||nu['energy-kcal_100g']==null){cad('Produto não encontrado. Cadastre com a tabela da embalagem; o código fica salvo.');return}
+  const v=NK.map(()=>null);for(const[i,k,m]of OFFK)if(nu[k]!=null&&isFinite(+nu[k]))v[i]=Math.round(+nu[k]*m*100)/100;for(const i of[1,2,3])if(v[i]==null)v[i]=0;
+  const name=[(pr.product_name_pt||pr.product_name||'Produto '+code).trim(),pr.brands?String(pr.brands).split(',')[0].trim():''].filter(Boolean).join(' · ');
+  const id='u'+uid();S.foods.push({id,name,por:Math.round(num(pr.serving_quantity))||100,v,code});S.barcodes[code]=id;save();toast('Produto encontrado e salvo em Meus alimentos');bcUse(id)}
+ catch(e){cad('Não deu para buscar agora. Cadastre com a tabela da embalagem; o código fica salvo.')}}
+
+/* ===================== FOTOS DE EVOLUÇÃO (IndexedDB, só neste aparelho) ===================== */
+const POSES=[['frente','Frente'],['lado','Lado'],['costas','Costas']];
+async function fotosAll(){try{const db=await idb();return await new Promise((res,rej)=>{const q=db.transaction('fotos').objectStore('fotos').getAll();q.onsuccess=()=>res(q.result.filter(z=>z.pid===REGS.current).sort((a,b)=>a.t-b.t));q.onerror=()=>rej(q.error)})}catch(e){return[]}}
+async function fotoPut(o){const db=await idb();await new Promise((res,rej)=>{const tx=db.transaction('fotos','readwrite');tx.objectStore('fotos').put(o);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
+async function fotoDel(id){const db=await idb();await new Promise((res,rej)=>{const tx=db.transaction('fotos','readwrite');tx.objectStore('fotos').delete(id);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
+async function makeEvoPhoto(file){const url=URL.createObjectURL(file);try{const im=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=url});const H=1280,k=Math.min(1,H/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(im.naturalWidth*k);c.height=Math.round(im.naturalHeight*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.8)}finally{URL.revokeObjectURL(url)}}
+const weightAt=t=>{const s=evoSeries('weight');const v=evoAt(s,t+DAY-1);return v?v.y:null};
+function fotoAddSheet(){UI.fpNew=UI.fpNew||{pose:'frente'};sheet(`<h3>Foto de evolução</h3><p>Tire sempre na mesma luz, distância e roupa para comparar melhor. A foto fica só neste aparelho.</p><span class="lab">Posição</span><div class="chips" id="fp-pose">${POSES.map(([k,l])=>`<button class="chip${UI.fpNew.pose===k?' on':''}" data-a="fpPoseNew" data-k="${k}">${l}</button>`).join('')}</div><label class="fld"><span>Data</span><input class="inp" type="date" id="fp-date" value="${toDateInput(Date.now())}"></label><span class="btn pri filebtn">${I.camera} Tirar ou escolher foto<input type="file" accept="image/*" data-file="evo" aria-label="Foto de evolução"></span><button class="btn sec" data-a="closeSheet">Cancelar</button>`)}
+VIEWS.fotosGer=()=>bar('Fotos de evolução',{right:`<button class="tb" data-a="fpAdd">Adicionar</button>`})+`<main class="page"><div id="fp-ger" class="fp-grid"><p class="muted small">Carregando…</p></div></main>`;
+VIEWS.fotosGer.after=async()=>{const el=$('#fp-ger');if(!el)return;const l=(await fotosAll()).reverse();el.innerHTML=l.length?l.map(f=>`<figure><img src="${f.img}" alt=""><figcaption>${(POSES.find(p=>p[0]===f.pose)||[])[1]||''} · ${new Date(f.t).toLocaleDateString('pt-BR')}<button class="ib" data-a="fpDel" data-id="${f.id}" aria-label="Excluir foto">${I.trash}</button></figcaption></figure>`).join(''):`<div class="emptybox">${I.camera}<b>Nenhuma foto ainda</b><span>Adicione fotos de frente, de lado e de costas para comparar a evolução.</span></div>`};
+async function fotoCompare(){const el=$('#evo-fotos');if(!el)return;const all=await fotosAll();if(!all.length){el.innerHTML=`<p class="muted small" style="margin:0">Nenhuma foto ainda. Adicione em Perfil → Meus dados → Fotos de evolução.</p>`;return}
+ const poses=POSES.filter(([k])=>all.some(f=>f.pose===k));const pose=poses.some(p=>p[0]===UI.fpPose)?UI.fpPose:poses[0][0];const l=all.filter(f=>f.pose===pose);
+ const a=l.find(f=>f.id===UI.fpA)||l[0],b=l.find(f=>f.id===UI.fpB)||l[l.length-1];
+ const sel=(k,cur)=>`<select class="inp" data-f="fp:${k}" aria-label="${k==='A'?'Antes':'Depois'}">${l.map(f=>`<option value="${f.id}"${f.id===cur.id?' selected':''}>${new Date(f.t).toLocaleDateString('pt-BR')}</option>`).join('')}</select>`;
+ const fig=(f,lab)=>{const w=weightAt(f.t);return`<figure><span class="lab">${lab}</span><img src="${f.img}" alt="${lab}"><figcaption>${new Date(f.t).toLocaleDateString('pt-BR')}${w?` · ${fmt(w)} kg`:''}</figcaption></figure>`};
+ const wa=weightAt(a.t),wb=weightAt(b.t),days=Math.round((b.t-a.t)/DAY);
+ el.innerHTML=`<div class="chips">${poses.map(([k,lb])=>`<button class="chip${pose===k?' on':''}" data-a="fpPose" data-k="${k}">${lb}</button>`).join('')}</div><div class="row2">${sel('A',a)}${sel('B',b)}</div><div class="fp-cmp">${fig(a,'Antes')}${fig(b,'Depois')}</div>${a!==b?`<p class="muted small" style="margin:0">${days} dias entre as fotos${wa&&wb?` · peso ${evoDelta(EVO[0],wa,wb)}`:''}.</p>`:'<p class="muted small" style="margin:0">Adicione mais uma foto nesta posição para comparar.</p>'}`}
+
+/* ===================== CENTRAL DE METAS (definidas em Meus dados; previsão pela tendência) ===================== */
+const goalsOf=()=>S.profile.goals||{};
+function trendPerWeek(s,days=42){const t0=Date.now()-days*DAY,l=s.filter(p=>p.x>=t0);if(l.length<3||l[l.length-1].x-l[0].x<10*DAY)return null;const n=l.length,mx=l.reduce((a,p)=>a+p.x,0)/n,my=l.reduce((a,p)=>a+p.y,0)/n;let num_=0,den=0;for(const p of l){num_+=(p.x-mx)*(p.y-my);den+=(p.x-mx)**2}return den?num_/den*7*DAY:null}
+function goalForecast(k,target){const s=evoSeries(k),last=s[s.length-1];if(!last||target==null)return null;const d=EVO.find(z=>z[0]===k),tr=trendPerWeek(s),diff=target-last.y,done=Math.abs(diff)<(d[3]?.05:.5);
+ const start=evoAt(s,goalsOf().since||0)||s[0];const tot=target-start.y,pct=done?1:tot?Math.max(0,Math.min(1,(last.y-start.y)/tot)):0;
+ let fc;if(done)fc='Meta alcançada!';else if(tr==null)fc='Registre por pelo menos 2 semanas para calcular a previsão.';else if(!tr||Math.sign(tr)!==Math.sign(diff))fc=`No ritmo atual (${tr>0?'+':'−'}${fmt(Math.abs(Math.round(tr*100)/100))} ${d[2]==='%'?'p.p.':d[2]}/semana) a medida não está indo na direção da meta.`;else{const wk=diff/tr,dt=new Date(Date.now()+wk*7*DAY);fc=`Previsão: <b>${dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'})}</b> (em ~${wk<1?'1':Math.round(wk)} semana${wk<1.5?'':'s'}, no ritmo de ${tr>0?'+':'−'}${fmt(Math.abs(Math.round(tr*100)/100))} ${d[2]==='%'?'p.p.':d[2]}/semana).`}
+ return{d,last,target,pct,fc,start}}
+const gBar=(pct,txt)=>`<div class="g-bar"><i style="width:${(pct*100).toFixed(0)}%"></i></div><span class="muted small">${txt}</span>`;
+VIEWS.metas=()=>{const g=goalsOf(),P=nutriPlan(),today=sod(Date.now());let h=bar('Central de metas')+'<main class="page">';
+ const has=['weight','fat','waist','wpw','prot'].some(k=>num(g[k])>0);
+ h+=`<p class="muted small" style="margin:0">As metas são definidas em Perfil → Meus dados → Metas. A previsão usa a tendência dos seus registros das últimas 6 semanas.</p>`;
+ if(!has)h+=`<div class="emptybox">${I.flame}<b>Nenhuma meta definida</b><span>Defina peso, gordura, cintura, treinos por semana e proteína.</span><button class="btn pri sm" data-a="goPf" data-v="dados">Definir metas</button></div>`;
+ for(const[k,lab]of[['weight','Peso'],['fat','Gordura corporal'],['waist','Cintura']]){if(!(num(g[k])>0))continue;const f=goalForecast(k,num(g[k]));if(!f){h+=`<section class="card form"><b>${lab}: meta ${evoFmt(EVO.find(z=>z[0]===k),num(g[k]))}</b><span class="muted small">Sem registros ainda.</span></section>`;continue}
+  h+=`<section class="card form"><div class="row"><b class="nfx">${lab}</b><span class="muted small">meta ${evoFmt(f.d,f.target)}</span></div><div class="g-big"><b>${evoFmt(f.d,f.last.y)}</b><span>${f.pct>=1?'':'faltam '+evoFmt(f.d,Math.abs(f.target-f.last.y))}</span></div>${gBar(f.pct,`${Math.round(f.pct*100)}% do caminho desde ${new Date(f.start.x).toLocaleDateString('pt-BR')} (${evoFmt(f.d,f.start.y)})`)}<p style="margin:0">${f.fc}</p></section>`}
+ if(num(g.wpw)>0){const wk=weekStart(Date.now()),weeks=[...Array(8)].map((_,i)=>addDays(wk,-7*(i+1))),cnt=w=>S.workouts.filter(x=>x.start>=w&&x.start<addDays(w,7)).length+(S.extra||[]).filter(x=>x.t>=w&&x.t<addDays(w,7)).length,hit=weeks.filter(w=>cnt(w)>=g.wpw).length,now=cnt(wk);
+  h+=`<section class="card form"><div class="row"><b class="nfx">Treinos por semana</b><span class="muted small">meta ${g.wpw}</span></div><div class="g-big"><b>${now}</b><span>nesta semana</span></div>${gBar(Math.min(1,now/g.wpw),now>=g.wpw?'Meta da semana batida!':`Faltam ${g.wpw-now} treino(s) nesta semana`)}<p style="margin:0">Bateu a meta em <b>${hit} das últimas 8 semanas</b>. Contam treinos de musculação e exercícios avulsos.</p></section>`}
+ const pT=num(g.prot)>0?num(g.prot):(P.auto?P.gP:null);if(pT){const ds=[...Array(7)].map((_,i)=>dkey(addDays(today,-i))).filter(k=>mealsOn(k).some(m=>m.it.length));const avg=ds.length?ds.reduce((a,k)=>a+dayNut(k)[1],0)/ds.length:0,hitD=ds.filter(k=>dayNut(k)[1]>=pT*.95).length;
+  h+=`<section class="card form"><div class="row"><b class="nfx">Proteína por dia</b><span class="muted small">meta ${fmtInt(pT)} g${num(g.prot)>0?'':' (do plano)'}</span></div><div class="g-big"><b>${fmtInt(avg)} g</b><span>média dos dias registrados (7 dias)</span></div>${gBar(Math.min(1,avg/pT),`Bateu a meta em ${hitD} de ${ds.length} dia(s) registrados`)}</section>`}
+ {const ds=[...Array(7)].map((_,i)=>addDays(today,-i)),hitW=ds.filter(d=>waterOn(dkey(d))>=waterGoal(d).ml).length,kc=ds.filter(d=>{const n=dayNut(dkey(d))[0],Pd=nutriPlan(d);return n>0&&n>=Pd.lo&&n<=Pd.hi}).length;
+  h+=`<section class="card form"><div class="row"><b class="nfx">Hábitos dos últimos 7 dias</b></div>${gBar(hitW/7,`Água: meta batida em ${hitW} de 7 dias`)}${gBar(kc/7,`Calorias dentro da faixa da meta em ${kc} de 7 dias`)}</section>`}
+ if(has)h+=`<button class="btn sec" data-a="goPf" data-v="dados">${I.edit} Ajustar metas</button>`;
+ return h+'</main>'};
+
+/* ===================== PAINEL DO DIA (Início) e SONO ===================== */
+const ringSVG=(pct,cls='')=>{const r=17,c=2*Math.PI*r;return`<svg class="pd-ring ${cls}" viewBox="0 0 42 42" aria-hidden="true"><circle cx="21" cy="21" r="${r}" class="bg"/><circle cx="21" cy="21" r="${r}" class="fg" stroke-dasharray="${(c*Math.max(0,Math.min(1,pct))).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 21 21)"/></svg>`};
+const sleepOn=k=>num((S.sleep||{})[k]);
+function homeDay(){nS();const now=Date.now(),t0=sod(now),k=dkey(now),P=nutriPlan(now),n=dayNut(k),wg=waterGoal(now).ml,wt=waterOn(k);
+ const ws=S.workouts.filter(w=>w.start>=t0),wmin=ws.reduce((a,w)=>a+(w.end-w.start),0)/6e4,ex=exKcalOn(now),sl=sleepOn(k),slG=num(S.profile.sleepGoal)||8;
+ const tile=(act,pct,val,lab,sub,cls='')=>`<button class="pd-t" ${act}>${ringSVG(pct,cls)}<b>${val}</b><span>${lab}</span><em>${sub}</em></button>`;
+ return`<section class="card pd"><div class="row"><span class="lab nfx">Painel do dia</span><span class="muted small">${new Date(now).toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'short'})}</span></div><div class="pd-g">
+ ${tile('data-a="tab" data-t="dieta"',n[0]/P.kcal,fmtInt(n[0]),'Calorias',`de ${fmtInt(P.kcal)}`)}
+ ${tile('data-a="tab" data-t="dieta"',n[1]/Math.max(1,P.gP),fmtInt(n[1])+'g','Proteína',`de ${fmtInt(P.gP)} g`,'p')}
+ ${tile('data-a="tab" data-t="agua"',wt/wg,fmt(wt/1000)+'L','Água',`de ${fmt(wg/1000)} L`,'w')}
+ ${tile('data-a="tab" data-t="treino"',ws.length?1:0,ws.length?fmtDur(wmin*6e4):'—','Treino',ws.length?(ws.length>1?ws.length+' treinos':'feito'):'ainda não','t')}
+ ${tile('data-a="tab" data-t="ativ"',Math.min(1,ex/400),fmtInt(ex),'Exercício','kcal do relógio','x')}
+ ${tile('data-a="sleepLog"',sl/slG,sl?fmt(sl)+'h':'—','Sono',sl?`meta ${fmt(slG)} h`:'tocar p/ registrar','s')}
+ </div></section>`}
+
+/* ===================== LEMBRETES DE ÁGUA ===================== */
+// Funcionam com o app aberto ou em segundo plano recente (o navegador não permite agendar avisos com o app fechado sem servidor).
+const wrCfg=()=>Object.assign({on:false,every:120,from:'08:00',to:'22:00'},S.profile.wr||{});
+const hm2min=s=>{const[h,m]=(s||'0:0').split(':').map(Number);return(h||0)*60+(m||0)};
+function wrNext(now=Date.now()){const c=wrCfg();if(!c.on)return null;const d=new Date(now),k=dkey(now),dayStart=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime(),from=dayStart+hm2min(c.from)*6e4,to=dayStart+hm2min(c.to)*6e4;
+ if(waterOn(k)>=waterGoal(now).ml)return null;const l=(S.water&&S.water[k])||[];const last=Math.max(l.length?l[l.length-1].t:from,c.lastAlert&&c.lastAlert>=dayStart?c.lastAlert:0,from);const nx=Math.max(last+c.every*6e4,from);return nx<=to?nx:null}
+async function wrNotify(body){try{if(!('Notification' in window)||Notification.permission!=='granted')return;const r=await swReg(),o={body,tag:'carga-agua',icon:'icon-192.png',badge:'icon-192.png',renotify:true};if(r)await r.showNotification('Hora de beber água',o);else new Notification('Hora de beber água',o)}catch(e){}}
+function wrTick(){if(!REGS.current)return;const nx=wrNext();if(nx==null||Date.now()<nx)return;S.profile.wr=Object.assign(wrCfg(),{lastAlert:Date.now()});save();const falta=Math.max(0,waterGoal().ml-waterOn(dkey(Date.now())));const msg=`Faltam ${fmtInt(falta)} ml para a meta de hoje.`;if(document.hidden)wrNotify(msg);else toast('Hora de beber água. '+msg)}
+setInterval(wrTick,6e4);document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(wrTick,1500)});
+
+Object.assign(A,{
+ nCopyDay:()=>{const k=dkey(nDay()),pk=prevKey(k);if(!mealsOn(pk).some(m=>m.it.length)){toast('O dia anterior não tem refeições registradas.');return}const n=copyMeals(pk,k);rerender();toast(`${n} alimento(s) copiados do dia anterior`)},
+ nCopyMeal:()=>{const w=top_().p.w,pk=prevKey(w.d),m=mealsOn(pk).find(x=>x.m===w.m);if(!m||!m.it.length){toast('Ontem não houve '+(MEALS.find(x=>x[0]===w.m)||[,'esta refeição'])[1].toLowerCase()+'.');return}w.it.push(...m.it.map(x=>({...x})));rerender();toast(`${m.it.length} alimento(s) copiados de ontem`)},
+ nSaveDayPlan:()=>{const k=dkey(nDay()),ms=mealsOn(k).filter(m=>m.it.length);if(!ms.length){toast('Este dia não tem refeições para salvar.');return}askText('Nome do plano',`Meu dia ${new Date(nDay()).toLocaleDateString('pt-BR')}`).then(v=>{closeSheet();if(!v||!String(v).trim())return;nS();S.plans=S.plans||[];const meals={};for(const m of ms)meals[m.m]=(meals[m.m]||[]).concat(m.it.map(x=>({...x})));S.plans.push({id:uid(),name:String(v).trim(),meals});save();toast('Plano salvo em Planos de dieta')})},
+ plTab:d=>{top_().p.tab=d.k;top_().p.open=null;rerender()},
+ plV:d=>{top_().p.v=+d.k;rerender()},
+ plApply:()=>planApplyAsk(genPlan(top_().p.v||0)),
+ plSave:()=>{const pl=genPlan(top_().p.v||0);askText('Nome do plano',`${pl.name} · ${GOAL_TXT[goalOf()]||''}`).then(v=>{closeSheet();if(!v||!String(v).trim())return;S.plans=S.plans||[];S.plans.push({id:uid(),name:String(v).trim(),meals:pl.meals});save();top_().p.tab='meus';rerender();toast('Plano salvo')})},
+ plOpen:d=>{top_().p.open=top_().p.open===d.id?null:d.id;rerender()},
+ plApplyMine:d=>{const pl=(S.plans||[]).find(x=>x.id===d.id);if(pl)planApplyAsk(pl)},
+ plDel:d=>{ask('Excluir este plano?','','Excluir',true).then(ok=>{closeSheet();if(!ok)return;S.plans=S.plans.filter(x=>x.id!==d.id);save();rerender()})},
+ bcScan:()=>bcOpen(),
+ bcGo:()=>{const v=($('#bc-in')||{}).value;bcStop();closeSheet();bcLookup(v)},
+ bcCancel:()=>{bcStop();closeSheet()},
+ fpAdd:()=>fotoAddSheet(),
+ fpPoseNew:d=>{UI.fpNew.pose=d.k;document.querySelectorAll('#fp-pose .chip').forEach(b=>b.classList.toggle('on',b.dataset.k===d.k))},
+ fpPose:d=>{UI.fpPose=d.k;UI.fpA=UI.fpB=null;fotoCompare()},
+ fpDel:d=>{ask('Excluir esta foto?','Ela será apagada deste aparelho.','Excluir',true).then(async ok=>{closeSheet();if(!ok)return;await fotoDel(d.id);rerender();toast('Foto excluída')})},
+ sleepLog:()=>{const k=dkey(Date.now());askText('Horas de sono na última noite',sleepOn(k)?String(sleepOn(k)).replace('.',','):'','Ex.: 7,5').then(v=>{closeSheet();if(v===null||v===undefined)return;const n=num(v);S.sleep=S.sleep||{};if(n>0&&n<=16)S.sleep[k]=Math.round(n*10)/10;else if(!String(v).trim())delete S.sleep[k];else{toast('Digite as horas, por exemplo 7,5.');return}save();rerender()});const x=$('#ask-in');if(x)x.inputMode='decimal'},
+ wrToggle:async()=>{const c=wrCfg();c.on=!c.on;if(c.on&&'Notification' in window&&Notification.permission==='default'){try{await Notification.requestPermission()}catch(e){}}S.profile.wr=c;save();rerender();toast(c.on?('Notification' in window&&Notification.permission==='granted'?'Lembretes de água ligados':'Lembretes ligados (só dentro do app: as notificações estão bloqueadas)'):'Lembretes de água desligados')},
+ wrEvery:d=>{S.profile.wr=Object.assign(wrCfg(),{every:+d.k});save();rerender()},
+ gWpw:d=>{const g=S.profile.goals=S.profile.goals||{};g.wpw=g.wpw===+d.k?null:+d.k;save();rerender()}
 });
 
 /* Senha de entrada: a mesma nos dois celulares e fixa. O código guarda só o hash PBKDF2 (o repositório é público);
