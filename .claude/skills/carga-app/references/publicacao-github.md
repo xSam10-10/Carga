@@ -1,6 +1,6 @@
 # GitHub, Pages e entrega
 
-## Situação atual (17/10/2026)
+## Situação atual (18/10/2026)
 
 - **Repositório:** https://github.com/xSam10-10/Carga (conta do usuário: **xSam10-10**; o `xsam2025-boop` era um nome antigo errado). Público, branch `main`, com o histórico completo do projeto enviado.
 - **Conectar numa sessão:** `add_repo` com owner `xSam10-10`, repo `Carga`, acesso `push`. Se falhar, use `list_repos` para ver o nome exato que a conexão enxerga.
@@ -40,3 +40,7 @@
 - O app registra o service worker com `updateViaCache:'none'`, chama `reg.update()` sempre que volta para a tela e a cada 30 min; no `controllerchange` recarrega sozinho (ou avisa, se houver treino em andamento, folha aberta ou formulário).
 - A versão aparece no rodapé de Configurações ("Carga v36"): `build.py` troca `__CARGA_V__` pelo `CACHE` do `sw.js`. Para conferir se o celular está atualizado, compare com o `CACHE` atual.
 - Versões até a v35 não tinham isso: o app instalado podia ficar parado na memória com a versão antiga até ser fechado de vez.
+
+## Instalação no celular e ícone da abertura (18/10/2026)
+- O Android guarda os ícones do momento da instalação. Para pegar ícones novos (ex.: abertura só com o símbolo, sem o quadrado verde), é preciso **desinstalar e instalar de novo** pelo Chrome (fazer backup antes).
+- Se no Android 12+ o quadrado verde continuar mesmo depois de reinstalar, é a tela de abertura do sistema usando o ícone da tela inicial (maskable). Solução proposta e ainda não aplicada: ícone da tela inicial com fundo preto e símbolo verde. Só fazer se o usuário confirmar.

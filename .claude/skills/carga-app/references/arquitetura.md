@@ -49,7 +49,7 @@ tools/                   geradores (ver imagens-e-avatares.md)
 
 ## Renderização
 
-- `render()` / `rerender()` redesenham a tela atual. A navegação usa `go(view)`, `back()` e `tab(nome)`. As abas são `inicio`, `treino`, `agua` e `perfil`.
+- `render()` / `rerender()` redesenham a tela atual. A navegação usa `go(view)`, `back()` e `tab(nome)`. As abas são `inicio`, `treino`, `dieta`, `ativ`, `agua` e `perfil`. Formulários são abertos com `goPf` (troca para a aba Perfil antes).
 - Cada tela é `VIEWS.<nome> = () => htmlString`. Se a tela precisar de trabalho depois de desenhar (animações), use `VIEWS.<nome>.after`.
   - Telas atuais: inicio, treino, sessao, finish, treinoDetalhe, exercicios, exercicio, explorar, novoEx, picker, perfil, perfis, config, dados, estatisticas, relatorio, calendario, medidas, medidaForm, saude, agua.
 - **Ações:** delegação de eventos. `data-a="nome"` chama `A.nome(dataset)`. `data-f` trata entradas de texto. Folhas que sobem de baixo: `sheet(html)` e `closeSheet()`. Também há `menu()`, `ask()`, `askText()` e `toast()`.

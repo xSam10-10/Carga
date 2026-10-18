@@ -34,20 +34,20 @@
   {
    "ordem": 6,
    "modulo": "Gráficos e relatórios",
-   "progresso": 0.72,
-   "resumo": "Períodos de 7 dias a desde o início em todos os gráficos; faltam os de nutrição e o painel da semana."
+   "progresso": 0.8,
+   "resumo": "Períodos de 7 dias a desde o início em todos os gráficos, Evolução do corpo com comparações; falta o painel Saúde da semana."
   },
   {
    "ordem": 7,
    "modulo": "Identidade e plataforma",
-   "progresso": 0.92,
-   "resumo": "Logo, abertura, senha de entrada, 6 temas, 15 cores, perfis separados, backup."
+   "progresso": 0.95,
+   "resumo": "Logo, abertura, senha, 6 temas, 15 cores, perfis separados, pictogramas próprios, Painel no Início e formulários concentrados no Perfil."
   },
   {
    "ordem": 8,
    "modulo": "Publicação",
-   "progresso": 0.85,
-   "resumo": "Site no ar em xsam10-10.github.io/Carga, atualizado a cada envio; falta instalar nos dois celulares."
+   "progresso": 0.9,
+   "resumo": "Site no ar em xsam10-10.github.io/Carga com atualização automática no celular; falta reinstalar para trocar o ícone da abertura."
   }
  ],
  "itens": [
@@ -120,6 +120,11 @@
    "Treino",
    "pronto",
    "Aba Exercícios: 53 exercícios avulsos (caminhada, corrida, bicicleta, natação…), favoritos, criar exercício, calorias obrigatórias e distância/FC opcionais"
+  ],
+  [
+   "Treino",
+   "sugestão",
+   "Integração com Health Connect (exige app Android nativo; aguardando decisão)"
   ],
   [
    "Hidratação",
@@ -342,6 +347,26 @@
    "Senha de entrada nos dois celulares"
   ],
   [
+   "Identidade e plataforma",
+   "pronto",
+   "Pictogramas próprios para 53 exercícios avulsos (estilo Samsung Health)"
+  ],
+  [
+   "Identidade e plataforma",
+   "pronto",
+   "Filtros de músculo com corpo hiper-realista e ilustrações de equipamento"
+  ],
+  [
+   "Identidade e plataforma",
+   "pronto",
+   "Painel de atalhos no Início e todo preenchimento concentrado no Perfil"
+  ],
+  [
+   "Identidade e plataforma",
+   "pronto",
+   "Assinatura discreta \"by Samuel Costa\" e versão visível em Configurações"
+  ],
+  [
    "Publicação",
    "pronto",
    "Site no ar pelo GitHub Pages, publicado a cada envio"
@@ -350,9 +375,23 @@
    "Publicação",
    "a fazer",
    "App instalado nos dois celulares pelo Pages"
+  ],
+  [
+   "Publicação",
+   "pronto",
+   "Atualização automática do app instalado (sem reinstalar)"
+  ],
+  [
+   "Publicação",
+   "a fazer",
+   "Reinstalar nos celulares para trocar o ícone da abertura (sem quadrado verde)"
   ]
  ],
  "proximos": [
+  [
+   "Publicação",
+   "Reinstalar o app nos dois celulares (ícone da abertura); se o quadrado verde continuar, trocar o ícone da tela inicial"
+  ],
   [
    "Nutrição",
    "Nutrição v2: copiar de ontem, planos de dieta e leitor de código de barras"
@@ -471,6 +510,14 @@
   [
    "2026-10-18",
    "Evolução do corpo com histórico e comparações de todas as medidas"
+  ],
+  [
+   "2026-10-18",
+   "Até 12 favoritos de exercício no Início"
+  ],
+  [
+   "2026-10-18",
+   "Painel no Início e formulários só no Perfil"
   ]
  ]
 }

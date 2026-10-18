@@ -40,3 +40,10 @@ Registre aqui toda decisão nova, com data, para não voltar a discutir o que j�
 | 17/10/2026 | Exercício do relógio entra cheio na meta: meta = (rotina ± ajuste do objetivo) + exercício; Falta = meta base + exercício − consumido | Pedido do usuário: o valor do relógio tem que aparecer igual na conta; o déficit/superávit fica fixo no dia |
 | 17/10/2026 | Modo "Pelo relógio" é o padrão do gasto do dia | Pedido do usuário (opção A): a conta é meta + exercício do relógio − consumido |
 | 17/10/2026 | Dias de treino por semana escolhidos no perfil (0 a 7+) definem o fator de atividade, em vez de nível fixo | Pedido do usuário: não deixar fixo; mudar quando a rotina mudar |
+| 17/10/2026 | Reset geral de todos os perfis (uma vez por aparelho), com os dados antigos guardados em `carga.old.*` e botão para restaurar | Pedido do usuário para testar preenchendo tudo do zero |
+| 17/10/2026 | Aba Exercícios só com registro manual e offline; calorias obrigatórias | Pedido do usuário: nada que dependa de relógio, GPS ou mapa |
+| 18/10/2026 | Atualização automática do app instalado (service worker com `no-cache`, `update()` ao voltar para a tela, recarga no `controllerchange`) | O app instalado ficava preso na versão antiga |
+| 18/10/2026 | Pictogramas próprios dos exercícios, filtros com corpo hiper-realista e ilustrações de equipamento | Prints do Samsung Health e do Hevy como referência; desenhos próprios |
+| 18/10/2026 | Painel de atalhos no Início; formulários só na aba Perfil | Pedido do usuário |
+| 18/10/2026 | Evolução do corpo com histórico e comparações (inclui altura com histórico `S.hLog`) | Pedido do usuário: comparar semana a semana, mês a mês, ano contra ano |
+

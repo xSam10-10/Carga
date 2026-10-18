@@ -7,7 +7,7 @@
 
 Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada para implementar aos poucos.
 
-## Visão geral (progresso geral: 77%)
+## Visão geral (progresso geral: 79%)
 
 | Módulo | Status | Progresso | Resumo |
 |---|---|---|---|
@@ -16,9 +16,9 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 3. Corpo e medidas | 🟡 | 75% | Meus dados no Perfil e Evolução do corpo: peso, IMC, gordura, massas, circunferências, altura e taxa basal com gráfico e comparações; faltam fotos de evolução. |
 | 4. Nutrição | 🟡 | 68% | Aba Nutrição no modelo do Samsung Health: diário com 6 refeições, TACO (591 alimentos), macros e micronutrientes, metas e tendências. Faltam planos de dieta e código de barras. |
 | 5. Metas e hábitos | 🟡 | 45% | Objetivo (perder, manter, ganhar peso, ganhar massa) com meta calórica e de macros por dia e o quanto falta no Início. Falta a central de metas com prazo e previsão. |
-| 6. Gráficos e relatórios | 🟡 | 72% | Períodos de 7 dias a desde o início em todos os gráficos; faltam os de nutrição e o painel da semana. |
-| 7. Identidade e plataforma | ✅ | 92% | Logo, abertura, senha de entrada, 6 temas, 15 cores, perfis separados, backup. |
-| 8. Publicação | ✅ | 85% | Site no ar em xsam10-10.github.io/Carga, atualizado a cada envio; falta instalar nos dois celulares. |
+| 6. Gráficos e relatórios | 🟡 | 80% | Períodos de 7 dias a desde o início em todos os gráficos, Evolução do corpo com comparações; falta o painel Saúde da semana. |
+| 7. Identidade e plataforma | ✅ | 95% | Logo, abertura, senha, 6 temas, 15 cores, perfis separados, pictogramas próprios, Painel no Início e formulários concentrados no Perfil. |
+| 8. Publicação | ✅ | 90% | Site no ar em xsam10-10.github.io/Carga com atualização automática no celular; falta reinstalar para trocar o ícone da abertura. |
 
 ## 1. Treino
 - ✅ Rotinas, pastas, modelos prontos e treino vazio
@@ -35,6 +35,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - 💡 RPE e RIR por série
 - 💡 Animações próprias para exercícios sem foto
 - ✅ Aba Exercícios: 53 exercícios avulsos (caminhada, corrida, bicicleta, natação…), favoritos, criar exercício, calorias obrigatórias e distância/FC opcionais
+- 💡 Integração com Health Connect (exige app Android nativo; aguardando decisão)
 
 ## 2. Hidratação
 - ✅ Meta por peso, sexo e treino do dia
@@ -91,18 +92,25 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Perfis separados, backup, cópias automáticas
 - 💡 Sincronizar os dois celulares
 - ✅ Senha de entrada nos dois celulares
+- ✅ Pictogramas próprios para 53 exercícios avulsos (estilo Samsung Health)
+- ✅ Filtros de músculo com corpo hiper-realista e ilustrações de equipamento
+- ✅ Painel de atalhos no Início e todo preenchimento concentrado no Perfil
+- ✅ Assinatura discreta "by Samuel Costa" e versão visível em Configurações
 
 ## 8. Publicação
 - ✅ Site no ar pelo GitHub Pages, publicado a cada envio
 - ⬜ App instalado nos dois celulares pelo Pages
+- ✅ Atualização automática do app instalado (sem reinstalar)
+- ⬜ Reinstalar nos celulares para trocar o ícone da abertura (sem quadrado verde)
 
 ## Ordem dos próximos passos
 
-1. **Nutrição:** Nutrição v2: copiar de ontem, planos de dieta e leitor de código de barras
-2. **Metas e hábitos:** Central de metas com previsão de chegada
-3. **Corpo e medidas:** Fotos de evolução e medidas por região
-4. **Metas e hábitos:** Painel do dia: treino, água, calorias, proteína e sono num cartão
-5. **Hidratação:** Lembretes de água, hábitos e conquistas
+1. **Publicação:** Reinstalar o app nos dois celulares (ícone da abertura); se o quadrado verde continuar, trocar o ícone da tela inicial
+2. **Nutrição:** Nutrição v2: copiar de ontem, planos de dieta e leitor de código de barras
+3. **Metas e hábitos:** Central de metas com previsão de chegada
+4. **Corpo e medidas:** Fotos de evolução e medidas por região
+5. **Metas e hábitos:** Painel do dia: treino, água, calorias, proteína e sono num cartão
+6. **Hidratação:** Lembretes de água, hábitos e conquistas
 
 ## Referências de outros apps
 
@@ -136,3 +144,5 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 17/10/2026 | Aba Exercícios: exercícios avulsos com calorias, distância e frequência cardíaca |
 | 18/10/2026 | Atualização automática do app instalado, figuras femininas da Carol, filtros hiper-realistas e ilustrados |
 | 18/10/2026 | Evolução do corpo com histórico e comparações de todas as medidas |
+| 18/10/2026 | Até 12 favoritos de exercício no Início |
+| 18/10/2026 | Painel no Início e formulários só no Perfil |

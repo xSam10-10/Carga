@@ -24,11 +24,16 @@ O que já existe e o que falta está em `references/roadmap.md`. Lá também est
 2. **Sem login nem servidor.** Os dados ficam no aparelho (localStorage e IndexedDB). Backup e importação são por arquivo.
 3. **Perfis separados.** Samuel e Carol têm dados 100% separados e alternam pelo Perfil.
 4. **Tudo em português do Brasil**, com tom direto e amigável, sem jargão técnico na interface.
-5. **Referência principal: Hevy.** Quando o usuário mandar prints ou vídeos do Hevy, analise quadro a quadro e reproduza o comportamento com fidelidade. Exemplo: a abertura atual foi copiada do vídeo dele.
-6. **Calorias vêm do relógio.** No fim do treino, um pop-up pede as calorias gastas que o relógio mostrou (Samsung Health ou app Fitness), e o valor é salvo direto no treino. **Não usamos frequência cardíaca nem fórmulas de estimativa**; o usuário decidiu que o número do relógio é mais fiel.
+5. **Referências: Hevy (treino) e Samsung Health (Nutrição, Exercícios, pictogramas).** Quando o usuário mandar prints ou vídeos, analise quadro a quadro e reproduza o comportamento com fidelidade, mas com desenhos próprios (nunca copiar imagens dos apps). Exemplo: a abertura atual foi copiada do vídeo dele.
+6. **Calorias vêm do relógio.** No fim do treino, um pop-up pede as calorias **ativas** que o relógio mostrou (Samsung Health ou app Fitness), e o valor é salvo direto no treino. Nos exercícios avulsos (aba Exercícios) as calorias são **obrigatórias** para salvar; distância, duração e frequência cardíaca média são opcionais e só informativas. **Nenhuma fórmula usa frequência cardíaca**; o número do relógio é o que vale.
 7. **Cor de destaque e tema mandam em tudo.** Realces, gráficos, mapa corporal e avatar de água seguem a cor de destaque. A exceção é a marca: logo, ícone e abertura ficam sempre no verde da marca.
-8. **O sexo do perfil define as figuras.** O perfil feminino usa as figuras femininas (mapa corporal e avatar de água) e o masculino usa as masculinas.
+8. **O sexo do perfil define as figuras.** O perfil feminino usa as figuras femininas (mapa corporal, avatar de água, miniaturas de filtro) e o masculino as masculinas. Enquanto o sexo não for preenchido, `visSex()` usa feminino para o perfil da Carol.
 9. **Senha de entrada.** É fixa e igual nos dois celulares. O código guarda só o hash; nunca registre a senha em texto puro em lugar nenhum, porque o repositório é público.
+10. **Todo preenchimento fica só na aba Perfil** (Meus dados, medidas, metas de nutrição e de água, configurações). Outras abas só mostram avisos que levam para lá pela ação `goPf`, que troca para a aba Perfil. Lançamentos do dia (refeições, copos de água, exercícios, calorias do treino) ficam nas próprias abas.
+11. **Só o que funciona offline.** Nada que dependa de GPS, mapa, cronômetro ao vivo ou leitura do relógio/Health Connect. Integração com Health Connect só exigiria app nativo Android; está aguardando decisão do usuário.
+12. **A meta do dia é: meta base (rotina × objetivo) + exercício do relógio por inteiro − consumido.** Modo "Pelo relógio" é o padrão; os dias de treino por semana são escolhidos no perfil e só mexem nas calorias no modo "Pelo nível".
+13. **Tudo o que muda com o tempo tem histórico e comparação** (Evolução do corpo: semana a semana, mês a mês, desde o início e ano contra ano).
+14. **Assinatura discreta** "by Samuel Costa" no rodapé de Configurações. Não remover.
 
 ## Como o usuário trabalha
 
@@ -41,6 +46,8 @@ O que já existe e o que falta está em `references/roadmap.md`. Lá também est
 
 - Página única: `app.html` (HTML + CSS + JS). `python3 build.py` gera `dist/index.html` e copia manifesto, service worker, ícones e `img/`.
 - Estado global `S`, com configurações do perfil em `S.profile`. Cada tela é uma função em `VIEWS.<nome>` que devolve HTML. As ações usam `data-a="..."` e são tratadas no objeto `A`.
+- Abas (6): Início (com o Painel de atalhos), Treino, Nutrição, Exercícios, Água e Perfil (Meus dados, Configurações).
+- Versão atual visível no rodapé de Configurações (`APP_V`, vem do `CACHE` do `sw.js`). O app instalado se atualiza sozinho (v36+).
 - Prévia publicada como Artifact: https://claude.ai/artifact/VtiM8zsMVrkBCHTSnkvoJ6. Republique com o mesmo `file_path`. Quando as imagens mudarem, passe `files` com `img/...`.
 - Detalhes, convenções e armadilhas: `references/arquitetura.md`.
 
@@ -49,13 +56,13 @@ O que já existe e o que falta está em `references/roadmap.md`. Lá também est
 1. Edite `app.html` ou os geradores em `tools/`.
 2. Aumente o número do `CACHE` em `sw.js` (`carga-vNN`), senão o celular continua com a versão antiga.
 3. Rode `python3 build.py`.
-4. Teste com Playwright em `dist/`. Sirva com `python3 -m http.server 8765` dentro de `dist/` e use `NODE_PATH=$(npm root -g)`. Confira erros de console e tire prints. O servidor costuma cair entre os comandos; suba de novo quando precisar.
-5. Publique o Artifact.
-6. Faça o commit com autor `Samuel Costa <samuel.costa@unilever.com>`, seguindo as regras de atribuição da sessão.
-7. Gere `carga-projeto.zip` (sem `.git` e `tools/.cache`) e `carga-site.zip` (conteúdo de `dist/`) e mande ao usuário.
+4. Teste com Playwright em `dist/`. Sirva com `python3 -m http.server 8765` dentro de `dist/` (em segundo plano) e use `NODE_PATH=$(npm root -g)`. Para pular a senha, grave `sessionStorage['carga.ok']` com o hash de `LOCK`; para não cair no reset geral, grave `localStorage['carga.reset']='2026-10-17'` antes de semear dados. Confira erros de console e tire prints.
+5. Faça o commit com autor `Samuel Costa <samuel.costa@unilever.com>`, seguindo as regras de atribuição da sessão, e `git push origin main`. O GitHub Actions publica no Pages; confira com `gh run list -R xSam10-10/Carga --limit 1`.
+6. Republique o Artifact de prévia.
+7. Mande prints ao usuário (zips só se ele pedir).
 8. Atualize o roadmap e o painel visual (seção abaixo) e, se aprendeu algo novo, esta skill.
 
-GitHub e Pages (pendente até hoje): `references/publicacao-github.md`.
+GitHub e Pages (site no ar em https://xsam10-10.github.io/Carga/): `references/publicacao-github.md`.
 
 ## Roadmap e painel visual
 
