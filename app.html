@@ -556,13 +556,20 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .hgoal .lab .i{width:15px;height:15px;vertical-align:-3px;color:var(--accent)}
 .gpill{font-size:13px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 .hbig{display:flex;align-items:center;gap:12px}.hbig b{font:600 44px/1 var(--display);font-variant-numeric:tabular-nums}.hbig b.over{color:var(--danger)}.hbig span{color:var(--muted);font-size:14px}
-.hring{flex:none;width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--surface-2) 0);display:grid;place-items:center;position:relative}.hring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--surface)}.hring span{position:relative;font:600 15px var(--display)}
+.hring{flex:none;width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--hc,var(--accent)) calc(var(--p)*1%),var(--surface-2) 0);display:grid;place-items:center;position:relative}.hring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--surface)}.hring span{position:relative;font:600 15px var(--display)}
 .heq{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.heq>div{background:var(--surface-2);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}.heq span{font-size:11px;color:var(--muted)}.heq b{font:600 19px var(--display);font-variant-numeric:tabular-nums}
 .hms{display:flex;flex-direction:column;gap:10px}.hm{display:flex;flex-direction:column;gap:4px}.hm .row{gap:6px}.hm-l{font-weight:600;font-size:14px}.hm b{font:600 17px var(--display);font-variant-numeric:tabular-nums}
 .hmb{height:9px;border-radius:5px;background:var(--surface-2);overflow:hidden}.hmb i{display:block;height:100%;border-radius:5px;transition:width .4s}.hm-over{color:var(--danger)}
 /* Abertura no estilo do Hevy: tela preta desde o primeiro quadro, só o símbolo parado no centro,
    e um esmaecimento curto revela o app. A expansão a partir do ícone fica por conta do sistema. */
 html.sp-on{background:#000}
+.lead{margin:0;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--accent);font-size:16px;line-height:1.4}.lead.z-ok{border-left-color:#2E9E5B}.lead.z-warn{border-left-color:var(--amber)}.lead.z-bad{border-left-color:var(--danger)}
+.zt.z-go{color:var(--muted)}.zt.z-ok,.sd.z-ok b{color:#2E9E5B}.zt.z-warn,.sd.z-warn b,.hbig b.z-warn{color:var(--amber)}.zt.z-bad,.sd.z-bad b,.hbig b.z-bad{color:var(--danger)}.hbig b.z-ok{color:#2E9E5B}
+.nbar i.zb-ok{background:#2E9E5B}.nbar i.zb-warn{background:var(--amber)}.nbar i.zb-bad{background:var(--danger)}.hring.z-ok{--hc:#2E9E5B}.hring.z-warn{--hc:var(--amber)}.hring.z-bad{--hc:var(--danger)}
+.sd{display:flex;flex-direction:column;gap:2px;background:var(--surface-2);border-radius:12px;padding:10px 12px}.sd>span{font-size:12px;color:var(--muted);font-weight:600}.sd>span em{font-weight:400;font-style:normal}.sd b{font:600 19px var(--display);font-variant-numeric:tabular-nums}.sd>em{font-style:normal;font-size:12px;color:var(--muted)}
+.gbar{display:flex;height:14px;border-radius:7px;overflow:hidden;gap:2px}.gbar i{display:block;min-width:4px}.gb0{background:#8A9096}.gb1{background:var(--amber)}.gb2{background:#4FB3EA}.gb3{background:#9A4BF0}
+.glist{display:flex;flex-direction:column;gap:4px;font-size:14px}.glist>div{display:flex;align-items:center;gap:8px}.glist>div>i{width:10px;height:10px;border-radius:3px;flex:none}.glist span{flex:1;color:var(--muted)}.glist b{font-variant-numeric:tabular-nums}.glist .gtot{border-top:1px solid var(--line);padding-top:6px;margin-top:2px}.glist .gtot span{color:var(--fg);font-weight:600}
+.cs{display:flex;flex-direction:column;gap:6px}.cs p{margin:0}.cs-h{margin-top:8px}.cs-r{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:2px 0}.cs-r b{font-variant-numeric:tabular-nums}.cs-r.tot{border-top:1px solid var(--line);padding-top:6px;font-weight:700}
 #gate{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch}.gate-c{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding:calc(env(safe-area-inset-top,0px) + 20px) 16px calc(env(safe-area-inset-bottom,0px) + 24px)}.gate-c .gerr{color:var(--danger);font-weight:600;margin:0}body.gated{overflow:hidden}
 #splash{position:fixed;inset:0;z-index:9999;background:#000;display:grid;place-items:center;transition:opacity .24s ease-out}
 #splash.out{opacity:0;pointer-events:none}
@@ -1370,14 +1377,15 @@ VIEWS.inicio=()=>{
  const dur=thisW.reduce((a,w)=>a+(w.end-w.start),0),vol=thisW.reduce((a,w)=>a+wStats(w).vol,0);
  const days=[...Array(7)].map((_,i)=>addDays(wk,i));const today=sod(Date.now());
  let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button><button class="ib" data-a="go" data-v="perfis" aria-label="Trocar perfil (${esc(S.profile.name)})"><span class="ava xs">${avaIn(S.profile)}</span></button></header><main class="page">`;
+ h+=homeLead();
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
- h+=`<h3 class="sh">Painel</h3><div class="grid2"><button class="tile" data-a="go" data-v="metas">${I.flame}Metas</button><button class="tile" data-a="go" data-v="resumo">${I.cal}Resumo</button><button class="tile" data-a="go" data-v="conquistas">${I.trophy}Conquistas</button><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button></div>`;
- h+=homeHealth()+homeNutri()+homeDay();
+ h+=homeMyDay()+homeSpend();
  h+=`
- <section class="card" style="display:flex;flex-direction:column;gap:14px"><div class="row"><span class="lab spacer">Esta semana</span><span class="tag amb">${I.flame.replace('class="i"','class="i" style="width:14px;height:14px;vertical-align:-2px"')} ${streakWeeks()} sem. seguidas</span></div>
+ <section class="card" style="display:flex;flex-direction:column;gap:14px"><div class="row"><span class="lab spacer">Minha semana</span><span class="tag amb">${I.flame.replace('class="i"','class="i" style="width:14px;height:14px;vertical-align:-2px"')} ${streakWeeks()} sem. seguidas</span></div>
  <div class="stat3"><div><span class="lab">Treinos</span><b>${thisW.length}</b></div><div><span class="lab">Tempo</span><b>${fmtDur(dur)}</b></div><div><span class="lab">Volume</span><b>${fmtInt(vol)}<small style="font-size:14px"> kg</small></b></div></div>
  <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<div class="dchip${has?' has':''}${d===today?' today':''}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></div>`}).join('')}</div></section>`;
- h+=homeActivity();
+ h+=homeBody();
+ h+=`<h3 class="sh">Explorar</h3><div class="grid2"><button class="tile" data-a="go" data-v="metas">${I.flame}Metas</button><button class="tile" data-a="go" data-v="resumo">${I.cal}Resumo</button><button class="tile" data-a="go" data-v="conquistas">${I.trophy}Conquistas</button><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button></div>`;
  if(backupDue()){const n=S.workouts.length-(S.profile.lastBackupN||0);h+=`<section class="alert"><b>Backup pendente</b><span>${n>0?`${n} treino(s) novo(s) desde o último backup.`:'Você ainda não fez backup.'} Se os dados do navegador forem apagados, o histórico se perde.</span><div class="row"><button class="btn pri sm" data-a="backupSheet">Fazer backup</button><button class="btn ghost sm" data-a="snoozeBackup">Lembrar depois</button></div></section>`}
  return h+'</main>'};
 
@@ -3432,6 +3440,66 @@ function homeActivity(){const wk=weekStart(Date.now()),today=sod(Date.now()),sel
  <div class="ah-tot"><span>Tempo ativo · distância</span><i></i><b>${fmtInt(a.min)} min · ${fmt(Math.round(a.dist*100)/100)} km</b></div>
  <p class="muted small" style="margin:0">${g.tmb?`O gasto basal é o que o corpo gasta em repouso, só para viver (taxa basal pela idade, peso, altura e sexo). `:'Preencha Meus dados para ver o gasto basal. '}As metas de treino e de exercícios são estimadas pela taxa basal e pelos dias de treino por semana; dá para mudar em Meus dados → Metas.</p></section>`}
 Object.assign(A,{actDay:d=>{UI.actDay=+d.d;rerender()}});
+/* ===================== INÍCIO EM CAPÍTULOS (v66) =====================
+   Frase-resumo → Meu dia (comer: meta, macros, saldo, água, sono) → Meu gasto (basal + rotina + treino + exercícios)
+   → Minha semana → Meu corpo → Explorar. Cada número aparece uma vez só, com o mesmo nome em todo o app:
+   Meta (quanto comer), Gasto (total do dia), Ativas (treino + exercícios), Saldo (comido − gasto).
+   Semáforo: 'go' em andamento, 'ok' dentro da meta, 'warn' um pouco acima, 'bad' bem acima. */
+function zKcal(v,P){return v>=P.lo&&v<=P.hi?'ok':v>P.hi?(v<=P.kcal*1.15?'warn':'bad'):'go'}
+function zMacro(v,g,min){if(!g)return'go';const r=v/g;return min?(r>=.95?'ok':'go'):r<.9?'go':r<=1.1?'ok':r<=1.25?'warn':'bad'}
+const sgn=v=>(v>0?'+':v<0?'−':'')+fmtInt(Math.abs(v));
+function homeLead(){nS();const now=Date.now(),n=dayNut(dkey(now)),P=nutriPlan(now),v=Math.round(n[0]),pr=Math.round(n[1]),fp=Math.max(0,P.gP-pr),z=zKcal(v,P);
+ let t;if(!v)t=`Hoje sua meta é <b>${fmtInt(P.kcal)} kcal</b>, com <b>${fmtInt(P.gP)} g de proteína</b>. Comece registrando a primeira refeição.`;
+ else if(z==='go')t=`Faltam <b>${fmtInt(P.kcal-v)} kcal</b>${fp?` e <b>${fmtInt(fp)} g de proteína</b>`:''} para a meta de hoje.${fp?'':' A proteína já foi batida ✓'}`;
+ else if(z==='ok')t=`Você está <b>dentro da meta</b> de hoje ✓${fp?` Faltam <b>${fmtInt(fp)} g de proteína</b>.`:''}`;
+ else t=`Você passou <b>${fmtInt(v-P.kcal)} kcal</b> da meta de hoje.${fp?` Ainda faltam ${fmtInt(fp)} g de proteína.`:''}`;
+ return`<p class="lead z-${!v?'go':z}">${t}</p>`}
+function homeMyDay(){nS();const now=Date.now(),k=dkey(now),n=dayNut(k),P=nutriPlan(now),E=P.E,v=Math.round(n[0]),left=P.kcal-v,pc=Math.min(100,v/P.kcal*100),z=zKcal(v,P);
+ const gl=(GOALS.find(g=>g[0]===goalOf())||GOALS[1])[1],wg=waterGoal(now).ml,wt=waterOn(k),sl=sleepOn(k);
+ const noKcal=E.mode==='relogio'?S.workouts.filter(w=>w.start>=sod(now)&&!(num(w.kcal)>0)):[];
+ const mb=(lab,cls,got,tgt,min)=>{const r=tgt?got/tgt:0,rest=Math.round(tgt-got),zz=zMacro(got,tgt,min);return`<div class="hm"><div class="row"><span class="${cls} hm-l">${lab}</span><span class="nfx"></span><b>${fmtInt(got)}</b><span class="muted small">/ ${fmtInt(tgt)} g</span></div><div class="hmb"><i class="${cls.replace('t','m')}" style="width:${Math.min(100,r*100).toFixed(1)}%"></i></div><span class="small zt z-${zz}">${rest>0?(zz==='ok'?'✓ Meta batida':`Faltam ${fmtInt(rest)} g`):rest<0?(zz==='ok'?`✓ Meta batida (${fmtInt(-rest)} g a mais)`:`${fmtInt(-rest)} g acima da meta`):'✓ Meta batida'}</span></div>`};
+ const gasto=E.ok?Math.round(E.gasto):null,tgt=E.ok?Math.round(E.adj):0,bal=gasto!=null?v-gasto:null,tl=tgt<0?'déficit':tgt>0?'superávit':'equilíbrio';
+ const saldo=!E.ok||P.manual?'':!v?`<div class="sd z-go"><span>Saldo do dia <em>(comido − gasto)</em></span><b>Se comer a meta: ${sgn(tgt)} kcal</b><em>${tl} do seu objetivo ✓</em></div>`
+  :`<div class="sd z-${z}"><span>Saldo do dia <em>(comido − gasto)</em></span><b>${sgn(bal)} kcal ${bal<0?'(déficit)':bal>0?'(superávit)':''}</b><em>alvo ${sgn(tgt)} · ${z==='go'?`comendo o que falta, fecha no alvo`:z==='ok'?'no alvo ✓':`${fmtInt(v-P.kcal)} kcal além do alvo`}</em></div>`;
+ return`<section class="card form hgoal"><div class="row"><span class="lab nfx">${I.flame} Meu dia</span><button class="gpill" data-a="goPf" data-v="dados">${esc(gl)}${P.manual?' · personalizada':''}</button></div>
+ <div class="hbig"><div class="nfx"><b class="z-${z}">${fmtInt(Math.abs(left))}</b><span>${left>=0?'kcal faltam para a meta':'kcal acima da meta'}</span></div><div class="hring z-${z}" style="--p:${pc.toFixed(1)}"><span>${Math.round(v/P.kcal*100)}%</span></div></div>
+ <div class="nbar"><i style="width:${pc.toFixed(1)}%" class="zb-${z}"></i><u style="left:100%"></u></div>
+ <div class="heq"><div><span>Meta</span><b>${fmtInt(P.kcal)}</b></div><div><span>Consumido</span><b>${fmtInt(v)}</b></div><div><span>Gasto</span><b>${gasto!=null?fmtInt(gasto):'–'}</b></div></div>
+ ${saldo}
+ ${noKcal.length?`<button class="hrbox" data-a="kcalSaved" data-id="${noKcal[0].id}">${I.fire}<span class="spacer"><b>Treino de hoje sem calorias</b><span class="muted small">Informe as calorias do relógio para a meta ficar exata</span></span>${I.chev}</button>`:''}
+ <div class="hms">${mb('Proteína','t2',n[1],P.gP,1)}${mb('Carboidrato','t0',n[3],P.gC)}${mb('Gordura','t1',n[2],P.gG)}</div>
+ <div class="form" style="gap:8px"><div class="row"><span class="lab spacer">${I.drop.replace('class="i"','class="i" style="width:15px;height:15px;vertical-align:-3px;color:var(--accent)"')} Água</span><b class="num" style="font-size:17px">${fmt(wt/1000)} / ${fmt(wg/1000)} L</b></div><div class="bar1"><i style="width:${Math.min(100,wg?wt/wg*100:0).toFixed(0)}%"></i></div><div class="chips">${cupsOf().slice(0,3).map(ml=>`<button class="chip" data-a="addWater" data-ml="${ml}">+${fmtInt(ml)} ml</button>`).join('')}</div></div>
+ <button class="pd-sleep" data-a="sleepLog">${sl?`Sono da última noite: <b>${fmt(sl)} h</b> · alterar`:'Registrar o sono da última noite'}</button>
+ <div class="chips"><button class="chip" data-a="tab" data-t="dieta">Registrar refeição</button><button class="chip" data-a="calcSheet">Como calculamos?</button></div></section>`}
+function calcSheet(){const P=nutriPlan(),E=P.E;if(!E.ok){sheet('<h3>Como calculamos</h3><p>Preencha Meus dados para ver a conta.</p>');return}
+ const r=(a,b,c='')=>`<div class="cs-r${c}"><span>${a}</span><b>${b}</b></div>`,rel=E.mode==='relogio',f=rel?'1,2':String(E.act[2]).replace('.',',');
+ sheet(`<h3>Como calculamos</h3><div class="cs">
+ <p class="muted small">Basal (fórmula de Mifflin-St Jeor): o que o corpo gasta só para viver, pelo peso, altura, idade e sexo.</p>
+ <b class="cs-h">1. Quanto comer (meta)</b>${r('Basal',fmtInt(E.tmb))}${r(rel?'+ Rotina e digestão (× 1,2)':`+ Rotina e atividade (× ${f}, ${E.act[1].toLowerCase()})`,'+'+fmtInt(E.rotina-E.tmb))}${r(`${E.adj<0?'−':'+'} Objetivo (${GOAL_TXT[E.goal]})`,sgn(Math.round(E.adj)))}${rel?r('+ Treino e exercícios (relógio)','+'+fmtInt(E.ex)):''}${r('= Meta de hoje',fmtInt(E.meta)+' kcal',' tot')}
+ <b class="cs-h">2. Quanto gastou (gasto)</b>${r('Basal',fmtInt(E.tmb))}${r(rel?'+ Rotina e digestão':'+ Rotina e atividade','+'+fmtInt(E.rotina-E.tmb))}${rel?r('+ Treino e exercícios','+'+fmtInt(E.ex)):''}${r('= Gasto do dia',fmtInt(E.gasto)+' kcal',' tot')}
+ <b class="cs-h">3. Saldo</b><p class="small" style="margin:0">Saldo = o que você comeu − gasto do dia. Comendo a meta, o saldo fica em <b>${sgn(Math.round(E.adj))} kcal</b>, exatamente o ${E.adj<0?'déficit':E.adj>0?'superávit':'equilíbrio'} do seu objetivo. O treino entra na meta e no gasto: aumenta o quanto você pode comer sem mudar o saldo.</p>
+ ${P.manual?'<p class="muted small">Você usa uma meta personalizada em Metas de nutrição; a meta exibida no app é a personalizada.</p>':''}</div><div class="ask-b"><button class="btn pri" data-a="closeSheet">Entendi</button></div>`)}
+function homeSpend(){const wk=weekStart(Date.now()),today=sod(Date.now()),sel=UI.actDay&&UI.actDay>=wk&&UI.actDay<=today?UI.actDay:today,g=actGoals(sel),a=actDay(sel),E=energyPlan(sel);
+ const days=[...Array(7)].map((_,i)=>addDays(wk,i));const box=(lab,cls,val,goal,act)=>`<button class="ah-box ${cls}" ${act}><span>${lab}</span><b>${fmtInt(val)}<small> kcal</small></b><em>/${fmtInt(goal)}</em></button>`;
+ let parts='';if(E.ok){const tot=Math.round(E.gasto),bas=Math.round(E.tmb),rel=E.mode==='relogio',seg=rel?[['Basal (só para viver)',bas,'gb0'],['Rotina e digestão',tot-bas-a.tr-a.ex,'gb1'],['Treino',a.tr,'gb2'],['Exercícios',a.ex,'gb3']]:[['Basal (só para viver)',bas,'gb0'],['Rotina e atividade (nível)',tot-bas,'gb1']];
+  parts=`<div class="gbar">${seg.filter(s=>s[1]>0).map(s=>`<i class="${s[2]}" style="flex:${s[1]}"></i>`).join('')}</div><div class="glist">${seg.map(s=>`<div><i class="${s[2]}"></i><span>${s[0]}</span><b>${fmtInt(s[1])}</b></div>`).join('')}<div class="gtot"><span>= Gasto do dia</span><b>${fmtInt(tot)} kcal</b></div></div>`}
+ else parts='<p class="muted small" style="margin:0">Preencha Meus dados para ver o gasto do dia.</p>';
+ return`<section class="card ah"><div class="row"><span class="lab nfx">Meu gasto</span><span class="muted small">${sel===today?'hoje':new Date(sel).toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'})}</span></div>
+ <div class="ah-week">${days.map(d=>`<button class="${d===sel?'on':''}" data-a="actDay" data-d="${d}" ${d>today?'disabled':''}><span class="${d===today?'td':''}">${DL[new Date(d).getDay()]}</span>${d>today?'<i class="ah-empty"></i>':heartRings(actDay(d),actGoals(d),false)}</button>`).join('')}</div>
+ <div class="ah-hero">${heartRings(a,g,true)}</div>
+ <div class="ah-boxes">${box('Ativas','st',a.total,g.total,'data-a="tab" data-t="ativ"')}${box('Em treino','tm',a.tr,g.treino,'data-a="tab" data-t="treino"')}${box('Em exercícios','kc',a.ex,g.ex,'data-a="tab" data-t="ativ"')}</div>
+ ${parts}
+ <div class="ah-tot"><span>Tempo ativo · distância</span><i></i><b>${fmtInt(a.min)} min · ${fmt(Math.round(a.dist*100)/100)} km</b></div>
+ <p class="muted small" style="margin:0">Os anéis mostram só as calorias <b>ativas</b> (treino + exercícios) contra metas estimadas pela taxa basal e pelos dias de treino; dá para mudar em Meus dados → Metas.</p></section>`}
+function homeBody(){const b=bodyData();if(!b.ok)return'';const hm=b.h/100,bmi=b.w/(hm*hm),c=BMI_C.find(x=>bmi<x[0]),E=energyPlan(),s=evoSeries('weight'),last=s[s.length-1],m1=last&&(evoAt(s,addDays(sod(Date.now()),-30))||s[0]),m30=last&&evoAt(s,addDays(sod(Date.now()),-30)),fat=latestMeasure('fat');
+ const t=(lab,val,sub,v='saude')=>`<button data-a="go" data-v="${v}"><span class="lab">${lab}</span>${val}${sub}</button>`;
+ return`<section class="card form"><div class="row"><span class="lab spacer">Meu corpo</span><button class="tb" style="padding:4px 2px" data-a="goPf" data-v="dados">${I.edit.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Editar</button></div><div class="kv2">
+ ${t('Peso',`<b>${fmt(b.w)}<small>kg</small></b>`,`<em>${m1&&m1!==last?(m30?'30 dias: ':'desde '+dShort(m1.x)+': ')+evoDelta(EVO[0],m1.y,last.y):b.wDate?'em '+dShort(b.wDate):''}</em>`,'medidas')}
+ ${t('IMC',`<b>${fmt(bmi)}</b>`,pill(c[1],c[2]))}
+ ${t('Taxa basal',`<b>${fmtInt(E.tmb)}<small>kcal</small></b>`,'<em>só para viver, por dia</em>')}
+ ${fat?t('Gordura corporal',`<b>${fmt(fat.v)}<small>%</small></b>`,`<em>em ${dShort(fat.date)}</em>`,'medidas'):t('Altura',`<b>${fmt(b.h)}<small>cm</small></b>`,'<em>em Meus dados</em>')}
+ </div><div class="chips"><button class="chip" data-a="go" data-v="medidas">${I.body} Evolução</button><button class="chip" data-a="go" data-v="saude">${I.heart} Métricas de saúde</button></div></section>`}
+Object.assign(A,{calcSheet});
 
 /* Senha de entrada: a mesma nos dois celulares e fixa. O código guarda só o hash PBKDF2 (o repositório é público);
    é uma barreira de privacidade no aparelho, não criptografa os dados. Pedida a cada abertura do app (sessionStorage). */

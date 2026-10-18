@@ -96,6 +96,6 @@ Cada cor tem uma variante para tema claro e outra para tema escuro: `[cor, cor s
 
 ## Organização das telas (18/10/2026)
 - Barra de abas: Início · Treino · Exercícios · Nutrição · Água · Perfil.
-- Início, de cima para baixo (ordem definida pelo usuário): Painel de atalhos (Metas, Resumo, Conquistas, Estatísticas, Catálogo, Evolução, Calendário, Saúde) → Seu resumo de saúde → Meta de hoje → Painel do dia → Esta semana → Atividade diária. O bloco Exercício não fica no Início (está na aba Exercícios). Treino em andamento: Retomar/Descartar no topo.
+- Início em capítulos (v66, aprovado pelo usuário): frase-resumo (`homeLead`) → **Meu dia** (`homeMyDay`: meta, consumido, gasto, saldo, macros, água, sono, "Como calculamos?") → **Meu gasto** (`homeSpend`: anéis das calorias ativas + barra basal/rotina/treino/exercícios = gasto do dia) → **Minha semana** → **Meu corpo** (`homeBody`: peso com tendência, IMC, taxa basal, gordura) → **Explorar** (atalhos). Cada número aparece uma vez só. Vocabulário único: Meta (quanto comer), Gasto (total do dia), Ativas (treino + exercícios), Saldo (comido − gasto). Semáforo: em andamento (cor padrão), dentro da meta (verde #2E9E5B), um pouco acima (âmbar), bem acima (vermelho).
 - Aba Treino: primeiro bloco é **Seus treinos** (últimos 10 + "Ver todos" no Perfil), depois Iniciar treino vazio / Retomar e Rotinas.
 
