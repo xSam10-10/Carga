@@ -34,3 +34,9 @@
 
 - Aumente o `CACHE` em `sw.js` a cada entrega; o service worker antigo é trocado na próxima abertura.
 - Ícones e nome só mudam no celular depois de **reinstalar** o app (remover e adicionar de novo à tela inicial).
+
+## Atualização automática no celular (v36, 18/10/2026)
+- `sw.js` busca os arquivos com `fetch(req,{cache:'no-cache'})` (rede primeiro, sem o cache HTTP de 10 min do Pages; cache só offline).
+- O app registra o service worker com `updateViaCache:'none'`, chama `reg.update()` sempre que volta para a tela e a cada 30 min; no `controllerchange` recarrega sozinho (ou avisa, se houver treino em andamento, folha aberta ou formulário).
+- A versão aparece no rodapé de Configurações ("Carga v36"): `build.py` troca `__CARGA_V__` pelo `CACHE` do `sw.js`. Para conferir se o celular está atualizado, compare com o `CACHE` atual.
+- Versões até a v35 não tinham isso: o app instalado podia ficar parado na memória com a versão antiga até ser fechado de vez.

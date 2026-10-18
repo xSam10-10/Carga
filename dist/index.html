@@ -1130,6 +1130,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
+const APP_V='v36'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1610,7 +1611,7 @@ VIEWS.config=()=>{const pr=S.profile;const sw=(k,l,d)=>`<label class="switch"><s
  ${preResetData()?`<div class="fld"><span>Dados de antes do reset</span><p class="muted small" style="margin:0">Em 17/10/2026 todos os perfis foram zerados para começar do zero. Os dados antigos deste perfil (${preResetData().workouts?.length||0} treinos) continuam guardados neste aparelho e podem voltar.</p><button class="btn sec" data-a="preResetRestore">Restaurar dados de antes do reset</button></div>`:''}
  <button class="btn ghost danger" data-a="wipe">Apagar os dados deste perfil</button></section>
  <h3 class="sh">Instalar no celular</h3><section class="card"><p style="margin:0">No Chrome do Android, abra o menu ⋮ e toque em <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>. O Carga abre em tela cheia e funciona sem internet.</p></section>
- <p class="muted small" style="text-align:center">Carga · ${S.workouts.length} treinos · ${S.exercises.length} exercícios personalizados</p><p class="byline">by Samuel Costa</p></main>`};
+ <p class="muted small" style="text-align:center">Carga${/^v\d/.test(APP_V)?' '+APP_V:''} · ${S.workouts.length} treinos · ${S.exercises.length} exercícios personalizados</p><p class="byline">by Samuel Costa</p></main>`};
 function preResetData(){try{return JSON.parse(localStorage.getItem('carga.old.'+pkey(REGS.current))||'null')}catch(e){return null}}
 
 /* ---------- CORES ---------- */
@@ -2992,7 +2993,10 @@ async function lockHash(pin){const k=await crypto.subtle.importKey('raw',new Tex
 render();
 if(S.active){wake();schedRest()}
 autoSnapshot();
-if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)&&window.self===window.top){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+// Atualização automática: procura versão nova ao abrir e sempre que o app volta para a tela; quando a nova assume, recarrega (se não houver treino ou folha aberta)
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)&&window.self===window.top){const had=!!navigator.serviceWorker.controller;let upd=false;
+ navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{const chk=()=>r.update().catch(()=>{});document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});setInterval(chk,30*6e4)}).catch(()=>{});
+ navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!had||upd)return;upd=true;const busy=S.active||sheetOpen()||['ativForm','medidaForm','novoEx','novoAlimento','refeicao'].includes(top_().v);if(!busy){persist();location.reload()}else toast('Nova versão do Carga instalada. Ela entra na próxima vez que você abrir o app.')})}
 })();
 </script>
 

@@ -1,9 +1,11 @@
 """Gera dist/ (PWA instalável) a partir de app.html."""
-import pathlib, shutil
+import pathlib, re, shutil
 root = pathlib.Path(__file__).parent
 dist = root / 'dist'
 dist.mkdir(exist_ok=True)
 app = (root / 'app.html').read_text(encoding='utf-8')
+ver = re.search(r"CACHE='carga-(v\d+)'", (root / 'sw.js').read_text(encoding='utf-8')).group(1)
+app = app.replace('__CARGA_V__', ver)
 head = '''<!doctype html>
 <html lang="pt-BR" class="sp-on">
 <head>
