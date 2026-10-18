@@ -1176,7 +1176,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v66'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v67'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1906,7 +1906,7 @@ function waterAvatar(sex,pct,prevPct){const f=sex==='f',s=SIL[f?'f':'m'],lvl=p=>
 VIEWS.agua=()=>{const now=Date.now(),k=dkey(now),log=(S.water&&S.water[k])||[],tot=waterOn(k),g=waterGoal(now),pct=g.ml?tot/g.ml:0,C=2*Math.PI*84;
  const WO=perOf('agua'),wrows=waterSeries(),wn=wrows.reduce((a,r)=>a+r.n,0),wtot=wrows.reduce((a,r)=>a+r.tot,0),hit=wrows.reduce((a,r)=>a+r.hit,0);
  return`<header class="top"><h1 class="big">Água</h1></header><main class="page">
- <section class="card form"><div class="wbox">${waterAvatar(visSex(),pct,UI.wPrev)}<div class="wside"><div class="wtot">${fmtInt(tot)} ml<small>${Math.round(pct*100)}% de ${fmtInt(g.ml)} ml</small></div>${cupsOf().map((ml,i)=>`<button class="wcup${i?'':' alt'}" data-a="addWater" data-ml="${ml}">${I.drop}${fmtInt(ml)} ml</button>`).join('')}<button class="wcup alt" data-a="customWater">${I.plus}Outro</button></div></div>
+ <section class="card form"><div class="wbox">${waterAvatar(visSex(),pct,UI.wPrev)}<div class="wside"><div class="wtot">${fmtInt(tot)} ml<small>${Math.round(pct*100)}% de ${fmtInt(g.ml)} ml</small></div>${cupsOf().map(ml=>`<button class="wcup" data-a="addWater" data-ml="${ml}">${I.drop}${fmtInt(ml)} ml</button>`).join('')}<button class="wcup alt" data-a="customWater">${I.plus}Outro</button></div></div>
   <p class="muted small" style="margin:0;text-align:center">${pct>=1?'Meta de hoje cumprida. Pode continuar se tiver sede.':`Faltam <b style="color:var(--fg)">${fmtInt(Math.max(0,g.ml-tot))} ml</b> para encher${S.profile.sex?'':'. Informe o sexo em Meus dados (Perfil) para escolher o avatar'}.`}</p></section>
  <section class="card"><span class="lab">Meta de hoje · ${fmtInt(g.ml)} ml</span><p class="muted small" style="margin:6px 0 0">${esc(g.how)}</p>${g.def?`<button class="btn sm pri" style="margin-top:10px" data-a="goPf" data-v="dados">Preencher dados pessoais</button>`:''}</section>
  <h3 class="sh">Hoje</h3>${log.length?`<div class="card" style="padding:4px 14px">${log.map((x,i)=>({x,i})).reverse().map(({x,i})=>`<div class="mrow"><span><b class="num" style="font-size:18px">${fmtInt(x.ml)} ml</b> <span class="muted small">${hhmm(x.t)}</span></span><button class="ib" data-a="delWater" data-i="${i}" aria-label="Remover ${x.ml} ml">${I.x}</button></div>`).join('')}</div>`:'<p class="empty">Nenhum copo registrado hoje. Toque num dos botões acima a cada copo.</p>'}
