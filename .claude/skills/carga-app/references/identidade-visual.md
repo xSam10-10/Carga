@@ -93,3 +93,8 @@ Cada cor tem uma variante para tema claro e outra para tema escuro: `[cor, cor s
 - Estilo dos ícones do Samsung Health (referência enviada pelo usuário em 18/10/2026): figuras de traço grosso (membros 2,5, tronco 3,3, pontas redondas) com cabeça cheia, numa cor só. **Desenho próprio**, não copiado.
 - Gerados por `tools/exicons.py` (49 pictogramas, um por exercício; esportes de raquete parecidos compartilham o de tênis). O script injeta `AIC` e `AIC_OF` (exercício → pictograma) em `app.html` entre `/*AIC-START*/` e `/*AIC-END*/` e grava a prancha `tools/exicons.html` para conferir.
 - Nas listas: só o pictograma na cor de destaque, sem círculo (como no Samsung). Nos favoritos: círculo `--accent-soft`. Musculação usa `--violet`.
+
+## Organização das telas (18/10/2026)
+- Barra de abas: Início · Treino · Exercícios · Nutrição · Água · Perfil.
+- Início, de cima para baixo: Meta de hoje → Painel do dia → Esta semana → Atividade diária → Painel de atalhos (Metas, Resumo, Conquistas, Estatísticas, Catálogo, Evolução, Calendário, Saúde) → Exercício (favoritos) → Resumo de saúde → treinos recentes.
+

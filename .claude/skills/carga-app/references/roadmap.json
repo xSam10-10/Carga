@@ -422,6 +422,11 @@
    "Sincronização automática entre os celulares (exige servidor; aguardando decisão)"
   ],
   [
+   "Identidade e plataforma",
+   "pronto",
+   "Início com a Meta de hoje no topo e abas na ordem Início, Treino, Exercícios, Nutrição, Água, Perfil"
+  ],
+  [
    "Publicação",
    "pronto",
    "Site no ar pelo GitHub Pages, publicado a cada envio"
@@ -618,6 +623,14 @@
   [
    "2026-10-18",
    "Receitas compartilhadas e envio por código (v60)"
+  ],
+  [
+   "2026-10-18",
+   "Meta de hoje no topo do Início (v61)"
+  ],
+  [
+   "2026-10-18",
+   "Aba Exercícios ao lado de Treino (v62)"
   ]
  ]
 }

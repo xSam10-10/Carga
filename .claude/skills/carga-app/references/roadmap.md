@@ -107,6 +107,7 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 - ✅ Assinatura discreta "by Samuel Costa" e versão visível em Configurações
 - ✅ Datas digitadas só com números (DD/MM/AAAA) e calendário opcional (exceto nascimento)
 - 💡 Sincronização automática entre os celulares (exige servidor; aguardando decisão)
+- ✅ Início com a Meta de hoje no topo e abas na ordem Início, Treino, Exercícios, Nutrição, Água, Perfil
 
 ## 8. Publicação
 - ✅ Site no ar pelo GitHub Pages, publicado a cada envio
@@ -168,3 +169,5 @@ Legenda: ✅ pronto · 🟡 parcial · ⬜ a fazer · 💡 sugestão aprovada pa
 | 18/10/2026 | Banco de alimentos |
 | 18/10/2026 | Atualização automática forçada (v59) |
 | 18/10/2026 | Receitas compartilhadas e envio por código (v60) |
+| 18/10/2026 | Meta de hoje no topo do Início (v61) |
+| 18/10/2026 | Aba Exercícios ao lado de Treino (v62) |
