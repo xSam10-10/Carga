@@ -579,6 +579,7 @@ html.sp-on{background:#000}
 .rb-t{flex:1;display:flex;flex-direction:column;align-items:center;line-height:1.1}.rb-t>span{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}.rb-t>em{font-style:normal;font-size:11px;color:var(--muted)}[data-rest].end{color:var(--amber)}
 .ib.fav{color:var(--muted)}.ib.fav.on{color:#F2B705}.ib.fav.on svg{fill:#F2B705}
 .frw{display:flex;align-items:center;border-bottom:1px solid var(--line)}.frw>.frow{flex:1;min-width:0;border-bottom:0}
+.lg-d{font-style:normal;font-weight:700;font-size:12px;margin-left:6px;padding:1px 6px;border-radius:999px;background:var(--surface-2);color:var(--muted)}.lg-r.z-ok .lg-d{background:transparent}.lg-d.over{color:var(--amber)}
 #gate{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch}.gate-c{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding:calc(env(safe-area-inset-top,0px) + 20px) 16px calc(env(safe-area-inset-bottom,0px) + 24px)}.gate-c .gerr{color:var(--danger);font-weight:600;margin:0}body.gated{overflow:hidden}
 #splash{position:fixed;inset:0;z-index:9999;background:#000;display:grid;place-items:center;transition:opacity .24s ease-out}
 #splash.out{opacity:0;pointer-events:none}
@@ -3502,15 +3503,18 @@ function homeLeadTxt(){nS();const now=Date.now(),n=dayNut(dkey(now)),P=nutriPlan
  return[t,!v?'go':z]}
 /* Metas de hoje: frase-resumo + todas as metas do dia num só quadro (comer, proteína, água, treino, ativas)
    e as metas de longo prazo cadastradas em Meus dados → Metas (peso, gordura, cintura). */
+const dif=(d,f)=>`<em class="lg-d${d>0?' over':''}">${d<0?'−':d>0?'+':''}${f(Math.abs(d))}</em>`;
 function homeLead(){nS();const now=Date.now(),t0=sod(now),k=dkey(now),n=dayNut(k),P=nutriPlan(now),v=Math.round(n[0]),[txt,z0]=homeLeadTxt(),g=goalsOf(),p=S.profile;
  const wt=waterOn(k),wg=waterGoal(now).ml,a=actDay(t0),ag=actGoals(t0);
  const wk=weekStart(now),cnt=S.workouts.filter(w=>w.start>=wk).length+(S.extra||[]).filter(x=>x.t>=wk).length,wpw=num(g.wpw)>0?num(g.wpw):Math.min(7,p.days||0);
  const today=S.workouts.filter(w=>w.start>=t0),todayX=(S.extra||[]).filter(x=>x.t>=t0),left=Math.max(0,wpw-cnt),dl=7-Math.round((t0-wk)/DAY);
  const zk=zKcal(v,P),zp=zMacro(n[1],P.gP,1);
  const rows=[
-  ['Calorias',`${fmtInt(v)} / ${fmtInt(P.kcal)} kcal`,zk==='ok'?'ok':zk==='go'?'go':zk,'data-a="tab" data-t="dieta"'],
-  ['Proteína',`${fmtInt(n[1])} / ${fmtInt(P.gP)} g`,zp,'data-a="tab" data-t="dieta"'],
-  ['Água',`${fmt(wt/1000)} / ${fmt(wg/1000)} L`,wt>=wg?'ok':'go','data-a="tab" data-t="agua"'],
+  ['Calorias',`${fmtInt(v)} / ${fmtInt(P.kcal)} kcal${dif(v-P.kcal,fmtInt)}`,zk==='ok'?'ok':zk==='go'?'go':zk,'data-a="tab" data-t="dieta"'],
+  ['Proteína',`${fmtInt(n[1])} / ${fmtInt(P.gP)} g${dif(Math.round(n[1])-P.gP,fmtInt)}`,zp,'data-a="tab" data-t="dieta"'],
+  ['Carboidrato',`${fmtInt(n[3])} / ${fmtInt(P.gC)} g${dif(Math.round(n[3])-P.gC,fmtInt)}`,zMacro(n[3],P.gC),'data-a="tab" data-t="dieta"'],
+  ['Gordura',`${fmtInt(n[2])} / ${fmtInt(P.gG)} g${dif(Math.round(n[2])-P.gG,fmtInt)}`,zMacro(n[2],P.gG),'data-a="tab" data-t="dieta"'],
+  ['Água',`${fmt(wt/1000)} / ${fmt(wg/1000)} L${dif(Math.round((wt-wg)/100)/10,fmt)}`,wt>=wg?'ok':'go','data-a="tab" data-t="agua"'],
   ['Treino de hoje',today.length?esc(today.map(w=>w.name).join(' + ')):cnt>=wpw&&wpw?'semana já batida':'ainda não'+(todayX.length?` · fez ${esc(todayX[0].name.toLowerCase())}`:''),today.length||(cnt>=wpw&&wpw)?'ok':'go','data-a="tab" data-t="treino"'],
   ...(wpw?[['Treinos da semana',`${cnt} de ${wpw}${left?` · faltam ${left} em ${dl} dia${dl>1?'s':''}`:''}`,cnt>=wpw?'ok':left>dl?'bad':'go','data-a="go" data-v="metas"']]:[]),
   ['Calorias ativas',`${fmtInt(a.total)} / ${fmtInt(ag.total)} kcal`,a.total>=ag.total?'ok':'go','data-a="tab" data-t="ativ"'],
