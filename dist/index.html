@@ -590,6 +590,7 @@ html.sp-on{background:#000}
 .lg-r span{flex:1;min-width:0}.lg-r b{font-weight:600;font-variant-numeric:tabular-nums;text-align:right}.lg-r.z-ok b{color:#2E9E5B}.lg-r.z-warn b{color:var(--amber)}.lg-r.z-bad b{color:var(--danger)}
 .rirbar{display:flex;align-items:center;gap:6px;padding:2px 4px 6px 42px;font-size:12px;color:var(--muted)}.rirbar span{margin-right:auto}.rirbar button{min-width:36px;height:30px;border-radius:9px;background:var(--surface-2);font-weight:700;color:var(--fg)}.rirbar button.on{background:var(--accent);color:var(--accent-ink)}
 .rirtag{align-self:flex-start;margin:-2px 0 4px 42px;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:2px 8px}
+.rb-t{flex:1;display:flex;flex-direction:column;align-items:center;line-height:1.1}.rb-t>span{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}.rb-t>em{font-style:normal;font-size:11px;color:var(--muted)}[data-rest].end{color:var(--amber)}
 #gate{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch}.gate-c{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding:calc(env(safe-area-inset-top,0px) + 20px) 16px calc(env(safe-area-inset-bottom,0px) + 24px)}.gate-c .gerr{color:var(--danger);font-weight:600;margin:0}body.gated{overflow:hidden}
 #splash{position:fixed;inset:0;z-index:9999;background:#000;display:grid;place-items:center;transition:opacity .24s ease-out}
 #splash.out{opacity:0;pointer-events:none}
@@ -1182,7 +1183,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v75'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v76'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1267,7 +1268,7 @@ function chrome(){
  const tabOf=stack[0].v;
  nav.innerHTML=`<div class="nav-in">${[['inicio','Início',I.home],['treino','Treino',I.dumbbell],['ativ','Exercícios',AIC.run.replace('class="i px"','class="i px nav-px"')],['dieta','Nutrição',I.food],['agua','Água',I.drop],['perfil','Perfil',I.user]].map(([k,l,i])=>`<button class="${tabOf===k?'on':''}" data-a="tab" data-t="${k}" aria-label="${l}"><span class="ic">${i}</span>${l}</button>`).join('')}</div>`;
  const showMini=S.active&&showNav;
- $('#mini').innerHTML=showMini?`<div class="mini"><button data-a="resume"><span class="t"><b>Treino em andamento</b><span><span data-clock>${clock(Date.now()-S.active.start)}</span> · ${esc(S.active.name)}</span></span><span class="btn sm pri">Retomar</span></button></div>`:'';
+ $('#mini').innerHTML=showMini?`<div class="mini"><button data-a="resume"><span class="t"><b>Treino em andamento</b><span>${S.active.restEnd&&S.active.restEnd>Date.now()?`Descanso: <b data-rest>${clock(S.active.restEnd-Date.now())}</b> · `:''}<span data-clock>${clock(Date.now()-S.active.start)}</span> · ${esc(S.active.name)}</span></span><span class="btn sm pri">Retomar</span></button></div>`:'';
  document.querySelector('.page')?.style.setProperty('padding-bottom',showMini?'200px':'');
  restBar();
 }
@@ -1294,18 +1295,18 @@ function unwake(){try{wl&&wl.release()}catch(e){}wl=null}
 /* ---------- descanso ---------- */
 let restTO;
 function schedRest(){clearTimeout(restTO);const a=S.active;if(a&&a.restEnd)restTO=setTimeout(restEnded,Math.max(0,a.restEnd-Date.now())+60)}
-function restEnded(){const a=S.active;if(!a||!a.restEnd||Date.now()<a.restEnd-300)return;a.restEnd=null;save();beep();restBar();if(document.hidden)notif('Descanso encerrado',`Hora da próxima série · ${a.name}`,{renotify:true,requireInteraction:true,vibrate:[300,120,300,120,300]});else toast('Descanso encerrado')}
+function restEnded(){const a=S.active;if(!a||!a.restEnd||Date.now()<a.restEnd-300)return;a.restEnd=null;save();beep();restBar();if(top_().v!=='sessao')chrome();if(document.hidden)notif('Descanso encerrado',`Hora da próxima série · ${a.name}`,{renotify:true,requireInteraction:true,vibrate:[300,120,300,120,300]});else toast('Descanso encerrado')}
 async function swReg(){try{return navigator.serviceWorker?await navigator.serviceWorker.getRegistration():null}catch(e){return null}}
 async function notif(title,body,opts={}){try{if(!S.profile.notify||!('Notification' in window)||Notification.permission!=='granted')return;const o=Object.assign({body,tag:'carga-rest',icon:'icon-192.png',badge:'icon-192.png'},opts);const r=await swReg();if(r)await r.showNotification(title,o);else new Notification(title,o)}catch(e){}}
 async function closeNotifs(){try{const r=await swReg();if(r&&r.getNotifications)(await r.getNotifications({tag:'carga-rest'})).forEach(n=>n.close())}catch(e){}}
 function askNotify(t){if(!('Notification' in window)){S.profile.notify=false;t.checked=false;save();toast('Este navegador não permite notificações. Use o app instalado pelo Chrome.');return}Notification.requestPermission().then(p=>{if(p!=='granted'){S.profile.notify=false;t.checked=false;save();toast('Permissão negada. Libere em Ajustes do Android → Apps → Carga → Notificações.')}else toast('Pronto. Você será avisado mesmo com a tela bloqueada.')}).catch(()=>{})}
 function startRest(sec){if(!S.active||!sec)return;S.active.restEnd=Date.now()+sec*1000;S.active.restTotal=sec;save();restBar();schedRest()}
-function restBar(){const a=S.active;const el=$('#restbar');if(!a||!a.restEnd||top_().v!=='sessao'||!top_().p.live){el.innerHTML='';return}const left=a.restEnd-Date.now();el.innerHTML=`<div class="restbar"><div class="rb-prog"><i data-restp style="width:${Math.max(0,Math.min(100,left/(a.restTotal*1000)*100))}%"></i></div><div class="rb-in"><button class="btn sm sec" data-a="restAdj" data-d="-15">−15</button><b data-rest>${clock(left)}</b><button class="btn sm sec" data-a="restAdj" data-d="15">+15</button><button class="btn sm pri" data-a="restSkip">Pular</button></div></div>`}
+function restBar(){const a=S.active;const el=$('#restbar');if(!a||!a.restEnd||top_().v!=='sessao'||!top_().p.live){el.innerHTML='';return}const left=a.restEnd-Date.now();el.innerHTML=`<div class="restbar"><div class="rb-prog"><i data-restp style="width:${Math.max(0,Math.min(100,left/(a.restTotal*1000)*100))}%"></i></div><div class="rb-in"><button class="btn sm sec" data-a="restAdj" data-d="-15">−15</button><span class="rb-t"><span>Descanso · faltam</span><b data-rest class="${left<=5000?'end':''}">${clock(left)}</b><em>de ${clock(a.restTotal*1000)}</em></span><button class="btn sm sec" data-a="restAdj" data-d="15">+15</button><button class="btn sm pri" data-a="restSkip">Pular</button></div></div>`}
 setInterval(()=>{
  const a=S.active;if(!a)return;
  document.querySelectorAll('[data-clock]').forEach(e=>e.textContent=clock(Date.now()-a.start));
  if(UI.tmr){const tm=$('[data-tmr]');if(tm)tm.textContent=clock(Date.now()-UI.tmr.start)}
- if(a.restEnd){const left=a.restEnd-Date.now();if(left<=0){restEnded()}else{const r=$('[data-rest]');if(r){r.textContent=clock(left);$('[data-restp]').style.width=Math.max(0,left/(a.restTotal*1000)*100)+'%'}}}
+ if(a.restEnd){const left=a.restEnd-Date.now();if(left<=0){restEnded()}else{document.querySelectorAll('[data-rest]').forEach(r=>{r.textContent=clock(left);r.classList.toggle('end',left<=5000)});const rp=$('[data-restp]');if(rp)rp.style.width=Math.max(0,left/(a.restTotal*1000)*100)+'%'}}
 },500);
 
 /* ---------- gráficos ---------- */
@@ -1438,7 +1439,7 @@ function ssLast(s,i){const e=s.exercises[i];if(!e.ss)return true;for(let j=i+1;j
 function ssNext(s,i){const e=s.exercises[i];for(let j=i+1;j<s.exercises.length;j++)if(s.exercises[j].ss===e.ss)return s.exercises[j];return null}
 function newEntry(id,s){const prev=prevSets(id,null,Infinity,s&&s.routineId);const n=Math.max(1,Math.min(prev.filter(x=>x.type!=='w').length||3,8));return{exId:id,notes:'',rest:S.profile.rest,ss:null,sets:mkSets(n).map(x=>Object.assign(x,{done:false}))}}
 function colsFor(t,k){const ck=k==='routine'?'':' 44px';if(t==='t')return k==='live'?'36px minmax(0,1fr) 40px 74px 44px':`36px minmax(0,1fr) 84px${ck}`;return`36px minmax(0,1fr) 64px 58px${ck}`}
-const HEAD={wr:['kg','Reps'],bw:['+kg','Reps'],as:['−kg','Reps'],dt:['km','Min'],t:['Min']};
+const HEAD={wr:['kg','Reps'],bw:['+kg','Reps'],as:['−kg','Reps'],dt:['km','Tempo'],t:['Tempo']};
 const incOf=x=>x.equipment==='Halter'?2:x.equipment==='Kettlebell'?4:x.equipment==='Máquina'||x.equipment==='Cabo'?5:2.5;
 const rangeTop=e=>{let m=0;for(const st of e.sets){const r=String(st.target||'').match(/(\d+)\s*-\s*(\d+)/);if(r)m=Math.max(m,+r[2])}return m};
 /* Fases de treino (periodização em blocos): definem a faixa de repetições usada na sugestão de carga.
@@ -1471,9 +1472,9 @@ function exCard(s,e,i,L={}){
  const head=`<div class="shead"><span>Série</span><span>Anterior</span>${t==='t'&&k==='live'?'<span></span>':''}${hd.map(h=>`<span>${h}</span>`).join('')}${k!=='routine'?`<span>${I.check.replace('class="i"','class="i" style="width:14px;height:14px"')}</span>`:''}</div>`;
  const rows=e.sets.map((st,j)=>{const label=st.type==='n'?(++n,st.pr&&st.done?MEDAL:n):SET_L[st.type];const pv=prevFor(prev,e.sets,j);
   const inp=(f,ph,mode)=>`<input class="cell" id="c-${i}-${j}-${f}" inputmode="${mode}" autocomplete="off" data-f="${f}" data-e="${i}" data-s="${j}" value="${esc(st[f]??'')}" placeholder="${esc(ph??'')}" aria-label="${f} série ${j+1}">`;
-  const minPh=pv&&pv.t?+(pv.t/60).toFixed(2):'';
+  const minPh=pv&&pv.t?mmss(pv.t):'0:00';
   const running=UI.tmr&&UI.tmr.e===i&&UI.tmr.s===j;
-  const cells=t==='t'?(k==='live'?`<button class="tmr${running?' on':''}" data-a="setTimer" data-e="${i}" data-s="${j}" aria-label="${running?'Parar':'Iniciar'} cronômetro">${running?'■':'▶'}</button>`:'')+(running?`<span class="cell tmrv" data-tmr>${clock(Date.now()-UI.tmr.start)}</span>`:inp('min',minPh,'decimal')):t==='dt'?inp('km',pv&&pv.km!=null?fmt(pv.km):'','decimal')+inp('min',minPh,'decimal'):inp('kg',pv&&pv.kg!=null?fmt(pv.kg):'','decimal')+inp('reps',pv&&pv.reps!=null?num(pv.reps):(st.target||''),k==='routine'?'text':'numeric');
+  const cells=t==='t'?(k==='live'?`<button class="tmr${running?' on':''}" data-a="setTimer" data-e="${i}" data-s="${j}" aria-label="${running?'Parar':'Iniciar'} cronômetro">${running?'■':'▶'}</button>`:'')+(running?`<span class="cell tmrv" data-tmr>${clock(Date.now()-UI.tmr.start)}</span>`:inp('min',minPh,'numeric')):t==='dt'?inp('km',pv&&pv.km!=null?fmt(pv.km):'','decimal')+inp('min',minPh,'numeric'):inp('kg',pv&&pv.kg!=null?fmt(pv.kg):'','decimal')+inp('reps',pv&&pv.reps!=null?num(pv.reps):(st.target||''),k==='routine'?'text':'numeric');
   return`<div class="srow${st.done?' done':''}"><button class="sn t-${st.type}" data-a="setType" data-e="${i}" data-s="${j}" aria-label="Tipo da série">${label}</button><button class="prev" data-a="usePrev" data-e="${i}" data-s="${j}" ${pv?'':'disabled'}>${pv?setTxt(pv,t):'—'}</button>${cells}${k!=='routine'?`<button class="ck" data-a="check" data-e="${i}" data-s="${j}" aria-label="Concluir série" aria-pressed="${!!st.done}">${I.check}</button>`:''}</div>${st.done&&k!=='routine'&&(t==='wr'||t==='bw')&&S.profile.askRir!==false&&(st.rir==null||(UI.rirAt===i+'-'+j))?`<div class="rirbar"><span>Reps na reserva</span>${[0,1,2,3,4].map(v=>`<button class="${st.rir===v?'on':''}" data-a="setRir" data-e="${i}" data-s="${j}" data-v="${v}">${v===4?'4+':v}</button>`).join('')}</div>`:st.done&&st.rir!=null&&(t==='wr'||t==='bw')?`<button class="rirtag" data-a="rirEdit" data-e="${i}" data-s="${j}">RIR ${st.rir===4?'4+':st.rir}</button>`:''}`}).join('');
  const pin=S.exNotes&&S.exNotes[x.id];
  const last=ssLast(s,i);return`<section class="exc${e.ss?' ss':''}" id="exc-${i}">${e.ss?`<span class="sslab">Supersérie ${L[e.ss]}</span>`:''}<div class="exc-h"><button class="exc-n" data-a="openEx" data-id="${x.id}">${avatar(x,38)}<b>${esc(x.name)}</b></button><button class="ib" data-a="exMenu" data-e="${i}" aria-label="Opções do exercício">${I.dots}</button></div>${pin?`<button class="pinned" data-a="editPin" data-id="${x.id}">${I.note}<span>${esc(pin)}</span></button>`:''}<input class="note" id="n-${i}" data-f="enote" data-e="${i}" value="${esc(e.notes)}" placeholder="Adicionar anotação…">${k==='live'?overloadHint(e,i,x,prev):''}${k==='edit'?'':last?`<button class="restb" data-a="exRest" data-e="${i}">${I.clock}Descanso${e.ss?' após a supersérie':''}: ${fmtRest(e.rest)}</button>`:`<span class="ssnote">${I.link.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Sem descanso: siga para o próximo da supersérie</span>`}${k==='routine'&&t==='wr'?`<p class="muted small" style="margin:0 4px">Dica: nas reps, use uma faixa como 8-12 para definir a meta.</p>`:''}<div class="sets" style="--cols:${colsFor(t,k)}">${head}${rows}</div><button class="addset" data-a="addSet" data-e="${i}">+ Adicionar série</button></section>`}
@@ -1492,7 +1493,11 @@ VIEWS.sessao=p=>{
  if(k==='live')h+=`<button class="btn ghost danger wide" data-a="discard">Descartar treino</button>`;
  return h+'<div style="height:70px"></div></main>'};
 function updateLiveStats(){const s=cur();if(!s||s.kind!=='live')return;const st=wStats(s,true);const v=$('[data-stat=vol]');if(v)v.textContent=fmtInt(st.vol)+' kg';const n=$('[data-stat=sets]');if(n)n.textContent=st.sets}
-function cleanSet(st){return{type:st.type||'n',kg:num(st.kg),reps:num(st.reps),km:num(st.km),t:st.min!==''&&st.min!=null&&num(st.min)!=null?Math.round(num(st.min)*60):null,rir:st.rir!=null&&st.rir!==''?+st.rir:null}}
+/* Tempo das séries em min:seg ("1:30"). Aceita também o formato antigo em minutos decimais ("0.5"). */
+const mmss=sec=>{const t=Math.max(0,Math.round(sec));return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
+const minIn=v=>{const x=String(v??'').trim();if(!x)return null;const m=x.match(/^(\d+):(\d{1,2})$/);return m?+m[1]+(+m[2])/60:num(x)};
+const tmask=v=>{let d=String(v).replace(/\D/g,'').replace(/^0+/,'').slice(0,4);if(!d)return'';d=d.padStart(3,'0');return(+d.slice(0,-2))+':'+d.slice(-2)};
+function cleanSet(st){return{type:st.type||'n',kg:num(st.kg),reps:num(st.reps),km:num(st.km),t:minIn(st.min)!=null?Math.round(minIn(st.min)*60):null,rir:st.rir!=null&&st.rir!==''?+st.rir:null}}
 /* Calorias do treino: o valor que o relógio mostra (Samsung Health ou app Fitness), digitado no fim do treino */
 const kcalOf=w=>num(w.kcal)>0?Math.round(num(w.kcal)):null;
 function kcalSheet(cur,onSave){sheet(`<h3>Calorias gastas</h3><p class="muted small" style="margin:0">Use as <b>calorias ativas</b> do treino, que somam à sua meta do dia: no <b>iPhone</b>, app Fitness, "Calorias ativas"; no <b>Samsung Health</b>, abra o exercício e veja "Calorias". Evite "Calorias totais": elas já incluem o gasto em repouso, que o app calcula pela taxa basal.</p><input class="inp" id="ask-in" type="number" inputmode="numeric" min="1" max="5000" value="${cur||''}" placeholder="kcal, por exemplo 320"><div class="ask-b"><button class="btn sec" data-a="closeSheet">${cur?'Cancelar':'Pular'}</button><button class="btn pri" data-a="askOk">Salvar</button></div>`);
@@ -1500,7 +1505,7 @@ function kcalSheet(cur,onSave){sheet(`<h3>Calorias gastas</h3><p class="muted sm
 function toWorkout(s,end){const w=_toWorkout(s,end);w.kcal=kcalOf(s);return w}
 function _toWorkout(s,end){return{id:s.kind==='edit'?s.id:uid(),name:(s.name||'').trim()||'Treino',notes:s.notes||'',start:s.start,end,routineId:s.routineId||null,exercises:(()=>{const x=s.exercises.map(e=>({exId:e.exId,notes:e.notes||'',ss:e.ss||null,sets:e.sets.filter(st=>st.done).map(cleanSet)})).filter(e=>e.sets.length);fixSS({exercises:x});return x})()}}
 const strv=v=>v==null?'':String(v);
-function setFromSaved(st,done){const r=strv(st.reps),rng=/^\s*\d+\s*-\s*\d+\s*$/.test(r);return{type:st.type||'n',kg:strv(st.kg),reps:rng?'':r,target:rng?r.replace(/\s/g,''):(st.target||''),km:strv(st.km),min:st.t?String(+(st.t/60).toFixed(2)):(st.min??''),rir:done?(st.rir??null):null,done}}
+function setFromSaved(st,done){const r=strv(st.reps),rng=/^\s*\d+\s*-\s*\d+\s*$/.test(r);return{type:st.type||'n',kg:strv(st.kg),reps:rng?'':r,target:rng?r.replace(/\s/g,''):(st.target||''),km:strv(st.km),min:st.t?mmss(st.t):(st.min??''),rir:done?(st.rir??null):null,done}}
 function periodName(){const h=new Date().getHours();return h<12?'Treino da manhã':h<18?'Treino da tarde':'Treino da noite'}
 function startFrom(exs,name,routineId){
  const run=()=>{S.active={kind:'live',id:uid(),name,notes:'',start:Date.now(),routineId:routineId||null,restEnd:null,restTotal:0,exercises:exs.map(e=>({exId:e.exId,notes:e.notes||'',rest:e.rest??S.profile.rest,ss:e.ss||null,sets:e.sets.map(st=>setFromSaved(st,false))}))};save();audioInit();go('sessao',{live:true});wake()};
@@ -2154,18 +2159,18 @@ const A={
  exRest:d=>{const s=cur(),e=s.exercises[+d.e];menu('Descanso entre séries',[0,30,45,60,75,90,120,150,180,240,300].map(v=>({label:fmtRest(v)+(e.rest===v?' ✓':''),f:()=>{e.rest=v;save();rerender()}})))},
  setType:d=>{const s=cur(),e=s.exercises[+d.e],j=+d.s;menu('Tipo de série',[...Object.entries(SET_T).map(([k,l])=>({label:l+(e.sets[j].type===k?' ✓':''),icon:`<b class="num" style="width:22px;text-align:center;font-size:18px">${SET_L[k]||'1'}</b>`,f:()=>{e.sets[j].type=k;save();rerender();updateLiveStats()}})),{label:'Remover série',icon:I.trash,danger:true,f:()=>{e.sets.splice(j,1);save();rerender();updateLiveStats()}}])},
  addSet:d=>{const s=cur(),e=s.exercises[+d.e];const l=e.sets[e.sets.length-1];e.sets.push({type:'n',kg:l?l.kg:'',reps:l?l.reps:'',target:l?l.target||'':'',km:l?l.km||'':'',min:l?l.min:'',done:false});save();rerender()},
- usePrev:d=>{const s=cur(),e=s.exercises[+d.e],st=e.sets[+d.s];const pv=prevFor(prevSets(e.exId,s.kind==='edit'?s.id:null,s.kind==='edit'?s.start:Infinity,s.routineId),e.sets,+d.s);if(!pv)return;st.kg=strv(pv.kg);st.reps=strv(pv.reps);st.km=strv(pv.km);st.min=pv.t?String(+(pv.t/60).toFixed(2)):'';save();rerender();updateLiveStats()},
+ usePrev:d=>{const s=cur(),e=s.exercises[+d.e],st=e.sets[+d.s];const pv=prevFor(prevSets(e.exId,s.kind==='edit'?s.id:null,s.kind==='edit'?s.start:Infinity,s.routineId),e.sets,+d.s);if(!pv)return;st.kg=strv(pv.kg);st.reps=strv(pv.reps);st.km=strv(pv.km);st.min=pv.t?mmss(pv.t):'';save();rerender();updateLiveStats()},
  check:d=>{audioInit();const s=cur(),ei=+d.e,e=s.exercises[ei],st=e.sets[+d.s];const x=ex(e.exId),t=tOf(x);
   if(UI.tmr&&UI.tmr.e===ei&&UI.tmr.s===+d.s)A.setTimer(d);
   if(!st.done){const pv=prevFor(prevSets(e.exId,s.kind==='edit'?s.id:null,s.kind==='edit'?s.start:Infinity,s.routineId),e.sets,+d.s);
-   if(pv){if(st.kg===''&&pv.kg!=null)st.kg=strv(pv.kg);if(st.reps===''&&pv.reps!=null)st.reps=strv(pv.reps);if(st.min===''&&pv.t)st.min=String(+(pv.t/60).toFixed(2));if((st.km==null||st.km==='')&&pv.km!=null)st.km=strv(pv.km)}
-   const ok=t==='t'?num(st.min):t==='dt'?(num(st.min)||num(st.km)):num(st.reps);
+   if(pv){if(st.kg===''&&pv.kg!=null)st.kg=strv(pv.kg);if(st.reps===''&&pv.reps!=null)st.reps=strv(pv.reps);if(st.min===''&&pv.t)st.min=mmss(pv.t);if((st.km==null||st.km==='')&&pv.km!=null)st.km=strv(pv.km)}
+   const ok=t==='t'?minIn(st.min):t==='dt'?(minIn(st.min)||num(st.km)):num(st.reps);
    if(!ok){toast(t==='t'?'Informe o tempo da série.':t==='dt'?'Informe a distância ou o tempo.':'Informe as repetições da série.');return}
    st.done=true;
    if(s.kind==='live'){livePR(s,e,st,x,t);
     if(ssLast(s,ei)){if(e.rest)startRest(e.rest)}else{const nx=ssNext(s,ei);if(nx){toast('Supersérie: agora '+ex(nx.exId).name);if(S.profile.ssScroll!==false){const ni=s.exercises.indexOf(nx);setTimeout(()=>{const el=$('#exc-'+ni);el&&el.scrollIntoView({behavior:'smooth',block:'start'})},60)}}}}}else{st.done=false;st.pr=false}
   save();rerender();updateLiveStats()},
- setTimer:d=>{const s=cur(),i=+d.e,j=+d.s;if(UI.tmr&&UI.tmr.e===i&&UI.tmr.s===j){const st=s.exercises[i].sets[j];st.min=String(+((Date.now()-UI.tmr.start)/6e4).toFixed(2));UI.tmr=null;save()}else UI.tmr={e:i,s:j,start:Date.now()};rerender()},
+ setTimer:d=>{const s=cur(),i=+d.e,j=+d.s;if(UI.tmr&&UI.tmr.e===i&&UI.tmr.s===j){const st=s.exercises[i].sets[j];st.min=mmss((Date.now()-UI.tmr.start)/1000);UI.tmr=null;save()}else UI.tmr={e:i,s:j,start:Date.now()};rerender()},
  setRir:d=>{const s=cur(),st=s.exercises[+d.e].sets[+d.s];const v=+d.v;st.rir=st.rir===v?null:v;UI.rirAt=null;save();rerender(true)},
  rirEdit:d=>{UI.rirAt=d.e+'-'+d.s;rerender(true)},
  applyHint:d=>{const s=cur(),e=s.exercises[+d.e];e.sets.forEach(st=>{if(st.type!=='w'&&!st.done)st.kg=String(d.kg).replace('.',',')});save();rerender();toast('Carga sugerida aplicada')},
@@ -2253,7 +2258,7 @@ document.addEventListener('input',e=>{const t=e.target,f=t.dataset.f;if(!f)retur
  else if(f==='enote'){s.exercises[+t.dataset.e].notes=v}
  else if(f==='startLocal'){const d=new Date(v).getTime();if(!isNaN(d)){const dur=s.end-s.start;s.start=d;s.end=d+dur}}
  else if(f==='durMin'){const m=num(v);if(m!=null&&m>0)s.end=s.start+m*6e4}
- else if(f==='kg'||f==='reps'||f==='min'||f==='km'){s.exercises[+t.dataset.e].sets[+t.dataset.s][f]=v;updateLiveStats()}
+ else if(f==='kg'||f==='reps'||f==='min'||f==='km'){let w=v;if(f==='min'){w=tmask(v);if(t.value!==w){t.value=w;try{t.setSelectionRange(w.length,w.length)}catch(e){}}}s.exercises[+t.dataset.e].sets[+t.dataset.s][f]=w;updateLiveStats()}
  if(s.kind==='live')save()});
 document.addEventListener('change',async e=>{const t=e.target,k=t.dataset.file;if(!k||!t.files||!t.files[0])return;const file=t.files[0];if(k==='evo'){t.value='';try{const img=await makeEvoPhoto(file);const dv=(isoOf(($('#fp-date')||{}).value)||toDateInput(Date.now())).split('-').map(Number);await fotoPut({id:uid(),pid:REGS.current,t:new Date(dv[0],dv[1]-1,dv[2],12).getTime(),pose:(UI.fpNew||{}).pose||'frente',img});closeSheet();rerender();toast('Foto salva')}catch(err){toast('Não foi possível salvar essa foto.')}return}if(k==='photo'){t.value='';try{S.profile.photo=await makePhoto(file);persist();closeSheet();rerender();toast('Foto do perfil atualizada')}catch(err){toast('Não foi possível abrir essa imagem. Tente outra foto.')}return}let text='';try{text=await file.text()}catch(err){toast('Não foi possível ler o arquivo.');return}t.value='';
  if(k==='hevy'){await snapshot('Antes de importar');try{const r=importHevy(text);importResult(r);rerender()}catch(err){toast(err.message||'Falha ao importar.')}}
