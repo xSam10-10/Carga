@@ -1189,7 +1189,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v90'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v91'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1421,7 +1421,6 @@ VIEWS.treino=()=>{
  h+=`<h2 class="h" style="margin-top:0">Seus treinos</h2>`;
  if(!ws.length)h+=`<div class="emptybox">${I.dumbbell}<b>Nenhum treino registrado ainda</b><span>Comece uma rotina abaixo ou um treino vazio. Se você já usava outro app, importe o histórico em Configurações.</span><div class="row" style="flex-wrap:wrap;justify-content:center"><button class="btn sec sm" data-a="goPf" data-v="config">Importar histórico</button></div></div>`;
  else{h+=ws.slice(0,3).map(homeCard).join('');if(ws.length>3)h+=`<button class="btn sec wide" data-a="go" data-v="historico">Ver todos os ${ws.length} treinos</button>`}
- h+=blockCard();
  h+=S.active?`<button class="tile" data-a="resume" style="background:var(--accent);color:var(--accent-ink)">${I.play}<span class="spacer">Retomar treino em andamento</span><span class="num" data-clock>${clock(Date.now()-S.active.start)}</span></button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`:`<button class="tile" data-a="startEmpty">${I.plus}Iniciar treino vazio</button>`;
  h+=`<div class="row" style="margin-top:6px"><h2 class="h spacer" style="margin:0">Rotinas</h2><button class="ib" data-a="newFolder" aria-label="Nova pasta">${I.folder}</button></div><div class="grid2"><button class="tile" data-a="newRoutine">${I.clip}Nova rotina</button><button class="tile" data-a="go" data-v="explorar">${I.search}Explorar</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="newEx">${I.plus}Novo exercício</button><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button></div>`;
  for(const g of groups){const rs=S.routines.filter(r=>(r.folderId||'')===g.id);const closed=!!col[g.id||'_'];
