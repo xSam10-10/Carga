@@ -1191,7 +1191,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v93'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v94'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1622,7 +1622,6 @@ VIEWS.estatisticas=()=>{
  const topEx=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,UI.topN||8);
  return bar('Estatísticas')+`<main class="page">
  <button class="tile" data-a="go" data-v="relatorio">${I.cal}<span class="spacer">Relatório mensal</span>${I.chev}</button>
- ${evoCard()}
  <h2 class="h">${sel!=null?'Mapa corporal de '+dShort(sel):'Mapa corporal dos últimos 7 dias'}</h2>
  <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<button class="dchip${has?' has':''}${d===today?' today':''}${sel===d?' sel':''}" data-a="statDay" data-d="${d}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></button>`}).join('')}</div>
  ${bodyMap(c7)}

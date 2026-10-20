@@ -196,3 +196,4 @@
 - 20/10/2026 (v91): cartão **Fase de treino** saiu da aba Musculação (`blockCard` sem uso). A fase continua configurável em Meus dados → Treino e objetivo e segue valendo para a sugestão de carga.
 - 20/10/2026 (v92): aba Musculação → Rotinas: quadro na ordem Nova rotina · Novo exercício · Iniciar treino vazio · Catálogo · Estatísticas · Explorar. "Iniciar treino vazio" deixou de ser um botão solto acima das Rotinas; com treino em andamento, "Retomar" e "Descartar" seguem no topo.
 - 20/10/2026 (v93): **Seus treinos** (aba Musculação) virou carrossel horizontal (`.wcar`, scroll-snap): até os 10 treinos mais recentes lado a lado, um por vez; desliza com o dedo ou pelas setas ‹ › (ação `carStep`), com contador "N de M" atualizado na rolagem. Abaixo, "Ver todos os N treinos". Com 1 treino só, mostra o cartão sem setas.
+- 20/10/2026 (v94): cartão **Evolução do corpo** saiu da tela Estatísticas (`evoCard` sem uso). A Evolução segue no Explorar do Início.
