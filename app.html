@@ -1592,43 +1592,30 @@ VIEWS.novoEx=p=>{const f=p.f;return bar(p.id?'Editar exercício':'Criar exercíc
  <div class="fld"><span>Tipo de registro</span><div class="chips">${Object.entries(TYPES).map(([k,l])=>`<button class="chip${f.type===k?' on':''}" data-a="nxType" data-k="${k}">${l}</button>`).join('')}</div><p class="muted small" style="margin:0">${{wr:'Ex.: supino, rosca, leg press.',bw:'Ex.: flexão, barra fixa. Registre carga extra só se usar colete ou anilha.',as:'Ex.: barra fixa assistida. Registre o peso de assistência.',t:'Ex.: prancha, alongamento.',dt:'Ex.: corrida, bicicleta, remo.'}[f.type]||''}</p></div></div></main>`};
 
 /* ---------- ESTATÍSTICAS ---------- */
-VIEWS.estatisticas=()=>{
- const today=sod(Date.now());const days=[...Array(7)].map((_,i)=>addDays(today,i-6));const sel=UI.statDay;
- const from=sel??days[0],to=sel!=null?addDays(sel,1):addDays(today,1);
- const c7=muscleSets(S.workouts.filter(w=>w.start>=from&&w.start<to));
- const SG=perOf('sg'),[sgA]=perRange(SG.p);const cR=muscleSets(S.workouts.filter(w=>w.start>=sgA));
- const hb=Object.entries(cR).filter(([m])=>m!=='Cardio').sort((a,b)=>b[1]-a[1]);
- const RD=perOf('rad'),[rdA]=perRange(RD.p),rdP=prevRange(RD.p);const g30=muscleSets(S.workouts.filter(w=>w.start>=rdA)),g60=rdP?muscleSets(S.workouts.filter(w=>w.start>=rdP[0]&&w.start<rdP[1])):{};
- const ax=Object.keys(GROUPS);const sumG=(c,g)=>GROUPS[g].reduce((a,m)=>a+(c[m]||0),0);
- const all=S.workouts;const tot={n:all.length,dur:all.reduce((a,w)=>a+(w.end-w.start),0),vol:all.reduce((a,w)=>a+wStats(w).vol,0),sets:all.reduce((a,w)=>a+wStats(w).sets,0)};
- const top=Object.entries(c7).sort((a,b)=>b[1]-a[1]).slice(0,4);
- const MUS=UI.mtl||['Peito','Dorsais','Quadríceps'];const ML=perOf('ml'),mbk=buckets(ML.p,ML.g);const mcs=mbk.map(([a,z])=>muscleSets(S.workouts.filter(w=>w.start>=a&&w.start<z)));
- const series=MUS.map(m=>mcs.map(c=>c[m]||0));
- const TP=perOf('top'),[tFrom]=perRange(TP.p);const cnt={};for(const w of S.workouts){if(w.start<tFrom)continue;for(const id of new Set(w.exercises.map(e=>e.exId)))cnt[id]=(cnt[id]||0)+1}
- const topEx=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,UI.topN||8);
- return bar('Estatísticas')+`<main class="page">
- <button class="tile" data-a="go" data-v="relatorio">${I.cal}<span class="spacer">Relatório mensal</span>${I.chev}</button>
- <h2 class="h">${sel!=null?'Mapa corporal de '+dShort(sel):'Mapa corporal dos últimos 7 dias'}</h2>
- <div class="days7">${days.map(d=>{const has=S.workouts.some(w=>w.start>=d&&w.start<addDays(d,1));return`<button class="dchip${has?' has':''}${d===today?' today':''}${sel===d?' sel':''}" data-a="statDay" data-d="${d}"><span>${DL[new Date(d).getDay()]}</span><b>${new Date(d).getDate()}</b></button>`}).join('')}</div>
- ${bodyMap(c7)}
- <p class="muted small" style="text-align:center;margin:0">${top.length?'Mais trabalhados: '+top.map(([m,v])=>`${m} (${fmt(v)})`).join(', '):'Nenhuma série registrada neste período.'} Toque num dia para filtrar.</p>
- ${volSection()}${recSection()}
- <h3 class="sh">${I.bars.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Séries por grupo muscular</h3>
- ${perCtl('sg',{gran:false})}
- ${hb.length?`<div class="hb">${hb.map(([m,v])=>`<span>${m}</span><i style="width:${(v/hb[0][1]*100).toFixed(0)}%"></i><b>${fmt(v)}</b>`).join('')}</div><p class="muted small" style="margin:0">Músculo principal conta 1 série; secundário conta meia. Aquecimento não entra.</p>`:'<p class="empty">Sem séries no período.</p>'}
- <h3 class="sh">${I.radar.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Distribuição muscular</h3>
- ${perCtl('rad',{gran:false})}
- ${radar(ax,ax.map(g=>sumG(g30,g)),ax.map(g=>sumG(g60,g)))}
- <div class="legend"><span><i></i>${PER_TXT[RD.p][0].toUpperCase()+PER_TXT[RD.p].slice(1)}</span>${rdP?'<span><i class="o"></i>Período anterior</span>':''}</div>
- <h3 class="sh">${I.chart.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Séries por músculo ao longo do tempo</h3>
- ${perCtl('ml')}
- ${multiLine(series,sparseLabels(mbk,6))}
- <div class="legend" style="flex-wrap:wrap">${MUS.map((m,i)=>`<span><i style="background:${SERIES_C[i]}"></i>${m}</span>`).join('')}</div>
- <details class="card"><summary class="small" style="cursor:pointer;font-weight:600">Escolher músculos (até 3)</summary><div class="chips" style="margin-top:10px">${MUSCLES.filter(m=>!['Cardio','Corpo inteiro','Outro'].includes(m)).map(m=>`<button class="chip${MUS.includes(m)?' on':''}" data-a="mtl" data-k="${m}">${m}</button>`).join('')}</div></details>
- <div class="row"><h3 class="sh spacer" style="margin:0">${I.trophy.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Exercícios mais feitos</h3></div>${perCtl('top',{gran:false})}
- ${topEx.length?`<div class="list">${topEx.map(([id,n])=>{const x=ex(id);return`<button class="exrow" data-a="openEx" data-id="${id}">${avatar(x,44)}<span class="exrow-t"><b>${esc(x.name)}</b><span class="sub">${n} ${n===1?'vez':'vezes'}</span></span><span class="chev">${I.chev}</span></button>`}).join('')}</div>${Object.keys(cnt).length>(UI.topN||8)?`<button class="btn sec" data-a="topMore">Ver mais</button>`:''}`:'<p class="empty">Nenhum treino no período.</p>'}
- <h3 class="sh">Desde o começo</h3><div class="kv"><div><span class="lab">Treinos</span><b>${tot.n}</b></div><div><span class="lab">Tempo</span><b>${fmtInt(tot.dur/36e5)} h</b></div><div><span class="lab">Volume</span><b>${fmt(tot.vol/1000)} t</b></div><div><span class="lab">Séries</span><b>${fmtInt(tot.sets)}</b></div></div>
- </main>`};
+/* Estatísticas (v95, unificada com o antigo Relatório mensal): um único seletor de período no topo vale para
+   Resumo (com comparação ao período anterior), Frequência, Músculos e Exercícios mais feitos.
+   "Agora" (volume da semana e recuperação) não depende do período. Sem blocos repetidos. */
+VIEWS.estatisticas=()=>{const P=perOf('st'),[a,z]=perRange(P.p),pr=prevRange(P.p),G={'7d':'dia',mes:'semana',ano:'mes',tudo:'mes'}[P.p];
+ const ws=S.workouts.filter(w=>w.start>=a&&w.start<z),pw=pr?S.workouts.filter(w=>w.start>=pr[0]&&w.start<pr[1]):null;
+ const sum=l=>({n:l.length,dur:l.reduce((x,w)=>x+(w.end-w.start),0),vol:l.reduce((x,w)=>x+wStats(w).vol,0),sets:l.reduce((x,w)=>x+wStats(w).sets,0)}),c=sum(ws),pc=pw&&sum(pw);
+ const dl=(v,pv,f)=>{if(pc==null)return'';const d=v-pv;return d?`<em class="${d>0?'up':'down'}">${d>0?'↑':'↓'} ${f(Math.abs(d))}</em>`:'<em>=</em>'};
+ const ico=i=>i.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"');
+ const bk=buckets(P.p,G),fv=bk.map(([x,y])=>S.workouts.filter(w=>w.start>=x&&w.start<y).length);
+ const mc=muscleSets(ws),hb=Object.entries(mc).filter(([m])=>!['Cardio','Corpo inteiro','Outro'].includes(m)).sort((x,y)=>y[1]-x[1]);
+ const MUS=UI.mtl||['Peito','Dorsais','Quadríceps'],mcs=bk.map(([x,y])=>muscleSets(S.workouts.filter(w=>w.start>=x&&w.start<y))),series=MUS.map(m=>mcs.map(q=>q[m]||0));
+ const cnt={};for(const w of ws)for(const id of new Set(w.exercises.map(e=>e.exId)))cnt[id]=(cnt[id]||0)+1;const topEx=Object.entries(cnt).sort((x,y)=>y[1]-x[1]),tn=UI.topN||5;
+ let h=bar('Estatísticas')+`<main class="page">${perCtl('st',{gran:false})}
+ <section class="card form"><div class="row"><span class="lab nfx">Resumo · ${PER_TXT[P.p]}</span><span class="tag amb">${ico(I.flame)} ${streakWeeks()} sem. seguidas</span></div>
+ <div class="kv rep"><div><span class="lab">Treinos</span><b>${c.n}</b>${dl(c.n,pc&&pc.n,fmtInt)}</div><div><span class="lab">Tempo</span><b>${fmtDur(c.dur)}</b>${dl(c.dur,pc&&pc.dur,fmtDur)}</div><div><span class="lab">Volume</span><b>${fmtInt(c.vol)} kg</b>${dl(c.vol,pc&&pc.vol,v=>fmtInt(v)+' kg')}</div><div><span class="lab">Séries</span><b>${fmtInt(c.sets)}</b>${dl(c.sets,pc&&pc.sets,fmtInt)}</div></div>
+ ${pc?'<p class="muted small" style="margin:0">As setas comparam com o período anterior de mesmo tamanho.</p>':''}</section>`;
+ if(!S.workouts.length)return h+`<p class="empty">Registre treinos para ver as estatísticas.</p></main>`;
+ h+=`<h3 class="sh">${ico(I.cal)} Frequência · treinos por ${G==='dia'?'dia':G==='semana'?'semana':'mês'}</h3>${barChart(fv,sparseLabels(bk,6),v=>fmtInt(v))}`;
+ h+=`<h3 class="sh">${ico(I.body)} Músculos trabalhados</h3>${hb.length?bodyMap(mc)+`<div class="hb">${hb.slice(0,8).map(([m,v])=>`<span>${m}</span><i style="width:${(v/hb[0][1]*100).toFixed(0)}%"></i><b>${fmt(v)}</b>`).join('')}</div><p class="muted small" style="margin:0">Séries no período. Músculo principal conta 1 série; secundário, meia. Aquecimento não entra.</p>`:'<p class="empty">Sem séries no período.</p>'}`;
+ h+=`<h3 class="sh">${ico(I.trophy)} Exercícios mais feitos</h3>${topEx.length?`<div class="list">${topEx.slice(0,tn).map(([id,n])=>{const x=ex(id);return`<button class="exrow" data-a="openEx" data-id="${id}">${avatar(x,44)}<span class="exrow-t"><b>${esc(x.name)}</b><span class="sub">${n} ${n===1?'vez':'vezes'}</span></span><span class="chev">${I.chev}</span></button>`}).join('')}</div>${topEx.length>tn?'<button class="btn sec" data-a="topMore">Ver mais</button>':''}`:'<p class="empty">Nenhum treino no período.</p>'}`;
+ h+=`<h3 class="sh">${ico(I.chart)} Evolução por músculo</h3>${multiLine(series,sparseLabels(bk,6))}<div class="legend" style="flex-wrap:wrap">${MUS.map((m,i)=>`<span><i style="background:${SERIES_C[i]}"></i>${m}</span>`).join('')}</div>
+ <details class="card"><summary class="small" style="cursor:pointer;font-weight:600">Escolher músculos (até 3)</summary><div class="chips" style="margin-top:10px">${MUSCLES.filter(m=>!['Cardio','Corpo inteiro','Outro'].includes(m)).map(m=>`<button class="chip${MUS.includes(m)?' on':''}" data-a="mtl" data-k="${m}">${m}</button>`).join('')}</div></details>`;
+ h+=`<h2 class="h" style="margin-bottom:0">Agora</h2><p class="muted small" style="margin:0">Não depende do período escolhido acima.</p>${volSection()}${recSection(false)}`;
+ return h+'</main>'};
 
 /* ---------- RELATÓRIO MENSAL ---------- */
 VIEWS.relatorio=p=>{const off=p.off||0,n0=new Date(),M=new Date(n0.getFullYear(),n0.getMonth()+off,1),y=M.getFullYear(),mo=M.getMonth();
@@ -2069,7 +2056,7 @@ const A={
  photoDel:()=>{delete S.profile.photo;persist();closeSheet();rerender();toast('Foto removida')},
  repNav:d=>{const p=top_().p;p.off=Math.min(0,(p.off||0)+(+d.d));p.more=false;rerender()},
  repMore:()=>{top_().p.more=true;rerender()},
- topMore:()=>{UI.topN=(UI.topN||8)+10;rerender()},
+ topMore:()=>{UI.topN=(UI.topN||5)+10;rerender()},
  mtl:d=>{const L=(UI.mtl||['Peito','Dorsais','Quadríceps']).slice();const i=L.indexOf(d.k);if(i>=0){if(L.length>1)L.splice(i,1)}else{if(L.length>=3)L.shift();L.push(d.k)}UI.mtl=L;rerender()},
  pWeek:d=>{S.profile.weekStart=+d.k;save();rerender()},
  pPrev:d=>{S.profile.prevMode=d.k;save();rerender()},
@@ -3404,11 +3391,11 @@ function volSection(){if(!S.workouts.length)return'';const{rows,forgot}=volWeek(
  <div class="legend"><span><i style="background:var(--amber)"></i>Abaixo</span><span><i></i>Na faixa</span><span><i style="background:var(--coral,#E5735A)"></i>Acima</span></div>`}
 // Recuperação: horas desde o último treino do músculo × séries feitas nele (≥10 séries: 72 h; 6–9: 48 h; menos: 36 h)
 function recovery(){const now=Date.now(),last={};for(const w of[...S.workouts].sort((a,b)=>a.end-b.end)){if(w.end<now-5*DAY)continue;const c=muscleSets([w]);for(const[m,n]of Object.entries(c))if(n>=1)last[m]={t:w.end,n}}
- return Object.entries(last).map(([m,o])=>{const need=(o.n>=10?72:o.n>=6?48:36)*36e5,r=Math.min(1,(now-o.t)/need);return{m,r,left:Math.max(0,o.t+need-now)}}).filter(x=>x.r<1&&!['Cardio','Corpo inteiro','Outro'].includes(x.m)).sort((a,b)=>a.r-b.r)}
-function recSection(){if(!S.workouts.length)return'';const rec=recovery(),c={};for(const x of rec)c[x.m]=1-x.r;
+ return Object.entries(last).map(([m,o])=>{const need=(o.n>=10?72:o.n>=6?48:36)*36e5,r=Math.max(0,Math.min(1,(now-o.t)/need));return{m,r,left:Math.max(0,o.t+need-now)}}).filter(x=>x.r<1&&!['Cardio','Corpo inteiro','Outro'].includes(x.m)).sort((a,b)=>a.r-b.r)}
+function recSection(map=true){if(!S.workouts.length)return'';const rec=recovery(),c={};for(const x of rec)c[x.m]=1-x.r;
  return`<h3 class="sh">${I.heart.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"')} Recuperação muscular</h3>
- <p class="muted small" style="margin:0">Quanto mais forte a cor, mais o músculo ainda está se recuperando. Estimativa pelo tempo desde o último treino e pelo número de séries (36 a 72 h).</p>
- ${rec.length?bodyMap(c)+`<div class="rec">${rec.map(x=>`<div><span>${x.m}</span><div class="g-bar"><i style="width:${(x.r*100).toFixed(0)}%"></i></div><b>${Math.round(x.r*100)}%</b><em>${x.left>36e5?'pronto em ~'+Math.round(x.left/36e5)+' h':'quase pronto'}</em></div>`).join('')}</div>`:`<p class="empty small">Todos os músculos estão recuperados.</p>`}`}
+ <p class="muted small" style="margin:0">${map?'Quanto mais forte a cor, mais o músculo ainda está se recuperando. ':'Quanto recuperado está cada músculo treinado nos últimos dias. '}Estimativa pelo tempo desde o último treino e pelo número de séries (36 a 72 h).</p>
+ ${rec.length?(map?bodyMap(c):'')+`<div class="rec">${rec.map(x=>`<div><span>${x.m}</span><div class="g-bar"><i style="width:${(x.r*100).toFixed(0)}%"></i></div><b>${Math.round(x.r*100)}%</b><em>${x.left>36e5?'pronto em ~'+Math.round(x.left/36e5)+' h':'quase pronto'}</em></div>`).join('')}</div>`:`<p class="empty small">Todos os músculos estão recuperados.</p>`}`}
 
 /* ===================== CICLO DE CARBOIDRATO ===================== */
 // Dia com treino (musculação ou exercício avulso): +15% de carboidrato; dia sem treino: −20%. A gordura compensa e as calorias do dia não mudam.
