@@ -209,3 +209,4 @@
 - 20/10/2026 (v105): aviso **Backup pendente** removido do Início (backup continua em Configurações).
 - 20/10/2026 (v106): **Fotos de evolução** e **Medidas** (Registrar medidas / Editar registros) saíram de Meus dados e ficam no fim da tela **Evolução do corpo** (`evoInputs`), inclusive quando ainda não há registros. Exceção à regra de formulários no Perfil, a pedido do usuário.
 - 20/10/2026 (v107): Evolução do corpo — as duas seções "Fotos de evolução" (comparação e botões) viraram uma só: comparação lado a lado (`#evo-fotos`, `fotoCompare`) com Adicionar foto e Ver e excluir no mesmo cartão, logo antes de Medidas.
+- 20/10/2026 (v108): Evolução do corpo — "Altura" saiu dos botões de seleção (o histórico de altura continua sendo usado no IMC).
