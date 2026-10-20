@@ -1189,7 +1189,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v86'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v87'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1408,7 +1408,7 @@ VIEWS.inicio=()=>{
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
  h+=homeSpend();
  h+=`<h3 class="sh">Métricas de saúde</h3>`+healthCore();
- h+=`<h3 class="sh">Explorar</h3><div class="grid2"><button class="tile" data-a="go" data-v="metas">${I.flame}Metas</button><button class="tile" data-a="go" data-v="resumo">${I.cal}Resumo</button><button class="tile" data-a="go" data-v="conquistas">${I.trophy}Conquistas</button><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button></div>`;
+ h+=`<h3 class="sh">Explorar</h3><div class="grid2"><button class="tile" data-a="go" data-v="resumo">${I.cal}Resumo</button><button class="tile" data-a="go" data-v="conquistas">${I.trophy}Conquistas</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button></div>`;
  if(backupDue()){const n=S.workouts.length-(S.profile.lastBackupN||0);h+=`<section class="alert"><b>Backup pendente</b><span>${n>0?`${n} treino(s) novo(s) desde o último backup.`:'Você ainda não fez backup.'} Se os dados do navegador forem apagados, o histórico se perde.</span><div class="row"><button class="btn pri sm" data-a="backupSheet">Fazer backup</button><button class="btn ghost sm" data-a="snoozeBackup">Lembrar depois</button></div></section>`}
  return h+'</main>'};
 
@@ -1423,7 +1423,7 @@ VIEWS.treino=()=>{
  else{h+=ws.slice(0,3).map(homeCard).join('');if(ws.length>3)h+=`<button class="btn sec wide" data-a="go" data-v="historico">Ver todos os ${ws.length} treinos</button>`}
  h+=blockCard();
  h+=S.active?`<button class="tile" data-a="resume" style="background:var(--accent);color:var(--accent-ink)">${I.play}<span class="spacer">Retomar treino em andamento</span><span class="num" data-clock>${clock(Date.now()-S.active.start)}</span></button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`:`<button class="tile" data-a="startEmpty">${I.plus}Iniciar treino vazio</button>`;
- h+=`<div class="row" style="margin-top:6px"><h2 class="h spacer" style="margin:0">Rotinas</h2><button class="ib" data-a="newFolder" aria-label="Nova pasta">${I.folder}</button></div><div class="grid2"><button class="tile" data-a="newRoutine">${I.clip}Nova rotina</button><button class="tile" data-a="go" data-v="explorar">${I.search}Explorar</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="newEx">${I.plus}Novo exercício</button></div>`;
+ h+=`<div class="row" style="margin-top:6px"><h2 class="h spacer" style="margin:0">Rotinas</h2><button class="ib" data-a="newFolder" aria-label="Nova pasta">${I.folder}</button></div><div class="grid2"><button class="tile" data-a="newRoutine">${I.clip}Nova rotina</button><button class="tile" data-a="go" data-v="explorar">${I.search}Explorar</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="newEx">${I.plus}Novo exercício</button><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button></div>`;
  for(const g of groups){const rs=S.routines.filter(r=>(r.folderId||'')===g.id);const closed=!!col[g.id||'_'];
   h+=`<div class="fold"><button class="fold-t${closed?' closed':''}" data-a="fold" data-id="${g.id}">${I.caret}${esc(g.name)} (${rs.length})</button>${g.id?`<button class="ib" data-a="folderMenu" data-id="${g.id}" aria-label="Opções da pasta">${I.dots}</button>`:''}</div>`;
   if(!closed){if(!rs.length)h+=`<p class="muted small" style="margin:0 0 4px">${g.id?'Pasta vazia. Mova rotinas para cá pelo menu ⋯ de cada rotina.':'Nenhuma rotina. Crie uma ou explore modelos prontos.'}</p>`;
