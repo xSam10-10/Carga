@@ -1189,7 +1189,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v84'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v85'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1407,7 +1407,7 @@ VIEWS.inicio=()=>{
  h+=homeMyDay();
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
  h+=homeSpend();
- h+=homeBody();
+ h+=`<h3 class="sh">Métricas de saúde</h3>`+healthCore();
  h+=`<h3 class="sh">Explorar</h3><div class="grid2"><button class="tile" data-a="go" data-v="metas">${I.flame}Metas</button><button class="tile" data-a="go" data-v="resumo">${I.cal}Resumo</button><button class="tile" data-a="go" data-v="conquistas">${I.trophy}Conquistas</button><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button></div>`;
  if(backupDue()){const n=S.workouts.length-(S.profile.lastBackupN||0);h+=`<section class="alert"><b>Backup pendente</b><span>${n>0?`${n} treino(s) novo(s) desde o último backup.`:'Você ainda não fez backup.'} Se os dados do navegador forem apagados, o histórico se perde.</span><div class="row"><button class="btn pri sm" data-a="backupSheet">Fazer backup</button><button class="btn ghost sm" data-a="snoozeBackup">Lembrar depois</button></div></section>`}
  return h+'</main>'};
@@ -1956,8 +1956,8 @@ VIEWS.agua=()=>{const now=Date.now(),k=dkey(now),log=(S.water&&S.water[k])||[],t
 const BMI_C=[[18.5,'Abaixo do peso','warn'],[25,'Peso saudável','ok'],[30,'Sobrepeso','warn'],[35,'Obesidade grau I','bad'],[40,'Obesidade grau II','bad'],[Infinity,'Obesidade grau III','bad']];
 function hc(label,value,badge,body){return`<section class="hcard"><span class="lab">${label}</span><div class="row" style="flex-wrap:wrap">${value}${badge||''}</div>${body}</section>`}
 VIEWS.agua.after=()=>{const g=$('#wfill');UI.wPrev=null;if(g)requestAnimationFrame(()=>requestAnimationFrame(()=>{g.style.transform=`translateY(${g.dataset.to}px)`}))};
-VIEWS.saude=()=>{const b=bodyData(),p=S.profile;let h=bar('Saúde',{right:`<button class="tb" data-a="goPf" data-v="dados">Dados</button>`})+'<main class="page">';
- if(!b.ok)h+=`<section class="alert"><b>Complete seus dados</b><span>Falta${b.missing.length>1?'m':''}: ${b.missing.join(', ')}. Com eles o app calcula todas as métricas abaixo.</span><div><button class="btn pri sm" data-a="goPf" data-v="dados">Preencher dados pessoais</button></div></section>`;
+/* Blocos principais de Saúde (IMC, TMB, Gasto e meta de hoje, Água por dia, Macronutrientes por dia): usados na tela Saúde e no Início */
+function healthCore(b=bodyData()){const p=S.profile;let h='';
  let target=null;
  if(b.w&&b.h){const hm=b.h/100,bmi=b.w/(hm*hm),lo=18.5*hm*hm,hi=24.9*hm*hm,c=BMI_C.find(x=>bmi<x[0]);target=bmi>24.9?hi:bmi<18.5?lo:null;const pos=Math.max(0,Math.min(100,(bmi-15)/25*100));
   h+=hc('IMC · Índice de massa corporal',`<span class="v">${fmt(bmi)}</span>`,pill(c[1],c[2]),`<div class="scale"><i style="left:${pos.toFixed(1)}%"></i></div><div class="scale-l"><span>15</span><span>18,5</span><span>25</span><span>30</span><span>40</span></div><p>Faixa saudável (OMS): IMC de 18,5 a 24,9. Para ${fmtM(b.h)} m, isso é de <b>${fmt(lo)} a ${fmt(hi)} kg</b>. ${target?`Peso de referência: <b>${fmt(target)} kg</b> (${target>b.w?'+':'−'}${fmt(Math.abs(target-b.w))} kg).`:'Seu peso está dentro da faixa.'}</p><p class="small">Para quem faz musculação, o IMC pode exagerar, porque músculo pesa mais que gordura. Use junto com a cintura e o percentual de gordura.</p>`)}
@@ -1969,6 +1969,10 @@ VIEWS.saude=()=>{const b=bodyData(),p=S.profile;let h=bar('Saúde',{right:`<butt
  h+=hc('Água por dia',`<span class="v">${fmt(wg.ml/1000)} <small>litros</small></span>`,pill(`${fmtInt(wt)} ml hoje`,wt>=wg.ml?'ok':''),`<p>${esc(wg.how)}. Base de 35 ml por kg para homens e 31 ml por kg para mulheres, mais 500 ml por hora de treino no dia.</p><div><button class="btn sm sec" data-a="tab" data-t="agua">${I.drop} Abrir Água</button></div>`);
  if(b.ok){const E=energyPlan();
   h+=hc('Macronutrientes por dia',`<span class="v">${fmtInt(E.prot)} <small>g de proteína</small></span>`,'',`<div class="kv"><div><span class="lab">Proteína</span><b>${fmtInt(E.prot)} g</b></div><div><span class="lab">Carboidrato</span><b>${fmtInt(E.carb)} g</b></div><div><span class="lab">Gordura</span><b>${fmtInt(E.fat)} g</b></div></div><p>Proteína: ${fmt(E.gkg)} g por kg${E.refW!==E.w?` do peso de referência (${fmt(Math.round(E.refW*10)/10)} kg, IMC 25)`:''}, faixa da Sociedade Internacional de Nutrição Esportiva para ${E.goal==='perder'?'preservar músculo em déficit':E.goal==='massa'?'ganho de massa (1,6–2,2 g/kg)':'quem treina (1,4–2,0 g/kg)'}. Gordura: 25% das calorias (mínimo 0,6 g/kg). Carboidrato: o restante, para energia dos treinos. Divida a proteína em 3 a 5 refeições de 20 a 40 g.</p>`)}
+ return h}
+VIEWS.saude=()=>{const b=bodyData(),p=S.profile;let h=bar('Saúde',{right:`<button class="tb" data-a="goPf" data-v="dados">Dados</button>`})+'<main class="page">';
+ if(!b.ok)h+=`<section class="alert"><b>Complete seus dados</b><span>Falta${b.missing.length>1?'m':''}: ${b.missing.join(', ')}. Com eles o app calcula todas as métricas abaixo.</span><div><button class="btn pri sm" data-a="goPf" data-v="dados">Preencher dados pessoais</button></div></section>`;
+ h+=healthCore(b);
  const waist=latestMeasure('waist');
  if(waist&&b.h){const r=waist.v/b.h,c=r<0.4?['Abaixo do esperado','warn']:r<0.5?['Saudável','ok']:r<0.6?['Aumentada','warn']:['Alta','bad'];
   h+=hc('Relação cintura/altura',`<span class="v">${r.toFixed(2).replace('.',',')}</span>`,pill(c[0],c[1]),`<p>Cintura de ${fmt(waist.v)} cm ÷ altura de ${fmt(b.h)} cm. A recomendação é manter a cintura abaixo da metade da altura (menos de 0,5), ou seja, abaixo de <b>${fmt(b.h/2)} cm</b>. É um bom indicador da gordura abdominal, que o IMC não mostra.</p>`)}
