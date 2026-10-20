@@ -1194,7 +1194,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v103'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v104'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -3415,16 +3415,9 @@ function periodStats(a,z){const end=Math.min(z,addDays(sod(Date.now()),1)),days=
   prs:ws.reduce((t,w)=>t+(w.prs?w.prs.length:0),0),kcal:nd.length?nd.reduce((t,n)=>t+n[0],0)/nd.length:null,prot:nd.length?nd.reduce((t,n)=>t+n[1],0)/nd.length:null,nDays:nd.length,
   inRange:days.filter(d=>{const n=dayNut(dkey(d))[0],P=nutriPlan(d);return n>0&&n>=P.lo&&n<=P.hi}).length,water:days.length?wt.reduce((t,v)=>t+v,0)/days.length:0,waterHit:days.filter(d=>waterOn(dkey(d))>=waterGoal(d).ml).length,
   wDelta:w0&&w1&&w1.x>=a?w1.y-w0.y:null,wNow:w1?w1.y:null,nd:days.length}}
-VIEWS.resumo=p=>{const k=p.k||'semana',off=p.off||0,[a,z]=rangeOf(k,off),[pa,pz]=rangeOf(k,off-1),s=periodStats(a,z),el=Math.min(z,addDays(sod(Date.now()),1))-a,q=periodStats(pa,off===0?Math.min(pz,pa+el):pz);
- const lab=k==='semana'?`${dShort(a)} a ${dShort(addDays(z,-1))}`:(t=>t[0].toUpperCase()+t.slice(1))(new Date(a).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}));
- const dl=(x,y,dec=0,u='')=>{if(x==null||y==null)return'';const r=Math.round((x-y)*10**dec)/10**dec;return r?`<em class="${r>0?'up':'down'}">${r>0?'▲ +':'▼ −'}${dec?fmt(Math.abs(r)):fmtInt(Math.abs(r))}${u}</em>`:'<em>= igual</em>'};
- const box=(l,v,d,sub='')=>`<div><span class="lab">${l}</span><b>${v}</b>${d}${sub?`<small>${sub}</small>`:''}</div>`;
- return bar('Métricas de saúde')+`<main class="page"><div class="seg"><button class="${k==='semana'?'on':''}" data-a="rsK" data-k="semana">Semana</button><button class="${k==='mes'?'on':''}" data-a="rsK" data-k="mes">Mês</button></div>
- <div class="dnav"><button class="ib" data-a="rsOff" data-k="-1" aria-label="Anterior">${I.left}</button><span class="dnav-t" style="text-transform:none;display:grid;place-items:center">${lab}</span><button class="ib" data-a="rsOff" data-k="1" aria-label="Próximo" ${off>=0?'disabled':''}>${I.chev}</button></div>
- <p class="muted small" style="margin:0">As setas comparam com ${k==='semana'?'a semana':'o mês'} anterior${off===0?', nos mesmos dias até hoje (o período ainda está em andamento)':''}.</p>
- <h3 class="sh">Treino</h3><section class="rs-g">${box('Sessões',s.n,dl(s.n,q.n),`${s.nw} musculação · ${s.nx} avulsos`)}${box('Tempo',fmtDur(s.min*6e4),dl(s.min/60,q.min/60,1,' h'))}${box('Volume',fmtInt(s.vol)+' kg',dl(s.vol,q.vol,0,' kg'))}${box('Calorias de exercício',fmtInt(s.kex),dl(s.kex,q.kex))}${box('Recordes',s.prs,dl(s.prs,q.prs))}</section>
- <h3 class="sh">Alimentação</h3><section class="rs-g">${box('Calorias por dia',s.kcal!=null?fmtInt(s.kcal):'—',dl(s.kcal,q.kcal),s.nDays?`média de ${s.nDays} dia(s) registrados`:'sem registros')}${box('Proteína por dia',s.prot!=null?fmtInt(s.prot)+' g':'—',dl(s.prot,q.prot,0,' g'))}${box('Dias na faixa da meta',`${s.inRange}/${s.nd}`,dl(s.inRange,q.inRange))}</section>
- <h3 class="sh">Água e corpo</h3><section class="rs-g">${box('Água por dia',fmt(s.water/1000)+' L',dl(s.water/1000,q.water/1000,1,' L'),`meta batida em ${s.waterHit} de ${s.nd} dias`)}${box('Peso',s.wNow!=null?fmt(s.wNow)+' kg':'—',s.wDelta!=null?`<em class="${s.wDelta>0?'up':s.wDelta<0?'down':''}">${s.wDelta>0?'▲ +':s.wDelta<0?'▼ −':''}${fmt(Math.abs(Math.round(s.wDelta*10)/10))} kg no período</em>`:'')}</section>${(()=>{const hh=healthCore(undefined,['imc','macro','tmb','gasto']);return hh?`<h3 class="sh">Corpo, metas e gasto de hoje</h3>`+hh:''})()}</main>`};
+/* Métricas de saúde (antigo Resumo de saúde, v104): só os blocos de hoje — IMC, Macronutrientes, TMB, Gasto e meta */
+VIEWS.resumo=()=>{const b=bodyData(),hh=healthCore(b,['imc','macro','tmb','gasto']);
+ return bar('Métricas de saúde')+`<main class="page">${b.ok?'':`<section class="alert"><b>Complete seus dados</b><span>Falta${b.missing.length>1?'m':''}: ${b.missing.join(', ')}.</span><div><button class="btn pri sm" data-a="goPf" data-v="dados">Preencher dados</button></div></section>`}${hh}</main>`};
 
 /* ===================== CONQUISTAS PESSOAIS (sem rede social) ===================== */
 function maxStreak(){const wk=[...new Set(S.workouts.map(w=>weekStart(w.start)))].sort((a,b)=>a-b);let best=0,cur=0,prev=null;for(const w of wk){cur=prev!=null&&Math.round((w-prev)/(7*DAY))===1?cur+1:1;best=Math.max(best,cur);prev=w}return best}
