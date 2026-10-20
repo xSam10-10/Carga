@@ -1191,7 +1191,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v95'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v96'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1612,7 +1612,7 @@ VIEWS.novoEx=p=>{const f=p.f;return bar(p.id?'Editar exercício':'Criar exercíc
 VIEWS.estatisticas=()=>{const P=perOf('st'),[a,z]=perRange(P.p),pr=prevRange(P.p),G={'7d':'dia',mes:'semana',ano:'mes',tudo:'mes'}[P.p];
  const ws=S.workouts.filter(w=>w.start>=a&&w.start<z),pw=pr?S.workouts.filter(w=>w.start>=pr[0]&&w.start<pr[1]):null;
  const sum=l=>({n:l.length,dur:l.reduce((x,w)=>x+(w.end-w.start),0),vol:l.reduce((x,w)=>x+wStats(w).vol,0),sets:l.reduce((x,w)=>x+wStats(w).sets,0)}),c=sum(ws),pc=pw&&sum(pw);
- const dl=(v,pv,f)=>{if(pc==null)return'';const d=v-pv;return d?`<em class="${d>0?'up':'down'}">${d>0?'↑':'↓'} ${f(Math.abs(d))}</em>`:'<em>=</em>'};
+ const dl=(v,pv,f)=>{if(pc==null)return'';const d=v-pv;return d?`<em class="${d>0?'up':'down'}">${d>0?'↑':'↓'} ${f(Math.abs(d))}</em>`:'<em>= igual</em>'};
  const ico=i=>i.replace('class="i"','class="i" style="width:16px;height:16px;vertical-align:-3px"');
  const bk=buckets(P.p,G),fv=bk.map(([x,y])=>S.workouts.filter(w=>w.start>=x&&w.start<y).length);
  const mc=muscleSets(ws),hb=Object.entries(mc).filter(([m])=>!['Cardio','Corpo inteiro','Outro'].includes(m)).sort((x,y)=>y[1]-x[1]);
@@ -3428,7 +3428,7 @@ function periodStats(a,z){const end=Math.min(z,addDays(sod(Date.now()),1)),days=
   wDelta:w0&&w1&&w1.x>=a?w1.y-w0.y:null,wNow:w1?w1.y:null,nd:days.length}}
 VIEWS.resumo=p=>{const k=p.k||'semana',off=p.off||0,[a,z]=rangeOf(k,off),[pa,pz]=rangeOf(k,off-1),s=periodStats(a,z),el=Math.min(z,addDays(sod(Date.now()),1))-a,q=periodStats(pa,off===0?Math.min(pz,pa+el):pz);
  const lab=k==='semana'?`${dShort(a)} a ${dShort(addDays(z,-1))}`:(t=>t[0].toUpperCase()+t.slice(1))(new Date(a).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}));
- const dl=(x,y,dec=0,u='')=>{if(x==null||y==null)return'';const r=Math.round((x-y)*10**dec)/10**dec;return r?`<em class="${r>0?'up':'down'}">${r>0?'▲ +':'▼ −'}${dec?fmt(Math.abs(r)):fmtInt(Math.abs(r))}${u}</em>`:'<em>=</em>'};
+ const dl=(x,y,dec=0,u='')=>{if(x==null||y==null)return'';const r=Math.round((x-y)*10**dec)/10**dec;return r?`<em class="${r>0?'up':'down'}">${r>0?'▲ +':'▼ −'}${dec?fmt(Math.abs(r)):fmtInt(Math.abs(r))}${u}</em>`:'<em>= igual</em>'};
  const box=(l,v,d,sub='')=>`<div><span class="lab">${l}</span><b>${v}</b>${d}${sub?`<small>${sub}</small>`:''}</div>`;
  return bar('Resumo de saúde')+`<main class="page"><div class="seg"><button class="${k==='semana'?'on':''}" data-a="rsK" data-k="semana">Semana</button><button class="${k==='mes'?'on':''}" data-a="rsK" data-k="mes">Mês</button></div>
  <div class="dnav"><button class="ib" data-a="rsOff" data-k="-1" aria-label="Anterior">${I.left}</button><span class="dnav-t" style="text-transform:none;display:grid;place-items:center">${lab}</span><button class="ib" data-a="rsOff" data-k="1" aria-label="Próximo" ${off>=0?'disabled':''}>${I.chev}</button></div>
