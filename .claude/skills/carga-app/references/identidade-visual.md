@@ -95,7 +95,7 @@ Cada cor tem uma variante para tema claro e outra para tema escuro: `[cor, cor s
 - Nas listas: só o pictograma na cor de destaque, sem círculo (como no Samsung). Nos favoritos: círculo `--accent-soft`. Musculação usa `--violet`.
 
 ## Organização das telas (18/10/2026)
-- Barra de abas: Início · Treino · Exercícios · Nutrição · Água · Perfil.
+- Barra de abas: Início · Musculação · Cardio · Nutrição · Água · Perfil (v82; ids internos continuam treino e ativ).
 - Início em capítulos (v66, aprovado pelo usuário): **Meu dia** (`homeMyDay`, 1º bloco desde a v81: meta, consumido, gasto, saldo, macros, água, "Como calculamos?", e no fim Treino e Metas de longo prazo; o bloco Metas de hoje foi removido) → **Minha semana** (`homeWeek`) → **Meu gasto** (`homeSpend`: anéis das calorias ativas + barra basal/rotina/treino/exercícios = gasto do dia) → **Meu corpo** (`homeBody`: peso com tendência, IMC, taxa basal, gordura) → **Explorar** (atalhos). Cada número aparece uma vez só. Vocabulário único: Meta (quanto comer), Gasto (total do dia), Ativas (treino + exercícios), Saldo (comido − gasto). Semáforo: em andamento (cor padrão), dentro da meta (verde #2E9E5B), um pouco acima (âmbar), bem acima (vermelho).
 - Aba Treino: primeiro bloco é **Seus treinos** (últimos 10 + "Ver todos" no Perfil), depois Iniciar treino vazio / Retomar e Rotinas.
 
