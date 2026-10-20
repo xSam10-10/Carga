@@ -1394,7 +1394,7 @@ VIEWS.inicio=()=>{
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
  h+=homeSpend();
  h+=`<h3 class="sh">Métricas de saúde</h3>`+healthCore();
- h+=`<h3 class="sh">Explorar</h3><div class="grid2"><button class="tile" data-a="go" data-v="resumo">${I.cal}Resumo</button><button class="tile" data-a="go" data-v="conquistas">${I.trophy}Conquistas</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button></div>`;
+ h+=`<h3 class="sh">Explorar</h3><div class="grid2"><button class="tile" data-a="go" data-v="resumo">${I.cal}Resumo</button><button class="tile" data-a="go" data-v="conquistas">${I.trophy}Conquistas</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="goPf" data-v="dados">${I.idcard}Meus dados</button></div>`;
  if(backupDue()){const n=S.workouts.length-(S.profile.lastBackupN||0);h+=`<section class="alert"><b>Backup pendente</b><span>${n>0?`${n} treino(s) novo(s) desde o último backup.`:'Você ainda não fez backup.'} Se os dados do navegador forem apagados, o histórico se perde.</span><div class="row"><button class="btn pri sm" data-a="backupSheet">Fazer backup</button><button class="btn ghost sm" data-a="snoozeBackup">Lembrar depois</button></div></section>`}
  return h+'</main>'};
 
@@ -1541,7 +1541,6 @@ VIEWS.perfil=()=>{
  const totalH=S.workouts.reduce((a,w)=>a+(w.end-w.start),0);
  let h=`<header class="top"><h1 class="big">Perfil</h1><button class="btn sm sec" data-a="go" data-v="perfis">Trocar perfil</button><button class="ib" data-a="backupSheet" aria-label="Exportar dados">${I.upload}</button><button class="ib" data-a="go" data-v="config" aria-label="Configurações">${I.gear}</button></header><main class="page">
  <div class="prof"><button class="ava ava-edit" data-a="photoSheet" aria-label="Alterar foto do perfil">${avaIn(S.profile)}<span class="ava-cam">${I.camera}</span></button><div style="flex:1;min-width:0"><h2>${esc(S.profile.name)}</h2><div class="stat3"><div><span class="lab">Treinos</span><b>${ws.length}</b></div><div><span class="lab">Horas</span><b>${fmtInt(totalH/36e5)}</b></div><div><span class="lab">Sequência</span><b>${streakWeeks()} sem</b></div></div></div></div>
- ${myDataCard()}
  <div class="headline">${head}</div>
  ${perCtl('perfil')}
  ${barChart(vals,sparseLabels(bk),fy)}
