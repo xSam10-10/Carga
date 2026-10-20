@@ -140,6 +140,10 @@ h2.h{font:700 22px/1.1 var(--display);text-transform:uppercase;letter-spacing:.0
 .lstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:4px 0 2px}
 .lstats b{font:600 26px/1.1 var(--display);font-variant-numeric:tabular-nums}
 .lstats .acc{color:var(--accent)}
+.lhead{max-width:640px;margin:0 auto;padding:2px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+.lprog{height:4px;background:var(--line);margin-bottom:-1px}
+.exc{scroll-margin-top:200px}
+.lprog i{display:block;height:100%;width:0;background:#34C759;border-radius:0 2px 2px 0;transition:width .35s ease-out}
 .exc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 10px 10px;display:flex;flex-direction:column;gap:8px}
 .exc-h{display:flex;align-items:center;gap:10px;padding:0 4px}
 .exc-n{flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-align:left}
@@ -1194,7 +1198,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v112'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v113'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1494,18 +1498,19 @@ function exCard(s,e,i,L={}){
 VIEWS.sessao=p=>{
  const s=cur();if(!s){return bar('Musculação')+`<main class="page"><p class="empty">Nenhum treino em andamento.</p></main>`}
  const k=s.kind;let h;
- if(k==='live')h=bar('Registrar musculação',{left:`<button class="ib" data-a="back" aria-label="Minimizar">${I.down}</button>`,right:`<button class="btn sm pri" data-a="finish">Finalizar</button>`});
+ if(k==='live'){const st=wStats(s,true),pg=liveProg(s);h=bar('Registrar musculação',{left:`<button class="ib" data-a="back" aria-label="Minimizar">${I.down}</button>`,right:`<button class="btn sm pri" data-a="finish">Finalizar</button>`}).replace(/<\/header>$/,`<div class="lhead"><input class="title-in" id="l-name" data-f="name" value="${esc(s.name)}" aria-label="Nome do treino"><div class="lstats"><div><span class="lab">Duração</span><b class="acc" data-clock>${clock(Date.now()-s.start)}</b></div><div><span class="lab">Volume</span><b data-stat="vol">${fmtInt(st.vol)} kg</b></div><div><span class="lab">Séries</span><b data-stat="sets">${st.sets}</b></div></div></div><div class="lprog" role="progressbar" aria-label="Conclusão do treino" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pg}"><i style="width:${pg}%"></i></div></header>`)}
  else h=bar(k==='routine'?(p.isNew?'Nova rotina':'Editar rotina'):'Editar treino',{left:`<button class="tb" data-a="back">Cancelar</button>`,right:`<button class="btn sm pri" data-a="${k==='routine'?'saveRoutine':'saveEdit'}">Salvar</button>`});
  h+='<main class="page">';
- if(k==='live'){const st=wStats(s,true);h+=`<input class="title-in" id="l-name" data-f="name" value="${esc(s.name)}" aria-label="Nome do treino"><div class="lstats"><div><span class="lab">Duração</span><b class="acc" data-clock>${clock(Date.now()-s.start)}</b></div><div><span class="lab">Volume</span><b data-stat="vol">${fmtInt(st.vol)} kg</b></div><div><span class="lab">Séries</span><b data-stat="sets">${st.sets}</b></div></div>`}
- else if(k==='routine')h+=`<div class="form"><input class="title-in" id="r-name" data-f="name" placeholder="Título da rotina" value="${esc(s.name)}"><textarea id="r-notes" data-f="snotes" placeholder="Anotações da rotina (opcional)">${esc(s.notes)}</textarea></div>`;
+ if(k==='routine')h+=`<div class="form"><input class="title-in" id="r-name" data-f="name" placeholder="Título da rotina" value="${esc(s.name)}"><textarea id="r-notes" data-f="snotes" placeholder="Anotações da rotina (opcional)">${esc(s.notes)}</textarea></div>`;
  else h+=`<div class="form"><input class="title-in" id="w-name" data-f="name" value="${esc(s.name)}" placeholder="Nome do treino"><div class="row2"><label class="fld"><span>Início</span><input class="inp" id="w-start" type="datetime-local" data-f="startLocal" value="${toLocalInput(s.start)}"></label><label class="fld"><span>Duração (min)</span><input class="inp" id="w-dur" inputmode="numeric" data-f="durMin" value="${Math.round((s.end-s.start)/6e4)}"></label></div><textarea id="w-notes" data-f="snotes" placeholder="Anotações do treino">${esc(s.notes)}</textarea><p class="muted small" style="margin:0">Desmarque o ✓ de uma série para removê-la ao salvar.</p></div>`;
  if(!s.exercises.length)h+=`<div class="emptybox">${I.dumbbell}<b>${k==='routine'?'Monte sua rotina':'Comece adicionando um exercício'}</b><span>Toque em Adicionar exercício e escolha da lista.</span></div>`;
  const L=ssMap(s);h+=s.exercises.map((e,i)=>exCard(s,e,i,L)).join('');
  h+=`<button class="btn pri wide" data-a="addEx">${I.plus} Adicionar exercício</button>`;
  if(k==='live')h+=`<button class="btn ghost danger wide" data-a="discard">Descartar treino</button>`;
  return h+'<div style="height:70px"></div></main>'};
-function updateLiveStats(){const s=cur();if(!s||s.kind!=='live')return;const st=wStats(s,true);const v=$('[data-stat=vol]');if(v)v.textContent=fmtInt(st.vol)+' kg';const n=$('[data-stat=sets]');if(n)n.textContent=st.sets}
+function updateLiveStats(){const s=cur();if(!s||s.kind!=='live')return;const st=wStats(s,true);const v=$('[data-stat=vol]');if(v)v.textContent=fmtInt(st.vol)+' kg';const n=$('[data-stat=sets]');if(n)n.textContent=st.sets;const pb=$('.lprog'),pg=liveProg(s);if(pb){pb.setAttribute('aria-valuenow',pg);pb.firstElementChild.style.width=pg+'%'}}
+/* Conclusão do treino (v113): séries marcadas ÷ séries planejadas, em %. Barra verde presa no topo junto com nome, duração, volume e séries. */
+function liveProg(s){let t=0,d=0;for(const e of s.exercises)for(const st of e.sets){t++;if(st.done)d++}return t?Math.round(d/t*100):0}
 /* Tempo das séries em min:seg ("1:30"). Aceita também o formato antigo em minutos decimais ("0.5"). */
 const mmss=sec=>{const t=Math.max(0,Math.round(sec));return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
 const minIn=v=>{const x=String(v??'').trim();if(!x)return null;const m=x.match(/^(\d+):(\d{1,2})$/);return m?+m[1]+(+m[2])/60:num(x)};
