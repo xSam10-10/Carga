@@ -1194,7 +1194,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v105'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v106'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1668,9 +1668,15 @@ function evoSeries(k){const d=EVO.find(z=>z[0]===k);if(k==='height')return hLog(
 const evoFmt=(d,v)=>v==null?'—':(d[3]?fmt(Math.round(v*10**d[3])/10**d[3]):fmtInt(v))+(d[2]?(d[2]==='%'?'%':' '+d[2]):'');
 const evoAt=(s,t)=>{let v=null;for(const p of s){if(p.x<=t)v=p;else break}return v};
 function evoDelta(d,a,b){if(a==null||b==null)return'';const x=b-a,r=d[3]?Math.round(x*10**d[3])/10**d[3]:Math.round(x);if(!r)return'<span class="ev-d">=</span>';return`<span class="ev-d ${r>0?'up':'down'}">${r>0?'▲ +':'▼ −'}${d[3]?fmt(Math.abs(r)):fmtInt(Math.abs(r))}${d[2]&&d[2]!=='%'?' '+d[2]:d[2]==='%'?' p.p.':''}</span>`}
+/* Fotos de evolução e Medidas (registro), mostrados na tela Evolução do corpo (v106; antes ficavam em Meus dados) */
+function evoInputs(){return` <h3 class="sh">Fotos de evolução</h3>
+ <section class="card form"><p class="muted small" style="margin:0">Fotos de frente, de lado e de costas para comparar lado a lado na Evolução do corpo. Ficam só neste aparelho (não entram no backup).</p><div class="chips"><button class="btn sm pri" data-a="fpAdd">${I.camera} Adicionar foto</button><button class="btn sm sec" data-a="go" data-v="fotosGer">Ver e excluir</button></div></section>
+ <h3 class="sh">Medidas</h3>
+ <section class="card form">${(()=>{const L={};for(const m of [...S.measures].sort((a,b)=>a.date-b.date))for(const[k]of MF)if(k!=='weight'&&num(m[k])!=null)L[k]=num(m[k]);const ks=MF.filter(([k])=>L[k]!=null);return ks.length?`<div class="kv">${ks.map(([k,l,u])=>`<div><span class="lab">${l}</span><b>${fmt(L[k])}</b> <span class="muted small">${u}</span></div>`).join('')}</div>`:'<p class="muted small" style="margin:0">Gordura corporal e circunferências (cintura, peito, braço, coxa, quadril, panturrilha). Opcional, mas a cintura entra no indicador cintura/altura.</p>'})()}
+ <div class="chips"><button class="btn sm pri" data-a="newMeasure">${I.plus||''} Registrar medidas</button>${S.measures.length?'<button class="btn sm sec" data-a="go" data-v="medLista">Editar registros</button>':''}</div></section>`}
 VIEWS.medidas=p=>{const all=EVO.filter(d=>evoSeries(d[0]).length);const f=all.some(d=>d[0]===p.f)?p.f:(all[0]||EVO[0])[0];const d=EVO.find(z=>z[0]===f);const s=evoSeries(f);
  let h=bar('Evolução do corpo')+'<main class="page">';
- if(!S.measures.length&&!hLog().length)return h+`<div class="emptybox">${I.body}<b>Nenhum registro ainda</b><span>Registre peso e medidas para acompanhar a evolução semana a semana, mês a mês e ano contra ano. A altura e o peso de Meus dados também entram aqui.</span><button class="btn pri sm" data-a="goPf" data-v="dados">Preencher em Meus dados</button></div></main>`;
+ if(!S.measures.length&&!hLog().length)return h+`<div class="emptybox">${I.body}<b>Nenhum registro ainda</b><span>Registre peso e medidas para acompanhar a evolução semana a semana, mês a mês e ano contra ano. A altura e o peso de Meus dados também entram aqui.</span><button class="btn pri sm" data-a="goPf" data-v="dados">Preencher em Meus dados</button></div>${evoInputs()}</main>`;
  const MP=perOf('med'),bk=buckets(MP.p,MP.g),[pa]=perRange(MP.p),first=s[0]?s[0].x:Date.now();
  const pts=MP.g==='dia'?s.filter(z=>z.x>=pa):bk.map(([a,z])=>{const l=s.filter(q=>q.x>=a&&q.x<z);return l.length?{x:a,y:l.reduce((t,q)=>t+q.y,0)/l.length}:null}).filter(Boolean);
  const last=s[s.length-1],now=Date.now();
@@ -1686,7 +1692,8 @@ VIEWS.medidas=p=>{const all=EVO.filter(d=>evoSeries(d[0]).length);const f=all.so
  if(mk.length>1)h+=`<h3 class="sh">Mês a mês</h3><div class="card ev-tab">${mk.map((k,i)=>{const avg=mm[k].reduce((a,b)=>a+b,0)/mm[k].length,pk=mm[k-1],py=mm[k-12];return`<div><span>${MES[k%12]} ${Math.floor(k/12)}</span><b>${evoFmt(d,avg)}</b>${pk?evoDelta(d,pk.reduce((a,b)=>a+b,0)/pk.length,avg):'<span class="ev-d">—</span>'}${py?`<em>vs ${MES[k%12]} ${Math.floor(k/12)-1}: ${evoDelta(d,py.reduce((a,b)=>a+b,0)/py.length,avg)}</em>`:''}</div>`}).join('')}</div><p class="muted small" style="margin:-4px 0 0">Média de cada mês e a variação em relação ao mês anterior${mk.some(k=>mm[k-12])?' e ao mesmo mês do ano anterior':''}.</p>`;
  h+=`<h3 class="sh">Fotos de evolução</h3><section class="card form" id="evo-fotos"><p class="muted small" style="margin:0">Carregando…</p></section>`;
  const ms=[...S.measures].sort((a,b)=>b.date-a.date);
- if(ms.length)h+=`<h3 class="sh">Registros</h3><div class="card" style="padding:4px 14px">${ms.map(m=>`<div class="mrow"><span class="date">${new Date(m.date).toLocaleDateString('pt-BR')}</span><span class="small">${MF.filter(([k])=>num(m[k])!=null).map(([k,l,u])=>`${l} <b>${fmt(m[k])}</b>${u==='%'?'%':''}`).join(' · ')}</span></div>`).join('')}</div><p class="muted small" style="margin:-4px 0 0">Para registrar ou corrigir, use Perfil → Meus dados → Medidas.</p>`;
+ if(ms.length)h+=`<h3 class="sh">Registros</h3><div class="card" style="padding:4px 14px">${ms.map(m=>`<div class="mrow"><span class="date">${new Date(m.date).toLocaleDateString('pt-BR')}</span><span class="small">${MF.filter(([k])=>num(m[k])!=null).map(([k,l,u])=>`${l} <b>${fmt(m[k])}</b>${u==='%'?'%':''}`).join(' · ')}</span></div>`).join('')}</div><p class="muted small" style="margin:-4px 0 0">Para registrar ou corrigir, use Medidas, no fim desta tela.</p>`;
+ h+=evoInputs();
  return h+'</main>'};
 VIEWS.medidas.after=()=>fotoCompare();
 const imcClass=v=>v<18.5?'abaixo do peso':v<25?'peso saudável':v<30?'sobrepeso':v<35?'obesidade grau I':v<40?'obesidade grau II':'obesidade grau III';
@@ -1848,11 +1855,6 @@ VIEWS.dados=()=>{const p=S.profile;const w=latestMeasure('weight');const aa=auto
  <label class="fld"><span>Altura (cm)</span><input class="inp" id="pd-height" inputmode="numeric" data-f="pd" data-k="height" value="${esc(p.height||'')}" placeholder="Ex.: 178"></label></div>
  <label class="fld"><span>Peso atual (kg)</span><input class="inp" id="pd-weight" inputmode="decimal" data-f="pdWeight" value="${w?String(w.v).replace('.',','):''}" placeholder="Ex.: 80,5"></label>
  <p class="muted small" style="margin:-4px 0 0">${w?`Último registro: ${fmt(w.v)} kg em ${new Date(w.date).toLocaleDateString('pt-BR')}. `:''}Ao alterar, o peso de hoje é gravado em Medidas.</p></section>
- <h3 class="sh">Fotos de evolução</h3>
- <section class="card form"><p class="muted small" style="margin:0">Fotos de frente, de lado e de costas para comparar lado a lado na Evolução do corpo. Ficam só neste aparelho (não entram no backup).</p><div class="chips"><button class="btn sm pri" data-a="fpAdd">${I.camera} Adicionar foto</button><button class="btn sm sec" data-a="go" data-v="fotosGer">Ver e excluir</button></div></section>
- <h3 class="sh">Medidas</h3>
- <section class="card form">${(()=>{const L={};for(const m of [...S.measures].sort((a,b)=>a.date-b.date))for(const[k]of MF)if(k!=='weight'&&num(m[k])!=null)L[k]=num(m[k]);const ks=MF.filter(([k])=>L[k]!=null);return ks.length?`<div class="kv">${ks.map(([k,l,u])=>`<div><span class="lab">${l}</span><b>${fmt(L[k])}</b> <span class="muted small">${u}</span></div>`).join('')}</div>`:'<p class="muted small" style="margin:0">Gordura corporal e circunferências (cintura, peito, braço, coxa, quadril, panturrilha). Opcional, mas a cintura entra no indicador cintura/altura.</p>'})()}
- <div class="chips"><button class="btn sm pri" data-a="newMeasure">${I.plus||''} Registrar medidas</button>${S.measures.length?'<button class="btn sm sec" data-a="go" data-v="medLista">Editar registros</button>':''}</div></section>
  <h3 class="sh">Treino e objetivo</h3>
  <section class="card form"><div class="fld"><span>Dias de treino por semana</span><div class="chips daysel">${[0,1,2,3,4,5,6,7,8].map(n=>`<button class="chip${trainDays()===n?' on':''}" data-a="pdDays" data-k="${n}">${n===8?'7+':n}</button>`).join('')}</div></div>
  <p class="muted small" style="margin:0">${trainDays()===8?'Mais de 7: dois treinos por dia ou trabalho físico pesado':`${trainDays()} ${trainDays()===1?'dia':'dias'} por semana`} → <b>${actOf()[1]}</b> (fator ${String(actOf()[2]).replace('.',',')} sobre a taxa basal). Nas últimas 4 semanas você treinou ${fmt(perWeek4())} vezes por semana. Mude sempre que a sua rotina mudar.</p>
