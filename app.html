@@ -1389,9 +1389,9 @@ VIEWS.inicio=()=>{
  const dur=thisW.reduce((a,w)=>a+(w.end-w.start),0),vol=thisW.reduce((a,w)=>a+wStats(w).vol,0);
  const days=[...Array(7)].map((_,i)=>addDays(wk,i));const today=sod(Date.now());
  let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button><button class="ib" data-a="go" data-v="perfis" aria-label="Trocar perfil (${esc(S.profile.name)})"><span class="ava xs">${avaIn(S.profile)}</span></button></header><main class="page">`;
- h+=homeLead()+homeWeek();
+ h+=homeMyDay()+homeWeek();
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
- h+=homeMyDay()+homeSpend();
+ h+=homeSpend();
  h+=homeBody();
  h+=`<h3 class="sh">Explorar</h3><div class="grid2"><button class="tile" data-a="go" data-v="metas">${I.flame}Metas</button><button class="tile" data-a="go" data-v="resumo">${I.cal}Resumo</button><button class="tile" data-a="go" data-v="conquistas">${I.trophy}Conquistas</button><button class="tile" data-a="go" data-v="estatisticas">${I.chart}Estatísticas</button><button class="tile" data-a="go" data-v="exercicios">${I.dumbbell}Catálogo</button><button class="tile" data-a="go" data-v="medidas">${I.body}Evolução</button><button class="tile" data-a="go" data-v="calendario">${I.cal}Calendário</button><button class="tile" data-a="go" data-v="saude">${I.heart}Saúde</button></div>`;
  if(backupDue()){const n=S.workouts.length-(S.profile.lastBackupN||0);h+=`<section class="alert"><b>Backup pendente</b><span>${n>0?`${n} treino(s) novo(s) desde o último backup.`:'Você ainda não fez backup.'} Se os dados do navegador forem apagados, o histórico se perde.</span><div class="row"><button class="btn pri sm" data-a="backupSheet">Fazer backup</button><button class="btn ghost sm" data-a="snoozeBackup">Lembrar depois</button></div></section>`}
@@ -3552,6 +3552,16 @@ function homeWeek(){nS();const now=Date.now(),t0=sod(now),wk=weekStart(now),g=go
  <div class="stat3"><div><span class="lab">Sessões</span><b>${cnt}</b></div><div><span class="lab">Tempo</span><b>${fmtDur(dur)}</b></div><div><span class="lab">Volume</span><b>${fmtInt(vol)}<small style="font-size:14px"> kg</small></b></div></div>
  <div class="row"><span class="lab nfx">Metas da semana</span><span class="muted small">${done} de ${rows.length} em dia</span></div><div class="lg">${rows.map(row).join('')}</div>
  ${nb?`<p class="muted small" style="margin:0">Saldo = comido − gasto nos ${nb} dia${nb>1?'s':''} fechados com registro (${sgn(Math.round(bal))} kcal ≈ ${bal<0?'−':'+'}${Math.abs(bal)<7700?fmtInt(Math.round(Math.abs(bal)/7.7/10)*10)+' g':fmt(Math.round(Math.abs(bal)/770)/10)+' kg'} de peso).</p>`:''}</section>`}
+/* Treino e metas (dentro de Meu dia): treino de hoje, treinos da semana, suplementos e metas de longo prazo */
+function homeGoalsMini(){const now=Date.now(),t0=sod(now),k=dkey(now),g=goalsOf(),p=S.profile,wk=weekStart(now);
+ const cnt=S.workouts.filter(w=>w.start>=wk).length+(S.extra||[]).filter(x=>x.t>=wk).length,wpw=num(g.wpw)>0?num(g.wpw):Math.min(7,p.days||0);
+ const today=S.workouts.filter(w=>w.start>=t0),todayX=(S.extra||[]).filter(x=>x.t>=t0),left=Math.max(0,wpw-cnt),dl=7-Math.round((t0-wk)/DAY);
+ const rows=[['Treino de hoje',today.length?esc(today.map(w=>w.name).join(' + ')):cnt>=wpw&&wpw?'semana já batida':'ainda não'+(todayX.length?` · fez ${esc(todayX[0].name.toLowerCase())}`:''),today.length||(cnt>=wpw&&wpw)?'ok':'go','data-a="tab" data-t="treino"'],
+  ...(wpw?[['Treinos da semana',`${cnt} de ${wpw}${left?` · faltam ${left} em ${dl} dia${dl>1?'s':''}`:''}`,cnt>=wpw?'ok':left>dl?'bad':'go','data-a="go" data-v="metas"']]:[]),
+  ...((p.supps||[]).length?[['Suplementos',`${suppsTaken(k)} de ${p.supps.length}`,suppsTaken(k)>=p.supps.length?'ok':'go','data-a="suppSheet"']]:[])];
+ const lp=[['weight','Peso'],['fat','Gordura'],['waist','Cintura']].filter(([kk])=>num(g[kk])>0).map(([kk,l])=>{const f=goalForecast(kk,num(g[kk]));if(!f)return null;const d=f.d;return[`${l} → ${evoFmt(d,f.target)}`,f.pct>=1?'alcançada ✓':`${evoFmt(d,f.last.y)} · faltam ${evoFmt(d,Math.abs(f.target-f.last.y))}`,f.pct>=1?'ok':'go','data-a="go" data-v="metas"']}).filter(Boolean);
+ const row=r=>`<button class="lg-r z-${r[2]}" ${r[3]}><i>${r[2]==='ok'?'✓':''}</i><span>${r[0]}</span><b>${r[1]}</b></button>`;
+ return`<span class="lab" style="margin-top:2px">Treino</span><div class="lg">${rows.map(row).join('')}</div>${lp.length?`<span class="lab" style="margin-top:2px">Metas de longo prazo</span><div class="lg">${lp.map(row).join('')}</div>`:''}`}
 function homeMyDay(){nS();const now=Date.now(),k=dkey(now),n=dayNut(k),P=nutriPlan(now),E=P.E,v=Math.round(n[0]),left=P.kcal-v,pc=Math.min(100,v/P.kcal*100),z=zKcal(v,P);
  const gl=(GOALS.find(g=>g[0]===goalOf())||GOALS[1])[1],wg=waterGoal(now).ml,wt=waterOn(k);
  const noKcal=E.mode==='relogio'?S.workouts.filter(w=>w.start>=sod(now)&&!(num(w.kcal)>0)):[];
@@ -3567,6 +3577,7 @@ function homeMyDay(){nS();const now=Date.now(),k=dkey(now),n=dayNut(k),P=nutriPl
  ${noKcal.length?`<button class="hrbox" data-a="kcalSaved" data-id="${noKcal[0].id}">${I.fire}<span class="spacer"><b>Treino de hoje sem calorias</b><span class="muted small">Informe as calorias do relógio para a meta ficar exata</span></span>${I.chev}</button>`:''}
  <div class="hms">${mb('Proteína','t2',n[1],P.gP,1)}${mb('Carboidrato','t0',n[3],P.gC)}${mb('Gordura','t1',n[2],P.gG)}</div>
  <div class="form" style="gap:8px"><div class="row"><span class="lab spacer">${I.drop.replace('class="i"','class="i" style="width:15px;height:15px;vertical-align:-3px;color:var(--accent)"')} Água</span><b class="num" style="font-size:17px">${fmt(wt/1000)} / ${fmt(wg/1000)} L</b></div><div class="bar1"><i style="width:${Math.min(100,wg?wt/wg*100:0).toFixed(0)}%"></i></div><div class="chips">${cupsOf().slice(0,3).map(ml=>`<button class="chip" data-a="addWater" data-ml="${ml}">+${fmtInt(ml)} ml</button>`).join('')}</div></div>
+ ${homeGoalsMini()}
  <div class="chips"><button class="chip" data-a="tab" data-t="dieta">Registrar refeição</button><button class="chip" data-a="calcSheet">Como calculamos?</button></div></section>`}
 function calcSheet(){const P=nutriPlan(),E=P.E;if(!E.ok){sheet('<h3>Como calculamos</h3><p>Preencha Meus dados para ver a conta.</p>');return}
  const r=(a,b,c='')=>`<div class="cs-r${c}"><span>${a}</span><b>${b}</b></div>`,rel=E.mode==='relogio',f=rel?'1,2':String(E.act[2]).replace('.',',');
