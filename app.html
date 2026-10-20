@@ -598,17 +598,17 @@ html.sp-on{background:#000}
 #lock h2{margin:0;font:600 22px var(--display);letter-spacing:.04em;text-transform:uppercase}
 #lock .lk-msg{min-height:18px;font-size:14px;color:#9aa5a1}
 #lock .lk-msg.err{color:#ff7a6b}
-.lk-dots{display:flex;gap:12px}
-.lk-dots i{width:13px;height:13px;border-radius:50%;border:1.5px solid #6BFFB0;transition:background .12s}
-.lk-dots i.on{background:#6BFFB0}
-.lk-dots.shake{animation:lkShake .4s}
 @keyframes lkShake{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
-.lk-pad{display:grid;grid-template-columns:repeat(3,72px);gap:14px 22px}
-.lk-pad button{width:72px;height:72px;border-radius:50%;border:0;background:#161b1a;color:#fff;font:500 28px var(--display);display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.lk-pad button:active{background:#22D481;color:#000}
-.lk-pad button.lk-del{background:transparent;font-size:15px;font-family:var(--text);color:#9aa5a1}
-.lk-pad button:focus-visible{outline:2px solid #6BFFB0;outline-offset:3px}
-.lk-pad .lk-sp{visibility:hidden}
+#lock .lk-msg.ok{color:#6BFFB0}
+.lk-f{width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px}
+.lk-f.shake{animation:lkShake .4s}
+.lk-f label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:#9aa5a1}
+.lk-f input{height:48px;border-radius:12px;border:1px solid #2a3331;background:#111615;color:#fff;padding:0 14px;font:500 17px var(--text);outline:none}
+.lk-f input:focus{border-color:#22D481}
+.lk-f .lk-msg{text-align:center}
+.lk-go{height:50px;border:0;border-radius:14px;background:#22D481;color:#000;font:600 17px var(--text);cursor:pointer}
+.lk-alt{height:46px;border:1px solid #2a3331;border-radius:14px;background:transparent;color:#fff;font:500 15px var(--text);cursor:pointer}
+.lk-go:focus-visible,.lk-alt:focus-visible{outline:2px solid #6BFFB0;outline-offset:3px}
 .sp-mark{width:76px;height:76px;display:block}
 </style>
 
@@ -1399,7 +1399,7 @@ VIEWS.inicio=()=>{
  const ws=[...S.workouts].sort((a,b)=>b.start-a.start);const wk=weekStart(Date.now());const thisW=ws.filter(w=>w.start>=wk);
  const dur=thisW.reduce((a,w)=>a+(w.end-w.start),0),vol=thisW.reduce((a,w)=>a+wStats(w).vol,0);
  const days=[...Array(7)].map((_,i)=>addDays(wk,i));const today=sod(Date.now());
- let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button><button class="btn sm sec swp" data-a="go" data-v="perfis" aria-label="Trocar perfil (${esc(S.profile.name)})"><span class="ava xs">${avaIn(S.profile)}</span>Trocar perfil</button></header><main class="page">`;
+ let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button><button class="btn sm sec swp" data-a="logout" aria-label="Trocar perfil (${esc(S.profile.name)})"><span class="ava xs">${avaIn(S.profile)}</span>Trocar perfil</button></header><main class="page">`;
  h+=homeMyDay();
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
  h+=homeSpend();
@@ -1695,7 +1695,7 @@ VIEWS.medidaForm=p=>{const m=p.m;return bar(p.isNew?'Nova medida':'Editar medida
 /* ---------- CONFIGURAÇÕES ---------- */
 VIEWS.config=()=>{const pr=S.profile;const sw=(k,l,d)=>`<label class="switch"><span><b>${l}</b>${d?`<br><span class="muted small">${d}</span>`:''}</span><input type="checkbox" data-f="pf" data-k="${k}" ${pr[k]?'checked':''}></label>`;const swOn=(k,l,d)=>`<label class="switch"><span><b>${l}</b>${d?`<br><span class="muted small">${d}</span>`:''}</span><input type="checkbox" data-f="pf" data-k="${k}" ${pr[k]!==false?'checked':''}></label>`;
  return bar('Configurações')+`<main class="page">
- <section class="card" style="display:flex;align-items:center;gap:12px"><button class="ava sm" data-a="photoSheet" aria-label="Alterar foto do perfil">${avaIn(pr)}</button><span style="flex:1;min-width:0"><span class="lab">Perfil em uso</span><b style="font-size:18px">${esc(pr.name)}</b><br><span class="muted small">As configurações e dados abaixo valem só para este perfil.</span></span><button class="btn sm sec" data-a="go" data-v="perfis">Trocar</button></section>
+ <section class="card" style="display:flex;align-items:center;gap:12px"><button class="ava sm" data-a="photoSheet" aria-label="Alterar foto do perfil">${avaIn(pr)}</button><span style="flex:1;min-width:0"><span class="lab">Perfil em uso</span><b style="font-size:18px">${esc(pr.name)}</b><br><span class="muted small">As configurações e dados abaixo valem só para este perfil.</span></span><button class="btn sm sec" data-a="logout">Trocar</button></section>
  <section class="card form"><label class="fld"><span>Nome do perfil</span><input class="inp" id="p-name" data-f="pname" value="${esc(pr.name)}"></label>
  <div class="fld"><span>Descanso padrão para exercícios novos</span><div class="chips">${[0,60,90,120,180].map(v=>`<button class="chip${pr.rest===v?' on':''}" data-a="pRest" data-k="${v}">${fmtRest(v)}</button>`).join('')}</div></div></section>
  <section class="card form"><span class="lab">Tema</span>${themePicker()}<span class="lab" style="margin-top:6px">Cor de destaque</span>${accentPicker()}<p class="muted small" style="margin:0">Tema e cor valem só para este perfil.</p></section>
@@ -1879,7 +1879,7 @@ function gate(){let g=$('#gate');const need=REGS.current&&top_().v!=='perfis'&&(
  UI.gate=REGS.current;const keep={};let sy=0;if(g){g.querySelectorAll('input[id]').forEach(i=>keep[i.id]=i.value);sy=g.scrollTop}else{g=document.createElement('div');g.id='gate';g.setAttribute('role','dialog');g.setAttribute('aria-modal','true');document.body.appendChild(g)}
  document.body.classList.add('gated');g.innerHTML=gateHTML();for(const k in keep){const i=g.querySelector('#'+k);if(i)i.value=keep[k]}g.scrollTop=sy}
 function gateHTML(){const p=S.profile,w=latestMeasure('weight'),age=ageOf(p.birth),c=myDataChecks(),n=c.filter(x=>x[1]).length;
- return`<div class="gate-c"><div class="row"><span class="ava sm">${avaIn(p)}</span><span class="nfx" style="display:flex;flex-direction:column;gap:2px;line-height:1.2"><b>${esc(p.name)}</b><span class="muted small">${n} de ${c.length} preenchidos</span></span><button class="btn ghost sm" data-a="go" data-v="perfis">Trocar perfil</button></div>
+ return`<div class="gate-c"><div class="row"><span class="ava sm">${avaIn(p)}</span><span class="nfx" style="display:flex;flex-direction:column;gap:2px;line-height:1.2"><b>${esc(p.name)}</b><span class="muted small">${n} de ${c.length} preenchidos</span></span><button class="btn ghost sm" data-a="logout">Trocar perfil</button></div>
  <h2 class="h" style="margin:0">Antes de começar</h2><p class="muted" style="margin:0">Estes dados são obrigatórios: com eles o app calcula a taxa basal, o gasto do dia e as metas de calorias, proteína, carboidratos, gordura e água. Ficam só neste aparelho e podem ser alterados depois em Perfil → Meus dados.</p>
  <div class="nbar"><i style="width:${(n/c.length*100).toFixed(0)}%"></i></div>
  <section class="card form"><div class="fld"><span>Sexo</span><div class="chips">${[['m','Masculino'],['f','Feminino']].map(([k,l])=>`<button class="chip${p.sex===k?' on':''}" data-a="pdSex" data-k="${k}">${l}</button>`).join('')}</div></div>
@@ -2073,6 +2073,7 @@ const A={
  saveWaterCfg:()=>{const g=Math.round(num($('#wc-goal').value)||0);S.profile.waterManual=g>=500&&g<=8000?g:null;S.profile.cups=[0,1,2,3].map(i=>Math.round(num($('#wc-c'+i).value)||0)).filter(v=>v>0&&v<=3000);save();closeSheet();rerender();toast('Ajustes salvos')},
  setTheme:d=>{const t=themeOf(d.k);S.profile.theme=t[0];S.profile.accent=t[11];save();applyAccent();rerender()},
  setAccent:d=>{S.profile.accent=d.k;save();applyAccent();rerender()},
+ logout:()=>logout(),
  addProfile:()=>askText('Novo perfil','','Nome da pessoa').then(v=>{closeSheet();const n=(v||'').trim();if(!n)return;if(REGS.list.some(p=>norm(p.name)===norm(n))){toast('Já existe um perfil com esse nome.');return}REGS.list.push({id:(slug(n)||'perfil')+'-'+uid().slice(0,4),name:n});saveReg();rerender();toast('Perfil criado. Toque nele para usar.')}),
  profMenu:d=>{const pr=REGS.list.find(p=>p.id===d.id);if(!pr)return;const cur=pr.id===REGS.current;menu(pr.name,[
   ...(cur?[]:[{label:'Usar este perfil',icon:I.user,f:()=>switchProfile(pr.id)}]),
@@ -3602,17 +3603,40 @@ Object.assign(A,{calcSheet});
    é uma barreira de privacidade no aparelho, não criptografa os dados. Pedida a cada abertura do app (sessionStorage). */
 const LOCK={salt:'carga-v1-lock',it:150000,hash:'000641360c9a1e91a4182e1f603cc542184761e40557600b261e90169c25ad18',len:8};
 async function lockHash(pin){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),'PBKDF2',false,['deriveBits']);const b=await crypto.subtle.deriveBits({name:'PBKDF2',salt:new TextEncoder().encode(LOCK.salt),iterations:LOCK.it,hash:'SHA-256'},k,256);return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+// Login (v111): usuário e senha na abertura. Samuel e Carol conferem com o hash LOCK (a senha nunca fica no código).
+// Usuários novos ficam neste aparelho em localStorage 'carga.users' = [{name,salt,hash}] (PBKDF2 com sal próprio).
+const USERS_K='carga.users',LOGIN_FIX=['Samuel','Carol'];
+const usersGet=()=>{try{const u=JSON.parse(localStorage.getItem(USERS_K)||'[]');return Array.isArray(u)?u:[]}catch(e){return[]}};
+async function pwHash(pw,salt){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveBits']);const b=await crypto.subtle.deriveBits({name:'PBKDF2',salt:new TextEncoder().encode(salt),iterations:LOCK.it,hash:'SHA-256'},k,256);return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function logout(){persist();try{sessionStorage.removeItem('carga.ok');sessionStorage.removeItem('carga.user')}catch(e){}location.reload()}
+function enterAs(name){let p=REGS.list.find(x=>norm(x.name)===norm(name));if(!p){p={id:(slug(name)||'perfil')+'-'+uid().slice(0,4),name};REGS.list.push(p);saveReg()}
+ try{sessionStorage.setItem('carga.ok',LOCK.hash);sessionStorage.setItem('carga.user',p.name);localStorage.setItem('carga.last',p.name)}catch(e){}
+ if(p.id!==REGS.current)switchProfile(p.id)}
 (()=>{let ok=false;try{ok=sessionStorage.getItem('carga.ok')===LOCK.hash}catch(e){}if(ok)return;
- const mk=document.querySelector('#splash .sp-mark');const L=document.createElement('div');L.id='lock';L.setAttribute('role','dialog');L.setAttribute('aria-label','Senha do Carga');
- L.innerHTML=`${mk?mk.outerHTML.replace('sp-mark','lk-mark'):''}<h2>Digite a senha</h2><div class="lk-dots" aria-hidden="true">${'<i></i>'.repeat(LOCK.len)}</div><div class="lk-msg" aria-live="polite"></div><div class="lk-pad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button type="button" data-k="${n}">${n}</button>`).join('')}<button type="button" class="lk-sp" tabindex="-1" aria-hidden="true"></button><button type="button" data-k="0">0</button><button type="button" class="lk-del" data-k="del" aria-label="Apagar">Apagar</button></div>`;
- document.body.appendChild(L);let pin='',busy=false;const dots=L.querySelectorAll('.lk-dots i'),msg=L.querySelector('.lk-msg'),box=L.querySelector('.lk-dots');
- const paint=()=>dots.forEach((d,i)=>d.classList.toggle('on',i<pin.length));
- const check=async()=>{busy=true;msg.className='lk-msg';msg.textContent='Conferindo…';let h='';try{h=await lockHash(pin)}catch(e){msg.className='lk-msg err';msg.textContent='Este navegador não consegue conferir a senha. Abra pelo endereço https do app.';busy=false;return}
-  if(h===LOCK.hash){try{sessionStorage.setItem('carga.ok',LOCK.hash)}catch(e){}document.removeEventListener('keydown',kb);L.classList.add('out');setTimeout(()=>L.remove(),260);return}
-  msg.className='lk-msg err';msg.textContent='Senha incorreta. Tente de novo.';box.classList.remove('shake');void box.offsetWidth;box.classList.add('shake');try{navigator.vibrate&&navigator.vibrate(120)}catch(e){}pin='';paint();busy=false};
- const press=k=>{if(busy)return;if(k==='del'){pin=pin.slice(0,-1)}else if(pin.length<LOCK.len){pin+=k}if(pin.length&&msg.classList.contains('err')){msg.className='lk-msg';msg.textContent=''}paint();if(pin.length===LOCK.len)check()};
- L.addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(b)press(b.dataset.k)});
- const kb=e=>{if(/^[0-9]$/.test(e.key))press(e.key);else if(e.key==='Backspace')press('del')};document.addEventListener('keydown',kb)})();
+ const mk=document.querySelector('#splash .sp-mark');const L=document.createElement('div');L.id='lock';L.setAttribute('role','dialog');L.setAttribute('aria-label','Entrar no Carga');
+ const logo=mk?mk.outerHTML.replace('sp-mark','lk-mark'):'';let last='';try{last=localStorage.getItem('carga.last')||''}catch(e){}
+ const fLogin=(n,m)=>`${logo}<h2>Entrar</h2><form class="lk-f" data-m="login" autocomplete="on"><label>Usuário<input name="u" autocomplete="username" autocapitalize="words" value="${esc(n||'')}" required></label><label>Senha<input name="p" type="password" autocomplete="current-password" required></label><div class="lk-msg${m?' ok':''}" aria-live="polite">${m||''}</div><button class="lk-go" type="submit">Entrar</button><button class="lk-alt" type="button" data-k="novo">Novo usuário</button></form>`;
+ const fNovo=()=>`${logo}<h2>Novo usuário</h2><form class="lk-f" data-m="novo" autocomplete="off"><label>Nome<input name="u" autocomplete="username" autocapitalize="words" required></label><label>Senha<input name="p" type="password" autocomplete="new-password" required></label><label>Confirmar senha<input name="c" type="password" autocomplete="new-password" required></label><div class="lk-msg" aria-live="polite"></div><button class="lk-go" type="submit">Criar usuário</button><button class="lk-alt" type="button" data-k="voltar">Voltar</button></form>`;
+ const show=(h,f)=>{L.innerHTML=h;const i=L.querySelector(f||'input');if(i&&matchMedia('(hover:hover)').matches)i.focus()};
+ show(fLogin(last),last?'input[name=p]':'input');document.body.appendChild(L);let busy=false;
+ const err=(t)=>{const m=L.querySelector('.lk-msg'),f=L.querySelector('.lk-f');m.className='lk-msg err';m.textContent=t;f.classList.remove('shake');void f.offsetWidth;f.classList.add('shake');try{navigator.vibrate&&navigator.vibrate(120)}catch(e){}};
+ const wait=t=>{const m=L.querySelector('.lk-msg');m.className='lk-msg';m.textContent=t};
+ L.addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b||busy)return;if(b.dataset.k==='novo')show(fNovo());else show(fLogin(last))});
+ L.addEventListener('submit',async e=>{e.preventDefault();if(busy)return;const f=e.target,u=f.u.value.trim().replace(/\s+/g,' '),pw=f.p.value;
+  if(!u||!pw){err('Preencha usuário e senha.');return}
+  busy=true;try{
+  if(f.dataset.m==='login'){wait('Conferindo…');const b=LOGIN_FIX.find(n=>norm(n)===norm(u)),c=usersGet().find(x=>norm(x.name)===norm(u));
+   let okk=false,name=u;if(b){okk=await lockHash(pw)===LOCK.hash;name=b}else if(c){okk=await pwHash(pw,c.salt)===c.hash;name=c.name}
+   if(!okk){err(b||c?'Senha incorreta. Tente de novo.':'Usuário não encontrado. Toque em Novo usuário para criar.');f.p.value='';return}
+   enterAs(name);L.classList.add('out');setTimeout(()=>L.remove(),260);return}
+  if(LOGIN_FIX.some(n=>norm(n)===norm(u))||usersGet().some(x=>norm(x.name)===norm(u))){err('Já existe um usuário com esse nome.');return}
+  if(u.length<2){err('O nome precisa de pelo menos 2 letras.');return}
+  if(pw.length<4){err('A senha precisa de pelo menos 4 caracteres.');return}
+  if(pw!==f.c.value){err('As senhas não conferem.');f.c.value='';return}
+  wait('Criando…');const salt='carga-u-'+uid()+uid();const h=await pwHash(pw,salt);const list=usersGet();list.push({name:u,salt,hash:h});
+  try{localStorage.setItem(USERS_K,JSON.stringify(list))}catch(e){err('Não foi possível salvar neste aparelho.');return}
+  last=u;show(fLogin(u,'Usuário criado com sucesso. Agora entre com sua senha.'),'input[name=p]')
+  }catch(x){err('Este navegador não consegue conferir a senha. Abra pelo endereço https do app.')}finally{busy=false}})})();
 (()=>{const sp=document.getElementById('splash');if(!sp)return;const end=()=>{if(sp.classList.contains('out'))return;sp.classList.add('out');const m=document.querySelector('meta[name="theme-color"]');if(m&&m.dataset.c)m.setAttribute('content',m.dataset.c);setTimeout(()=>sp.remove(),520)};document.documentElement.classList.remove('sp-on');setTimeout(end,2600);sp.addEventListener('click',end)})();
 render();
 if(S.active){wake();schedRest()}
