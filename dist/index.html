@@ -600,6 +600,8 @@ html.sp-on{background:#000}
 .wcar{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}.wcar::-webkit-scrollbar{display:none}.wcar>.wcard{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always}
 .wcar-n{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:6px;font-size:13px;font-weight:600;color:var(--muted)}
 .swp{display:inline-flex;align-items:center;gap:6px;padding-left:6px}.swp .ava.xs{width:26px;height:26px;font-size:12px}
+/* Barra de abas: rótulos sempre inteiros e alinhados; a largura de cada aba acompanha o rótulo e a fonte encolhe em telas estreitas */
+.nav-in{display:flex;justify-content:space-between;gap:0}.nav-in>button{flex:1 1 auto;min-width:0;padding:0 2px}.nav .nl{display:block;white-space:nowrap;font-size:clamp(10px,2.85vw,12px);letter-spacing:-.02em;line-height:1.15}
 #gate{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch}.gate-c{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding:calc(env(safe-area-inset-top,0px) + 20px) 16px calc(env(safe-area-inset-bottom,0px) + 24px)}.gate-c .gerr{color:var(--danger);font-weight:600;margin:0}body.gated{overflow:hidden}
 #splash{position:fixed;inset:0;z-index:9999;background:#000;display:grid;place-items:center;transition:opacity .24s ease-out}
 #splash.out{opacity:0;pointer-events:none}
@@ -1192,7 +1194,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v101'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v102'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1275,7 +1277,7 @@ const rerender=()=>render(true);
 function chrome(){
  const t=top_();const nav=$('#nav');const showNav=NAV_VIEWS.has(t.v)&&!!REGS.current;nav.hidden=!showNav;
  const tabOf=stack[0].v;
- nav.innerHTML=`<div class="nav-in">${[['inicio','Início',I.home],['treino','Musculação',I.dumbbell],['ativ','Cardio',AIC.run.replace('class="i px"','class="i px nav-px"')],['dieta','Nutrição',I.food],['agua','Água',I.drop],['perfil','Configurações',I.gear]].map(([k,l,i])=>`<button class="${tabOf===k?'on':''}" data-a="tab" data-t="${k}" aria-label="${l}"><span class="ic">${i}</span>${l}</button>`).join('')}</div>`;
+ nav.innerHTML=`<div class="nav-in">${[['inicio','Início',I.home],['treino','Musculação',I.dumbbell],['ativ','Cardio',AIC.run.replace('class="i px"','class="i px nav-px"')],['dieta','Nutrição',I.food],['agua','Água',I.drop],['perfil','Configurações',I.gear]].map(([k,l,i])=>`<button class="${tabOf===k?'on':''}" data-a="tab" data-t="${k}" aria-label="${l}"><span class="ic">${i}</span><span class="nl">${l}</span></button>`).join('')}</div>`;
  const showMini=S.active&&showNav;
  $('#mini').innerHTML=showMini?`<div class="mini"><button data-a="resume"><span class="t"><b>Treino em andamento</b><span>${S.active.restEnd&&S.active.restEnd>Date.now()?`Descanso: <b data-rest>${clock(S.active.restEnd-Date.now())}</b> · `:''}<span data-clock>${clock(Date.now()-S.active.start)}</span> · ${esc(S.active.name)}</span></span><span class="btn sm pri">Retomar</span></button></div>`:'';
  document.querySelector('.page')?.style.setProperty('padding-bottom',showMini?'200px':'');
