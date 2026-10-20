@@ -1194,7 +1194,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v109'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v110'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1302,7 +1302,9 @@ function audioInit(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioC
 /* Série concluída (como no Hevy): "toc" curto e grave (≈295 Hz + 440 Hz, ataque rápido, ~0,25 s) + vibração leve de 40 ms.
    Identificado no vídeo do Hevy; liga/desliga em Configurações. iPhone não permite vibrar pelo navegador: lá só o som. */
 function setTick(){if(S.profile.setFx===false)return;if(AC){try{const t=AC.currentTime;[[295,.32],[440,.16]].forEach(([fq,v])=>{const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.setValueAtTime(fq*1.08,t);o.frequency.exponentialRampToValueAtTime(fq,t+.04);o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+.26);o.start(t);o.stop(t+.28)})}catch(e){}}try{navigator.vibrate&&navigator.vibrate(40)}catch(e){}}
-function beep(){if(S.profile.sound&&AC){try{[0,.25,.5].forEach(d=>{const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=d===.5?1180:880;o.connect(g);g.connect(AC.destination);const t=AC.currentTime+d;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.35,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.18);o.start(t);o.stop(t+.2)})}catch(e){}}if(S.profile.vibrate)try{navigator.vibrate&&navigator.vibrate([250,120,250])}catch(e){}}
+/* Fim do descanso (como no Hevy): sininho agudo e curto subindo (≈720 → 860 → 1.000 Hz, ~0,5 s) + vibração dupla.
+   Som e vibração ligados por padrão (Configurações). */
+function beep(){if(S.profile.sound!==false&&AC){try{const t0=AC.currentTime;[[717,0],[864,.09],[1005,.18]].forEach(([fq,d])=>{[[1,.26],[2.01,.05]].forEach(([h,v])=>{const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=fq*h;o.connect(g);g.connect(AC.destination);const t=t0+d;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.42);o.start(t);o.stop(t+.45)})})}catch(e){}}if(S.profile.vibrate!==false)try{navigator.vibrate&&navigator.vibrate([180,90,180])}catch(e){}}
 async function wake(){if(!S.active||!S.profile.wake||document.hidden)return;try{if(navigator.wakeLock&&!wl){wl=await navigator.wakeLock.request('screen');wl.addEventListener('release',()=>wl=null)}}catch(e){}}
 function unwake(){try{wl&&wl.release()}catch(e){}wl=null}
 
@@ -1711,7 +1713,7 @@ VIEWS.config=()=>{const pr=S.profile;const sw=(k,l,d)=>`<label class="switch"><s
  <section class="card form"><label class="fld"><span>Nome do perfil</span><input class="inp" id="p-name" data-f="pname" value="${esc(pr.name)}"></label>
  <div class="fld"><span>Descanso padrão para exercícios novos</span><div class="chips">${[0,60,90,120,180].map(v=>`<button class="chip${pr.rest===v?' on':''}" data-a="pRest" data-k="${v}">${fmtRest(v)}</button>`).join('')}</div></div></section>
  <section class="card form"><span class="lab">Tema</span>${themePicker()}<span class="lab" style="margin-top:6px">Cor de destaque</span>${accentPicker()}<p class="muted small" style="margin:0">Tema e cor valem só para este perfil.</p></section>
- <section class="card">${swOn('setFx','Som e vibração ao concluir série','Um toque curto e uma vibração leve ao marcar ✓, como no Hevy. No iPhone, só o som.')}${sw('sound','Som ao fim do descanso','')}${sw('vibrate','Vibrar ao fim do descanso','')}${sw('wake','Manter tela ligada no treino','Evita que o celular apague durante a sessão.')}${sw('notify','Avisar fim do descanso com a tela bloqueada','Mostra uma notificação quando o descanso acaba. Funciona no app instalado. Se o Android economizar bateria demais, o aviso pode atrasar alguns segundos.')}</section>
+ <section class="card">${swOn('setFx','Som e vibração ao concluir série','Um toque curto e uma vibração leve ao marcar ✓, como no Hevy. No iPhone, só o som.')}${swOn('sound','Som ao fim do descanso','Sininho curto quando o cronômetro zera, como no Hevy.')}${swOn('vibrate','Vibrar ao fim do descanso','No iPhone, o navegador não vibra.')}${sw('wake','Manter tela ligada no treino','Evita que o celular apague durante a sessão.')}${sw('notify','Avisar fim do descanso com a tela bloqueada','Mostra uma notificação quando o descanso acaba. Funciona no app instalado. Se o Android economizar bateria demais, o aviso pode atrasar alguns segundos.')}</section>
  <h3 class="sh">Treino</h3>
  <section class="card form"><div class="fld"><span>Primeiro dia da semana</span><div class="chips">${[[0,'Domingo'],[1,'Segunda-feira']].map(([k,l])=>`<button class="chip${(pr.weekStart||0)===k?' on':''}" data-a="pWeek" data-k="${k}">${l}</button>`).join('')}</div></div>
  <div class="fld"><span>Valores do treino anterior</span><div class="chips">${[['qualquer','Qualquer treino'],['rotina','Mesma rotina']].map(([k,l])=>`<button class="chip${(pr.prevMode||'qualquer')===k?' on':''}" data-a="pPrev" data-k="${k}">${l}</button>`).join('')}</div><p class="muted small" style="margin:0">${(pr.prevMode||'qualquer')==='rotina'?'A coluna Anterior mostra a última vez que você fez o exercício nesta mesma rotina.':'A coluna Anterior mostra a última vez que você fez o exercício, em qualquer treino.'}</p></div></section>
