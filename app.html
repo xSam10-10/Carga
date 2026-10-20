@@ -585,6 +585,7 @@ html.sp-on{background:#000}
 .wk3 b{font-size:22px}
 .wcar{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}.wcar::-webkit-scrollbar{display:none}.wcar>.wcard{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always}
 .wcar-n{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:6px;font-size:13px;font-weight:600;color:var(--muted)}
+.swp{display:inline-flex;align-items:center;gap:6px;padding-left:6px}.swp .ava.xs{width:26px;height:26px;font-size:12px}
 #gate{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch}.gate-c{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding:calc(env(safe-area-inset-top,0px) + 20px) 16px calc(env(safe-area-inset-bottom,0px) + 24px)}.gate-c .gerr{color:var(--danger);font-weight:600;margin:0}body.gated{overflow:hidden}
 #splash{position:fixed;inset:0;z-index:9999;background:#000;display:grid;place-items:center;transition:opacity .24s ease-out}
 #splash.out{opacity:0;pointer-events:none}
@@ -1260,7 +1261,7 @@ const rerender=()=>render(true);
 function chrome(){
  const t=top_();const nav=$('#nav');const showNav=NAV_VIEWS.has(t.v)&&!!REGS.current;nav.hidden=!showNav;
  const tabOf=stack[0].v;
- nav.innerHTML=`<div class="nav-in">${[['inicio','Início',I.home],['treino','Musculação',I.dumbbell],['ativ','Cardio',AIC.run.replace('class="i px"','class="i px nav-px"')],['dieta','Nutrição',I.food],['agua','Água',I.drop],['perfil','Perfil',I.user]].map(([k,l,i])=>`<button class="${tabOf===k?'on':''}" data-a="tab" data-t="${k}" aria-label="${l}"><span class="ic">${i}</span>${l}</button>`).join('')}</div>`;
+ nav.innerHTML=`<div class="nav-in">${[['inicio','Início',I.home],['treino','Musculação',I.dumbbell],['ativ','Cardio',AIC.run.replace('class="i px"','class="i px nav-px"')],['dieta','Nutrição',I.food],['agua','Água',I.drop],['perfil','Configurações',I.gear]].map(([k,l,i])=>`<button class="${tabOf===k?'on':''}" data-a="tab" data-t="${k}" aria-label="${l}"><span class="ic">${i}</span>${l}</button>`).join('')}</div>`;
  const showMini=S.active&&showNav;
  $('#mini').innerHTML=showMini?`<div class="mini"><button data-a="resume"><span class="t"><b>Treino em andamento</b><span>${S.active.restEnd&&S.active.restEnd>Date.now()?`Descanso: <b data-rest>${clock(S.active.restEnd-Date.now())}</b> · `:''}<span data-clock>${clock(Date.now()-S.active.start)}</span> · ${esc(S.active.name)}</span></span><span class="btn sm pri">Retomar</span></button></div>`:'';
  document.querySelector('.page')?.style.setProperty('padding-bottom',showMini?'200px':'');
@@ -1391,7 +1392,7 @@ VIEWS.inicio=()=>{
  const ws=[...S.workouts].sort((a,b)=>b.start-a.start);const wk=weekStart(Date.now());const thisW=ws.filter(w=>w.start>=wk);
  const dur=thisW.reduce((a,w)=>a+(w.end-w.start),0),vol=thisW.reduce((a,w)=>a+wStats(w).vol,0);
  const days=[...Array(7)].map((_,i)=>addDays(wk,i));const today=sod(Date.now());
- let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button><button class="ib" data-a="go" data-v="perfis" aria-label="Trocar perfil (${esc(S.profile.name)})"><span class="ava xs">${avaIn(S.profile)}</span></button></header><main class="page">`;
+ let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button><button class="btn sm sec swp" data-a="go" data-v="perfis" aria-label="Trocar perfil (${esc(S.profile.name)})"><span class="ava xs">${avaIn(S.profile)}</span>Trocar perfil</button></header><main class="page">`;
  h+=homeMyDay();
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
  h+=homeSpend();
@@ -1531,19 +1532,9 @@ function editWorkout(w){go('sessao',{s:{kind:'edit',id:w.id,kcal:w.kcal,name:w.n
 function routineFromWorkout(w,name){return{id:uid(),name:name||w.name,notes:'',folderId:null,exercises:w.exercises.map(e=>({exId:e.exId,notes:e.notes||'',rest:S.profile.rest,ss:e.ss||null,sets:e.sets.map(s=>{const x=setFromSaved(s,false);delete x.done;return x})}))}}
 
 /* ---------- PERFIL ---------- */
-VIEWS.perfil=()=>{
- const ws=[...S.workouts].sort((a,b)=>b.start-a.start);const wk=weekStart(Date.now());const m=UI.pm;
- const PO=perOf('perfil');const bk=buckets(PO.p,PO.g);
- const val=w=>m==='dur'?(w.end-w.start)/36e5:m==='vol'?wStats(w).vol:wStats(w).reps;
- const vals=bk.map(([a,z])=>S.workouts.filter(w=>w.start>=a&&w.start<z).reduce((x,w)=>x+val(w),0));const tot=vals.reduce((a,b)=>a+b,0);
- const curV=S.workouts.filter(w=>w.start>=wk).reduce((x,w)=>x+val(w),0);
- const fy=m==='dur'?v=>fmt(v)+'h':v=>v>=1000?fmt(v/1000)+' mil':fmtInt(v);
- const cw=curV;const head=m==='dur'?`<b>${fmtDur(cw*36e5)}</b> esta semana`:m==='vol'?`<b>${fmtInt(cw)} kg</b> esta semana`:`<b>${fmtInt(cw)} reps</b> esta semana`;
- const totalH=S.workouts.reduce((a,w)=>a+(w.end-w.start),0);
- let h=`<header class="top"><h1 class="big">Perfil</h1><button class="btn sm sec" data-a="go" data-v="perfis">Trocar perfil</button><button class="ib" data-a="backupSheet" aria-label="Exportar dados">${I.upload}</button><button class="ib" data-a="go" data-v="config" aria-label="Configurações">${I.gear}</button></header><main class="page">
- <div class="prof"><button class="ava ava-edit" data-a="photoSheet" aria-label="Alterar foto do perfil">${avaIn(S.profile)}<span class="ava-cam">${I.camera}</span></button><div style="flex:1;min-width:0"><h2>${esc(S.profile.name)}</h2><div class="stat3"><div><span class="lab">Treinos</span><b>${ws.length}</b></div><div><span class="lab">Horas</span><b>${fmtInt(totalH/36e5)}</b></div><div><span class="lab">Sequência</span><b>${streakWeeks()} sem</b></div></div></div></div>
- `;
- return h+'</main>'};
+/* Aba Configurações (antiga aba Perfil, v101): mostra a tela Configurações como raiz da aba, sem botão de voltar */
+VIEWS.perfil=()=>`<header class="top"><h1 class="big">Configurações</h1></header>`+VIEWS.config().slice(bar('Configurações').length);
+VIEWS.perfil.after=()=>VIEWS.config.after();
 /* Todos os treinos (histórico completo), aberto pela aba Treino e pelo Perfil */
 VIEWS.historico=()=>{const ws=[...S.workouts].sort((a,b)=>b.start-a.start);let h=bar(`Todos os treinos${ws.length?' · '+ws.length:''}`)+'<main class="page">';
  h+=ws.length?ws.slice(0,UI.feedN).map(workoutCard).join('')+(ws.length>UI.feedN?`<button class="btn sec wide" data-a="more">Mostrar mais treinos</button>`:''):`<p class="empty">Seus treinos salvos aparecem aqui.</p>`;
@@ -2191,7 +2182,7 @@ const A={
  mField:d=>{top_().p.f=d.k;rerender()},
  dPick:(d,el)=>{const h=el.parentNode.querySelector('.dhid'),t=document.getElementById(d.for);if(!h)return;h.max=toDateInput(Date.now());h.value=isoOf(t&&t.value)||toDateInput(Date.now());try{h.showPicker()}catch(e){h.focus();h.click()}},
  // formulários (Meus dados, metas, medidas, configurações) só existem dentro da aba Perfil
- goPf:d=>{if(stack[0].v!=='perfil'){stack=[{v:'perfil',p:{}}];if(d.v!=='dados'&&d.v!=='config')stack.push({v:'dados',p:{}})}go(d.v)},
+ goPf:d=>{if(d.v==='config'){tab('perfil');return}if(stack[0].v!=='perfil'){stack=[{v:'perfil',p:{}}];if(d.v!=='dados'&&d.v!=='config')stack.push({v:'dados',p:{}})}go(d.v)},
  newMeasure:()=>{const last=[...S.measures].sort((a,b)=>b.date-a.date)[0]||{};const m={id:uid(),date:sod(Date.now())};go('medidaForm',{isNew:true,m,last})},
  editMeasure:d=>{const m=S.measures.find(x=>x.id===d.id);if(m)go('medidaForm',{m:JSON.parse(JSON.stringify(m))})},
  saveMeasure:()=>{const m=top_().p.m;if(!MF.some(([k])=>num(m[k])!=null)){toast('Preencha pelo menos uma medida.');return}const c={id:m.id,date:m.date};for(const[k]of MF)if(num(m[k])!=null)c[k]=num(m[k]);const i=S.measures.findIndex(x=>x.id===c.id);i<0?S.measures.push(c):S.measures[i]=c;save();toast('Medidas salvas');back()},
