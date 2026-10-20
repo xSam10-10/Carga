@@ -596,6 +596,7 @@ html.sp-on{background:#000}
 .lg-d{font-style:normal;font-weight:700;font-size:12px;margin-left:6px;padding:1px 6px;border-radius:999px;background:var(--surface-2);color:var(--muted)}.lg-r.z-ok .lg-d{background:transparent}.lg-d.over{color:var(--amber)}
 /* iPhone: barras fixas em camada própria para não "andarem" junto com a rolagem por inércia (WebKit) */
 .nav,.mini,.restbar,.stickyb,.fdock,body::before{-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0);-webkit-backface-visibility:hidden;backface-visibility:hidden;will-change:transform}
+.wk3 b{font-size:22px}
 #gate{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch}.gate-c{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding:calc(env(safe-area-inset-top,0px) + 20px) 16px calc(env(safe-area-inset-bottom,0px) + 24px)}.gate-c .gerr{color:var(--danger);font-weight:600;margin:0}body.gated{overflow:hidden}
 #splash{position:fixed;inset:0;z-index:9999;background:#000;display:grid;place-items:center;transition:opacity .24s ease-out}
 #splash.out{opacity:0;pointer-events:none}
@@ -1188,7 +1189,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v82'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v83'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1403,7 +1404,7 @@ VIEWS.inicio=()=>{
  const dur=thisW.reduce((a,w)=>a+(w.end-w.start),0),vol=thisW.reduce((a,w)=>a+wStats(w).vol,0);
  const days=[...Array(7)].map((_,i)=>addDays(wk,i));const today=sod(Date.now());
  let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button><button class="ib" data-a="go" data-v="perfis" aria-label="Trocar perfil (${esc(S.profile.name)})"><span class="ava xs">${avaIn(S.profile)}</span></button></header><main class="page">`;
- h+=homeMyDay()+homeWeek();
+ h+=homeMyDay();
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
  h+=homeSpend();
  h+=homeBody();
@@ -3574,8 +3575,9 @@ function homeGoalsMini(){const now=Date.now(),t0=sod(now),k=dkey(now),g=goalsOf(
   ...(wpw?[['Treinos da semana',`${cnt} de ${wpw}${left?` · faltam ${left} em ${dl} dia${dl>1?'s':''}`:''}`,cnt>=wpw?'ok':left>dl?'bad':'go','data-a="go" data-v="metas"']]:[]),
   ...((p.supps||[]).length?[['Suplementos',`${suppsTaken(k)} de ${p.supps.length}`,suppsTaken(k)>=p.supps.length?'ok':'go','data-a="suppSheet"']]:[])];
  const lp=[['weight','Peso'],['fat','Gordura'],['waist','Cintura']].filter(([kk])=>num(g[kk])>0).map(([kk,l])=>{const f=goalForecast(kk,num(g[kk]));if(!f)return null;const d=f.d;return[`${l} → ${evoFmt(d,f.target)}`,f.pct>=1?'alcançada ✓':`${evoFmt(d,f.last.y)} · faltam ${evoFmt(d,Math.abs(f.target-f.last.y))}`,f.pct>=1?'ok':'go','data-a="go" data-v="metas"']}).filter(Boolean);
+ const wsW=S.workouts.filter(w=>w.start>=wk),xsW=(S.extra||[]).filter(x=>x.t>=wk),dur=wsW.reduce((t,w)=>t+(w.end-w.start),0)+xsW.reduce((t,x)=>t+(num(x.dur)||0)*6e4,0),vol=wsW.reduce((t,w)=>t+wStats(w).vol,0);
  const row=r=>`<button class="lg-r z-${r[2]}" ${r[3]}><i>${r[2]==='ok'?'✓':''}</i><span>${r[0]}</span><b>${r[1]}</b></button>`;
- return`<span class="lab" style="margin-top:2px">Treinos</span><div class="lg">${rows.map(row).join('')}</div>${lp.length?`<span class="lab" style="margin-top:2px">Metas de longo prazo</span><div class="lg">${lp.map(row).join('')}</div>`:''}`}
+ return`<span class="lab" style="margin-top:2px">Treinos · esta semana</span><div class="stat3 wk3"><div><span class="lab">Sessões</span><b>${cnt}</b></div><div><span class="lab">Tempo</span><b>${fmtDur(dur)}</b></div><div><span class="lab">Volume</span><b>${fmtInt(vol)}<small style="font-size:14px"> kg</small></b></div></div><div class="lg">${rows.map(row).join('')}</div>${lp.length?`<span class="lab" style="margin-top:2px">Metas de longo prazo</span><div class="lg">${lp.map(row).join('')}</div>`:''}`}
 function homeMyDay(){nS();const now=Date.now(),k=dkey(now),n=dayNut(k),P=nutriPlan(now),E=P.E,v=Math.round(n[0]),left=P.kcal-v,pc=Math.min(100,v/P.kcal*100),z=zKcal(v,P);
  const gl=(GOALS.find(g=>g[0]===goalOf())||GOALS[1])[1],wg=waterGoal(now).ml,wt=waterOn(k);
  const noKcal=E.mode==='relogio'?S.workouts.filter(w=>w.start>=sod(now)&&!(num(w.kcal)>0)):[];
