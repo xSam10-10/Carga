@@ -194,3 +194,4 @@
 - 20/10/2026 (v89): Macronutrientes por dia — caixas de volta à ordem Proteína, Carboidrato, Gordura (pedido do usuário; revoga a v86).
 - 20/10/2026 (v90): atalho **Meus dados** saiu da aba Perfil (cartão `myDataCard`) e virou um quadro no **Explorar** do Início, ao lado de Evolução (Resumo · Conquistas · Evolução · Meus dados). Abre o formulário dentro da aba Perfil (`goPf`), mantendo a regra de formulários no Perfil.
 - 20/10/2026 (v91): cartão **Fase de treino** saiu da aba Musculação (`blockCard` sem uso). A fase continua configurável em Meus dados → Treino e objetivo e segue valendo para a sugestão de carga.
+- 20/10/2026 (v92): aba Musculação → Rotinas: quadro na ordem Nova rotina · Novo exercício · Iniciar treino vazio · Catálogo · Estatísticas · Explorar. "Iniciar treino vazio" deixou de ser um botão solto acima das Rotinas; com treino em andamento, "Retomar" e "Descartar" seguem no topo.
