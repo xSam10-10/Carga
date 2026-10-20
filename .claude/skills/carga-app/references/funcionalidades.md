@@ -191,3 +191,4 @@
 - 20/10/2026 (v86): Macronutrientes por dia (Início e Saúde) — caixas na ordem Carboidrato, Proteína, Gordura (pedido do usuário; o destaque continua em g de proteína).
 - 20/10/2026 (v87): **Explorar** (Início) ficou só com Resumo, Conquistas e Evolução. Saíram Metas, Calendário e Saúde (Calendário segue no ícone do topo do Início; a Central de metas abre pelas linhas "Treinos da semana" e "Metas de longo prazo" do Meu dia; a tela Saúde não tem mais atalho — seus 5 blocos principais estão no Início). **Catálogo** e **Estatísticas** passaram para a aba Musculação (quadro Nova rotina · Explorar · Catálogo · Novo exercício · Estatísticas).
 - 20/10/2026 (v88): Macronutrientes por dia — número de destaque passou a ser as **calorias** da meta de hoje (`E.meta`, a mesma de Meu dia), no lugar de g de proteína.
+- 20/10/2026 (v89): Macronutrientes por dia — caixas de volta à ordem Proteína, Carboidrato, Gordura (pedido do usuário; revoga a v86).
