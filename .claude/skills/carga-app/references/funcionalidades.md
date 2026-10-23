@@ -217,3 +217,4 @@
 - v113 — Treino ao vivo: cabeçalho fixo (barra Registrar musculação + nome + Duração/Volume/Séries dentro do header.bar sticky, bloco .lhead) e barra de conclusão verde (.lprog, #34C759) = séries marcadas ÷ séries do treino (liveProg), atualizada em updateLiveStats e a cada render. .exc com scroll-margin-top 200px.
 - v114 — Reps na reserva: opções 1, 2, 3, 4, 5+ (sem o 0). Nada marcado = série normal, só reps/kg informados. Import do Hevy limita RIR a 0–5.
 - v114 (fix) — corrigido bug da v113: a tela do treino ao vivo mostrava os campos de Editar treino (data, duração NaN, anotações). Condição volta a ser else if(k!=='live').
+- v115 — Treino ao vivo: mini mapa corporal (frente e costas, .lmap 66px) à direita de Duração/Volume/Séries no cabeçalho fixo, destacando os músculos dos exercícios do treino (bodyMap(muscleSets([s])), conta séries planejadas, não só as marcadas). Atualiza a cada render.

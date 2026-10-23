@@ -127,6 +127,8 @@ h2.h{font:700 22px/1.1 var(--display);text-transform:uppercase;letter-spacing:.0
 .lstats b{font:600 26px/1.1 var(--display);font-variant-numeric:tabular-nums}
 .lstats .acc{color:var(--accent)}
 .lhead{max-width:640px;margin:0 auto;padding:2px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+.lhead .lstats{grid-template-columns:repeat(3,1fr) auto;align-items:center}
+.lmap .bodymap{width:66px;gap:0;max-width:none}.lmap figcaption{display:none}
 .lprog{height:4px;background:var(--line);margin-bottom:-1px}
 .exc{scroll-margin-top:200px}
 .lprog i{display:block;height:100%;width:0;background:#34C759;border-radius:0 2px 2px 0;transition:width .35s ease-out}
@@ -1484,7 +1486,7 @@ function exCard(s,e,i,L={}){
 VIEWS.sessao=p=>{
  const s=cur();if(!s){return bar('Musculação')+`<main class="page"><p class="empty">Nenhum treino em andamento.</p></main>`}
  const k=s.kind;let h;
- if(k==='live'){const st=wStats(s,true),pg=liveProg(s);h=bar('Registrar musculação',{left:`<button class="ib" data-a="back" aria-label="Minimizar">${I.down}</button>`,right:`<button class="btn sm pri" data-a="finish">Finalizar</button>`}).replace(/<\/header>$/,`<div class="lhead"><input class="title-in" id="l-name" data-f="name" value="${esc(s.name)}" aria-label="Nome do treino"><div class="lstats"><div><span class="lab">Duração</span><b class="acc" data-clock>${clock(Date.now()-s.start)}</b></div><div><span class="lab">Volume</span><b data-stat="vol">${fmtInt(st.vol)} kg</b></div><div><span class="lab">Séries</span><b data-stat="sets">${st.sets}</b></div></div></div><div class="lprog" role="progressbar" aria-label="Conclusão do treino" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pg}"><i style="width:${pg}%"></i></div></header>`)}
+ if(k==='live'){const st=wStats(s,true),pg=liveProg(s);h=bar('Registrar musculação',{left:`<button class="ib" data-a="back" aria-label="Minimizar">${I.down}</button>`,right:`<button class="btn sm pri" data-a="finish">Finalizar</button>`}).replace(/<\/header>$/,`<div class="lhead"><input class="title-in" id="l-name" data-f="name" value="${esc(s.name)}" aria-label="Nome do treino"><div class="lstats"><div><span class="lab">Duração</span><b class="acc" data-clock>${clock(Date.now()-s.start)}</b></div><div><span class="lab">Volume</span><b data-stat="vol">${fmtInt(st.vol)} kg</b></div><div><span class="lab">Séries</span><b data-stat="sets">${st.sets}</b></div><div class="lmap" aria-label="Músculos deste treino">${bodyMap(muscleSets([s]))}</div></div></div><div class="lprog" role="progressbar" aria-label="Conclusão do treino" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pg}"><i style="width:${pg}%"></i></div></header>`)}
  else h=bar(k==='routine'?(p.isNew?'Nova rotina':'Editar rotina'):'Editar treino',{left:`<button class="tb" data-a="back">Cancelar</button>`,right:`<button class="btn sm pri" data-a="${k==='routine'?'saveRoutine':'saveEdit'}">Salvar</button>`});
  h+='<main class="page">';
  if(k==='routine')h+=`<div class="form"><input class="title-in" id="r-name" data-f="name" placeholder="Título da rotina" value="${esc(s.name)}"><textarea id="r-notes" data-f="snotes" placeholder="Anotações da rotina (opcional)">${esc(s.notes)}</textarea></div>`;
