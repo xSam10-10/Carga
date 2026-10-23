@@ -108,6 +108,12 @@ h2.h{font:700 22px/1.1 var(--display);text-transform:uppercase;letter-spacing:.0
 .rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 14px 14px 16px;display:flex;flex-direction:column;gap:10px}
 .rcard-h{display:flex;align-items:flex-start;gap:8px}
 .rcard-h h3{flex:1;margin:4px 0 0;font:700 21px/1.15 var(--display);letter-spacing:.01em;text-wrap:balance}
+.rcard-o{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;text-align:left;background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer}
+.rcard-o h3{margin:4px 0 0;font:700 21px/1.15 var(--display);letter-spacing:.01em;text-wrap:balance}
+.rdet{gap:8px}.rtab{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.rtab th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:600;padding:6px 4px}
+.rtab td{padding:9px 4px;font-weight:600;font-size:16px}.rtab td.muted{font-weight:400;font-size:14px}
+.rtab tbody tr:nth-child(even){background:var(--surface-2)}.rtab .sn{min-width:26px;height:24px;font-size:12px}
 .rcard p{margin:0;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
 /* exercícios */
@@ -1200,7 +1206,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v117'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v118'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1277,7 +1283,7 @@ const top_=()=>stack[stack.length-1];
 function cur(){const t=top_();return t.p.live||t.v==='finish'?S.active:t.p.s}
 
 const VIEWS={};
-const NAV_VIEWS=new Set(['historico','relatorio','inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados','dieta','dietaTend','nutrientes','metasNutri','medLista','banco','planos','metas','fotosGer','resumo','conquistas','ativ','ativPick','ativDet']);
+const NAV_VIEWS=new Set(['rotina','historico','relatorio','inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados','dieta','dietaTend','nutrientes','metasNutri','medLista','banco','planos','metas','fotosGer','resumo','conquistas','ativ','ativPick','ativDet']);
 function render(keep){const t=top_();const y=scrollY;const V=VIEWS[t.v]||VIEWS.treino;$('#app').innerHTML=V(t.p);chrome();gate();if(keep)scrollTo(0,y);if(V.after)V.after(t.p)}
 const rerender=()=>render(true);
 function chrome(){
@@ -1440,7 +1446,25 @@ VIEWS.treino=()=>{
  for(const g of groups){const rs=S.routines.filter(r=>(r.folderId||'')===g.id);const closed=!!col[g.id||'_'];
   h+=`<div class="fold"><button class="fold-t${closed?' closed':''}" data-a="fold" data-id="${g.id}">${I.caret}${esc(g.name)} (${rs.length})</button>${g.id?`<button class="ib" data-a="folderMenu" data-id="${g.id}" aria-label="Opções da pasta">${I.dots}</button>`:''}</div>`;
   if(!closed){if(!rs.length)h+=`<p class="muted small" style="margin:0 0 4px">${g.id?'Pasta vazia. Mova rotinas para cá pelo menu ⋯ de cada rotina.':'Nenhuma rotina. Crie uma ou explore modelos prontos.'}</p>`;
-   h+=rs.map(r=>`<article class="rcard"><div class="rcard-h"><h3>${esc(r.name)}</h3><button class="ib" data-a="routineMenu" data-id="${r.id}" aria-label="Opções da rotina">${I.dots}</button></div><p>${esc(r.exercises.map(e=>ex(e.exId).name).join(', ')||'Sem exercícios')}</p><button class="btn pri wide" data-a="startRoutine" data-id="${r.id}">Começar rotina</button></article>`).join('')}}
+   h+=rs.map(r=>`<article class="rcard"><div class="rcard-h"><button class="rcard-o" data-a="openR" data-id="${r.id}"><h3>${esc(r.name)}</h3><p>${esc(r.exercises.map(e=>ex(e.exId).name).join(', ')||'Sem exercícios')}</p></button><button class="ib" data-a="routineMenu" data-id="${r.id}" aria-label="Opções da rotina">${I.dots}</button></div><button class="btn pri wide" data-a="startRoutine" data-id="${r.id}">Começar rotina</button></article>`).join('')}}
+ return h+'</main>'};
+
+/* Página da rotina (v118), como no Hevy: toque no nome da rotina (não em Começar rotina). Gráfico das sessões dessa rotina
+   (volume, repetições ou duração, com período) e os exercícios salvos na rotina, com o que foi feito na última sessão ao lado. */
+const rotWs=r=>S.workouts.filter(w=>w.routineId===r.id||(!w.routineId&&norm(w.name)===norm(r.name))).sort((a,b)=>a.start-b.start);
+VIEWS.rotina=p=>{const r=S.routines.find(x=>x.id===p.id);if(!r)return bar('Rotina')+`<main class="page"><p class="empty">Esta rotina foi excluída.</p></main>`;
+ const ws=rotWs(r),lw=ws[ws.length-1];
+ let h=bar('Rotina',{right:`<button class="ib" data-a="routineMenu" data-id="${r.id}" aria-label="Opções da rotina">${I.dots}</button>`})+`<main class="page"><div><h2 class="h" style="margin:0;font-size:28px">${esc(r.name)}</h2><span class="muted small">${r.exercises.length} exercício${r.exercises.length===1?'':'s'} · ${ws.length?`${ws.length} sessõe${ws.length===1?'':'s'} · última em ${dShort(lw.start)}`:'nenhuma sessão ainda'}</span></div><button class="btn pri wide" data-a="startRoutine" data-id="${r.id}">${I.play} Começar rotina</button>`;
+ const M=[['vol','Volume',w=>wStats(w).vol,v=>fmtInt(v)+' kg'],['reps','Repetições',w=>wStats(w).reps,v=>fmtInt(v)],['dur','Duração',w=>(w.end-w.start)/6e4,v=>fmtInt(v)+' min']];
+ UI.per=UI.per||{};UI.per.rot=UI.per.rot||{p:'ano',g:'semana'};const mk=M.find(m=>m[0]===p.m)||M[0],from=perRange(perOf('rot').p)[0];
+ const pts=ws.filter(w=>w.start>=from).map(w=>({x:w.start,y:mk[2](w)})).filter(q=>q.y>0),lp=pts[pts.length-1];
+ h+=`<section class="card" style="gap:10px"><div class="row"><div class="spacer"><b class="num" style="font-size:24px">${lp?mk[3](lp.y):'—'}</b> <span class="muted small">${lp?dShort(lp.x):''}</span></div></div>${perCtl('rot',{gran:false})}${ws.length?lineChart(pts,mk[3]):`<p class="empty small">Faça esta rotina para ver a evolução aqui.</p>`}<div class="chips">${M.map(m=>`<button class="chip${m===mk?' on':''}" data-a="rotMetric" data-k="${m[0]}">${m[1]}</button>`).join('')}</div></section>`;
+ h+=`<div class="row"><h3 class="sh spacer" style="margin:0">Exercícios</h3><button class="tb" data-a="editR" data-id="${r.id}">Editar rotina</button></div>`;
+ h+=r.exercises.map(e=>{const x=ex(e.exId),t=tOf(x),le=lw&&lw.exercises.find(z=>z.exId===e.exId),ls=le?le.sets:[];
+  const cols=t==='wr'?['KG','REPS']:t==='t'?['TEMPO']:t==='dt'?['KM','TEMPO']:['REPS'];
+  const val=st=>t==='wr'?[st.kg||'—',st.target||st.reps||'—']:t==='t'?[st.min||'—']:t==='dt'?[st.km||'—',st.min||'—']:[st.target||st.reps||'—'];
+  return`<section class="card rdet"><button class="exc-n" data-a="openEx" data-id="${x.id}">${avatar(x,38)}<b>${esc(x.name)}</b></button><span class="restb" style="pointer-events:none">${I.clock}Descanso: ${fmtRest(e.rest??S.profile.rest)}</span>
+  <table class="rtab"><thead><tr><th>Série</th>${cols.map(c=>`<th>${c}</th>`).join('')}<th>Última vez</th></tr></thead><tbody>${(()=>{let n=0;return e.sets.map((st,j)=>`<tr><td>${!st.type||st.type==='n'?++n:`<span class="sn t-${st.type}">${SET_L[st.type]}</span>`}</td>${val(st).map(v=>`<td>${esc(String(v))}</td>`).join('')}<td class="muted">${ls[j]?setTxt(ls[j],t):'—'}</td></tr>`).join('')})()}</tbody></table></section>`}).join('')||`<p class="muted">Sem exercícios. Toque em Editar rotina para adicionar.</p>`;
  return h+'</main>'};
 
 const TEMPLATES=[
@@ -2110,6 +2134,9 @@ const A={
  newFolder:()=>askText('Nova pasta','','Ex.: Bloco de hipertrofia').then(v=>{closeSheet();if(v&&v.trim()){S.folders.push({id:uid(),name:v.trim()});save();rerender()}}),
  fold:d=>{const k=d.id||'_';S.profile.collapsed[k]=!S.profile.collapsed[k];save();rerender()},
  folderMenu:d=>{const f=S.folders.find(x=>x.id===d.id);if(!f)return;menu(f.name,[{label:'Renomear pasta',icon:I.edit,f:()=>askText('Renomear pasta',f.name).then(v=>{closeSheet();if(v&&v.trim()){f.name=v.trim();save();rerender()}})},{label:'Excluir pasta',icon:I.trash,danger:true,f:()=>ask('Excluir pasta?','As rotinas dela voltam para Minhas rotinas.','Excluir',true).then(ok=>{closeSheet();if(ok){S.routines.forEach(r=>{if(r.folderId===f.id)r.folderId=null});S.folders=S.folders.filter(x=>x!==f);save();rerender()}})}])},
+ openR:d=>go('rotina',{id:d.id}),
+ editR:d=>{const r=S.routines.find(x=>x.id===d.id);if(r)go('sessao',{s:Object.assign(JSON.parse(JSON.stringify(r)),{kind:'routine'})})},
+ rotMetric:d=>{top_().p.m=d.k;rerender()},
  routineMenu:d=>{const r=S.routines.find(x=>x.id===d.id);if(!r)return;menu(r.name,[
   {label:'Editar rotina',icon:I.edit,f:()=>go('sessao',{s:Object.assign(JSON.parse(JSON.stringify(r)),{kind:'routine'})})},
   {label:'Duplicar',icon:I.copy,f:()=>{const c=JSON.parse(JSON.stringify(r));c.id=uid();c.name=r.name+' (cópia)';S.routines.splice(S.routines.indexOf(r)+1,0,c);save();rerender();toast('Rotina duplicada')}},
