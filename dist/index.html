@@ -1208,7 +1208,7 @@ const BMAP=Object.fromEntries(BUILTIN.map(x=>[x.id,x]));
 const bid=name=>'b-'+slug(name);
 
 /* ---------- estado ---------- */
-const APP_V='v119'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v120'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1288,6 +1288,8 @@ const VIEWS={};
 const NAV_VIEWS=new Set(['rotina','historico','relatorio','inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados','dieta','dietaTend','nutrientes','metasNutri','medLista','banco','planos','metas','fotosGer','resumo','conquistas','ativ','ativPick','ativDet']);
 function render(keep){const t=top_();const y=scrollY;const V=VIEWS[t.v]||VIEWS.treino;$('#app').innerHTML=V(t.p);chrome();gate();if(keep)scrollTo(0,y);if(V.after)V.after(t.p)}
 const rerender=()=>render(true);
+// v120: na virada de cada hora, redesenha para o gasto basal acumulado subir (só quando não há folha nem campo em uso)
+let _hrNow=new Date().getHours();setInterval(()=>{const h=new Date().getHours();if(h===_hrNow)return;try{if(typeof updBusy==='function'&&updBusy())return;_hrNow=h;rerender()}catch(e){}},60000);
 function chrome(){
  const t=top_();const nav=$('#nav');const showNav=NAV_VIEWS.has(t.v)&&!!REGS.current;nav.hidden=!showNav;
  const tabOf=stack[0].v;
@@ -1847,13 +1849,16 @@ function energyPlan(d=Date.now()){const p=S.profile,b=bodyData(),goal=goalOf(),a
  if(!b.ok)return{ok:false,goal,act,mode,ex,missing:b.missing};
  const tmb=mifflin(b.w,b.h,b.age,b.sex),hm=b.h/100,bmi=b.w/(hm*hm),refW=bmi>30?25*hm*hm:b.w;
  const rotina=mode==='relogio'?tmb*1.2:tmb*act[2],gasto=rotina+(mode==='relogio'?ex:0);
+ // v120: o gasto de repouso e rotina (basal × fator) entra de hora em hora: hoje conta (hora atual + 1)/24 do dia — às 0h já entra 1/24, às 23h entra o dia todo.
+ // Dias passados contam inteiros. Exercício registrado entra inteiro na hora. Meta de calorias continua sendo a do dia inteiro.
+ const dd=sod(d),td=sod(Date.now()),frac=dd<td?1:dd>td?0:(new Date().getHours()+1)/24,hrs=Math.round(frac*24),tmbH=tmb*frac,rotinaH=rotina*frac,gastoH=rotinaH+(mode==='relogio'?ex:0);
  const floor=Math.max(tmb,b.sex==='f'?1200:1500),exAdd=mode==='relogio'?ex:0;
  // Ajuste do objetivo sobre a rotina; o exercício do relógio entra cheio por cima (meta = base + exercício)
  let adj=goalAdj(goal,rotina),base=rotina+adj,capped=false;
  if(goal==='perder'&&base<floor){base=floor;adj=base-rotina;capped=true}
  base=Math.round(base/10)*10;let meta=base+Math.round(exAdd);const sed=act[0]==='sed';const gkg=PROT_GKG[goal][sed?1:0];
  const prot=Math.round(gkg*refW),fat=Math.round(Math.max(meta*.25/9,.6*refW)),carb=Math.max(0,Math.round((meta-prot*4-fat*9)/4)),cc=carbCycle(carb,fat,refW,d);
- return{ok:true,goal,act,mode,ex,exAdd,tmb,rotina,gasto,adj,base,meta,capped,floor,bmi,refW,gkg,prot,fat:cc[1],carb:cc[0],cyc:cc[2],kgWeek:(meta-gasto)*7/7700,sex:b.sex,w:b.w}}
+ return{ok:true,goal,act,mode,ex,exAdd,tmb,rotina,gasto,frac,hrs,tmbH,rotinaH,gastoH,adj,base,meta,capped,floor,bmi,refW,gkg,prot,fat:cc[1],carb:cc[0],cyc:cc[2],kgWeek:(meta-gasto)*7/7700,sex:b.sex,w:b.w}}
 function bodyData(){const p=S.profile;const w=latestMeasure('weight');const h=num(p.height);const age=ageOf(p.birth);const missing=[];if(!p.sex)missing.push('sexo');if(!age)missing.push('data de nascimento');if(!h)missing.push('altura');if(!w)missing.push('peso');return{w:w&&w.v,wDate:w&&w.date,h,age,sex:p.sex,missing,ok:!missing.length}}
 const mifflin=(w,h,a,sex)=>10*w+6.25*h-5*a+(sex==='m'?5:-161);
 const r50=v=>Math.round(v/50)*50;
@@ -1878,7 +1883,7 @@ function homeHealth(){const b=bodyData(),p=S.profile,wg=waterGoal(),wt=waterOn(d
  ${t('IMC',`<b>${fmt(bmi)}</b>`,pill(c[1],c[2]))}
  ${t('Peso',`<b>${fmt(b.w)}<small>kg</small></b>`,`<em>${b.wDate?'em '+dShort(b.wDate):''} · ${fmt(b.h)} cm</em>`)}
  ${t('Taxa basal',`<b>${fmtInt(tmb)}<small>kcal</small></b>`,'<em>em repouso, por dia</em>')}
- ${t('Gasto hoje',`<b>${fmtInt(E.gasto)}<small>kcal</small></b>`,`<em>${E.mode==='relogio'?'rotina + exercício':'nível '+E.act[1].toLowerCase()}</em>`)}
+ ${t('Gasto previsto no dia',`<b>${fmtInt(E.gasto)}<small>kcal</small></b>`,`<em>${E.mode==='relogio'?'rotina + exercício':'nível '+E.act[1].toLowerCase()}</em>`)}
  ${t('Meta de calorias',`<b>${fmtInt(E.meta)}<small>kcal</small></b>`,`<em>${gl.toLowerCase()}</em>`)}
  ${t('Proteína',`<b>${fmtInt(E.prot)}<small>g</small></b>`,`<em>${fmt(E.gkg)} g/kg por dia</em>`)}
  </div>${water}<button class="btn sm sec" data-a="go" data-v="saude">${I.heart} Ver todas as métricas de saúde</button></section>`}
@@ -3407,7 +3412,7 @@ function homeDay(){nS();const now=Date.now(),t0=sod(now),k=dkey(now),P=nutriPlan
  const tile=(act,pct,val,lab,sub,cls='')=>`<button class="pd-t" ${act}>${ringSVG(pct,cls)}<b>${val}</b><span>${lab}</span><em>${sub}</em></button>`;
  const mac=(i,g,lab,cls)=>tile('data-a="tab" data-t="dieta"',n[i]/Math.max(1,g),fmtInt(n[i])+' g',lab,`meta ${fmtInt(g)} g`,cls);
  // saldo do dia = consumido − gasto (rotina + exercício); a meta é o déficit/superávit do objetivo
- const gasto=E.ok?Math.round(E.gasto):null,bal=gasto!=null?Math.round(n[0]-gasto):null,tgt=E.ok?Math.round(E.adj):0,sg=v=>(v>0?'+':v<0?'−':'')+fmtInt(Math.abs(v));
+ const gasto=E.ok?Math.round(E.gastoH):null,bal=gasto!=null?Math.round(n[0]-gasto):null,tgt=E.ok?Math.round(E.adj):0,sg=v=>(v>0?'+':v<0?'−':'')+fmtInt(Math.abs(v));
  const balPct=bal==null?0:tgt?(Math.sign(bal)===Math.sign(tgt)?Math.min(1,bal/tgt):0):Math.max(0,1-Math.abs(bal)/200);
  const balLab=bal==null?'Saldo':bal<0?'Déficit':bal>0?'Superávit':'Equilíbrio',balSub=!E.ok?'preencha Meus dados':tgt?`meta ${sg(tgt)} (${tgt<0?'déficit':'superávit'})`:'meta 0 (manter)';
  return`<section class="card pd"><div class="row"><span class="lab nfx">Painel do dia</span><span class="muted small">${new Date(now).toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'short'})}</span></div><div class="pd-g">
@@ -3555,8 +3560,8 @@ function homeActivity(){const wk=weekStart(Date.now()),today=sod(Date.now()),sel
  <div class="ah-week">${days.map(d=>`<button class="${d===sel?'on':''}" data-a="actDay" data-d="${d}" ${d>today?'disabled':''}><span class="${d===today?'td':''}">${DL[new Date(d).getDay()]}</span>${d>today?'<i class="ah-empty"></i>':heartRings(actDay(d),actGoals(d),false)}</button>`).join('')}</div>
  <div class="ah-hero">${heartRings(a,g,true)}</div>
  <div class="ah-boxes">${box('Calorias gastas','st',a.total,g.total,'data-a="tab" data-t="ativ"')}${box('Em musculação','tm',a.tr,g.treino,'data-a="tab" data-t="treino"')}${box('Em cardio','kc',a.ex,g.ex,'data-a="tab" data-t="ativ"')}</div>
- <div class="ah-tot"><span>Gasto basal (só para viver)</span><i></i><b>${g.tmb?fmtInt(g.tmb)+' kcal':'—'}</b></div>
- <div class="ah-tot"><span>Total de calorias gastas no dia</span><i></i><b>${E.ok?fmtInt(E.gasto)+' kcal':'—'}</b></div>
+ <div class="ah-tot"><span>Gasto basal (só para viver)${E.ok&&E.frac<1?' até agora':''}</span><i></i><b>${E.ok?fmtInt(E.tmbH)+' kcal':'—'}</b></div>
+ <div class="ah-tot"><span>Total de calorias gastas ${E.ok&&E.frac<1?'até agora':'no dia'}</span><i></i><b>${E.ok?fmtInt(E.gastoH)+' kcal':'—'}</b></div>
  <div class="ah-tot"><span>Tempo ativo · distância</span><i></i><b>${fmtInt(a.min)} min · ${fmt(Math.round(a.dist*100)/100)} km</b></div>
  <p class="muted small" style="margin:0">${g.tmb?`O gasto basal é o que o corpo gasta em repouso, só para viver (taxa basal pela idade, peso, altura e sexo). `:'Preencha Meus dados para ver o gasto basal. '}As metas de musculação e de cardio são estimadas pela taxa basal e pelos dias de treino por semana; dá para mudar em Meus dados → Metas.</p></section>`}
 Object.assign(A,{actDay:d=>{UI.actDay=+d.d;rerender()}});
@@ -3638,9 +3643,9 @@ function homeMyDay(){nS();const now=Date.now(),k=dkey(now),n=dayNut(k),P=nutriPl
  const gl=(GOALS.find(g=>g[0]===goalOf())||GOALS[1])[1],wg=waterGoal(now).ml,wt=waterOn(k);
  const noKcal=E.mode==='relogio'?S.workouts.filter(w=>w.start>=sod(now)&&!(num(w.kcal)>0)):[];
  const mb=(lab,cls,got,tgt,min)=>{const r=tgt?got/tgt:0,rest=Math.round(tgt-got),zz=zMacro(got,tgt,min);return`<div class="hm"><div class="row"><span class="${cls} hm-l">${lab}</span><span class="nfx"></span><b>${fmtInt(got)}</b><span class="muted small">/ ${fmtInt(tgt)} g</span></div><div class="hmb"><i class="${cls.replace('t','m')}" style="width:${Math.min(100,r*100).toFixed(1)}%"></i></div><span class="small zt z-${zz}">${rest>0?(zz==='ok'?'✓ Meta batida':`Faltam ${fmtInt(rest)} g`):rest<0?(zz==='ok'?`✓ Meta batida (${fmtInt(-rest)} g a mais)`:`${fmtInt(-rest)} g acima da meta`):'✓ Meta batida'}</span></div>`};
- const gasto=E.ok?Math.round(E.gasto):null,tgt=E.ok?Math.round(E.adj):0,bal=gasto!=null?v-gasto:null,tl=tgt<0?'déficit':tgt>0?'superávit':'equilíbrio';
+ const gasto=E.ok?Math.round(E.gastoH):null,tgt=E.ok?Math.round(E.adj):0,bal=gasto!=null?v-gasto:null,tl=tgt<0?'déficit':tgt>0?'superávit':'equilíbrio';
  const saldo=!E.ok||P.manual?'':!v?`<div class="sd z-go"><span>Saldo do dia <em>(comido − gasto)</em></span><b>Se comer a meta: ${sgn(tgt)} kcal</b><em>${tl} do seu objetivo ✓</em></div>`
-  :`<div class="sd z-${z}"><span>Saldo do dia <em>(comido − gasto)</em></span><b>${sgn(bal)} kcal ${bal<0?'(déficit)':bal>0?'(superávit)':''}</b><em>alvo ${sgn(tgt)} · ${z==='go'?`comendo o que falta, fecha no alvo`:z==='ok'?'no alvo ✓':`${fmtInt(v-P.kcal)} kcal além do alvo`}</em></div>`;
+  :`<div class="sd z-${z}"><span>Saldo do dia <em>(comido − gasto${E.frac<1?' até '+String(E.hrs).padStart(2,'0')+'h':''})</em></span><b>${sgn(bal)} kcal ${bal<0?'(déficit)':bal>0?'(superávit)':''}</b><em>alvo ${sgn(tgt)} · ${z==='go'?`comendo o que falta, fecha no alvo`:z==='ok'?'no alvo ✓':`${fmtInt(v-P.kcal)} kcal além do alvo`}</em></div>`;
  return`<section class="card form hgoal"><div class="row"><span class="lab nfx">${I.flame} Meu dia</span><button class="gpill" data-a="goPf" data-v="dados">${esc(gl)}${P.manual?' · personalizada':''}</button></div>
  <div class="hbig"><div class="nfx"><b class="z-${z}">${fmtInt(Math.abs(left))}</b><span>${left>=0?'kcal faltam para a meta':'kcal acima da meta'}</span></div><div class="hring z-${z}" style="--p:${pc.toFixed(1)}"><span>${Math.round(v/P.kcal*100)}%</span></div></div>
  <div class="nbar"><i style="width:${pc.toFixed(1)}%" class="zb-${z}"></i><u style="left:100%"></u></div>
@@ -3656,13 +3661,13 @@ function calcSheet(){const P=nutriPlan(),E=P.E;if(!E.ok){sheet('<h3>Como calcula
  sheet(`<h3>Como calculamos</h3><div class="cs">
  <p class="muted small">Basal (fórmula de Mifflin-St Jeor): o que o corpo gasta só para viver, pelo peso, altura, idade e sexo.</p>
  <b class="cs-h">1. Quanto comer (meta)</b>${r('Basal',fmtInt(E.tmb))}${r(rel?'+ Rotina e digestão (× 1,2)':`+ Rotina e atividade (× ${f}, ${E.act[1].toLowerCase()})`,'+'+fmtInt(E.rotina-E.tmb))}${r(`${E.adj<0?'−':'+'} Objetivo (${GOAL_TXT[E.goal]})`,sgn(Math.round(E.adj)))}${rel?r('+ Musculação e cardio (relógio)','+'+fmtInt(E.ex)):''}${r('= Meta de hoje',fmtInt(E.meta)+' kcal',' tot')}
- <b class="cs-h">2. Quanto gastou (gasto)</b>${r('Basal',fmtInt(E.tmb))}${r(rel?'+ Rotina e digestão':'+ Rotina e atividade','+'+fmtInt(E.rotina-E.tmb))}${rel?r('+ Musculação e cardio','+'+fmtInt(E.ex)):''}${r('= Gasto do dia',fmtInt(E.gasto)+' kcal',' tot')}
- <b class="cs-h">3. Saldo</b><p class="small" style="margin:0">Saldo = o que você comeu − gasto do dia. Comendo a meta, o saldo fica em <b>${sgn(Math.round(E.adj))} kcal</b>, exatamente o ${E.adj<0?'déficit':E.adj>0?'superávit':'equilíbrio'} do seu objetivo. O treino entra na meta e no gasto: aumenta o quanto você pode comer sem mudar o saldo.</p>
+ <b class="cs-h">2. Quanto gastou (gasto${E.frac<1?' até agora':''})</b>${E.frac<1?`<p class="muted small" style="margin:0">O basal e a rotina entram de hora em hora: já contam ${E.hrs} de 24 horas (${fmtInt(E.tmb)} kcal de basal no dia inteiro). Treino e cardio entram inteiros assim que registrados.</p>`:''}${r('Basal',fmtInt(E.tmbH))}${r(rel?'+ Rotina e digestão':'+ Rotina e atividade','+'+fmtInt(E.rotinaH-E.tmbH))}${rel?r('+ Musculação e cardio','+'+fmtInt(E.ex)):''}${r(E.frac<1?'= Gasto até agora':'= Gasto do dia',fmtInt(E.gastoH)+' kcal',' tot')}
+ <b class="cs-h">3. Saldo</b><p class="small" style="margin:0">Saldo = o que você comeu − gasto até agora. Ao longo do dia o gasto vai subindo; no fim do dia, comendo a meta, o saldo fica em <b>${sgn(Math.round(E.adj))} kcal</b>, exatamente o ${E.adj<0?'déficit':E.adj>0?'superávit':'equilíbrio'} do seu objetivo. O treino entra na meta e no gasto: aumenta o quanto você pode comer sem mudar o saldo.</p>
  ${P.manual?'<p class="muted small">Você usa uma meta personalizada em Metas de nutrição; a meta exibida no app é a personalizada.</p>':''}</div><div class="ask-b"><button class="btn pri" data-a="closeSheet">Entendi</button></div>`)}
 function homeSpend(){const wk=weekStart(Date.now()),today=sod(Date.now()),sel=UI.actDay&&UI.actDay>=wk&&UI.actDay<=today?UI.actDay:today,g=actGoals(sel),a=actDay(sel),E=energyPlan(sel);
  const days=[...Array(7)].map((_,i)=>addDays(wk,i));const box=(lab,cls,val,goal,act)=>`<button class="ah-box ${cls}" ${act}><span>${lab}</span><b>${fmtInt(val)}<small> kcal</small></b><em>/${fmtInt(goal)}</em></button>`;
- let parts='';if(E.ok){const tot=Math.round(E.gasto),bas=Math.round(E.tmb),rel=E.mode==='relogio',seg=rel?[['Basal (só para viver)',bas,'gb0'],['Rotina e digestão',tot-bas-a.tr-a.ex,'gb1'],['Musculação',a.tr,'gb2'],['Cardio',a.ex,'gb3']]:[['Basal (só para viver)',bas,'gb0'],['Rotina e atividade (nível)',tot-bas,'gb1']];
-  parts=`<div class="gbar">${seg.filter(s=>s[1]>0).map(s=>`<i class="${s[2]}" style="flex:${s[1]}"></i>`).join('')}</div><div class="glist">${seg.map(s=>`<div><i class="${s[2]}"></i><span>${s[0]}</span><b>${fmtInt(s[1])}</b></div>`).join('')}<div class="gtot"><span>= Gasto do dia</span><b>${fmtInt(tot)} kcal</b></div></div>`}
+ let parts='';if(E.ok){const tot=Math.round(E.gastoH),bas=Math.round(E.tmbH),rel=E.mode==='relogio',seg=rel?[['Basal (só para viver)',bas,'gb0'],['Rotina e digestão',tot-bas-a.tr-a.ex,'gb1'],['Musculação',a.tr,'gb2'],['Cardio',a.ex,'gb3']]:[['Basal (só para viver)',bas,'gb0'],['Rotina e atividade (nível)',tot-bas,'gb1']];
+  parts=`<div class="gbar">${seg.filter(s=>s[1]>0).map(s=>`<i class="${s[2]}" style="flex:${s[1]}"></i>`).join('')}</div><div class="glist">${seg.map(s=>`<div><i class="${s[2]}"></i><span>${s[0]}</span><b>${fmtInt(s[1])}</b></div>`).join('')}<div class="gtot"><span>${E.frac<1?`= Gasto até agora <em class="muted small">(${E.hrs} de 24 h)</em>`:'= Gasto do dia'}</span><b>${fmtInt(tot)} kcal</b></div></div>`}
  else parts='<p class="muted small" style="margin:0">Preencha Meus dados para ver o gasto do dia.</p>';
  return`<section class="card ah"><div class="row"><span class="lab nfx">Meu gasto</span><span class="muted small">${sel===today?'hoje':new Date(sel).toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'})}</span></div>
  <div class="ah-week">${days.map(d=>`<button class="${d===sel?'on':''}" data-a="actDay" data-d="${d}" ${d>today?'disabled':''}><span class="${d===today?'td':''}">${DL[new Date(d).getDay()]}</span>${d>today?'<i class="ah-empty"></i>':heartRings(actDay(d),actGoals(d),false)}</button>`).join('')}</div>
