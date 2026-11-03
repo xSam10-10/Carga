@@ -228,3 +228,4 @@
 - v123 — Artes hiper-realistas (lote 1): Step Up (Halter), Supino Inclinado (Smith), Supino Inclinado (Máquina), Levantamento Terra (Halter), Good Morning (Barra), homem e mulher. Novo tools/build_exr.py; EXR passa a apontar para img/exr/*.webp (as 2 artes antigas saíram do HTML: app.html −130 KB).
 - v124 — Mesclagem com a publicação de outra sessão (25/10 23:36): +28 artes EXR de ombros/bíceps e 2 exercícios no catálogo (Rosca Garçom (Halter), Rosca Scott (Barra)). Todas as 35 artes agora em img/exr/*.webp (o HTML publicado caiu de 2,87 MB para ~0,67 MB).
 - v125 — Artes hiper-realistas (lote 2): Afundo (Halter), Puxada com Corda e Braços Estendidos (Cabo), Puxada Unilateral (Cabo), Tríceps Pulley (Cabo), Desenvolvimento (Halter). 40 artes no total.
+- v126 — Artes hiper-realistas (lote 3): Panturrilha no Leg Press, Cadeira Abdutora, Elevação Lateral Unilateral (Cabo) e Elevação Lateral (Cabo), Abdominal (Máquina), Rosca de Punho (Barra). 46 artes.
