@@ -89,3 +89,20 @@ Python com PIL, numpy e opencv-python-headless (`pip install opencv-python-headl
 - `visSex()`: sexo só para as imagens (mapa corporal, avatar de água, miniaturas). Se o perfil ainda não tem sexo preenchido, o perfil `carol` (ou nome "Carol") usa as figuras femininas. Os cálculos continuam exigindo o sexo preenchido.
 - Filtro "Grupo muscular" (catálogo de musculação): miniaturas agora usam o corpo hiper-realista (`realBody({[m]:1}, lado)`, classe `.micon.real`), frente ou costas conforme o músculo.
 - Filtro "Equipamento": ilustrações próprias coloridas num círculo branco (`EQ_ART`/`eqArt`, estilo dos filtros do Hevy); "Peso corporal" mostra a figura hiper-realista do sexo do perfil.
+
+## 6. Artes hiper-realistas dos exercícios (EXR)
+
+- **Origem:** artes que o usuário gera fora e manda em lotes no chat. Padrão: 1536×1024, fundo verde-escuro (~#0C1913, com chão às vezes), **homem à esquerda e mulher à direita**, músculo principal pintado de verde, equipamento preto ou cinza.
+- **Entrada:** salve cada arte em `tools/exr/<id-do-exercício>.webp`. O id é `'b-'+slug(nome do catálogo)`, por exemplo `Step Up (Halter)` → `b-step-up-halter`. Confira o nome no catálogo (`CAT_RAW`) antes.
+- **Gerar:** `python3 tools/build_exr.py` (prévias sobre magenta: `--preview`, em /tmp/exr-prev). O que o script faz:
+  1. Recorta figura e equipamento: GrabCut iniciado por cor. Fundo = perto da cor da borda ou escuro com tom verde (chão e sombras); equipamento = cinza neutro.
+  2. Divide homem e mulher na coluna com menos figura entre 40% e 60% da largura.
+  3. Troca o verde do músculo (e a franja) por cinza.
+  4. Exporta `img/exr/<id>-m.webp` e `-f.webp` com 560 px de altura.
+  5. Reescreve `const EXR` entre `/*EXR-START*/` e `/*EXR-END*/`, mantendo as artes que já existem.
+- **No app:** `exArt` desenha a imagem e o contorno `p` com `fill: var(--accent)` e `mix-blend-mode: color`.
+  - A miniatura usa o quadrado do topo.
+  - O sexo vem de `visSex()`.
+  - `avatar` e `exAnim` dão preferência à arte EXR sobre o sprite antigo.
+- **Publicar:** republique o Artifact passando `files` com os `img/exr/*.webp` novos.
+- **Lote 1 (03/11/2026):** Step Up (Halter), Supino Inclinado (Smith), Supino Inclinado (Máquina), Levantamento Terra (Halter), Good Morning (Barra). Antes já existiam Rosca Direta (Halter) e Rosca Scott (Máquina), que deixaram de ser data URL e viraram arquivos.
