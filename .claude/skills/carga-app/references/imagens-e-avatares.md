@@ -105,4 +105,5 @@ Python com PIL, numpy e opencv-python-headless (`pip install opencv-python-headl
   - O sexo vem de `visSex()`.
   - `avatar` e `exAnim` dão preferência à arte EXR sobre o sprite antigo.
 - **Publicar:** republique o Artifact passando `files` com os `img/exr/*.webp` novos.
+- **Outra sessão (25/10):** 28 artes de ombros e bíceps (desenvolvimentos, elevações, roscas), mais Rosca Garçom (Halter) e Rosca Scott (Barra) no catálogo. Foram mescladas na v124 e convertidas em arquivos.
 - **Lote 1 (03/11/2026):** Step Up (Halter), Supino Inclinado (Smith), Supino Inclinado (Máquina), Levantamento Terra (Halter), Good Morning (Barra). Antes já existiam Rosca Direta (Halter) e Rosca Scott (Máquina), que deixaram de ser data URL e viraram arquivos.
