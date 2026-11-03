@@ -107,3 +107,4 @@ Python com PIL, numpy e opencv-python-headless (`pip install opencv-python-headl
 - **Publicar:** republique o Artifact passando `files` com os `img/exr/*.webp` novos.
 - **Outra sessão (25/10):** 28 artes de ombros e bíceps (desenvolvimentos, elevações, roscas), mais Rosca Garçom (Halter) e Rosca Scott (Barra) no catálogo. Foram mescladas na v124 e convertidas em arquivos.
 - **Lote 1 (03/11/2026):** Step Up (Halter), Supino Inclinado (Smith), Supino Inclinado (Máquina), Levantamento Terra (Halter), Good Morning (Barra). Antes já existiam Rosca Direta (Halter) e Rosca Scott (Máquina), que deixaram de ser data URL e viraram arquivos.
+- **Lote 2 (03/11/2026):** Afundo (Halter), Puxada com Corda e Braços Estendidos (Cabo), Puxada Unilateral (Cabo), Tríceps Pulley (Cabo), Desenvolvimento (Halter) — em pé. Total: 40 artes.
