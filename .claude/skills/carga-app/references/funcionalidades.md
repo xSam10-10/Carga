@@ -230,3 +230,4 @@
 - v125 — Artes hiper-realistas (lote 2): Afundo (Halter), Puxada com Corda e Braços Estendidos (Cabo), Puxada Unilateral (Cabo), Tríceps Pulley (Cabo), Desenvolvimento (Halter). 40 artes no total.
 - v126 — Artes hiper-realistas (lote 3): Panturrilha no Leg Press, Cadeira Abdutora, Elevação Lateral Unilateral (Cabo) e Elevação Lateral (Cabo), Abdominal (Máquina), Rosca de Punho (Barra). 46 artes.
 - v127 — Artes hiper-realistas (lote 4): Rosca de Punho Sentado (Halter), Tríceps (Máquina), Remada Sentada com Barra (Cabo), Crucifixo Inverso (Máquina), Crucifixo Inverso (Halter). 51 artes.
+- v128 — Remada Sentada Pegada Aberta (Cabo) usa a mesma arte da Remada Sentada com Barra (Cabo). 52 artes.

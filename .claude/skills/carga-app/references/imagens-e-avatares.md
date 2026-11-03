@@ -110,3 +110,4 @@ Python com PIL, numpy e opencv-python-headless (`pip install opencv-python-headl
 - **Lote 2 (03/11/2026):** Afundo (Halter), Puxada com Corda e Braços Estendidos (Cabo), Puxada Unilateral (Cabo), Tríceps Pulley (Cabo), Desenvolvimento (Halter) — em pé. Total: 40 artes.
 - **Lote 3 (03/11/2026):** Panturrilha no Leg Press (Máquina), Cadeira Abdutora (Máquina), Elevação Lateral Unilateral (Cabo) (mesma arte em Elevação Lateral (Cabo)), Abdominal (Máquina), Rosca de Punho (Barra). Total: 46 artes.
 - **Lote 4 (03/11/2026):** Rosca de Punho Sentado (Halter), Tríceps (Máquina), Remada Sentada com Barra (Cabo), Crucifixo Inverso (Máquina), Crucifixo Inverso (Halter). Total: 51 artes.
+- A arte da Remada Sentada com Barra (Cabo) também é usada na Remada Sentada Pegada Aberta (Cabo), a pedido do usuário. Total: 52 artes.
