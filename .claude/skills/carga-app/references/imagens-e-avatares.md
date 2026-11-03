@@ -109,3 +109,4 @@ Python com PIL, numpy e opencv-python-headless (`pip install opencv-python-headl
 - **Lote 1 (03/11/2026):** Step Up (Halter), Supino Inclinado (Smith), Supino Inclinado (Máquina), Levantamento Terra (Halter), Good Morning (Barra). Antes já existiam Rosca Direta (Halter) e Rosca Scott (Máquina), que deixaram de ser data URL e viraram arquivos.
 - **Lote 2 (03/11/2026):** Afundo (Halter), Puxada com Corda e Braços Estendidos (Cabo), Puxada Unilateral (Cabo), Tríceps Pulley (Cabo), Desenvolvimento (Halter) — em pé. Total: 40 artes.
 - **Lote 3 (03/11/2026):** Panturrilha no Leg Press (Máquina), Cadeira Abdutora (Máquina), Elevação Lateral Unilateral (Cabo) (mesma arte em Elevação Lateral (Cabo)), Abdominal (Máquina), Rosca de Punho (Barra). Total: 46 artes.
+- **Lote 4 (03/11/2026):** Rosca de Punho Sentado (Halter), Tríceps (Máquina), Remada Sentada com Barra (Cabo), Crucifixo Inverso (Máquina), Crucifixo Inverso (Halter). Total: 51 artes.
