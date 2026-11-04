@@ -231,3 +231,4 @@
 - v126 — Artes hiper-realistas (lote 3): Panturrilha no Leg Press, Cadeira Abdutora, Elevação Lateral Unilateral (Cabo) e Elevação Lateral (Cabo), Abdominal (Máquina), Rosca de Punho (Barra). 46 artes.
 - v127 — Artes hiper-realistas (lote 4): Rosca de Punho Sentado (Halter), Tríceps (Máquina), Remada Sentada com Barra (Cabo), Crucifixo Inverso (Máquina), Crucifixo Inverso (Halter). 51 artes.
 - v128 — Remada Sentada Pegada Aberta (Cabo) usa a mesma arte da Remada Sentada com Barra (Cabo). 52 artes.
+- v129 — Correção do iPhone: barras fixas (abas, descanso do treino, botões fixos) não pulam mais na rolagem. A rolagem passou da página para o #app (html/body sem rolagem), SC() no JS, sticky com top:0.

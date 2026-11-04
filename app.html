@@ -29,8 +29,9 @@
   --body:#28302E; --muscle-0:#353E3B; color-scheme:dark}
 
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{background:var(--bg);color:var(--fg);font:16px/1.4 var(--text);margin:0;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:contain}
+html{-webkit-text-size-adjust:100%;height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--fg);font:16px/1.4 var(--text);margin:0;-webkit-tap-highlight-color:transparent;height:100%;overflow:hidden;overscroll-behavior:none}
+#app{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;bottom:0;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;background:none;border:0;padding:0}
@@ -43,7 +44,7 @@ svg.i{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .page{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px 132px;display:flex;flex-direction:column;gap:14px}
 .top{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px));padding-block:18px 6px}
 .big{font:700 34px/1 var(--display);text-transform:uppercase;letter-spacing:.01em;margin:0;flex:1;text-wrap:balance;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
 .bar-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;min-height:56px;padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}
 .bar-t{font:600 19px/1.1 var(--display);text-transform:uppercase;letter-spacing:.04em;margin:0;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:56vw}
 .bar-l{justify-self:start;display:flex}.bar-r{justify-self:end;display:flex;gap:4px;align-items:center}
@@ -330,7 +331,7 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .av.img::after{display:none}
 #exlist .exrow{content-visibility:auto;contain-intrinsic-size:auto 72px}
 .exrow .av{width:52px;height:52px;border-radius:12px}
-.tabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 57px);z-index:19;background:var(--bg);display:grid;grid-template-columns:repeat(3,1fr);max-width:640px;margin:0 auto;border-bottom:1px solid var(--line)}
+.tabs{position:sticky;top:57px;z-index:19;background:var(--bg);display:grid;grid-template-columns:repeat(3,1fr);max-width:640px;margin:0 auto;border-bottom:1px solid var(--line)}
 .tabs button{padding:12px 4px;font-weight:600;color:var(--muted);border-bottom:2.5px solid transparent}
 .tabs button.on{color:var(--accent);border-bottom-color:var(--accent)}
 .anim{position:relative;display:block;width:100%;aspect-ratio:200/134;max-width:100%;border-radius:var(--r);overflow:hidden;background:#fff;border:1px solid var(--line)}
@@ -647,6 +648,8 @@ html.sp-on{background:#000}
 <div id="toast"></div>
 
 <script>
+// v129: a página não rola mais; quem rola é o #app (no iPhone, barras fixas pulavam no meio da rolagem com a página inteira rolando)
+const SC=()=>document.getElementById('app');
 (()=>{
 'use strict';
 /* ---------- utilidades ---------- */
@@ -1286,18 +1289,18 @@ function streakWeeks(){const weeks=new Set(S.workouts.map(w=>weekStart(w.start))
 let stack=[{v:!REGS.current?'perfis':'inicio',p:{}}];
 let useHist=true;
 const UI={pm:'dur',feedN:12,statDay:null,statRange:30};
-function go(v,p={}){stack[stack.length-1].y=scrollY;stack.push({v,p});try{history.pushState({n:stack.length},'')}catch(e){useHist=false}render();scrollTo(0,0)}
-function pop(){if(stack.length<2)return;stack.pop();render();scrollTo(0,stack[stack.length-1].y||0)}
+function go(v,p={}){stack[stack.length-1].y=SC().scrollTop;stack.push({v,p});try{history.pushState({n:stack.length},'')}catch(e){useHist=false}render();SC().scrollTo(0,0)}
+function pop(){if(stack.length<2)return;stack.pop();render();SC().scrollTo(0,stack[stack.length-1].y||0)}
 function back(){if(stack.length<2)return;if(useHist){try{history.back();return}catch(e){}}pop()}
 addEventListener('popstate',()=>{if(sheetOpen()){closeSheet();if(stack.length>1)try{history.pushState({n:stack.length},'')}catch(e){};return}pop()});
-function tab(t){stack=[{v:t,p:{}}];render();scrollTo(0,0)}
+function tab(t){stack=[{v:t,p:{}}];render();SC().scrollTo(0,0)}
 const top_=()=>stack[stack.length-1];
 function cur(){const t=top_();return t.p.live||t.v==='finish'?S.active:t.p.s}
 
 const VIEWS={};
 const NAV_VIEWS=new Set(['avisos','lembretes','rotina','historico','relatorio','inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados','dieta','dietaTend','nutrientes','metasNutri','medLista','banco','planos','metas','fotosGer','resumo','conquistas','ativ','ativPick','ativDet']);
 const BELL_V=new Set(['inicio','treino','exercicios','ativ','dieta','agua','perfil']);
-function render(keep){const t=top_();const y=scrollY;const V=VIEWS[t.v]||VIEWS.treino;$('#app').innerHTML=V(t.p);if(BELL_V.has(t.v)&&REGS.current){const hd=$('#app header.top')||$('#app header.bar .bar-r');if(hd)hd.insertAdjacentHTML('beforeend',bellBtn())}chrome();gate();if(keep)scrollTo(0,y);if(V.after)V.after(t.p)}
+function render(keep){const t=top_();const y=SC().scrollTop;const V=VIEWS[t.v]||VIEWS.treino;$('#app').innerHTML=V(t.p);if(BELL_V.has(t.v)&&REGS.current){const hd=$('#app header.top')||$('#app header.bar .bar-r');if(hd)hd.insertAdjacentHTML('beforeend',bellBtn())}chrome();gate();if(keep)SC().scrollTo(0,y);if(V.after)V.after(t.p)}
 const rerender=()=>render(true);
 // v120: na virada de cada hora, redesenha para o gasto basal acumulado subir (só quando não há folha nem campo em uso)
 let _hrNow=new Date().getHours();setInterval(()=>{const h=new Date().getHours();if(h===_hrNow)return;try{if(typeof updBusy==='function'&&updBusy())return;_hrNow=h;rerender()}catch(e){}},60000);
@@ -2027,7 +2030,7 @@ VIEWS.perfis=()=>{const first=!REGS.current;
  const rows=REGS.list.map(pr=>{const d=readProfile(pr.id);const ws=d&&d.workouts||[];const last=ws.length?Math.max(...ws.map(w=>w.start)):0;const cur=pr.id===REGS.current;
   const ac=accentOf(d&&d.profile&&d.profile.accent)[2];return`<div class="pcard${cur?' cur':''}"><button class="pmain" data-a="useProfile" data-id="${pr.id}"><span class="ava sm" style="background:${ac[0]};color:${ac[2]}">${avaIn({name:pr.name,photo:d&&d.profile&&d.profile.photo})}</span><span class="exrow-t"><b>${esc(pr.name)}</b><span class="sub">${ws.length} treino(s)${last?' · último em '+dShort(last):''}${cur?' <i class="tag">Em uso</i>':''}</span></span>${cur?'':`<span class="chev">${I.chev}</span>`}</button>${first?'':`<button class="ib" data-a="profMenu" data-id="${pr.id}" aria-label="Opções do perfil ${esc(pr.name)}">${I.dots}</button>`}</div>`}).join('');
  return(first?`<header class="top"><h1 class="big">Carga</h1></header>`:bar('Perfis'))+`<main class="page">${first?`<h2 class="h" style="font-size:28px">Quem vai treinar neste celular?</h2><p class="muted" style="margin:0">Cada perfil tem seus próprios treinos, rotinas, cargas, recordes, medidas e gráficos. Dá para trocar depois em Perfil → Trocar perfil.</p>`:`<p class="muted" style="margin:0">Cada perfil guarda os próprios dados. Trocar de perfil não mistura nada: o app passa a mostrar só o histórico de quem foi escolhido.</p>`}<div class="list">${rows}</div><button class="btn sec" data-a="addProfile">${I.plus} Adicionar perfil</button></main>`};
-function switchProfile(id){if(id===REGS.current){back();return}persist();clearTimeout(restTO);closeNotifs();unwake();REGS.current=id;saveReg();S=load(id);fixPRs();persist();UI.statDay=null;UI.feedN=12;stack=[{v:'inicio',p:{}}];try{history.replaceState({n:1},'')}catch(e){}applyAccent();render();scrollTo(0,0);toast('Olá, '+S.profile.name);autoSnapshot();if(S.active){wake();schedRest()}}
+function switchProfile(id){if(id===REGS.current){back();return}persist();clearTimeout(restTO);closeNotifs();unwake();REGS.current=id;saveReg();S=load(id);fixPRs();persist();UI.statDay=null;UI.feedN=12;stack=[{v:'inicio',p:{}}];try{history.replaceState({n:1},'')}catch(e){}applyAccent();render();SC().scrollTo(0,0);toast('Olá, '+S.profile.name);autoSnapshot();if(S.active){wake();schedRest()}}
 
 /* ---------- importação / exportação ---------- */
 function parseCSV(t){const rows=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}else if(c==='"')q=true;else if(c===','){row.push(f);f=''}else if(c==='\n'){row.push(f);rows.push(row);row=[];f=''}else if(c!=='\r')f+=c}if(f||row.length){row.push(f);rows.push(row)}return rows}
@@ -2169,7 +2172,7 @@ const A={
  addTpl:d=>{const t=TEMPLATES[+d.k];const f={id:uid(),name:t.name};S.folders.push(f);t.r.forEach(([n,l])=>S.routines.push(mkRoutine(n,l,f.id)));save();toast(`${t.r.length} rotinas adicionadas em “${t.name}”`);tab('treino')},
  // sessão
  addEx:()=>{const s=cur();go('picker',{sel:[],q:'',eq:'',mu:'',onPick:ids=>{ids.forEach(id=>s.exercises.push(newEntry(id,s)));save()}})},
- pickT:d=>{const p=top_().p;if(p.single){p.onPick([d.id]);back();return}const i=p.sel.indexOf(d.id);i<0?p.sel.push(d.id):p.sel.splice(i,1);const y=scrollY;$('#exlist').innerHTML=exListHTML(p,true);const sb=$('.stickyb');if(sb)sb.outerHTML=VIEWS.picker(p).match(/<div class="stickyb">[\s\S]*<\/div>$/)[0];scrollTo(0,y)},
+ pickT:d=>{const p=top_().p;if(p.single){p.onPick([d.id]);back();return}const i=p.sel.indexOf(d.id);i<0?p.sel.push(d.id):p.sel.splice(i,1);const y=SC().scrollTop;$('#exlist').innerHTML=exListHTML(p,true);const sb=$('.stickyb');if(sb)sb.outerHTML=VIEWS.picker(p).match(/<div class="stickyb">[\s\S]*<\/div>$/)[0];SC().scrollTo(0,y)},
  pickDone:()=>{const p=top_().p;if(!p.sel.length)return;p.onPick(p.sel.slice());back()},
  newEx:()=>{const p=top_().p;go('novoEx',{f:{name:p.q||'',muscle:p.mu||'Peito',equipment:p.eq||'Máquina',type:p.eq==='Peso corporal'?'bw':'wr',secondary:[]},onCreate:id=>{if(p.sel)p.sel.push(id)}})},
  nxType:d=>{top_().p.f.type=d.k;rerender()},
@@ -2184,7 +2187,7 @@ const A={
   const pin={label:(S.exNotes&&S.exNotes[x.id])?'Editar nota fixada':'Fixar nota',icon:I.note,f:()=>A.editPin({id:x.id})};
   if(!x.custom){menu(x.name,[pin,dup]);return}
   menu(x.name,[{label:'Editar exercício',icon:I.edit,f:()=>go('novoEx',{id:x.id,f:{name:x.name,muscle:x.muscle,equipment:x.equipment,type:tOf(x),secondary:[...x.secondary]}})},pin,dup,{label:'Excluir exercício',icon:I.trash,danger:true,f:()=>{const used=S.workouts.filter(w=>w.exercises.some(e=>e.exId===x.id)).length+S.routines.filter(r=>r.exercises.some(e=>e.exId===x.id)).length;if(used){toast(`Usado em ${used} treino(s) ou rotina(s). Edite em vez de excluir.`);return}S.exercises=S.exercises.filter(z=>z!==x);save();back()}}])},
- exTab:d=>{top_().p.tab=d.k;rerender();scrollTo(0,0)},
+ exTab:d=>{top_().p.tab=d.k;rerender();SC().scrollTo(0,0)},
  animToggle:()=>{UI.animPause=!UI.animPause;const a=$('.anim');if(a){a.classList.toggle('paused',UI.animPause);const b=a.querySelector('.anim-b');if(b)b.innerHTML=UI.animPause?I.play:'❚❚'}},
  prInfo:()=>sheet(`<h3>Recordes pessoais</h3><p><b style="color:var(--fg)">Maior peso:</b> o maior peso que você já levantou neste exercício.</p><p><b style="color:var(--fg)">Máximo para 1 repetição (1RM):</b> estimativa do peso máximo para uma única repetição, calculada pelas repetições e pelo peso de cada série (fórmula de Epley).</p><p><b style="color:var(--fg)">Melhor série:</b> a série com mais peso × repetições.</p><p><b style="color:var(--fg)">Volume da sessão:</b> a soma de peso × repetições de todas as séries do exercício num mesmo treino.</p><p>Séries de aquecimento não contam.</p><button class="btn pri" data-a="closeSheet">Entendi</button>`),
  tipInfo:d=>sheet(`<h3>Como registrar</h3><p>${esc(EQ_TIPS[d.k]||'')}</p><button class="btn pri" data-a="closeSheet">Entendi</button>`),

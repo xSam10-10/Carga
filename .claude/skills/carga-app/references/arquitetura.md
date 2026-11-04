@@ -147,3 +147,9 @@ No script de teste:
 4. Navegue pelos `[data-a=tab][data-t=...]` e pelos `[data-a=go][data-v=...]`.
 5. Colete `pageerror` e os erros de console, e tire prints.
 6. Teste temas e sexos diferentes: claro, escuro, areia, lavanda, meianoite e mocha, com perfis 'm' e 'f'.
+
+## Rolagem (v129)
+- A página não rola: `html` e `body` têm `height:100%` e `overflow:hidden`. Quem rola é o **`#app`** (`position:fixed`; `top: env(safe-area-inset-top)`; `bottom:0`; `overflow-y:auto`).
+- **Motivo:** no iPhone, com a página inteira rolando, a barra de abas, a barra de descanso e outras barras fixas pulavam para o meio da tela durante a rolagem rápida. O translate3d da v80 não resolveu.
+- **No código:** use sempre `SC()` (= `#app`): `SC().scrollTop` e `SC().scrollTo(0,y)`. Nunca use `scrollY`, `window.scrollTo` ou o evento `scroll` da janela.
+- Os cabeçalhos sticky usam `top:0`, e as abas internas `top:57px`. A área segura do topo já é descontada pelo `top` do `#app`.
