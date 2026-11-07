@@ -109,6 +109,15 @@ h2.h{font:700 22px/1.1 var(--display);text-transform:uppercase;letter-spacing:.0
 .nt-b .nfx{display:flex;flex-direction:column;gap:2px}.nt.un .nt-b b{font-weight:800}.nt-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
 .nt-ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);flex:none}.nt-ic.k-agua{background:rgba(56,163,255,.15);color:#2b8fe8}.nt-ic.k-med{background:rgba(255,90,90,.14);color:#e0504a}.nt-ic.k-outro{background:var(--surface-2);color:var(--fg)}
 .tgl{position:relative;flex:none;width:46px;height:28px}.tgl input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer;z-index:1}.tgl i{position:absolute;inset:0;border-radius:14px;background:var(--line);transition:background .2s}.tgl i::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}.tgl input:checked+i{background:var(--accent)}.tgl input:checked+i::after{transform:translateX(18px)}
+.dz{display:flex;flex-direction:column;gap:8px;padding:4px 0}.dz+.dz{border-top:1px solid var(--line);padding-top:12px}.dz-h{display:flex;align-items:center;gap:12px}.dz-h .nfx{display:flex;flex-direction:column;gap:2px}
+.dz-s{display:flex;flex-wrap:wrap;gap:8px}.dose{flex:1 1 140px;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:46px;padding:0 14px;border-radius:12px;background:var(--surface-2);border:1.5px solid transparent;font-weight:600;color:var(--fg)}
+.dose b{font:700 17px var(--display);font-variant-numeric:tabular-nums}.dose span{display:flex;align-items:center;gap:4px;font-size:14px}.dose span .i{width:16px;height:16px}
+.dose.ok{background:var(--accent);color:var(--accent-ink)}.dose.late{border-color:#e0504a;color:#e0504a}.dose.late b{color:var(--fg)}.dose:disabled{opacity:.45}
+.cal.adh button{position:relative}.cal.adh button i{position:absolute;bottom:2px;font-style:normal;font-size:10px;line-height:1}
+.cal button.ad-ok{background:var(--accent);color:var(--accent-ink)}.cal button.ad-part{background:#f5c04a;color:#3a2a00}.cal button.ad-miss{background:rgba(224,80,74,.18);color:#c0392b}.cal button:disabled{opacity:.35}
+.adh-lg{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-size:12px;color:var(--muted)}.adh-lg span{display:flex;align-items:center;gap:6px}.adh-lg i{width:12px;height:12px;border-radius:50%;display:inline-block}.adh-lg i.ad-ok{background:var(--accent)}.adh-lg i.ad-part{background:#f5c04a}.adh-lg i.ad-miss{background:rgba(224,80,74,.5)}
+.tilerow{display:flex;align-items:center;gap:12px;text-align:left;width:100%;color:inherit;font:inherit;cursor:pointer}.tilerow .nfx{display:flex;flex-direction:column;gap:2px}
+.meds .pill.ok{background:var(--accent);color:var(--accent-ink)}
 .rcard p{margin:0;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
 /* exercícios */
@@ -1298,7 +1307,7 @@ const top_=()=>stack[stack.length-1];
 function cur(){const t=top_();return t.p.live||t.v==='finish'?S.active:t.p.s}
 
 const VIEWS={};
-const NAV_VIEWS=new Set(['avisos','lembretes','rotina','historico','relatorio','inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados','dieta','dietaTend','nutrientes','metasNutri','medLista','banco','planos','metas','fotosGer','resumo','conquistas','ativ','ativPick','ativDet']);
+const NAV_VIEWS=new Set(['remPainel','avisos','lembretes','rotina','historico','relatorio','inicio','treino','perfil','exercicios','exercicio','estatisticas','medidas','calendario','explorar','config','treinoDetalhe','perfis','agua','saude','dados','dieta','dietaTend','nutrientes','metasNutri','medLista','banco','planos','metas','fotosGer','resumo','conquistas','ativ','ativPick','ativDet']);
 const BELL_V=new Set(['inicio','treino','exercicios','ativ','dieta','agua','perfil']);
 function render(keep){const t=top_();const y=SC().scrollTop;const V=VIEWS[t.v]||VIEWS.treino;$('#app').innerHTML=V(t.p);if(BELL_V.has(t.v)&&REGS.current){const hd=$('#app header.top')||$('#app header.bar .bar-r');if(hd)hd.insertAdjacentHTML('beforeend',bellBtn())}chrome();gate();if(keep)SC().scrollTo(0,y);if(V.after)V.after(t.p)}
 const rerender=()=>render(true);
@@ -1444,6 +1453,7 @@ VIEWS.inicio=()=>{
  const dur=thisW.reduce((a,w)=>a+(w.end-w.start),0),vol=thisW.reduce((a,w)=>a+wStats(w).vol,0);
  const days=[...Array(7)].map((_,i)=>addDays(wk,i));const today=sod(Date.now());
  let h=`<header class="top"><h1 class="big">Início</h1><button class="ib" data-a="go" data-v="calendario" aria-label="Calendário">${I.cal}</button></header><main class="page">`;
+ h+=homeMeds();
  h+=homeMyDay();
  if(S.active)h+=`<button class="btn pri wide" data-a="resume">${I.play} Retomar treino em andamento</button><button class="btn ghost danger sm" data-a="discard" style="align-self:center">${I.trash} Descartar treino em andamento</button>`;
  h+=homeSpend();
@@ -3476,7 +3486,7 @@ async function remNotify(title,body,tag){try{if(!('Notification' in window)||Not
 function remTick(){if(!REGS.current)return;const now=Date.now();let ch=false;
  for(const rm of remList()){if(!rm.on)continue;const due=remSlots(rm).filter(t=>t<=now).pop();if(due==null||due<=(rm.last||0))continue;rm.last=due;ch=true;
   const title=`${REM_K[rm.kind]?REM_K[rm.kind][0]==='Outro'?'Lembrete':'Hora do '+REM_K[rm.kind][0].toLowerCase():'Lembrete'}: ${rm.name}`,body=rm.dose?`Dose: ${rm.dose}`:'Toque para marcar como feito.';
-  inboxPush({kind:rm.kind,rid:rm.id,title,body});if(document.hidden)remNotify(title,body,'carga-rem-'+rm.id);else toast(title)}
+  inboxPush({kind:rm.kind,rid:rm.id,slot:due,title,body});if(document.hidden)remNotify(title,body,'carga-rem-'+rm.id);else toast(title)}
  if(ch)save()}
 setInterval(remTick,6e4);document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(remTick,1700)});setTimeout(remTick,2500);
 const agoTxt=t=>{const m=Math.round((Date.now()-t)/6e4);return m<1?'agora':m<60?`há ${m} min`:m<1440&&sod(t)===sod(Date.now())?'hoje, '+hhmm(t):sod(t)===addDays(sod(Date.now()),-1)?'ontem, '+hhmm(t):dShort(t)+', '+hhmm(t)};
@@ -3488,9 +3498,9 @@ VIEWS.avisos=()=>{const l=[...inbox()].reverse(),n=unread();
  ${l.length?`<section class="card nt-l">${l.map(x=>`<div class="nt${x.read?'':' un'}"><button class="nt-b" data-a="ntOpen" data-id="${x.id}">${remIco(x.kind)}<span class="nfx"><b>${esc(x.title)}</b><span class="muted small">${esc(x.body||'')}</span><span class="muted small">${agoTxt(x.t)}${x.done?' · feito ✓':''}</span></span>${x.read?'':'<i class="nt-dot" aria-label="Não lida"></i>'}</button>${!x.done&&x.kind!=='agua'&&x.rid?`<button class="btn sm sec" data-a="ntDone" data-id="${x.id}">${x.kind==='outro'?'Feito':'Tomei'}</button>`:''}${!x.done&&x.kind==='agua'?`<button class="btn sm sec" data-a="ntWater" data-id="${x.id}">+250 ml</button>`:''}</div>`).join('')}</section><button class="btn ghost wide" data-a="ntClear">Limpar notificações</button>`
  :`<div class="emptybox">${I.bellN}<b>Nenhuma notificação</b><span>Os avisos dos seus lembretes aparecem aqui.</span></div>`}
  <h3 class="sh">Próximos hoje</h3>${up.length?`<section class="card nt-l">${up.map(x=>`<div class="nt"><span class="nt-b">${remIco(x.k)}<span class="nfx"><b>${esc(x.l)}</b></span><b class="num">${hhmm(x.t)}</b></span></div>`).join('')}</section>`:`<p class="muted small" style="margin:0">Nada mais programado para hoje.</p>`}
- <button class="btn sec wide" data-a="go" data-v="lembretes">${I.gear} Gerenciar lembretes</button></main>`};
+ <div class="grid2"><button class="btn sec" data-a="go" data-v="remPainel">${I.cal} Acompanhamento</button><button class="btn sec" data-a="go" data-v="lembretes">${I.gear} Lembretes</button></div></main>`};
 VIEWS.lembretes=()=>{const c=wrCfg(),nx=wrNext(),rs=remList();
- return bar('Lembretes',{right:`<button class="btn sm pri" data-a="remNew">${I.plus} Novo</button>`})+`<main class="page"><p class="muted small" style="margin:0">Os avisos aparecem no sino do canto superior direito e, com as notificações permitidas, também no celular. Funcionam com o app aberto ou em segundo plano recente.</p>
+ return bar('Lembretes',{right:`<button class="btn sm pri" data-a="remNew">${I.plus} Novo</button>`})+`<main class="page"><button class="card tilerow" data-a="go" data-v="remPainel"><span class="nt-ic">${I.cal}</span><span class="nfx"><b>Acompanhamento</b><span class="muted small">Calendário do que você já tomou e botão Tomei</span></span>${I.chev}</button><p class="muted small" style="margin:0">Os avisos aparecem no sino do canto superior direito e, com as notificações permitidas, também no celular. Funcionam com o app aberto ou em segundo plano recente.</p>
  <h3 class="sh">Água</h3><section class="card form"><label class="switch"><span><b>Lembrete de água</b><br><span class="muted small">Aviso a cada intervalo sem beber, dentro do horário, até bater a meta.</span></span><input type="checkbox" data-a="wrToggle" ${c.on?'checked':''}></label>${c.on?`<div class="fld"><span>Intervalo</span><div class="chips">${[[60,'1 h'],[90,'1h30'],[120,'2 h'],[180,'3 h']].map(([k,l])=>`<button class="chip${c.every===k?' on':''}" data-a="wrEvery" data-k="${k}">${l}</button>`).join('')}</div></div><div class="row2"><label class="fld"><span>Das</span><input class="inp" type="time" data-f="wr" data-k="from" value="${c.from}"></label><label class="fld"><span>Até</span><input class="inp" type="time" data-f="wr" data-k="to" value="${c.to}"></label></div><p class="muted small" style="margin:0">${nx?'Próximo por volta das '+hhmm(nx)+'.':'Sem lembretes de água pendentes hoje.'}</p>`:''}</section>
  <h3 class="sh">Suplementos, medicamentos e outros</h3>
  ${rs.length?`<section class="card nt-l">${rs.map(rm=>{const nx=remNext(rm);return`<div class="nt rm"><button class="nt-b" data-a="remEdit" data-id="${rm.id}">${remIco(rm.kind)}<span class="nfx"><b>${esc(rm.name)}</b><span class="muted small">${REM_K[rm.kind][0]}${rm.dose?' · '+esc(rm.dose):''} · ${rm.every>=1440?'1x por dia às '+rm.from:`a cada ${REM_EVERY.find(e=>e[0]===rm.every)?.[1]||rm.every+' min'}, das ${rm.from} às ${rm.to}`}</span>${rm.on&&nx?`<span class="muted small">Próximo: ${sod(nx)===sod(Date.now())?'hoje':'amanhã'} às ${hhmm(nx)}</span>`:''}</span></button><label class="tgl" aria-label="Ligar ou desligar"><input type="checkbox" data-a="remToggle" data-id="${rm.id}" ${rm.on?'checked':''}><i></i></label></div>`}).join('')}</section>`:`<p class="muted small" style="margin:0">Nenhum lembrete criado. Toque em Novo para lembrar de um suplemento, um medicamento ou qualquer outra coisa.</p>`}
@@ -3505,18 +3515,65 @@ VIEWS.lembreteForm=p=>{const rm=p.r,sl=remSlots(rm);
  <p class="muted small" id="rm-prev" style="margin:0">${remPrev(rm)}</p></div>
  ${p.isNew?'':`<button class="btn ghost danger wide" data-a="remDel">Excluir lembrete</button>`}</main>`};
 const remPrev=rm=>{const sl=remSlots(rm);return`${sl.length} aviso${sl.length>1?'s':''} por dia: ${sl.slice(0,12).map(hhmm).join(', ')}${sl.length>12?'…':''}`};
+/* ===================== ACOMPANHAMENTO DE REMÉDIOS E SUPLEMENTOS (v130) =====================
+   Painel ligado aos lembretes: cada horário de cada lembrete é uma dose do dia. "Tomei" grava em
+   S.remLog['AAAA-MM-DD'][idDoLembrete]['HH:MM'] = horário em que marcou. O "Tomei" da notificação grava o mesmo.
+   Calendário do mês: verde = todas as doses do dia tomadas, amarelo = parte, vermelho = nenhuma (só dias passados). */
+const remLog=()=>S.remLog||(S.remLog={});
+const hmOf=t=>{const d=new Date(t);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+const remTrack=()=>remList();
+const remStart=rm=>sod(rm.created||rm.last||Date.now());
+function dosesOn(rm,day){if(day<remStart(rm))return[];if(!rm.on&&day>=sod(Date.now()))return[];return remSlots(rm,day).map(hmOf)}
+const takenOn=(dk,rid)=>((remLog()[dk]||{})[rid])||{};
+function doseSet(rid,dk,hm,on){const L=remLog(),d=L[dk]||(L[dk]={}),m=d[rid]||(d[rid]={});if(on)m[hm]=m[hm]||Date.now();else delete m[hm];
+ if(!Object.keys(m).length)delete d[rid];if(!Object.keys(d).length)delete L[dk];
+ for(const x of inbox())if(x.rid===rid&&x.slot&&dkey(x.slot)===dk&&hmOf(x.slot)===hm){x.done=!!on;if(on)x.read=true}
+ save();bellUpd()}
+// situação de um dia: doses devidas (hoje só as que já passaram ou já foram marcadas) e tomadas
+function dayAdh(day,rid){const now=Date.now(),today=sod(now),dk=dkey(day);let tot=0,ok=0;
+ for(const rm of remTrack()){if(rid&&rm.id!==rid)continue;const tk=takenOn(dk,rm.id);
+  for(const hm of dosesOn(rm,day)){const t=day+hm2min(hm)*6e4,done=!!tk[hm];if(day<today||t<=now||done){tot++;if(done)ok++}}}
+ return{tot,ok,cls:!tot?'':ok>=tot?'ok':ok?'part':day<today?'miss':'due'}}
+function adhPct(days,rid){let t=0,o=0;const today=sod(Date.now());for(let i=0;i<days;i++){const a=dayAdh(addDays(today,-i),rid);t+=a.tot;o+=a.ok}return t?Math.round(o/t*100):null}
+function adhStreak(rid){let n=0;const today=sod(Date.now());for(let i=0;i<400;i++){const a=dayAdh(addDays(today,-i),rid);if(!a.tot){if(i===0)continue;break}if(a.ok<a.tot){if(i===0)continue;break}n++}return n}
+// linhas de doses de um dia (botão por horário)
+function doseRows(day,rid,big){const now=Date.now(),dk=dkey(day),today=sod(now);const rs=remTrack().filter(rm=>(!rid||rm.id===rid)&&dosesOn(rm,day).length);
+ if(!rs.length)return`<p class="muted small" style="margin:0">${day>today?'Dia ainda não chegou.':'Nenhuma dose programada neste dia.'}</p>`;
+ return rs.map(rm=>{const tk=takenOn(dk,rm.id),ds=dosesOn(rm,day);return`<div class="dz"><div class="dz-h">${remIco(rm.kind)}<span class="nfx"><b>${esc(rm.name)}</b><span class="muted small">${rm.dose?'Dose: '+esc(rm.dose)+' · ':''}${ds.length>1?ds.length+' vezes ao dia':'1 vez ao dia'}</span></span></div><div class="dz-s">${ds.map(hm=>{const t=day+hm2min(hm)*6e4,done=!!tk[hm],late=!done&&t<=now,fut=day>today;
+  return`<button class="dose${done?' ok':late?' late':''}" data-a="doseT" data-r="${rm.id}" data-k="${dk}" data-h="${hm}" ${fut?'disabled':''} aria-pressed="${done}"><b>${hm}</b><span>${done?`${I.check} Tomado${dkey(tk[hm])===dk?' às '+hhmm(tk[hm]):''}`:late?(big?'Tomei':'Marcar'):'Tomei'}</span></button>`}).join('')}</div></div>`}).join('')}
+// cartão do Início: doses de hoje
+function homeMeds(){const rs=remTrack().filter(rm=>rm.on&&dosesOn(rm,sod(Date.now())).length);if(!rs.length)return'';const a=dayAdh(sod(Date.now()));const all=remTrack().reduce((n,rm)=>n+dosesOn(rm,sod(Date.now())).length,0),tk=remTrack().reduce((n,rm)=>n+Object.keys(takenOn(dkey(Date.now()),rm.id)).length,0);
+ return`<section class="card form meds"><div class="row"><span class="lab nfx">${I.pill} Remédios e suplementos de hoje</span><span class="pill${tk>=all?' ok':''}">${tk} de ${all}</span></div>${doseRows(sod(Date.now()),null,true)}<button class="btn sec wide" data-a="go" data-v="remPainel">${I.cal} Ver calendário e histórico</button></section>`}
+VIEWS.remPainel=p=>{const now=new Date(),off=p.off||0,m=new Date(now.getFullYear(),now.getMonth()+off,1),y=m.getFullYear(),mo=m.getMonth(),nd=new Date(y,mo+1,0).getDate(),today=sod(Date.now()),rid=p.f||null,sel=p.day||today;
+ const rs=remTrack();if(!rs.length)return bar('Acompanhamento')+`<main class="page"><div class="emptybox">${I.pill}<b>Nenhum lembrete de remédio ou suplemento</b><span>Crie um lembrete para acompanhar aqui o que você já tomou.</span></div><button class="btn pri wide" data-a="remNew">${I.plus} Novo lembrete</button></main>`;
+ const f0=S.profile.weekStart||0;let cells=[...Array(7)].map((_,i)=>`<span class="wd">${DL[(i+f0)%7]}</span>`).join('')+'<span></span>'.repeat((m.getDay()-f0+7)%7);
+ for(let d=1;d<=nd;d++){const ts=new Date(y,mo,d).getTime(),a=ts>today?{cls:''}:dayAdh(ts,rid);cells+=`<button class="ad-${a.cls}${ts===today?' today':''}${ts===sel?' sel':''}" data-a="adhDay" data-d="${ts}" ${ts>today?'disabled':''} aria-label="${d} de ${MESL[mo]}${a.cls==='ok'?', tudo tomado':a.cls==='part'?', parte tomada':a.cls==='miss'?', nada tomado':''}">${d}${a.cls==='ok'?'<i>✓</i>':''}</button>`}
+ const p7=adhPct(7,rid),p30=adhPct(30,rid),st=adhStreak(rid);
+ return bar('Acompanhamento',{right:`<button class="ib" data-a="go" data-v="lembretes" aria-label="Gerenciar lembretes">${I.gear}</button>`})+`<main class="page">
+ <div class="chips">${[[null,'Todos'],...rs.map(rm=>[rm.id,rm.name])].map(([id,l])=>`<button class="chip${(id||null)===rid?' on':''}" data-a="adhF" data-k="${id||''}">${esc(l)}</button>`).join('')}</div>
+ <div class="stat3 card"><div><span class="lab">7 dias</span><b>${p7==null?'—':p7+'%'}</b></div><div><span class="lab">30 dias</span><b>${p30==null?'—':p30+'%'}</b></div><div><span class="lab">Sequência</span><b>${st} dia${st===1?'':'s'}</b></div></div>
+ <section class="card form"><div class="row"><button class="ib" data-a="adhNav" data-d="-1" aria-label="Mês anterior">${I.left}</button><h2 class="h spacer" style="text-align:center;margin:0;font-size:20px">${MESL[mo]} ${y}</h2><button class="ib" data-a="adhNav" data-d="1" aria-label="Próximo mês" ${off>=0?'disabled style="opacity:.3"':''}>${I.chev}</button></div>
+ <div class="cal adh">${cells}</div>
+ <div class="adh-lg"><span><i class="ad-ok"></i>Tudo tomado</span><span><i class="ad-part"></i>Parte</span><span><i class="ad-miss"></i>Esquecido</span></div></section>
+ <h3 class="sh">${sel===today?'Hoje':new Date(sel).toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'})}</h3>
+ <section class="card form">${doseRows(sel,rid,true)}${sel<today?'<p class="muted small" style="margin:0">Esqueceu de marcar? Toque no horário para registrar que tomou neste dia.</p>':''}</section></main>`};
+
 Object.assign(A,{
+ doseT:d=>{const on=!(takenOn(d.k,d.r)[d.h]);doseSet(d.r,d.k,d.h,on);if(on){try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}}rerender(true);if(on)toast('Dose marcada como tomada')},
+ adhDay:d=>{top_().p.day=+d.d;rerender(true)},
+ adhNav:d=>{const p=top_().p;p.off=(p.off||0)+(+d.d);p.day=null;rerender(true)},
+ adhF:d=>{top_().p.f=d.k||null;rerender(true)},
  remNew:()=>go('lembreteForm',{isNew:true,r:{id:uid(),kind:'supp',name:'',dose:'',every:1440,from:'08:00',to:'22:00',on:true}}),
  remEdit:d=>{const rm=remList().find(x=>x.id===d.id);if(rm)go('lembreteForm',{r:JSON.parse(JSON.stringify(rm))})},
  remKind:d=>{top_().p.r.kind=d.k;rerender(true)},
  remEvery:d=>{top_().p.r.every=+d.k;rerender(true)},
  remSave:()=>{const p=top_().p,rm=p.r;rm.name=(rm.name||'').trim();if(!rm.name){toast('Dê um nome ao lembrete.');$('#rm-n')?.focus();return}if(rm.kind==='outro')rm.dose='';
-  const l=remList(),i=l.findIndex(x=>x.id===rm.id);rm.last=Date.now();if(i<0)l.push(rm);else l[i]=rm;save();
+  const l=remList(),i=l.findIndex(x=>x.id===rm.id);rm.last=Date.now();rm.created=rm.created||Date.now();if(i<0)l.push(rm);else l[i]=rm;save();
   const ask_=p.isNew&&'Notification' in window&&Notification.permission==='default';back();toast('Lembrete salvo');if(ask_){try{Notification.requestPermission()}catch(e){}}},
  remDel:()=>{const rm=top_().p.r;ask('Excluir este lembrete?',esc(rm.name),'Excluir',true).then(ok=>{closeSheet();if(!ok)return;S.profile.rems=remList().filter(x=>x.id!==rm.id);save();back();toast('Lembrete excluído')})},
  remToggle:d=>{const rm=remList().find(x=>x.id===d.id);if(!rm)return;rm.on=!rm.on;if(rm.on)rm.last=Date.now();save();rerender(true)},
  ntOpen:d=>{const x=inbox().find(y=>y.id===d.id);if(!x)return;x.read=true;save();bellUpd();if(x.kind==='agua'){tab('agua');return}rerender(true)},
- ntDone:d=>{const x=inbox().find(y=>y.id===d.id);if(!x)return;x.read=true;x.done=true;save();bellUpd();rerender(true);toast('Marcado como feito')},
+ ntDone:d=>{const x=inbox().find(y=>y.id===d.id);if(!x)return;x.read=true;x.done=true;if(x.rid&&x.slot)doseSet(x.rid,dkey(x.slot),hmOf(x.slot),true);save();bellUpd();rerender(true);toast(x.kind==='outro'?'Marcado como feito':'Dose marcada como tomada')},
  ntWater:d=>{const x=inbox().find(y=>y.id===d.id);if(!x)return;x.read=true;x.done=true;const k=dkey(Date.now());S.water=S.water||{};(S.water[k]=S.water[k]||[]).push({t:Date.now(),ml:250});save();bellUpd();rerender(true);toast('+250 ml de água')},
  ntAllRead:()=>{inbox().forEach(x=>x.read=true);save();bellUpd();rerender(true)},
  ntClear:()=>ask('Limpar notificações?','Os avisos somem desta lista. Os lembretes continuam ligados.','Limpar',true).then(ok=>{closeSheet();if(!ok)return;S.inbox=[];save();bellUpd();rerender()})
