@@ -153,3 +153,4 @@ No script de teste:
 - **Motivo:** no iPhone, com a página inteira rolando, a barra de abas, a barra de descanso e outras barras fixas pulavam para o meio da tela durante a rolagem rápida. O translate3d da v80 não resolveu.
 - **No código:** use sempre `SC()` (= `#app`): `SC().scrollTop` e `SC().scrollTo(0,y)`. Nunca use `scrollY`, `window.scrollTo` ou o evento `scroll` da janela.
 - Os cabeçalhos sticky usam `top:0`, e as abas internas `top:57px`. A área segura do topo já é descontada pelo `top` do `#app`.
+- **v132:** dentro do treino, marcar série, escolher "Reps a mais", reabrir o +N e usar o cronômetro da série chamam `exRefresh(i)`. Ele troca só o `<section id="exc-i">` e chama `updateLiveStats`. Antes era `rerender()`, que trocava o conteúdo todo do `#app`; no iPhone a rolagem zerava por um instante e a tela pulava (vídeo de 07/11). Use `exRefresh` para qualquer ação que mude um só exercício.

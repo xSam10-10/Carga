@@ -1241,7 +1241,7 @@ function mergeDup(s){const by={};for(const b of BUILTIN)by[norm(b.name)]=b.id;co
 function fixPRs(){if(S._fixPR){delete S._fixPR;recomputePRs();persist()}}
 
 /* ---------- estado ---------- */
-const APP_V='v131'; // trocado pelo build.py pela versão do sw.js (CACHE)
+const APP_V='v132'; // trocado pelo build.py pela versão do sw.js (CACHE)
 const KEY='carga.v1',REG='carga.perfis';
 // Reset geral pedido em 17/10/2026: zera todos os perfis uma vez por aparelho. Os dados antigos são movidos para carga.old.* e podem ser restaurados em Configurações.
 const RESET_ID='2026-10-17';
@@ -1576,6 +1576,11 @@ VIEWS.sessao=p=>{
  h+=`<button class="btn pri wide" data-a="addEx">${I.plus} Adicionar exercício</button>`;
  if(k==='live')h+=`<button class="btn ghost danger wide" data-a="discard">Descartar treino</button>`;
  return h+'<div style="height:70px"></div></main>'};
+/* v132: atualiza só o cartão de um exercício (marcar série, reps a mais, cronômetro). No iPhone, redesenhar a tela
+   inteira dentro do #app zerava a rolagem por um instante e a tela pulava; com a troca só do cartão nada se move. */
+function exRefresh(i){const s=cur(),el=$('#exc-'+i);if(!s||!el||!s.exercises[i]||top_().v!=='sessao'){rerender();return}
+ const y=SC().scrollTop,t=document.createElement('template');t.innerHTML=exCard(s,s.exercises[i],i,ssMap(s)).trim();el.replaceWith(...t.content.childNodes);
+ if(SC().scrollTop!==y)SC().scrollTop=y;updateLiveStats()}
 function updateLiveStats(){const s=cur();if(!s||s.kind!=='live')return;const st=wStats(s,true);const v=$('[data-stat=vol]');if(v)v.textContent=fmtInt(st.vol)+' kg';const n=$('[data-stat=sets]');if(n)n.textContent=st.sets;const pb=$('.lprog'),pg=liveProg(s);if(pb){pb.setAttribute('aria-valuenow',pg);pb.firstElementChild.style.width=pg+'%'}}
 /* Conclusão do treino (v113): séries marcadas ÷ séries planejadas, em %. Barra verde presa no topo junto com nome, duração, volume e séries. */
 function liveProg(s){let t=0,d=0;for(const e of s.exercises)for(const st of e.sets){t++;if(st.done)d++}return t?Math.round(d/t*100):0}
@@ -2246,10 +2251,10 @@ const A={
    st.done=true;
    if(s.kind==='live'){setTick();livePR(s,e,st,x,t);
     if(ssLast(s,ei)){if(e.rest)startRest(e.rest)}else{const nx=ssNext(s,ei);if(nx){toast('Supersérie: agora '+ex(nx.exId).name);if(S.profile.ssScroll!==false){const ni=s.exercises.indexOf(nx);setTimeout(()=>{const el=$('#exc-'+ni);el&&el.scrollIntoView({behavior:'smooth',block:'start'})},60)}}}}}else{st.done=false;st.pr=false}
-  save();rerender();updateLiveStats()},
- setTimer:d=>{const s=cur(),i=+d.e,j=+d.s;if(UI.tmr&&UI.tmr.e===i&&UI.tmr.s===j){const st=s.exercises[i].sets[j];st.min=mmss((Date.now()-UI.tmr.start)/1000);UI.tmr=null;save()}else UI.tmr={e:i,s:j,start:Date.now()};rerender()},
- setRir:d=>{const s=cur(),st=s.exercises[+d.e].sets[+d.s];const v=+d.v;st.plus=st.plus===v?null:v;UI.rirAt=null;save();rerender(true);updateLiveStats()},
- rirEdit:d=>{UI.rirAt=d.e+'-'+d.s;rerender(true)},
+  save();exRefresh(ei)},
+ setTimer:d=>{const s=cur(),i=+d.e,j=+d.s;const old=UI.tmr&&UI.tmr.e;if(UI.tmr&&UI.tmr.e===i&&UI.tmr.s===j){const st=s.exercises[i].sets[j];st.min=mmss((Date.now()-UI.tmr.start)/1000);UI.tmr=null;save()}else UI.tmr={e:i,s:j,start:Date.now()};if(old!=null&&old!==i)exRefresh(old);exRefresh(i)},
+ setRir:d=>{const s=cur(),st=s.exercises[+d.e].sets[+d.s];const v=+d.v;st.plus=st.plus===v?null:v;UI.rirAt=null;save();exRefresh(+d.e)},
+ rirEdit:d=>{UI.rirAt=d.e+'-'+d.s;exRefresh(+d.e)},
  carStep:d=>{const c=$('#wcar');if(c)c.scrollBy({left:(+d.d)*c.clientWidth,behavior:'smooth'})},
  applyHint:d=>{const s=cur(),e=s.exercises[+d.e];e.sets.forEach(st=>{if(st.type!=='w'&&!st.done)st.kg=String(d.kg).replace('.',',')});save();rerender();toast('Carga sugerida aplicada')},
  warmup:d=>{const s=cur(),e=s.exercises[+d.e],x=ex(e.exId);const prev=prevSets(e.exId,null,Infinity,s.routineId).filter(p=>p.type!=='w');const first=e.sets.find(st=>st.type!=='w'&&num(st.kg));const base=first?num(first.kg):prev.length?Math.max(...prev.map(p=>num(p.kg)||0)):0;
