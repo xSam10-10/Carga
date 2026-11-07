@@ -12,8 +12,15 @@ from fontTools.pens.transformPen import TransformPen
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FONT = '/usr/share/fonts/opentype/inter/InterDisplay-BlackItalic.otf'
-G0, G1 = '#6BFFB0', '#10B873'          # degradê da marca (fundo escuro)
-B0, B1 = '#22D481', '#0A7A4E'          # fundo do ícone
+G0, G1 = '#6BFFB0', '#10B873'          # degradê antigo da marca (até a v130)
+HOLO = ['#6BFFB0', '#3EC5FF', '#B07CFF']  # v131: opção 10 "Preto + Holográfico" escolhida pelo usuário
+B0, B1 = '#050505', '#111111'          # fundo do ícone (preto)
+
+
+def grad(gid):
+    """Degradê holográfico da marca (verde → azul → lilás), em coordenadas do desenho 512×512."""
+    st = ''.join('<stop offset="%.2f" stop-color="%s"/>' % (k / (len(HOLO) - 1), c) for k, c in enumerate(HOLO))
+    return '<linearGradient id="%s" gradientUnits="userSpaceOnUse" x1="60" y1="60" x2="452" y2="452">%s</linearGradient>' % (gid, st)
 R, SW, GAP = 172, 72, (36, 324)        # anel do "C"
 CX, CY, ANG = 270, 256, -35            # centro e inclinação do halter
 BAR, BT, PLATES, KO = 210, 30, [(44, 156), (28, 104)], 16
@@ -61,9 +68,9 @@ def word(text='carga', track=-30):
 
 
 def icon(maskable=False, k=None):
-    bg = '<defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/></linearGradient></defs>' % (B0, B1)
+    bg = '<defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/></linearGradient>%s</defs>' % (B0, B1, grad('m'))
     rect = '<rect width="512" height="512" fill="url(#b)"/>' if maskable else '<rect width="512" height="512" rx="112" fill="url(#b)"/>'
-    m = mark('#FFFFFF')
+    m = mark('url(#m)')
     k = k or (.74 if maskable else .9)  # maskable: a marca cabe na zona segura (círculo de 80%)
     m = '<g transform="translate(256 256) scale(%g) translate(-256 -256)">%s</g>' % (k, m)
     return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">%s%s%s</svg>' % (bg, rect, m)
@@ -71,17 +78,16 @@ def icon(maskable=False, k=None):
 
 def splash():
     # Como no Hevy: só o símbolo, parado, no centro da tela preta
-    grad = '<defs><linearGradient id="spg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/></linearGradient></defs>' % (G0, G1)
-    return '<div id="splash" aria-hidden="true"><svg class="sp-mark" viewBox="0 0 512 512">%s%s</svg></div>' % (grad, mark('url(#spg)', '#000'))
+    return '<div id="splash" aria-hidden="true"><svg class="sp-mark" viewBox="0 0 512 512"><defs>%s</defs>%s</svg></div>' % (grad('spg'), mark('url(#spg)', '#000'))
 
 
 def lockup():
     """Marca + palavra (arquivo de identidade, para uso fora do app)."""
     wd, ww = word(); k = 300 / 1640
-    grad = '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/></linearGradient></defs>' % (G0, G1)
+    gd = '<defs>%s</defs>' % grad('g')
     return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d 860"><rect width="100%%" height="100%%" fill="#000"/>%s'
             '<g transform="translate(%g 60)">%s</g><path fill="#fff" transform="translate(40 %g) scale(%g)" d="%s"/></svg>') % (
-        ww * k + 80, grad, (ww * k + 80) / 2 - 256, mark('url(#g)', '#000'), 600 + 1180 * k, k, wd)
+        ww * k + 80, gd, (ww * k + 80) / 2 - 256, mark('url(#g)', '#000'), 600 + 1180 * k, k, wd)
 
 
 def icon_any(k=.314, dy=24):
@@ -89,8 +95,7 @@ def icon_any(k=.314, dy=24):
     do app instalado (sobre o fundo preto do manifesto); na escala .28 ele aparece do mesmo tamanho do símbolo da
     nossa abertura (medido no vídeo do celular), então a passagem para a página não tem salto. dy compensa o centro da
     página, que fica um pouco abaixo do centro da janela. O ícone da tela inicial vem do maskable."""
-    grad = '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/></linearGradient></defs>' % (G0, G1)
-    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">%s<g transform="translate(256 %g) scale(%g) translate(-256 -256)">%s</g></svg>' % (grad, 256 + dy, k, mark('url(#g)'))
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs>%s</defs><g transform="translate(256 %g) scale(%g) translate(-256 -256)">%s</g></svg>' % (grad('g'), 256 + dy, k, mark('url(#g)'))
 
 
 def main():

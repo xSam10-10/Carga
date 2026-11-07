@@ -99,3 +99,9 @@ Cada cor tem uma variante para tema claro e outra para tema escuro: `[cor, cor s
 - Início em capítulos (v66, aprovado pelo usuário): **Meu dia** (`homeMyDay`, 1º bloco desde a v81: meta, consumido, gasto, saldo, macros, água, "Como calculamos?", e no fim Treino e Metas de longo prazo; o bloco Metas de hoje foi removido) → **Meu gasto** (`homeSpend`: anéis das calorias ativas + barra basal/rotina/treino/exercícios = gasto do dia) → **Métricas de saúde** (v85, `healthCore`: IMC, TMB, Gasto e meta de hoje, Água por dia, Macronutrientes) → **Explorar** (atalhos). Cada número aparece uma vez só. Vocabulário único: Meta (quanto comer), Gasto (total do dia), Ativas (treino + exercícios), Saldo (comido − gasto). Semáforo: em andamento (cor padrão), dentro da meta (verde #2E9E5B), um pouco acima (âmbar), bem acima (vermelho).
 - Aba Treino: primeiro bloco é **Seus treinos** (últimos 10 + "Ver todos" no Perfil), depois Iniciar treino vazio / Retomar e Rotinas.
 
+
+## Cores do ícone (v131, 07/11/2026)
+- **Escolhida pelo usuário: opção 10, "Preto + Holográfico".** Fundo preto (#050505 → #111111) e símbolo em degradê verde → azul → lilás (#6BFFB0, #3EC5FF, #B07CFF). Vale para o ícone da tela inicial, o ícone "any", a abertura, a tela de login e o lockup.
+- **Origem:** `HOLO` e `grad()` em `tools/logo.py`. Para gerar de novo: `python3 tools/logo.py`, depois `node tools/icons.js`.
+- **As outras 9 opções** apresentadas: Preto + Verde neon, Preto + Lima elétrico, Grafite + Laranja, Meia-noite + Ciano, Branco + Verde, Aurora (roxo → azul), Preto + Dourado, Floresta + Creme e Coral esportivo. Os SVGs estão em `tools/icone-opcoes/`.
+- **Trocar o ícone dentro do app não é possível num PWA.** O sistema guarda o ícone na instalação. No iPhone, ele lê o `apple-touch-icon` no momento de "Adicionar à Tela de Início". No Android, ele vem do manifesto, que é um só para todos.
